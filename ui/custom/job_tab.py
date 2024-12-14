@@ -3,29 +3,57 @@ from functools import partial
 from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QKeySequence, QShortcut
-from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtGui import QIcon, QKeySequence, QShortcut
+from PyQt6.QtWidgets import QInputDialog, QPushButton, QMessageBox, QVBoxLayout, QWidget
 
 from ui.custom.job_tab_widget import JobTabWidget
+from ui.theme import theme_var
 from ui.widgets.job_widget import JobWidget
 from utils.workspace.job import Job, JobStatus
-from utils.workspace.job_manager import JobManager
-from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
+
+
+class PopoutWidget(QWidget):
+    def __init__(self, tab_data: dict[str, str], layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.tab_data = tab_data
+
+        self.tab_name = self.tab_data["object_name"]
+        self.tab_icon = self.tab_data["icon"]
+
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "JobTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle(self.tab_name)
+        self.setLayout(self.original_layout)
+        self.setObjectName("popout_widget")
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
 
 
 class JobTab(QWidget):
     saveJob = pyqtSignal(Job)
     reloadJob = pyqtSignal(JobWidget)
 
-    def __init__(self, parent):
+    def __init__(self, tab_data: dict[str, str], parent):
         super().__init__(parent)
         self.parent: MainWindow = parent
+        self.tab_data = tab_data
 
-        self.job_manager: JobManager = self.parent.job_manager
-        self.job_preferences: JobPreferences = self.parent.job_preferences
+        self.tab_name = self.tab_data["object_name"]
+        self.tab_icon = self.tab_data["icon"]
+
+        self.job_manager = self.parent.job_manager
+        self.job_preferences = self.parent.job_preferences
 
         self.job_widgets: list[JobWidget] = []
         self.current_job: Job = None
@@ -42,6 +70,7 @@ class JobTab(QWidget):
     def load_ui(self):
         self.jobs_layout = QVBoxLayout(self)
         self.jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.jobs_layout.setContentsMargins(0, 0, 9, 0)
 
         self.job_tab = JobTabWidget(self)
         self.job_tab.tabCloseRequested.connect(self.close_tab)
@@ -137,6 +166,9 @@ class JobTab(QWidget):
     def tab_changed(self):
         if not self.get_active_job():
             return
+        if self.current_job and self.current_job.unsaved_changes:
+            msg = QMessageBox(QMessageBox.Icon.Information, "Unsaved changes", f"There are unsaved changes in {self.parent.last_selected_menu_tab}, {self.current_job.name}.")
+            msg.exec()
         self.current_job = self.get_active_job()
         self.update_job_save_status(self.current_job)
 
@@ -191,8 +223,15 @@ class JobTab(QWidget):
         else:
             self.job_tab.setTabsClosable(True)
 
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.tab_data, self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
     def sync_changes(self):
-        self.job_manager.sync_changes()
+        self.job_manager.sync_changes(self.tab_name)
 
     def save_current_job(self):
         self.current_job.unsaved_changes = False
@@ -210,16 +249,23 @@ class JobTab(QWidget):
         self.update_job_save_status(job)
 
     def update_job_save_status(self, job: Job):
-        if job.status == JobStatus.PLANNING:
+        SAVED_JOB_STYLE = f"background-color: {theme_var('primary-green')}; color: {theme_var('on-primary-green')}; padding: 5px; border-radius: 5px;"
+        UNSAVED_JOB_STYLE = f"background-color: {theme_var('primary-yellow')}; color: {theme_var('on-primary-yellow')}; padding: 5px; border-radius: 5px;"
+
+        if self.parent.tab_text(self.parent.stackedWidget.currentIndex()) == "job_planner_tab":
             if job.unsaved_changes:
                 self.parent.label_job_save_status.setText("You have unsaved changes")
+                self.parent.label_job_save_status.setStyleSheet(UNSAVED_JOB_STYLE)
             else:
-                self.parent.label_job_save_status.setText("")
+                self.parent.label_job_save_status.setText("Job is saved")
+                self.parent.label_job_save_status.setStyleSheet(SAVED_JOB_STYLE)
         else:
             if job.unsaved_changes:
                 self.parent.label_job_save_status_2.setText("You have unsaved changes")
+                self.parent.label_job_save_status_2.setStyleSheet(UNSAVED_JOB_STYLE)
             else:
-                self.parent.label_job_save_status_2.setText("")
+                self.parent.label_job_save_status_2.setText("Job is saved")
+                self.parent.label_job_save_status_2.setStyleSheet(SAVED_JOB_STYLE)
 
     def update_tables(self):
         for job_widget in self.job_widgets:

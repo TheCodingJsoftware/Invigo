@@ -17,7 +17,11 @@ class POTemplate:
         self.vendor: str = self.get_vendor()
         self.order_number: int = self.get_order_number()
 
-    def copy_file_with_overwrite(self, source, target, retry_interval=1, max_retries=10):
+    def copy_file_with_overwrite(self, source: str, target: str, retry_interval=1, max_retries=10):
+        source = source.replace("/", "\\")
+        target = target.replace("/", "\\")
+        if target in source:
+            return
         retries = 0
         while retries < max_retries:
             try:

@@ -1,6 +1,6 @@
-from PyQt6.QtCore import QDate
-
 from enum import Enum
+
+from PyQt6.QtCore import QDate
 
 
 class SortingMethod(Enum):

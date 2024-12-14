@@ -7,10 +7,10 @@ from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flowtag import Flowtag
+from utils.workspace.flowtag_data import FlowtagData
+from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.flowtag_timer import FlowtagTimer
-from utils.workspace.flowtag_data import FlowtagData
 
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
@@ -128,13 +128,13 @@ class LaserCutPart(InventoryItem):
 
     def move_to_next_process(self):
         self.timer.stop(self.get_current_tag())
+        self.check_update_quantity_tags()
         if not self.is_process_finished():
             self.current_flow_tag_index += 1
             self.current_flow_tag_status_index = 0
             self.recut = False
             self.recoat = False
             self.timer.start(self.get_current_tag())
-            self.check_update_quantity_tags()
 
     def check_update_quantity_tags(self):
         if self.flowtag.add_quantity_tag and self.get_current_tag().name == self.flowtag.add_quantity_tag.name:
@@ -163,6 +163,12 @@ class LaserCutPart(InventoryItem):
         if self.uses_powder and self.powder_item:
             name += f"{self.powder_item.name}\n"
         return name
+
+    def get_expected_time_to_complete(self) -> int:
+        total_time: int = 0
+        for tag in self.flowtag_data.tags_data:
+            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
+        return total_time
 
     def move_to_category(self, from_category: Category, to_category: Category):
         super().remove_from_category(from_category)
@@ -261,7 +267,10 @@ class LaserCutPart(InventoryItem):
         self.timer = FlowtagTimer(copy.deepcopy(data.get("timer", {})), self.flowtag)
         self.flowtag_data = FlowtagData(self.flowtag)
         self.flowtag_data.load_data(data.get("flow_tag_data", {}))
-
+        if tag := self.flowtag.get_tag_with_similar_name("laser"):
+            self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(self.machine_time * 60))
+        elif tag := self.flowtag.get_tag_with_similar_name("picking"):
+            self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", self.weight)
         self.quantity_in_nest = data.get("quantity_in_nest", 0)
 
         self.categories.clear()

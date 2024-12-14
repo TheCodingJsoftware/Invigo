@@ -1,9 +1,11 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.set_order_pending_dialog_UI import Ui_Form
+from ui.icons import Icons
 
-class SetOrderPendingDialog(QDialog):
+
+class SetOrderPendingDialog(QDialog, Ui_Form):
     def __init__(
         self,
         message: str,
@@ -11,10 +13,10 @@ class SetOrderPendingDialog(QDialog):
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/set_order_pending_dialog.ui", self)
+        self.setupUi(self)
 
         self.setWindowTitle("Set Expected Arrival Time & Quantity")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.lblMessage.setText(message)
         self.label.setText(label_text)

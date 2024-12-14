@@ -1,7 +1,8 @@
 import contextlib
+from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QKeySequence, QShortcut
+from PyQt6.QtGui import QIcon, QKeySequence, QShortcut
 from PyQt6.QtWidgets import QInputDialog, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
 
 from ui.widgets.quote_widget import QuoteWidget
@@ -11,6 +12,30 @@ from utils.inventory.sheets_inventory import SheetsInventory
 from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
 
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
+
+
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+
+        self.parent: MainWindow = parent
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "QuoteGeneratorTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Quote Generator")
+        self.setLayout(self.original_layout)
+        self.setObjectName("popout_widget")
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
+
 
 class QuoteGeneratorTab(QWidget):
     save_quote = pyqtSignal(Quote)
@@ -18,7 +43,7 @@ class QuoteGeneratorTab(QWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.parent = parent
+        self.parent: MainWindow = parent
         self.components_inventory: ComponentsInventory = self.parent.components_inventory
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
         self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
@@ -163,6 +188,16 @@ class QuoteGeneratorTab(QWidget):
             self.parent.label_quote_save_status.setText("You have unsaved changes")
         else:
             self.parent.label_quote_save_status.setText("")
+
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
+    def sync_changes(self):
+        self.parent.sync_changes("quote_generator_tab")
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):

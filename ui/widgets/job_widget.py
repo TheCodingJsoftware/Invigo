@@ -4,18 +4,21 @@ from functools import partial
 from typing import TYPE_CHECKING, Optional, Union
 
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import QDateTime, Qt, pyqtSignal
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QDoubleSpinBox, QGridLayout, QLabel, QPushButton, QScrollArea, QSplitter, QTextEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QComboBox, QPushButton, QTreeWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
 from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
 from ui.custom.job_flowtag_timeline_widget import JobFlowtagTimelineWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
+from ui.dialogs.laser_cut_parts_list_summary_dialog import LaserCutPartsListSummaryDialog
+from ui.icons import Icons
+from ui.theme import theme_var
+from ui.widgets.job_widget_UI import Ui_Form
 from ui.widgets.nest_widget import NestWidget
 from utils import colors
-from utils.colors import darken_color, lighten_color
+from utils.colors import get_contrast_text_color, lighten_color
 from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job, JobColor, JobStatus
@@ -24,20 +27,21 @@ if TYPE_CHECKING:
     from ui.custom.job_tab import JobTab
 
 
-class JobWidget(QWidget):
+class JobWidget(QWidget, Ui_Form):
     reloadJob = pyqtSignal(object)  # object -> JobWidget
 
     def __init__(self, job: Job, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/job_widget.ui", self)
+        self.setupUi(self)
 
         self.parent: JobTab = parent
         self.job = job
-        self.job_preferences = self.parent.job_preferences
-        self.sheet_settings = self.parent.parent.sheet_settings
-        self.paint_inventory = self.parent.parent.paint_inventory
         self.price_calculator = self.job.price_calculator
-        self.main_window_tab_widget = self.parent.parent.tabWidget
+        self.job_preferences = self.parent.job_preferences
+        self.main_window = self.parent.parent
+        self.sheet_settings = self.main_window.sheet_settings
+        self.paint_inventory = self.main_window.paint_inventory
+        self.main_window_tab_widget = self.main_window.stackedWidget
 
         self.assembly_widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
 
@@ -50,36 +54,16 @@ class JobWidget(QWidget):
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_8.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.item_quoting_options_layout = self.findChild(QVBoxLayout, "item_quoting_options_layout")
         self.item_quoting_options_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.gridLayout_4 = self.findChild(QGridLayout, "gridLayout_4")
         self.gridLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.nest_summary_layout = self.findChild(QVBoxLayout, "nest_summary_layout")
         self.nest_summary_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.treeWidget_nest_summary = self.findChild(QTreeWidget, "treeWidget_nest_summary")
-
-        self.pushButton_global_sheet_settings = self.findChild(QPushButton, "pushButton_global_sheet_settings")
-        self.global_sheet_settings_widget = self.findChild(QWidget, "global_sheet_settings_widget")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_global_sheet_settings, self.global_sheet_settings_widget)
-
-        self.pushButton_item_quoting_options = self.findChild(QPushButton, "pushButton_item_quoting_options")
-        self.item_quoting_options_widget = self.findChild(QWidget, "item_quoting_options_widget")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_item_quoting_options, self.item_quoting_options_widget)
-
-        self.pushButton_sheet_quoting_options = self.findChild(QPushButton, "pushButton_sheet_quoting_options")
-        self.sheet_quoting_options_widget = self.findChild(QWidget, "sheet_quoting_options_widget")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget)
-
-        self.pushButton_nests = self.findChild(QPushButton, "pushButton_nests")
-        self.nests_widget = self.findChild(QWidget, "nests_widget")
-        self.nests_layout = self.findChild(QVBoxLayout, "nests_layout")
         self.nests_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nests, self.nests_widget)
 
-        self.pushButton_nest_summary = self.findChild(QPushButton, "pushButton_nest_summary")
-        self.nest_summary_widget = self.findChild(QWidget, "nest_summary_widget")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_global_sheet_settings, self.global_sheet_settings_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_item_quoting_options, self.item_quoting_options_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_nest_summary, self.nest_summary_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nests, self.nests_widget)
 
         self.pushButton_global_sheet_settings.clicked.connect(
             partial(
@@ -148,16 +132,16 @@ class JobWidget(QWidget):
         self.pushButton_nests.setChecked(self.job_preferences.is_nests_closed(self.job.name))
         self.nests_widget.setHidden(not self.job_preferences.is_nests_closed(self.job.name))
 
-        self.scrollArea = self.findChild(QScrollArea, "scrollArea")
-
-        self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")
         self.pushButton_reload_job.clicked.connect(self.reload_job)
+        self.pushButton_reload_job.setIcon(Icons.refresh_icon)
 
-        self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_order_number")
         self.doubleSpinBox_order_number.setValue(self.job.order_number)
-        self.doubleSpinBox_order_number.wheelEvent = lambda event: None
+        self.doubleSpinBox_order_number.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_order_number.valueChanged.connect(self.job_settings_changed)
-        self.pushButton_get_order_number: QPushButton = self.findChild(QPushButton, "pushButton_get_order_number")
+
+        self.doubleSpinBox_po_number.setValue(self.job.PO_number)
+        self.doubleSpinBox_po_number.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.doubleSpinBox_po_number.valueChanged.connect(self.job_settings_changed)
 
         def get_latest_order_number():
             self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
@@ -165,12 +149,10 @@ class JobWidget(QWidget):
 
         self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
 
-        self.comboBox_type: QComboBox = self.findChild(QComboBox, "comboBox_type")
         self.comboBox_type.setCurrentIndex(self.job.status.value - 1)
-        self.comboBox_type.wheelEvent = lambda event: None
+        self.comboBox_type.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
 
-        self.dateEdit_start: QDateTimeEdit = self.findChild(QDateTimeEdit, "dateEdit_start")
         try:
             self.dateEdit_start.setDateTime(QDateTime(datetime.strptime(self.job.starting_date, "%Y-%m-%d %I:%M %p")))
         except ValueError:
@@ -178,9 +160,8 @@ class JobWidget(QWidget):
             self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
 
         self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_start.wheelEvent = lambda event: None
+        self.dateEdit_start.wheelEvent = lambda event: self.parent.wheelEvent(event)
 
-        self.dateEdit_end: QDateTimeEdit = self.findChild(QDateTimeEdit, "dateEdit_end")
         try:
             self.dateEdit_end.setDateTime(QDateTime(datetime.strptime(self.job.ending_date, "%Y-%m-%d %I:%M %p")))
         except ValueError:
@@ -191,183 +172,155 @@ class JobWidget(QWidget):
 
         self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.dateEdit_end.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_end.wheelEvent = lambda event: None
-        self.textEdit_ship_to: QTextEdit = self.findChild(QTextEdit, "textEdit_ship_to")
+        self.dateEdit_end.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.textEdit_ship_to.setText(self.job.ship_to)
         self.textEdit_ship_to.textChanged.connect(self.job_settings_changed)
 
-        self.assemblies_layout = self.findChild(QVBoxLayout, "assemblies_layout")
+        self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
+
         self.assemblies_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.pushButton_add_new_assembly = self.findChild(QPushButton, "pushButton_add_new_assembly")
         self.pushButton_add_new_assembly.clicked.connect(self.add_assembly)
 
-        self.pushButton_add_existing_assembly = self.findChild(QPushButton, "pushButton_add_existing_assembly")
         self.pushButton_add_existing_assembly.clicked.connect(self.add_existing_assembly)
 
         self.assemblies_toolbox = AssemblyMultiToolBox(self)
         self.assemblies_layout.addWidget(self.assemblies_toolbox)
 
-        self.comboBox_laser_cutting = self.findChild(QComboBox, "comboBox_laser_cutting")
-        self.comboBox_laser_cutting.wheelEvent = lambda event: None
+        self.comboBox_laser_cutting.wheelEvent = lambda event: self.parent.wheelEvent(event)
 
-        self.doubleSpinBox_cost_for_laser = self.findChild(QDoubleSpinBox, "doubleSpinBox_cost_for_laser")
         self.doubleSpinBox_cost_for_laser.setValue(self.price_calculator.cost_for_laser)
         self.doubleSpinBox_cost_for_laser.valueChanged.connect(self.cost_for_laser_changed)
-        self.doubleSpinBox_cost_for_laser.wheelEvent = lambda event: None
+        self.doubleSpinBox_cost_for_laser.wheelEvent = lambda event: self.parent.wheelEvent(event)
 
-        self.comboBox_materials = self.findChild(QComboBox, "comboBox_materials")
-        self.comboBox_materials.wheelEvent = lambda event: None
+        self.comboBox_materials.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_materials.addItems(self.sheet_settings.get_materials())
         self.comboBox_materials.currentTextChanged.connect(partial(self.update_nest_sheets, "MATERIAL"))
 
-        self.comboBox_thicknesses = self.findChild(QComboBox, "comboBox_thicknesses")
-        self.comboBox_thicknesses.wheelEvent = lambda event: None
+        self.comboBox_thicknesses.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_thicknesses.addItems(self.sheet_settings.get_thicknesses())
         self.comboBox_thicknesses.currentTextChanged.connect(partial(self.update_nest_sheets, "THICKNESS"))
 
-        self.doubleSpinBox_length = self.findChild(QDoubleSpinBox, "doubleSpinBox_length")
-        self.doubleSpinBox_length.wheelEvent = lambda event: None
+        self.doubleSpinBox_length.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_length.valueChanged.connect(partial(self.update_nest_sheets, "LENGTH"))
 
-        self.doubleSpinBox_width = self.findChild(QDoubleSpinBox, "doubleSpinBox_width")
-        self.doubleSpinBox_width.wheelEvent = lambda event: None
+        self.doubleSpinBox_width.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_width.valueChanged.connect(partial(self.update_nest_sheets, "WIDTH"))
 
-        self.doubleSpinBox_items_overhead = self.findChild(QDoubleSpinBox, "doubleSpinBox_items_overhead")
-        self.doubleSpinBox_items_overhead.wheelEvent = lambda event: None
+        self.doubleSpinBox_items_overhead.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_items_overhead.setValue(self.price_calculator.item_overhead * 100)
         self.doubleSpinBox_items_overhead.valueChanged.connect(self.price_settings_changed)
 
-        self.checkBox_components_use_overhead = self.findChild(QCheckBox, "checkBox_components_use_overhead")
         self.checkBox_components_use_overhead.toggled.connect(self.price_settings_changed)
         self.checkBox_components_use_overhead.setChecked(self.price_calculator.components_use_overhead)
 
-        self.checkBox_components_use_profit_margin = self.findChild(QCheckBox, "checkBox_components_use_profit_margin")
         self.checkBox_components_use_profit_margin.toggled.connect(self.price_settings_changed)
         self.checkBox_components_use_profit_margin.setChecked(self.price_calculator.components_use_profit_margin)
 
-        self.doubleSpinBox_items_profit_margin = self.findChild(QDoubleSpinBox, "doubleSpinBox_items_profit_margin")
-        self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: None
+        self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_items_profit_margin.setValue(self.price_calculator.item_profit_margin * 100)
         self.doubleSpinBox_items_profit_margin.valueChanged.connect(self.price_settings_changed)
 
-        self.pushButton_item_to_sheet = self.findChild(QPushButton, "pushButton_item_to_sheet")
         self.pushButton_item_to_sheet.setChecked(self.price_calculator.match_item_cogs_to_sheet)
         self.pushButton_item_to_sheet.clicked.connect(self.match_item_to_sheet_toggled)
 
-        self.doubleSpinBox_sheets_overhead = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheets_overhead")
-        self.doubleSpinBox_sheets_overhead.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheets_overhead.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_sheets_overhead.setValue(self.price_calculator.sheet_overhead * 100)
         self.doubleSpinBox_sheets_overhead.valueChanged.connect(self.price_settings_changed)
 
-        self.doubleSpinBox_sheets_profit_margin = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheets_profit_margin")
-        self.doubleSpinBox_sheets_profit_margin.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheets_profit_margin.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_sheets_profit_margin.setValue(self.price_calculator.sheet_profit_margin * 100)
         self.doubleSpinBox_sheets_profit_margin.valueChanged.connect(self.price_settings_changed)
 
         self.nests_toolbox = MultiToolBox(self)
         self.nests_layout.addWidget(self.nests_toolbox)
 
-        self.splitter = self.findChild(QSplitter, "splitter")
-        self.processes_widget = self.findChild(QWidget, "processes_widget")
-        self.processes_widget.setVisible(self.job.status == JobStatus.PLANNING)
+        self.processes_widget.setVisible(self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex()) == "job_planner_tab")
 
-        if self.job.status == JobStatus.PLANNING or self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
+        if self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex()) == "job_planner_tab":
             self.splitter.setSizes([0, 1])
             # self.quoting_settings_widget.setEnabled(False)
 
         self.splitter.setStretchFactor(0, 3)
         self.splitter.setStretchFactor(1, 2)
 
-        self.label_total_cost_for_parts = self.findChild(QLabel, "label_total_cost_for_parts")
-        self.label_total_cost_for_parts.setHidden(self.job.status == JobStatus.PLANNING)
+        self.label_total_cost_for_parts.setHidden(self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex()) == "job_planner_tab")
         self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
 
-        self.label_total_cost_for_sheets = self.findChild(QLabel, "label_total_cost_for_sheets")
-        self.label_total_cost_for_sheets.setHidden(self.job.status == JobStatus.PLANNING)
+        self.label_total_cost_for_sheets.setHidden(self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex()) == "job_planner_tab")
         self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
 
         self.flowtag_timeline = JobFlowtagTimelineWidget(self.job.flowtag_timeline, self)
-        self.verticalLayout_flowtag_timeline = self.findChild(QVBoxLayout, "verticalLayout_flowtag_timeline")
         self.verticalLayout_flowtag_timeline.addWidget(self.flowtag_timeline)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = JobColor.get_color(self.job.status)
-        hover_color: str = lighten_color(base_color)
-        pressed_color: str = darken_color(base_color)
+        hover_color = lighten_color(base_color)
+        inverted_color = get_contrast_text_color(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
-            """
-QPushButton#assembly_button_drop_menu {
-    border: 1px solid rgba(71, 71, 71, 110);
-    background-color: rgba(71, 71, 71, 110);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: #EAE9FC;
+            f"""
+QPushButton#assembly_button_drop_menu {{
+    border: 1px solid {theme_var('surface')};
+    background-color: {theme_var('surface')};
+    border-radius: {theme_var('border-radius')};
+    color: {theme_var('on-surface')};
     text-align: left;
-}
+}}
+/* CLOSED */
+QPushButton:!checked#assembly_button_drop_menu {{
+    color: {theme_var('on-surface')};
+    border: 1px solid {theme_var('outline')};
+}}
 
-QPushButton:hover#assembly_button_drop_menu {
-    background-color: rgba(76, 76, 76, 110);
-    border: 1px solid %(base_color)s;
-}
-
-QPushButton:pressed#assembly_button_drop_menu {
-    background-color: %(base_color)s;
-    color: #171717;
-}
-
-QPushButton:!checked#assembly_button_drop_menu {
-    color: #8C8C8C;
-}
-
-QPushButton:!checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
-}
-
-QPushButton:checked#assembly_button_drop_menu {
-    color: #171717;
+QPushButton:!checked:hover#assembly_button_drop_menu {{
+    background-color: {theme_var('outline-variant')};
+}}
+QPushButton:!checked:pressed#assembly_button_drop_menu {{
+    background-color: {theme_var('surface')};
+}}
+/* OPENED */
+QPushButton:checked#assembly_button_drop_menu {{
+    color: %(inverted_color)s;
     border-color: %(base_color)s;
     background-color: %(base_color)s;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: {theme_var('border-radius')};
+    border-top-right-radius: {theme_var('border-radius')};
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-}
+}}
 
-QPushButton:checked:hover#assembly_button_drop_menu {
+QPushButton:checked:hover#assembly_button_drop_menu {{
     background-color: %(hover_color)s;
-}
+}}
 
-QPushButton:checked:pressed#assembly_button_drop_menu {
-    color: #171717;
+QPushButton:checked:pressed#assembly_button_drop_menu {{
     background-color: %(pressed_color)s;
-}
+}}
 """
             % {
                 "base_color": base_color,
                 "hover_color": hover_color,
-                "pressed_color": pressed_color,
+                "pressed_color": base_color,
+                "inverted_color": inverted_color,
             }
         )
         widget.setObjectName("assembly_widget_drop_menu")
         widget.setStyleSheet(
-            """QWidget#assembly_widget_drop_menu{
+            f"""QWidget#assembly_widget_drop_menu{{
             border: 1px solid %(base_color)s;
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            };
-            """
+            background-color: {theme_var('background')};
+            }}"""
             % {"base_color": base_color}
         )
 
     def job_settings_changed(self):
         self.job.order_number = int(self.doubleSpinBox_order_number.value())
+        self.job.PO_number = int(self.doubleSpinBox_po_number.value())
         self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
         self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
         self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")
@@ -385,6 +338,13 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         if dialog.exec():
             return dialog.get_selected_assemblies()
         return None
+
+    def get_all_assembly_widgets(self) -> list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]]:
+        widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
+        widgets.extend(self.assembly_widgets)
+        for assembly_widget in self.assembly_widgets:
+            widgets.extend(assembly_widget.get_all_sub_assembly_widgets())
+        return widgets
 
     def add_existing_assembly(self):
         if assemblies_to_add := self.get_assemblies_dialog():
@@ -404,30 +364,36 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         else:
             assembly = new_assembly
 
-        if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Planner":
+        if self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_planner_tab":
             assembly_widget = AssemblyPlanningWidget(assembly, self)
-        elif self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Quoter":
+        elif self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_quoter_tab":
             assembly_widget = AssemblyQuotingWidget(assembly, self)
 
         self.assemblies_toolbox.addItem(assembly_widget, assembly.name, assembly.color)
 
         toggle_button = self.assemblies_toolbox.getLastToggleButton()
 
-        job_name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
-        job_name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, job_name_input))
+        name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
+        name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, name_input))
 
-        job_name_input.textChanged.connect(
+        name_input.textChanged.connect(
             partial(
-                self.job_preferences.group_toolbox_toggled,
-                job_name_input,
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
                 toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
             )
         )
         toggle_button.clicked.connect(
             partial(
-                self.job_preferences.group_toolbox_toggled,
-                job_name_input,
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
                 toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
             )
         )
 
@@ -440,7 +406,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_widget.pushButton_laser_cut_parts.clicked.connect(
             partial(
                 self.job_preferences.assembly_toolbox_toggled,
-                job_name_input,
+                name_input,
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
@@ -450,7 +416,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_widget.pushButton_components.clicked.connect(
             partial(
                 self.job_preferences.assembly_toolbox_toggled,
-                job_name_input,
+                name_input,
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
@@ -460,7 +426,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_widget.pushButton_sub_assemblies.clicked.connect(
             partial(
                 self.job_preferences.assembly_toolbox_toggled,
-                job_name_input,
+                name_input,
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
@@ -472,6 +438,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
         if self.job_preferences.is_assembly_closed(assembly.name):
             self.assemblies_toolbox.closeLastToolBox()
+        else:
+            self.assemblies_toolbox.openLastToolBox()
 
         assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
         assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
@@ -480,6 +448,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
         assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
 
+        self.update_context_menu()
         return assembly_widget
 
     def load_assembly(self, sub_assembly: Assembly):
@@ -492,6 +461,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     def assembly_name_renamed(self, assembly: Assembly, new_group_name: QLineEdit):
         assembly.name = new_group_name.text()
+        self.update_context_menu()
         self.changes_made()
 
     def duplicate_assembly(self, assembly: Assembly):
@@ -500,12 +470,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         new_assembly.color = colors.get_random_color()
         self.load_assembly(new_assembly)
         self.job.add_assembly(new_assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def delete_assembly(self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]):
         self.assembly_widgets.remove(assembly_widget)
         self.assemblies_toolbox.removeItem(assembly_widget)
         self.job.remove_assembly(assembly_widget.assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def reload_job(self):
@@ -580,6 +552,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.treeWidget_nest_summary.resizeColumnToContents(0)
             self.treeWidget_nest_summary.resizeColumnToContents(1)
 
+    def show_parts_list_summary(self):
+        dialog = LaserCutPartsListSummaryDialog(self.job.assemblies, self)
+        dialog.show()
+
     def match_item_to_sheet_toggled(self):
         self.price_calculator.match_item_cogs_to_sheet = self.pushButton_item_to_sheet.isChecked()
         self.changes_made()
@@ -610,29 +586,34 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             group_widget.update_tables()
 
     def update_prices(self):
-        if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Quoter":
+        if self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_quoter_tab":
             self.price_calculator.update_laser_cut_parts_cost()
             self.price_calculator.update_laser_cut_parts_to_sheet_price()
             self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
             self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
             for assembly_widget in self.assembly_widgets:
-                assembly_widget.update_prices()
+                if isinstance(assembly_widget, AssemblyQuotingWidget):
+                    assembly_widget.update_prices()
 
     def price_settings_changed(self):
         self.price_calculator.item_overhead = self.doubleSpinBox_items_overhead.value() / 100
         self.price_calculator.item_profit_margin = self.doubleSpinBox_items_profit_margin.value() / 100
         self.price_calculator.sheet_overhead = self.doubleSpinBox_sheets_overhead.value() / 100
         self.price_calculator.sheet_profit_margin = self.doubleSpinBox_sheets_profit_margin.value() / 100
-        self.price_calculator.components_use_overhead = self. checkBox_components_use_overhead.isChecked()
-        self.price_calculator.components_use_profit_margin = self. checkBox_components_use_profit_margin.isChecked()
+        self.price_calculator.components_use_overhead = self.checkBox_components_use_overhead.isChecked()
+        self.price_calculator.components_use_profit_margin = self.checkBox_components_use_profit_margin.isChecked()
         self.changes_made()
 
     def nest_settings_changed(self, nest: Nest):
         self.update_tables()
         self.changes_made()
 
+    def update_context_menu(self):
+        for assembly_widget in self.assembly_widgets:
+            assembly_widget.reload_context_menu()
+
     def changes_made(self):
-        with contextlib.suppress(AttributeError): # Happens when reloading when no flowtags set.
+        with contextlib.suppress(AttributeError):  # Happens when reloading when no flowtags set.
             self.flowtag_timeline.load_tag_timelines()
         self.parent.job_changed(self.job)
         self.update_nest_parts_assemblies()

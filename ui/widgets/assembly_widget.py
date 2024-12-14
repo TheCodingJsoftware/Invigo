@@ -1,15 +1,17 @@
 import contextlib
 from typing import TYPE_CHECKING, Optional, Union
 
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGroupBox, QHBoxLayout, QLabel, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
+from ui.dialogs.laser_cut_parts_list_summary_dialog import LaserCutPartsListSummaryDialog
+from ui.theme import theme_var
+from ui.widgets.assembly_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
-from utils.colors import darken_color, lighten_color
+from utils.colors import get_contrast_text_color, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.job_preferences import JobPreferences
 
@@ -18,10 +20,10 @@ if TYPE_CHECKING:
     from ui.widgets.job_widget import JobWidget
 
 
-class AssemblyWidget(QWidget):
+class AssemblyWidget(QWidget, Ui_Form):
     def __init__(self, assembly: Assembly, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/assembly_widget.ui", self)
+        self.setupUi(self)
         self.parent: Union["AssemblyWidget", JobWidget] = parent
 
         self.assembly = assembly
@@ -33,137 +35,93 @@ class AssemblyWidget(QWidget):
         self.price_calculator = self.parent.price_calculator
         self.job_tab: JobTab = self.parent.parent
 
-        self.assembly_widget = self.findChild(QWidget, "assembly_widget")
         self.assembly_widget.setStyleSheet(
-            """
-QWidget#assembly_widget {
+            f"""
+QWidget#assembly_widget {{
 border: 1px solid %(base_color)s;
 border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
 border-top-right-radius: 0px;
 border-top-left-radius: 0px;
-}"""
+background-color: {theme_var('surface')};
+}}"""
             % {"base_color": self.assembly.color}
         )
-        self.verticalLayout_14 = self.findChild(QVBoxLayout, "verticalLayout_14")
         self.verticalLayout_14.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.verticalLayout_3 = self.findChild(QVBoxLayout, "verticalLayout_3")
         self.verticalLayout_3.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.verticalLayout_4 = self.findChild(QVBoxLayout, "verticalLayout_4")
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.verticalLayout_10 = self.findChild(QVBoxLayout, "verticalLayout_10")
         self.verticalLayout_10.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
-        self.laser_cut_widget = self.findChild(QWidget, "laser_cut_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
-
-        self.pushButton_components = self.findChild(QPushButton, "pushButton_components")
-        self.component_widget = self.findChild(QWidget, "component_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
-
-        self.pushButton_sub_assemblies = self.findChild(QPushButton, "pushButton_sub_assemblies")
-        self.sub_assemblies_widget = self.findChild(QWidget, "sub_assemblies_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
-
-        self.label_total_cost_for_assembly = self.findChild(QLabel, "label_total_cost_for_assembly")
-
-        self.expected_time_to_complete_layout = self.findChild(QVBoxLayout, "expected_time_to_complete_layout")
-        self.flowtag_data_layout = self.findChild(QVBoxLayout, "flowtag_data_layout")
-        self.groupBox_flowtag_data = self.findChild(QGroupBox, "groupBox_flowtag_data")
-
-        self.image_layout = self.findChild(QVBoxLayout, "image_layout")
-        self.doubleSpinBox_quantity = self.findChild(QDoubleSpinBox, "doubleSpinBox_quantity")
-        self.doubleSpinBox_quantity.wheelEvent = lambda event: None
-        self.assembly_files_layout = self.findChild(QHBoxLayout, "assembly_files_layout")
-        self.paint_widget = self.findChild(QWidget, "paint_widget")
-        self.paint_layout = self.findChild(QHBoxLayout, "paint_layout")
-        self.comboBox_assembly_flow_tag = self.findChild(QComboBox, "comboBox_assembly_flow_tag")
-        self.laser_cut_parts_layout = self.findChild(QVBoxLayout, "laser_cut_parts_layout")
-        self.add_laser_cut_part_button = self.findChild(QPushButton, "add_laser_cut_part_button")
-        self.components_layout = self.findChild(QVBoxLayout, "components_layout")
-        self.add_component_button = self.findChild(QPushButton, "add_component_button")
-        self.sub_assembly_layout = self.findChild(QVBoxLayout, "sub_assembly_layout")
+        self.doubleSpinBox_quantity.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.add_new_sub_assembly_button = self.findChild(QPushButton, "add_new_sub_assembly_button")
-        self.add_existing_assembly_button = self.findChild(QPushButton, "add_existing_assembly_button")
+
+        self.checkBox_not_part_of_process.setChecked(self.assembly.not_part_of_process)
+        self.checkBox_not_part_of_process.clicked.connect(self.changes_made)
+
+        self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color
-        hover_color: str = lighten_color(base_color)
-        pressed_color: str = darken_color(base_color)
+        hover_color = lighten_color(base_color)
+        font_color = get_contrast_text_color(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
-            """
-QPushButton#assembly_button_drop_menu {
-    border: 1px solid rgba(71, 71, 71, 110);
-    background-color: rgba(71, 71, 71, 110);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: #EAE9FC;
-    text-align: left;
-}
+            f"""
+            QPushButton#assembly_button_drop_menu {{
+                border: 1px solid {theme_var('surface')};
+                background-color: {theme_var('surface')};
+                border-radius: {theme_var('border-radius')};
+                text-align: left;
+            }}
+            /* CLOSED */
+            QPushButton:!checked#assembly_button_drop_menu {{
+                color: {theme_var('on-surface')};
+                border: 1px solid {theme_var('outline')};
+            }}
 
-QPushButton:hover#assembly_button_drop_menu {
-    background-color: rgba(76, 76, 76, 110);
-    border: 1px solid %(base_color)s;
-}
+            QPushButton:!checked:hover#assembly_button_drop_menu {{
+                background-color: {theme_var('outline-variant')};
+            }}
+            QPushButton:!checked:pressed#assembly_button_drop_menu{{
+                color: {theme_var('on-surface')};
+                background-color: {theme_var('surface')};
+            }}
+            /* OPENED */
+            QPushButton:checked#assembly_button_drop_menu {{
+                color: {font_color};
+                border-color: {base_color};
+                background-color: {base_color};
+                border-top-left-radius: {theme_var('border-radius')};
+                border-top-right-radius: {theme_var('border-radius')};
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
+            }}
 
-QPushButton:pressed#assembly_button_drop_menu {
-    background-color: %(base_color)s;
-    color: #EAE9FC;
-}
+            QPushButton:checked:hover#assembly_button_drop_menu {{
+                background-color: {hover_color};
+            }}
 
-QPushButton:!checked#assembly_button_drop_menu {
-    color: #8C8C8C;
-}
-
-QPushButton:!checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
-}
-
-QPushButton:checked#assembly_button_drop_menu {
-    color: #EAE9FC;
-    border-color: %(base_color)s;
-    background-color: %(base_color)s;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:checked:hover#assembly_button_drop_menu {
-    background-color: %(hover_color)s;
-}
-
-QPushButton:checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
-    background-color: %(pressed_color)s;
-}
-"""
-            % {
-                "base_color": base_color,
-                "hover_color": hover_color,
-                "pressed_color": pressed_color,
-            }
+            QPushButton:checked:pressed#assembly_button_drop_menu {{
+                background-color: {base_color};
+            }}"""
         )
         widget.setObjectName("assembly_widget_drop_menu")
         widget.setStyleSheet(
-            """QWidget#assembly_widget_drop_menu{
-            border: 1px solid %(base_color)s;
+            f"""QWidget#assembly_widget_drop_menu{{
+            border: 1px solid {base_color};
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            };
-            """
-            % {"base_color": base_color}
+            background-color: {theme_var('background')};
+            }}"""
         )
+
+    def show_parts_list_summary(self):
+        dialog = LaserCutPartsListSummaryDialog([self.assembly], self)
+        dialog.show()
 
     def open_assembly_image(self):
         self.open_image(self.assembly.assembly_image, self.assembly.name)
@@ -193,7 +151,11 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             return dialog.get_selected_assemblies()
         return None
 
+    def update_context_menu(self):
+        self.parent.update_context_menu()
+
     def changes_made(self):
+        self.assembly.not_part_of_process = self.checkBox_not_part_of_process.isChecked()
         self.parent.changes_made()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):

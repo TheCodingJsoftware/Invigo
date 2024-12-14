@@ -62,6 +62,7 @@ target/
 Recordings
 logs/
 *.vscode
+*.vs
 __pycache__
 settings.json
 data

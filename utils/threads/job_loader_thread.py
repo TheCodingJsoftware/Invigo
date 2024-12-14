@@ -56,6 +56,7 @@ class JobLoaderThread(QThread):
         self.remaining_threads += 1
         download_job_thread.signal.connect(self.download_job_data_response)
         download_job_thread.start()
+        download_job_thread.wait()
 
     def download_job_data_response(self, data: dict, folder_name: str):
         print(f"download_job_data_response: {data} {folder_name}")
@@ -74,12 +75,13 @@ class JobLoaderThread(QThread):
             self.remaining_threads += 1
             download_images_thread.signal.connect(self.download_images_response)
             download_images_thread.start()
+            download_images_thread.wait()
 
     def download_images_response(self, response: str):
-        print(f"download_images_response: {response}")
         all_files = self.get_all_files(self.job)
-        self.download_required_files_thread(all_files)
-        self.thread_finished()
+        if response == "Successfully downloaded":
+            self.download_required_files_thread(all_files)
+            self.thread_finished()
 
     def download_required_files_thread(self, files: list[str]):
         if files:
@@ -88,12 +90,13 @@ class JobLoaderThread(QThread):
             self.remaining_threads += 1
             download_files_thread.signal.connect(self.download_files_response)
             download_files_thread.start()
+            download_files_thread.wait()
 
     def download_files_response(self, file_ext: str, file_name: str, open_when_done: bool):
-        print(f"download_files_response: {file_ext}")
-        self.thread_finished()
+        if file_ext == "Successfully downloaded" and file_name == "Successfully downloaded":
+            self.thread_finished()
 
     def thread_finished(self):
         self.remaining_threads -= 1
-        if self.remaining_threads == 0:
+        if self.remaining_threads <= 0:
             self.signal.emit(self.job)

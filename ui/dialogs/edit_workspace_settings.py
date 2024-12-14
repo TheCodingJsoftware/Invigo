@@ -2,17 +2,19 @@ import contextlib
 import copy
 from functools import partial
 
-from PyQt6 import uic
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPlainTextEdit, QPushButton, QSplitter, QTableWidget, QTableWidgetItem, QTabWidget, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.time_double_spin_box import TimeSpinBox
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
+from ui.dialogs.edit_workspace_settings_UI import Ui_Form
+from ui.icons import Icons
+from ui.theme import theme_var
 from utils.workspace.flowtag import Flowtag, Group
 from utils.workspace.flowtags import Flowtags
-from utils.workspace.tag_status import TagStatus
 from utils.workspace.tag import Tag
+from utils.workspace.tag_status import TagStatus
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
@@ -33,7 +35,7 @@ class TagWidget(QWidget):
         self.remaining_tags = remaining_tags
         self.workspace_settings = workspace_settings
         self.tag = tag
-        self.setStyleSheet("QWidget#tag_idget{border: 1px solid rgba(120, 120, 120, 70);}")
+        self.setStyleSheet(f"QWidget#tag_idget{{border: 1px solid {theme_var('outline')};}}")
         v_layout = QVBoxLayout(self)
         v_layout.setContentsMargins(0, 0, 0, 0)
         v_layout.setSpacing(0)
@@ -46,10 +48,10 @@ class TagWidget(QWidget):
         self.tag_combobox.addItems([tag.name for tag in self.remaining_tags])
         self.tag_combobox.setCurrentText(tag.name)
         self.tag_combobox.currentTextChanged.connect(self.tag_changed)
-        self.tag_combobox.wheelEvent = lambda event: None
+        self.tag_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.arrow_label = QLabel("➜", self)
         self.arrow_label.setFixedWidth(60)
-        self.delete_button = DeletePushButton(self, "Delete this tag", icon=QIcon("icons/trash.png"))
+        self.delete_button = DeletePushButton(self, "Delete this tag")
         self.delete_button.setFixedSize(20, 20)
         self.delete_button.clicked.connect(self.delete_tag)
         h_layout_1.addWidget(self.tag_combobox)
@@ -320,14 +322,14 @@ class FlowTagsTableWidget(QTableWidget):
         menu.exec(QCursor.pos())
 
 
-class EditWorkspaceSettings(QDialog):
+class EditWorkspaceSettings(QDialog, Ui_Form):
     def __init__(
         self,
         workspace_settings: WorkspaceSettings,
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/edit_workspace_settings.ui", self)
+        self.setupUi(self)
 
         self.workspace_settings = workspace_settings
 
@@ -337,22 +339,17 @@ class EditWorkspaceSettings(QDialog):
 
         self.actve_groups_multi_tool_box: AssemblyMultiToolBox = self.laser_cut_parts_groups_multi_tool_box
 
-        self.tabWidget = self.findChild(QTabWidget, "tabWidget")
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
         self.flow_tag_tables: dict[Flowtags, FlowTagsTableWidget] = {}
 
-        self.listWidget_select_tag = self.findChild(QListWidget, "listWidget_select_tag")
         self.listWidget_select_tag.currentItemChanged.connect(self.tag_selection_changed)
         self.listWidget_select_tag.itemDoubleClicked.connect(self.rename_tag)
         self.last_selected_row = 0
 
-        self.textEdit_notes = self.findChild(QTextEdit, "textEdit_notes")
         self.textEdit_notes.textChanged.connect(self.notes_changed)
         self.textEdit_notes.setText(self.workspace_settings.notes)
 
-        self.groupBox_4 = self.findChild(QGroupBox, "groupBox_4")
-        self.tableWidget_statuses = self.findChild(QTableWidget, "tableWidget_statuses")
         self.tableWidget_statuses.cellChanged.connect(self.status_table_changed)
         self.tableWidget_statuses.setColumnWidth(0, 300)
         self.tableWidget_statuses.setColumnWidth(1, 200)
@@ -361,8 +358,6 @@ class EditWorkspaceSettings(QDialog):
         self.status_table_items: dict[TagStatus, dict[str, QTableWidgetItem | QCheckBox]] = {}
         self.pushButton_add_status.clicked.connect(self.add_status)
 
-        self.groupBox_5 = self.findChild(QGroupBox, "groupBox_5")
-        self.plainTextEdit_next_flow_tag_message = self.findChild(QPlainTextEdit, "plainTextEdit_next_flow_tag_message")
         self.plainTextEdit_next_flow_tag_message.textChanged.connect(self.next_flow_tag_message_changed)
 
         self.time_spin_box = TimeSpinBox(self)
@@ -381,9 +376,8 @@ class EditWorkspaceSettings(QDialog):
         self.pushButton_cancel.clicked.connect(self.reject)
 
         self.setWindowTitle("Edit Workspace Flow Tags")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.splitter = self.findChild(QSplitter, "splitter")
         self.splitter.setStretchFactor(1, 1)
 
         self.load_flow_tag_table_widgets()
@@ -572,7 +566,7 @@ class EditWorkspaceSettings(QDialog):
                     selected_tag.delete_status(status_to_delete)
                     self.load_status_table()
 
-                delete_status_button = DeletePushButton(self, "Delete status", QIcon("icons/trash.png"))
+                delete_status_button = DeletePushButton(self, "Delete status")
                 delete_status_button.setFixedWidth(40)
                 delete_status_button.clicked.connect(partial(delete_status, status))
                 self.tableWidget_statuses.setCellWidget(row, 3, delete_status_button)

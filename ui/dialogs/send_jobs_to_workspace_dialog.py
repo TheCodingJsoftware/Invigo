@@ -1,28 +1,32 @@
-from typing import Union
+from typing import Literal, Union
 
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QIcon
-from PyQt6.QtWidgets import QCheckBox, QDialog, QDoubleSpinBox, QHBoxLayout, QLabel, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QDialog, QDoubleSpinBox, QHBoxLayout, QLabel, QTreeWidget, QTreeWidgetItem, QWidget
 
+from ui.dialogs.send_jobs_to_workspace_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.settings import Settings
 from utils.workspace.job import Job, JobStatus
 
 
-class SendJobsToWorkspaceDialog(QDialog):
+class SendJobsToWorkspaceDialog(QDialog, Ui_Form):
     def __init__(
         self,
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
         active_jobs_in_quoting: dict[str, dict[str, Union[Job, float, str, int]]],
-        destintion: str,
+        destintion: Literal["Workspace", "Production Planner"],
+        current_tab: Literal["job_planner_tab", "job_quoter_tab"],
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/send_jobs_to_workspace_dialog.ui", self)
+        self.setupUi(self)
+
         self.destintion = destintion
+        self.current_tab = current_tab
 
         self.setWindowTitle(f"Send Jobs to {self.destintion}")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.pushButton_add.setText(f"Send Jobs to {self.destintion}")
         self.pushButton_add.clicked.connect(self.accept)
@@ -36,12 +40,11 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
         self.job_tree_widget = QTreeWidget(self)
+        self.job_tree_widget.setUniformRowHeights(True)
         self.job_tree_widget.setStyleSheet("QTreeWidget { border: none; }")
 
-        self.jobs_layout = self.findChild(QVBoxLayout, "jobs_layout")
         self.jobs_layout.addWidget(self.job_tree_widget)
 
-        self.verticalLayout_workorders = self.findChild(QVBoxLayout, "verticalLayout_workorders")
         self.verticalLayout_workorders.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.populate_tree_widget(active_jobs_in_planning, active_jobs_in_quoting)
@@ -52,13 +55,13 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.job_tree_widget.setColumnCount(2)
         self.job_tree_widget.setHeaderLabels(["Job Name", "Order Number"])
 
-        if active_jobs_in_planning:
+        if active_jobs_in_planning and self.current_tab == "job_planner_tab":
             planning_item = QTreeWidgetItem(["Active Jobs in Planning"])
             planning_item.setFont(0, self.tables_font)
             self.job_tree_widget.addTopLevelItem(planning_item)
             self.add_jobs_to_item(planning_item, active_jobs_in_planning, True)
 
-        if active_jobs_in_quoting:
+        if active_jobs_in_quoting and self.current_tab == "job_quoter_tab":
             quoting_item = QTreeWidgetItem(["Active Jobs in Quoting"])
             quoting_item.setFont(0, self.tables_font)
             self.job_tree_widget.addTopLevelItem(quoting_item)
@@ -85,7 +88,7 @@ class SendJobsToWorkspaceDialog(QDialog):
             item = QTreeWidgetItem(
                 [
                     job_name,
-                    str(int(job_data["order_number"])),
+                    f"#{int(job_data["order_number"])}",
                 ]
             )
             item.setFont(0, self.tables_font)

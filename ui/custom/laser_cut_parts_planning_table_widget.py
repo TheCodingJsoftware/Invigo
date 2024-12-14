@@ -7,7 +7,8 @@ from ui.custom_widgets import CustomTableWidget
 
 
 class AutoNumber(Enum):
-    '''Starts at 1 and not 0'''
+    """Starts at 1 and not 0"""
+
     def _generate_next_value_(name, start, count, last_values):
         return count
 
@@ -74,3 +75,18 @@ class LaserCutPartsPlanningTableWidget(CustomTableWidget):
             self.setHorizontalHeaderItem(column, QTableWidgetItem(header))
 
         self.setStyleSheet("border-color: transparent;")
+
+    def hide_columns(self, columns: list[LaserCutTableColumns]):
+        for column in columns:
+            self.setColumnHidden(column.value, True)
+
+    def show_columns(self, columns: list[LaserCutTableColumns]):
+        for column in columns:
+            self.setColumnHidden(column.value, False)
+
+    def get_columns_visibility(self) -> list[bool]:
+        return [self.isColumnHidden(i) for i in range(self.columnCount())]
+
+    def set_columns_visibility(self, visibility: list[bool]):
+        for i, visible in enumerate(visibility):
+            self.setColumnHidden(i, visible)

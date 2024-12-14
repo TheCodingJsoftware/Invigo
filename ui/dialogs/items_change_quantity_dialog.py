@@ -1,7 +1,8 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.items_change_quantity_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
@@ -9,7 +10,7 @@ from utils.settings import Settings
 settings_file = Settings()
 
 
-class ItemsChangeQuantityDialog(QDialog):
+class ItemsChangeQuantityDialog(QDialog, Ui_Form):
     def __init__(
         self,
         title,
@@ -18,7 +19,7 @@ class ItemsChangeQuantityDialog(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/items_change_quantity_dialog.ui", self)
+        self.setupUi(self)
 
         self.title = title
         self.items = items
@@ -27,7 +28,7 @@ class ItemsChangeQuantityDialog(QDialog):
         settings_file.load_data()
 
         self.setWindowTitle(self.title)
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         if self.add_or_remove == "ADD":
             self.pushButton_remove.setHidden(True)
@@ -37,9 +38,6 @@ class ItemsChangeQuantityDialog(QDialog):
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_remove.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
-
-        # self.pushButton_category.setChecked(settings_file.get_value("change_quantities_by") == "Category")
-        # self.pushButton_item.setChecked(settings_file.get_value("change_quantities_by") == "Item")
 
         if self.items:
             self.pushButton_category.clicked.connect(
@@ -68,10 +66,6 @@ class ItemsChangeQuantityDialog(QDialog):
         self.quantity_changed()
 
     def quantity_changed(self):
-        settings_file.set_value(
-            "change_quantities_by",
-            "Item" if self.pushButton_item.isChecked() else "Category",
-        )
         self.pushButton_add.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
         self.pushButton_remove.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
         if self.pushButton_category.isChecked():

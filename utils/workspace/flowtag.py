@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Iterator, Union, Optional
+from typing import TYPE_CHECKING, Iterator, Optional, Union
 
 from utils.workspace.tag import Tag
 
@@ -25,7 +25,7 @@ class Flowtag:
 
         self.load_data(data)
 
-    def get_name(self) -> str:
+    def get_flow_string(self) -> str:
         try:
             tags = [tag.name for tag in self.tags]
             return " ➜ ".join(tags)
@@ -69,8 +69,11 @@ class Flowtag:
     def remove_tag(self, tag: Tag):
         self.tags.remove(tag)
 
+    def get_tooltip(self) -> str:
+        return f"{self.name}: {self.get_flow_string()}\nAdd Quantity: {self.add_quantity_tag}\nRemoved Quantity: {self.remove_quantity_tag}"
+
     def __str__(self):
-        return f"{self.name}: {self.get_name()}"
+        return f"{self.name}: {self.get_flow_string()}"
 
     def __iter__(self) -> Iterator[Tag]:
         return iter(self.tags)

@@ -1,16 +1,18 @@
 import copy
 from typing import TYPE_CHECKING, Optional, Union
 
+from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flowtag import Flowtag
+from utils.workspace.flowtag_data import FlowtagData
+from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.flowtag_timer import FlowtagTimer
-from utils.workspace.flowtag_data import FlowtagData
+from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job
@@ -28,6 +30,7 @@ class Assembly:
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
         self.sub_assemblies: list[Assembly] = []
+        self.not_part_of_process = False
 
         # Paint Items
         self.uses_primer: bool = False
@@ -48,14 +51,14 @@ class Assembly:
         self.powder_transfer_efficiency: float = 66.67
         self.cost_for_powder_coating: float = 0.0
 
-        self.starting_date: str = ""
-        self.ending_date: str = ""
-        self.expected_time_to_complete: int = 0
+        self.starting_date = ""
+        self.ending_date = ""
+        self.expected_time_to_complete = 0
         self.flowtag: Flowtag = None
-        self.current_flow_tag_index: int = 0
-        self.current_flow_tag_status_index: int = 0
+        self.current_flow_tag_index = 0
+        self.current_flow_tag_status_index = 0
         self.assembly_image: str = None
-        self.quantity: int = 1
+        self.quantity = 1
 
         self.timer: FlowtagTimer = None
         self.flowtag_data: FlowtagData = None
@@ -73,7 +76,6 @@ class Assembly:
         if not self.is_assembly_finished():
             self.current_flow_tag_index += 1
             self.current_flow_tag_status_index = 0
-            self.recut = False
             self.timer.start(self.get_current_tag())
 
     def all_laser_cut_parts_complete(self) -> bool:
@@ -155,6 +157,23 @@ class Assembly:
             assemblies.extend(sub_assembly.get_all_sub_assemblies())
         return assemblies
 
+    def get_all_laser_cut_parts(self) -> list[LaserCutPart]:
+        return self.laser_cut_parts + [
+            part
+            for sub_assembly in self.get_all_sub_assemblies()
+            for part in sub_assembly.laser_cut_parts
+        ]
+
+    def get_expected_time_to_complete(self) -> int:
+        total_time: int = 0
+        for laser_cut_part in self.laser_cut_parts:
+            total_time += laser_cut_part.get_expected_time_to_complete() * laser_cut_part.quantity
+        for tag in self.flowtag_data.tags_data:
+            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
+        for sub_assembly in self.sub_assemblies:
+            total_time += sub_assembly.get_expected_time_to_complete()
+        return total_time * self.quantity
+
     def load_settings(self, data: dict[str, Union[float, bool, str, dict]]):
         assembly_data = data.get("assembly_data", {})
         self.name = assembly_data.get("name", "Assembly")
@@ -167,7 +186,8 @@ class Assembly:
         self.assembly_image = assembly_data.get("assembly_image")
         self.assembly_files = assembly_data.get("assembly_files", [])
         self.quantity = assembly_data.get("quantity", 1)
-        self.color = assembly_data.get("color", "#3daee9")
+        self.color = assembly_data.get("color", theme_var("primary"))
+        self.not_part_of_process = assembly_data.get("not_part_of_process", False)
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
@@ -226,10 +246,11 @@ class Assembly:
                 "name": self.name,
                 "color": self.color,
                 "starting_date": self.starting_date,
-                "expected_time_to_complete": self.expected_time_to_complete,
+                "expected_time_to_complete": self.get_expected_time_to_complete(),
                 "ending_date": self.ending_date,
                 "assembly_image": self.assembly_image,
                 "quantity": self.quantity,
+                "not_part_of_process": self.not_part_of_process,
                 "uses_primer": self.uses_primer,
                 "primer_name": None if self.primer_name == "None" else self.primer_name,
                 "primer_overspray": self.primer_overspray,

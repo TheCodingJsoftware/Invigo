@@ -5,8 +5,8 @@ import msgspec
 
 from utils.workspace.flowtag import Flowtag, Group
 from utils.workspace.flowtags import Flowtags
-from utils.workspace.tag_status import TagStatus
 from utils.workspace.tag import Tag
+from utils.workspace.tag_status import TagStatus
 
 
 class WorkspaceSettings:
@@ -73,13 +73,13 @@ class WorkspaceSettings:
         return None
 
     def get_all_assembly_flow_tags(self) -> dict[str, Flowtag]:
-        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.ASSEMBLY}
+        return {flow_tag.get_flow_string(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.ASSEMBLY}
 
     def get_all_laser_cut_part_flow_tags(self) -> dict[str, Flowtag]:
-        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.LASER_CUT_PART}
+        return {flow_tag.get_flow_string(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.LASER_CUT_PART}
 
     def get_all_component_flow_tags(self) -> dict[str, Flowtag]:
-        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.COMPONENT}
+        return {flow_tag.get_flow_string(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.COMPONENT}
 
     def add_flow_tag(self, flow_tags: Flowtags, flow_tag: Flowtag):
         flow_tags.add_flow_tag(flow_tag)

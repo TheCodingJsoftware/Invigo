@@ -11,19 +11,19 @@
 
 import colorsys
 
-from PyQt6 import uic
 from PyQt6.QtCore import QPoint, Qt, pyqtSignal
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.color_picker_dialog_UI import Ui_ColorPicker
 from utils import colors
 
 
-class ColorPicker(QDialog):
+class ColorPicker(QDialog, Ui_ColorPicker):
     colorChanged = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        uic.loadUi("ui/dialogs/color_picker_dialog.ui", self)
+        self.setupUi(self)
 
         # Extract Initial Color out of kwargs
         rgb = kwargs.pop("rgb", None)

@@ -2,6 +2,8 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QCursor, QDragEnterEvent, QDragLeaveEvent, QDropEvent, QMouseEvent, QPixmap
 from PyQt6.QtWidgets import QLabel, QWidget
 
+from ui.theme import theme_var
+
 
 class AssemblyImage(QLabel):
     clicked = pyqtSignal()
@@ -18,7 +20,7 @@ class AssemblyImage(QLabel):
         self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
         self.setAcceptDrops(True)
         self.setWordWrap(True)
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        self.setStyleSheet(f"background-color:  {theme_var('overlay')}")
         self.image_dropped: bool = False
         self.path_to_image: str = ""
 
@@ -26,14 +28,14 @@ class AssemblyImage(QLabel):
         pixmap = QPixmap(path_to_image)
         pixmap = pixmap.scaledToHeight(100, Qt.TransformationMode.SmoothTransformation)
         self.setPixmap(pixmap)
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        self.setStyleSheet(f"background-color:  {theme_var('overlay')}")
         self.path_to_image = path_to_image
         self.image_dropped = True
 
     def clear_image(self):
         self.setPixmap(QPixmap())
         self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        self.setStyleSheet(f"background-color:  {theme_var('overlay')}")
         self.path_to_image = ""
         self.image_dropped = False
 
@@ -50,7 +52,7 @@ class AssemblyImage(QLabel):
             event.acceptProposedAction()
         elif event.mimeData().hasUrls():
             self.setText("Drop Me")
-            self.setStyleSheet("background-color: rgba(70,210,110, 100);")
+            self.setStyleSheet(f"background-color: {theme_var('primary-green')}; color: {theme_var('on-primary-green')}")
             event.acceptProposedAction()
             event.accept()
 
@@ -63,12 +65,12 @@ class AssemblyImage(QLabel):
                 event.accept()
             else:
                 self.setText("Not allowed")
-                self.setStyleSheet("background-color: rgba(210,70,60, 100);")
+                self.setStyleSheet(f"background-color: {theme_var('error')}; color: {theme_var('on-error')}")
                 event.ignore()
 
     def dragLeaveEvent(self, event: QDragLeaveEvent):
         self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        self.setStyleSheet(f"background-color:  {theme_var('overlay')}")
         event.accept()
         if self.image_dropped:
             self.set_new_image(self.path_to_image)

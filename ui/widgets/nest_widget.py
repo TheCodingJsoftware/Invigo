@@ -3,13 +3,13 @@ from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Optional
 
-from PyQt6 import uic
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QPixmap
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QLabel, QMenu, QMessageBox, QPushButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QComboBox, QMenu, QMessageBox, QPushButton, QTreeWidgetItem, QWidget
 
 from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
+from ui.widgets.nest_widget_UI import Ui_Form
 from utils.inventory.category import Category
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
@@ -20,12 +20,12 @@ if TYPE_CHECKING:
     from ui.widgets.job_widget import JobWidget
 
 
-class NestWidget(QWidget):
+class NestWidget(QWidget, Ui_Form):
     updateLaserCutPartSettings = pyqtSignal(Nest)
 
     def __init__(self, nest: Nest, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/nest_widget.ui", self)
+        self.setupUi(self)
 
         self.parent: JobWidget = parent
         self.toolbox_button: QPushButton = None
@@ -44,21 +44,15 @@ class NestWidget(QWidget):
         self.load_ui()
 
     def load_ui(self):
-        self.pushButton_settings = self.findChild(QPushButton, "pushButton_settings")
         self.pushButton_settings.setChecked(self.job_preferences.is_nest_setting_closed(self.nest))
-        self.settings_widget = self.findChild(QWidget, "settings_widget")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_settings, self.settings_widget)
         self.settings_widget.setHidden(not self.job_preferences.is_nest_setting_closed(self.nest))
 
-        self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
         self.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_nest_laser_cut_closed(self.nest))
-        self.laser_cut_parts_widget = self.findChild(QWidget, "laser_cut_parts_widget")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_parts_widget)
         self.laser_cut_parts_widget.setHidden(not self.job_preferences.is_nest_laser_cut_closed(self.nest))
 
-        self.pushButton_image = self.findChild(QPushButton, "pushButton_image")
         self.pushButton_image.setChecked(self.job_preferences.is_nest_image_closed(self.nest))
-        self.image_widget_2 = self.findChild(QWidget, "image_widget_2")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_image, self.image_widget_2)
         self.image_widget_2.setHidden(not self.job_preferences.is_nest_image_closed(self.nest))
 
@@ -66,66 +60,45 @@ class NestWidget(QWidget):
         self.pushButton_laser_cut_parts.clicked.connect(partial(self.job_preferences.nest_widget_toolbox_toggled, self.nest, self.pushButton_settings, self.pushButton_laser_cut_parts, self.pushButton_image))
         self.pushButton_image.clicked.connect(partial(self.job_preferences.nest_widget_toolbox_toggled, self.nest, self.pushButton_settings, self.pushButton_laser_cut_parts, self.pushButton_image))
 
-        self.label_sheet_status = self.findChild(QLabel, "label_sheet_status")
-
-        self.pushButton_add_sheet = self.findChild(QPushButton, "pushButton_add_sheet")
         self.pushButton_add_sheet.clicked.connect(self.add_new_sheet_to_inventory)
-
-        self.label_scrap_percentage = self.findChild(QLabel, "label_scrap_percentage")
         self.label_scrap_percentage.setText(f"{self.nest.scrap_percentage:,.2f}%")
 
-        self.label_cost_for_sheets = self.findChild(QLabel, "label_cost_for_sheets")
-
-        self.label_cutting_cost = self.findChild(QLabel, "label_cutting_cost")
-
-        self.verticalLayout_sheet_cut_time = self.findChild(QVBoxLayout, "verticalLayout_sheet_cut_time")
-
         self.doubleSpinBox_sheet_cut_time = MachineCutTimeDoubleSpinBox(self)
-        self.doubleSpinBox_sheet_cut_time.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheet_cut_time.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_sheet_cut_time.setValue(self.nest.sheet_cut_time)
         self.doubleSpinBox_sheet_cut_time.setToolTip(f"Original: {self.get_sheet_cut_time()}")
         self.doubleSpinBox_sheet_cut_time.valueChanged.connect(self.nest_changed)
         self.verticalLayout_sheet_cut_time.addWidget(self.doubleSpinBox_sheet_cut_time)
 
-        self.label_nest_cut_time = self.findChild(QLabel, "label_nest_cut_time")
-
-        self.doubleSpinBox_sheet_count = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheet_count")
-        self.doubleSpinBox_sheet_count.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheet_count.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_sheet_count.setValue(self.nest.sheet_count)
         self.doubleSpinBox_sheet_count.valueChanged.connect(self.nest_changed)
 
-        self.comboBox_material = self.findChild(QComboBox, "comboBox_material")
-        self.comboBox_material.wheelEvent = lambda event: None
+        self.comboBox_material.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_material.addItems(self.sheet_settings.get_materials())
         self.comboBox_material.setCurrentText(self.sheet.material)
         self.comboBox_material.currentTextChanged.connect(self.sheet_changed)
 
-        self.comboBox_thickness = self.findChild(QComboBox, "comboBox_thickness")
-        self.comboBox_thickness.wheelEvent = lambda event: None
+        self.comboBox_thickness.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_thickness.addItems(self.sheet_settings.get_thicknesses())
         self.comboBox_thickness.setCurrentText(self.sheet.thickness)
         self.comboBox_thickness.currentTextChanged.connect(self.sheet_changed)
 
-        self.doubleSpinBox_length = self.findChild(QDoubleSpinBox, "doubleSpinBox_length")
-        self.doubleSpinBox_length.wheelEvent = lambda event: None
+        self.doubleSpinBox_length.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_length.setValue(self.sheet.length)
         self.doubleSpinBox_length.valueChanged.connect(self.sheet_changed)
 
-        self.doubleSpinBox_width = self.findChild(QDoubleSpinBox, "doubleSpinBox_width")
-        self.doubleSpinBox_width.wheelEvent = lambda event: None
+        self.doubleSpinBox_width.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_width.setValue(self.sheet.width)
         self.doubleSpinBox_width.valueChanged.connect(self.sheet_changed)
 
-        self.treeWidget_parts = self.findChild(QTreeWidget, "treeWidget_parts")
         self.treeWidget_parts.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.treeWidget_parts.customContextMenuRequested.connect(self.show_context_menu)
 
         self.load_nest_parts()
 
-        self.image_widget = self.findChild(QWidget, "image_widget")
         self.image_widget.setHidden(True)
 
-        self.label_image = self.findChild(QLabel, "label_image")
         if "404" not in self.nest.image_path:
             self.image_widget.setHidden(False)
             self.label_image.setFixedSize(485, 345)
@@ -136,7 +109,6 @@ class NestWidget(QWidget):
             )
             self.label_image.setPixmap(scaled_pixmap)
 
-        self.label_total_cost_for_nested_parts = self.findChild(QLabel, "label_total_cost_for_nested_parts")
         self.update_nest_cost()
         self.update_sheet_status()
 
@@ -302,7 +274,7 @@ class NestWidget(QWidget):
             )  # Placeholder for the QComboBox
             assembly_combobox = QComboBox(self.treeWidget_parts)
             self.part_assembly_comboboxes.append(assembly_combobox)
-            assembly_combobox.wheelEvent = lambda event: None
+            assembly_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
             assembly_combobox.addItems(["None"] + [assembly.name for assembly in self.parent.job.get_all_assemblies()])
             if assembly := self.find_parts_assembly(laser_cut_part.name):
                 assembly_combobox.setCurrentText(assembly.name)

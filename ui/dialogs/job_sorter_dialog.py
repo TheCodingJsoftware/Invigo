@@ -1,17 +1,18 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 
+from ui.dialogs.job_sorter_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.threads.job_sorter_thread import JobSorterThread
 
 
-class JobSorterDialog(QDialog):
+class JobSorterDialog(QDialog, Ui_Form):
     def __init__(
         self,
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/job_sorter_dialog.ui", self)
+        self.setupUi(self)
         self.parent = parent
 
         self.excel_file_path: str = ""
@@ -20,7 +21,7 @@ class JobSorterDialog(QDialog):
         self.threads = []
 
         self.setWindowTitle("Job Sorter")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.pushButton_set_excel_file_path.clicked.connect(self.set_excel_file_path)
         self.pushButton_set_sorting_directory.clicked.connect(self.set_sorting_directory)

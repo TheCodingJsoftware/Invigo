@@ -25,7 +25,7 @@ class WorkspaceHistory:
     def remove_job(self, job: Job):
         self.jobs.remove(job)
 
-    def to_list(self) -> list[dict[str, object]]:
+    def to_list(self) -> list[object]:
         return [job.to_dict() for job in self.jobs]
 
     def __create_file(self):

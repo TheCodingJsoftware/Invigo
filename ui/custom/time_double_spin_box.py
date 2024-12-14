@@ -1,16 +1,16 @@
 from PyQt6.QtCore import QEvent, Qt, pyqtSignal
-from PyQt6.QtWidgets import QDoubleSpinBox, QHBoxLayout, QWidget, QLabel
+from PyQt6.QtWidgets import QDoubleSpinBox, QHBoxLayout, QLabel, QWidget
 
 
 class SpinBox(QDoubleSpinBox):
     def __init__(self, parent: QWidget | None = ...) -> None:
         super().__init__(parent)
         self.setDecimals(0)
-        self.setFixedWidth(40)
+        self.setFixedWidth(45)
         self.setRange(0, 999999999)
         self.setDecimals(0)
         self.setButtonSymbols(QDoubleSpinBox.ButtonSymbols.NoButtons)
-        self.wheelEvent = lambda event: None
+        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.setFixedHeight(30)
 
 
@@ -54,7 +54,7 @@ class TimeSpinBox(QWidget):
         self.minutes_spinbox.valueChanged.connect(self.emit_dateTimeChanged)
         self.seconds_spinbox.valueChanged.connect(self.emit_dateTimeChanged)
 
-        self.setFixedWidth(160)
+        self.setFixedWidth(180)
 
     def emit_dateTimeChanged(self):
         self.dateTimeChanged.emit(self.value())

@@ -3,13 +3,14 @@ from typing import TYPE_CHECKING, Union
 
 from natsort import natsorted
 
+from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
-from utils.workspace.tag import Tag
-from utils.workspace.job_price_calculator import JobPriceCalculator
 from utils.workspace.job_flowtag_timeline import JobFlowtagTimeline
+from utils.workspace.job_price_calculator import JobPriceCalculator
+from utils.workspace.tag import Tag
 
 if TYPE_CHECKING:
     from utils.workspace.job_manager import JobManager
@@ -19,18 +20,20 @@ class JobStatus(Enum):
     PLANNING = auto()
     QUOTING = auto()
     QUOTED = auto()
+    QUOTE_CONFIRMED = auto()
     TEMPLATE = auto()
     WORKSPACE = auto()
     ARCHIVE = auto()
 
 
 class JobColor(Enum):
-    PLANNING = ("#eabf3e", JobStatus.PLANNING)
-    QUOTING = ("#69ea3e", JobStatus.QUOTING)
-    QUOTED = ("#69ea3e", JobStatus.QUOTED)
-    TEMPLATE = ("#ea693e", JobStatus.TEMPLATE)
-    WORKSPACE = ("#3daee9", JobStatus.WORKSPACE)
-    ARCHIVE = ("#943eea", JobStatus.ARCHIVE)
+    PLANNING = (theme_var("job-planning"), JobStatus.PLANNING)
+    QUOTING = (theme_var("job-quoting"), JobStatus.QUOTING)
+    QUOTED = (theme_var("job-quoted"), JobStatus.QUOTED)
+    QUOTE_CONFIRMED = (theme_var("job-quote-confirmed"), JobStatus.QUOTE_CONFIRMED)
+    TEMPLATE = (theme_var("job-template"), JobStatus.TEMPLATE)
+    WORKSPACE = (theme_var("job-workspace"), JobStatus.WORKSPACE)
+    ARCHIVE = (theme_var("job-archive"), JobStatus.ARCHIVE)
 
     @classmethod
     def get_color(cls, job_status: JobStatus):
@@ -41,13 +44,13 @@ class Job:
     def __init__(self, data: dict, job_manager):
         self.name: str = ""
         self.order_number: float = 0.0
+        self.PO_number: float = 0.0
         self.ship_to: str = ""
         self.starting_date: str = ""
         self.ending_date: str = ""
-        self.color: str = "#eabf3e"  # default
+        self.color: str = theme_var("job-planning")  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
-        self.flowtag_timeline = JobFlowtagTimeline(self)
         self.moved_job_to_workspace = False
 
         self.job_manager: JobManager = job_manager
@@ -65,6 +68,9 @@ class Job:
 
         self.unsaved_changes = False
         self.downloaded_from_server = False
+
+        # Because we need job_manager to be loaded first
+        self.flowtag_timeline = JobFlowtagTimeline(self)
 
         self.load_data(data)
 
@@ -109,6 +115,7 @@ class Job:
                 unit_quantity = assembly_laser_cut_part.quantity
                 new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
                 new_laser_cut_part.quantity = unit_quantity * assembly.quantity
+                new_laser_cut_part.matched_to_sheet_cost_price = assembly_laser_cut_part.matched_to_sheet_cost_price
 
                 if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
                     existing_component.quantity += new_laser_cut_part.quantity
@@ -119,6 +126,7 @@ class Job:
 
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()
         self.sort_laser_cut_parts()
+        return self.grouped_laser_cut_parts
 
     def group_components(self):
         components_dict: dict[str, Component] = {}
@@ -134,6 +142,7 @@ class Job:
 
         self.grouped_components = components_dict.values()
         self.sort_components()
+        return self.grouped_components
 
     def sort_nests(self):
         self.nests = natsorted(self.nests, key=lambda nest: nest.name)
@@ -143,6 +152,13 @@ class Job:
 
     def sort_components(self):
         self.grouped_components = natsorted(self.grouped_components, key=lambda laser_cut_part: laser_cut_part.name)
+
+    def get_net_weight(self) -> float:
+        total_weight = 0.0
+        for assembly in self.get_all_assemblies():
+            for laser_cut_part in assembly.laser_cut_parts:
+                total_weight += laser_cut_part.weight * laser_cut_part.quantity * assembly.quantity
+        return total_weight
 
     def get_all_assemblies(self) -> list[Assembly]:
         assemblies: list[Assembly] = []
@@ -166,9 +182,9 @@ class Job:
         return laser_cut_parts
 
     def get_grouped_laser_cut_parts(self) -> list[LaserCutPart]:
-        '''Used in printouts'''
+        """Used in printouts"""
         self.group_laser_cut_parts()
-        return self.grouped_laser_cut_parts
+        return self.group_laser_cut_parts()
 
     def get_all_components(self) -> list[Component]:
         components: list[Component] = []
@@ -177,13 +193,13 @@ class Job:
         return components
 
     def get_grouped_components(self) -> list[Component]:
-        self.group_components()
-        return self.grouped_components
+        return self.group_components()
 
     def load_settings(self, data: dict[str, dict[str, object]]):
         job_data = data.get("job_data", {})
         self.name = job_data.get("name", "")
         self.order_number = job_data.get("order_number", 0)
+        self.PO_number = job_data.get("PO_number", 0)
         self.ship_to = job_data.get("ship_to", "")
         self.starting_date = job_data.get("starting_date", "")
         self.ending_date = job_data.get("ending_date", "")
@@ -261,7 +277,8 @@ class Job:
             "job_data": {
                 "name": self.name,
                 "type": self.status.value,
-                "order_number": int(self.order_number), # Just in case
+                "order_number": int(self.order_number),  # Just in case
+                "PO_number": int(self.PO_number),
                 "ship_to": self.ship_to,
                 "starting_date": self.starting_date,
                 "ending_date": self.ending_date,

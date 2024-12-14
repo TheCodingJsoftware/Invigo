@@ -1,14 +1,15 @@
 from functools import partial
 
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QDialog
 
+from ui.dialogs.nest_sheet_verification_UI import Ui_Form
+from ui.icons import Icons
 from utils.dialog_buttons import DialogButtons
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 
-class NestSheetVerification(QDialog):
+class NestSheetVerification(QDialog, Ui_Form):
     def __init__(
         self,
         message,
@@ -18,7 +19,7 @@ class NestSheetVerification(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/nest_sheet_verification.ui", self)
+        self.setupUi(self)
 
         self.sheet_settings = sheet_settings
         self.sheet_settings.load_data()
@@ -26,7 +27,7 @@ class NestSheetVerification(QDialog):
         self.response: str = DialogButtons.cancel
 
         self.setWindowTitle("Sheet Nest Verification")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.pushButton_set.clicked.connect(partial(self.button_press, DialogButtons.set))
         self.pushButton_skip.clicked.connect(partial(self.button_press, DialogButtons.skip))

@@ -194,6 +194,7 @@ class JobPriceCalculator:
                 break
 
     def update_laser_cut_parts_cost(self):
+        self.paint_inventory.load_data()
         for laser_cut_part in self.job.get_all_laser_cut_parts():
             laser_cut_part.cost_for_primer = self.paint_inventory.get_primer_cost(laser_cut_part)
             laser_cut_part.cost_for_paint = self.paint_inventory.get_paint_cost(laser_cut_part)

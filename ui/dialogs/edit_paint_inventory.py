@@ -1,57 +1,51 @@
-from PyQt6 import uic
+from typing import TYPE_CHECKING
+
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QComboBox, QDialog, QDoubleSpinBox, QListWidget, QMessageBox, QPushButton
+from PyQt6.QtWidgets import QDialog, QMessageBox
 
 from ui.dialogs.color_picker_dialog import ColorPicker
+from ui.dialogs.edit_paint_inventory_UI import Ui_Form
+from ui.icons import Icons
 from utils.inventory.paint import Paint
 from utils.inventory.paint_inventory import PaintInventory
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.settings import Settings
 
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
+
 settings_file = Settings()
 
 
-class EditPaintInventory(QDialog):
+class EditPaintInventory(QDialog, Ui_Form):
     def __init__(self, paint_inventory: PaintInventory, parent):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/edit_paint_inventory.ui", self)
-        self.parent = parent
+        self.setupUi(self)
+        self.parent: MainWindow = parent
         self.paint_inventory = paint_inventory
         self.components_inventory = paint_inventory.components_inventory
         self.selected_color: str = "#ffffff"
         self.selected_item: Primer | Paint | Powder = None
 
         self.setWindowTitle("Add new paint")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.lineEdit_name = self.findChild(QComboBox, "lineEdit_name")
         self.lineEdit_name.addItems(self.components_inventory.get_all_part_names())
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_name.lineEdit().textChanged.connect(self.name_changed)
 
-        self.comboBox_type = self.findChild(QComboBox, "comboBox_type")
-
-        self.doubleSpinBox_average_coverage = self.findChild(QDoubleSpinBox, "doubleSpinBox_average_coverage")
-        self.doubleSpinBox_gravity = self.findChild(QDoubleSpinBox, "doubleSpinBox_gravity")
-
-        self.pushButton_set_color = self.findChild(QPushButton, "pushButton_set_color")
         self.pushButton_set_color.setStyleSheet(f"QPushButton{{background-color: {self.selected_color}}}")
         self.pushButton_set_color.clicked.connect(self.get_color)
 
-        self.pushButton_add = self.findChild(QPushButton, "pushButton_add")
         self.pushButton_add.clicked.connect(self.add_item)
-
-        self.pushButton_apply = self.findChild(QPushButton, "pushButton_apply")
         self.pushButton_apply.clicked.connect(self.apply_changes)
+        self.pushButton_close.clicked.connect(self.close)
 
-        self.listWidget_primers = self.findChild(QListWidget, "listWidget_primers")
         self.listWidget_primers.doubleClicked.connect(self.delete_primer)
         self.listWidget_primers.itemSelectionChanged.connect(self.primer_changed)
-        self.listWidget_paints = self.findChild(QListWidget, "listWidget_paints")
         self.listWidget_paints.doubleClicked.connect(self.delete_paint)
         self.listWidget_paints.itemSelectionChanged.connect(self.paint_changed)
-        self.listWidget_powders = self.findChild(QListWidget, "listWidget_powders")
         self.listWidget_powders.doubleClicked.connect(self.delete_powder)
         self.listWidget_powders.itemSelectionChanged.connect(self.powder_changed)
 
@@ -207,83 +201,97 @@ class EditPaintInventory(QDialog):
             if isinstance(self.selected_item, Paint):
                 self.paint_inventory.remove_paint(self.selected_item)
                 new = Primer(
-                    self.selected_item.name,
                     self.selected_item.to_dict(),
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_primer(new)
+                self.save_and_apply()
             elif isinstance(self.selected_item, Powder):
                 self.paint_inventory.remove_powder(self.selected_item)
                 new = Primer(
-                    self.selected_item.name,
                     self.selected_item.to_dict(),
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_primer(new)
+                self.save_and_apply()
+            for row in range(self.listWidget_primers.count()):
+                if self.listWidget_primers.item(row).text() == self.selected_item.name:
+                    self.listWidget_primers.setCurrentRow(row)
         elif self.comboBox_type.currentText() == "Paint":
             self.selected_item.average_coverage = self.doubleSpinBox_average_coverage.value()
             if isinstance(self.selected_item, Primer):
                 self.paint_inventory.remove_primer(self.selected_item)
                 new = Paint(
-                    self.selected_item.name,
                     self.selected_item.to_dict(),
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_paint(new)
+                self.save_and_apply()
             elif isinstance(self.selected_item, Powder):
                 self.paint_inventory.remove_powder(self.selected_item)
                 new = Paint(
-                    self.selected_item.name,
                     self.selected_item.to_dict(),
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_paint(new)
+                self.save_and_apply()
+            for row in range(self.listWidget_paints.count()):
+                if self.listWidget_paints.item(row).text() == self.selected_item.name:
+                    self.listWidget_paints.setCurrentRow(row)
         elif self.comboBox_type.currentText() == "Powder":
             self.selected_item.gravity = self.doubleSpinBox_gravity.value()
             if isinstance(self.selected_item, Primer):
                 self.paint_inventory.remove_primer(self.selected_item)
                 new = Powder(
-                    self.selected_item.name,
                     self.selected_item.to_dict(),
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_powder(new)
+                self.save_and_apply()
             elif isinstance(self.selected_item, Paint):
                 self.paint_inventory.remove_paint(self.selected_item)
                 new = Powder(
-                    self.selected_item.name,
                     self.selected_item.to_dict(),
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_powder(new)
-        self.save_and_apply()
+                self.save_and_apply()
+            for row in range(self.listWidget_powders.count()):
+                if self.listWidget_powders.item(row).text() == self.selected_item.name:
+                    self.listWidget_powders.setCurrentRow(row)
 
     def add_item(self):
         if item := self.components_inventory.get_component_by_part_name(self.lineEdit_name.currentText()):
             if self.comboBox_type.currentText() == "Primer":
                 primer = Primer(
-                    item.part_name,
-                    {"color": self.selected_color, "categories": ["Primer"]},
+                    {"name": item.part_name, "color": self.selected_color, "categories": ["Primer"]},
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_primer(primer)
                 self.save_and_apply()
+                for row in range(self.listWidget_primers.count()):
+                    if self.listWidget_primers.item(row).text() == primer.name:
+                        self.listWidget_primers.setCurrentRow(row)
             elif self.comboBox_type.currentText() == "Paint":
                 paint = Paint(
-                    item.part_name,
-                    {"color": self.selected_color, "categories": ["Paint"]},
+                    {"name": item.part_name, "color": self.selected_color, "categories": ["Paint"]},
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_paint(paint)
                 self.save_and_apply()
+                for row in range(self.listWidget_paints.count()):
+                    if self.listWidget_paints.item(row).text() == paint.name:
+                        self.listWidget_paints.setCurrentRow(row)
             elif self.comboBox_type.currentText() == "Powder":
                 powder = Powder(
-                    item.part_name,
-                    {"color": self.selected_color, "categories": ["Powder"]},
+                    {"name": item.part_name, "color": self.selected_color, "categories": ["Powder"]},
                     self.paint_inventory,
                 )
                 self.paint_inventory.add_powder(powder)
                 self.save_and_apply()
+                for row in range(self.listWidget_powders.count()):
+                    if self.listWidget_powders.item(row).text() == powder.name:
+                        self.listWidget_powders.setCurrentRow(row)
         else:
             msg = QMessageBox(
                 QMessageBox.Icon.Warning,
@@ -334,17 +342,8 @@ class EditPaintInventory(QDialog):
     def get_name(self) -> str:
         return self.lineEdit_name.currentText().encode("ascii", "ignore").decode()
 
-    def get_exchange_rate(self) -> bool:
-        return self.comboBox_exchange_price.currentText() == "USD"
-
-    def get_part_number(self) -> str:
-        return self.comboBox_part_number.currentText()
-
-    def get_shelf_number(self) -> str:
-        return self.shelf_number
-
     def sync_changes(self):
-        self.parent.upload_file(
+        self.parent.upload_files(
             [
                 "paint_inventory.json",
             ],

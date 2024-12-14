@@ -4,18 +4,20 @@ import os
 from datetime import datetime
 from enum import Enum, auto
 from functools import partial
+from typing import TYPE_CHECKING
 
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget, ComponentsTableColumns
 from ui.custom_widgets import ClickableLabel, CustomTableWidget, MachineCutTimeSpinBox, MultiToolBox, RecutButton
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
+from ui.theme import theme_var
+from ui.widgets.quote_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
 from utils.calulations import calculate_overhead
 from utils.inventory.component import Component
@@ -28,6 +30,9 @@ from utils.inventory.sheets_inventory import SheetsInventory
 from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
+
+if TYPE_CHECKING:
+    from ui.widgets.quote_generator_tab import QuoteGeneratorTab
 
 
 class PaintSettingsWidget(QWidget):
@@ -53,13 +58,13 @@ class PaintSettingsWidget(QWidget):
         self.primer_layout.setContentsMargins(3, 3, 3, 3)
         self.primer_layout.setSpacing(0)
         self.combobox_primer = QComboBox(self.widget_primer)
-        self.combobox_primer.wheelEvent = lambda event: None
+        self.combobox_primer.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_primer.addItems(["None"] + self.paint_inventory.get_all_primers())
         if self.laser_cut_part.primer_name:
             self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
         self.combobox_primer.currentTextChanged.connect(self.update_paint_settings)
         self.spinbox_primer_overspray = QDoubleSpinBox(self.widget_primer)
-        self.spinbox_primer_overspray.wheelEvent = lambda event: None
+        self.spinbox_primer_overspray.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.spinbox_primer_overspray.setValue(self.laser_cut_part.primer_overspray)
         self.spinbox_primer_overspray.setMaximum(100.0)
         self.spinbox_primer_overspray.setSuffix("%")
@@ -79,13 +84,13 @@ class PaintSettingsWidget(QWidget):
         self.paint_color_layout.setContentsMargins(3, 3, 3, 3)
         self.paint_color_layout.setSpacing(0)
         self.combobox_paint_color = QComboBox(self.widget_paint_color)
-        self.combobox_paint_color.wheelEvent = lambda event: None
+        self.combobox_paint_color.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_paint_color.addItems(["None"] + self.paint_inventory.get_all_paints())
         if self.laser_cut_part.paint_name:
             self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
         self.combobox_paint_color.currentTextChanged.connect(self.update_paint_settings)
         self.spinbox_paint_overspray = QDoubleSpinBox(self.widget_paint_color)
-        self.spinbox_paint_overspray.wheelEvent = lambda event: None
+        self.spinbox_paint_overspray.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.spinbox_paint_overspray.setValue(self.laser_cut_part.paint_overspray)
         self.spinbox_paint_overspray.setMaximum(100.0)
         self.spinbox_paint_overspray.setSuffix("%")
@@ -105,13 +110,13 @@ class PaintSettingsWidget(QWidget):
         self.powder_coating_layout.setContentsMargins(3, 3, 3, 3)
         self.powder_coating_layout.setSpacing(0)
         self.combobox_powder_coating_color = QComboBox(self.widget_powder_coating)
-        self.combobox_powder_coating_color.wheelEvent = lambda event: None
+        self.combobox_powder_coating_color.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_powder_coating_color.addItems(["None"] + self.paint_inventory.get_all_powders())
         if self.laser_cut_part.powder_name:
             self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_name)
         self.combobox_powder_coating_color.currentTextChanged.connect(self.update_paint_settings)
         self.spinbox_powder_transfer_efficiency = QDoubleSpinBox(self.widget_powder_coating)
-        self.spinbox_powder_transfer_efficiency.wheelEvent = lambda event: None
+        self.spinbox_powder_transfer_efficiency.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.spinbox_powder_transfer_efficiency.setValue(self.laser_cut_part.powder_transfer_efficiency)
         self.spinbox_powder_transfer_efficiency.setMaximum(100.0)
         self.spinbox_powder_transfer_efficiency.setSuffix("%")
@@ -268,7 +273,7 @@ class LaserCutPartsQuotingTableWidget(CustomTableWidget):
         self.setStyleSheet("border-color: transparent;")
 
 
-class QuoteWidget(QWidget):
+class QuoteWidget(QWidget, Ui_Form):
     quote_unsaved_changes = pyqtSignal(Quote)
 
     def __init__(
@@ -281,9 +286,9 @@ class QuoteWidget(QWidget):
         parent: QWidget,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/quote_widget.ui", self)
+        self.setupUi(self)
 
-        self.parent = parent
+        self.parent: QuoteGeneratorTab = parent
         self.quote = quote
         self.components_inventory = components_inventory
         self.laser_cut_inventory = laser_cut_inventory
@@ -329,7 +334,6 @@ class QuoteWidget(QWidget):
 
     def load_ui(self):
         # * Nest, Sheet, and Item Quoting Settings
-        self.comboBox_laser_cutting_2: QComboBox = self.findChild(QComboBox, "comboBox_laser_cutting_2")
         self.comboBox_laser_cutting_2.setCurrentText(self.quote.laser_cutting_method)
         self.comboBox_laser_cutting_2.currentTextChanged.connect(
             lambda: (
@@ -338,7 +342,6 @@ class QuoteWidget(QWidget):
                 self.update_laser_cut_parts_price(),
             )
         )
-        self.doubleSpinBox_cost_for_laser_2: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_cost_for_laser_2")
         self.doubleSpinBox_cost_for_laser_2.setValue(self.quote.laser_cutting_cost)
         self.doubleSpinBox_cost_for_laser_2.valueChanged.connect(
             lambda: (
@@ -347,14 +350,11 @@ class QuoteWidget(QWidget):
                 self.update_laser_cut_parts_price(),
             )
         )
-        self.comboBox_global_sheet_material_2: QComboBox = self.findChild(QComboBox, "comboBox_global_sheet_material_2")
         self.comboBox_global_sheet_material_2.addItems(self.sheet_settings.get_materials())
         self.comboBox_global_sheet_material_2.currentTextChanged.connect(lambda: (self.update_sheet_price(), self.global_sheet_materials_changed()))
-        self.comboBox_global_sheet_thickness_2: QComboBox = self.findChild(QComboBox, "comboBox_global_sheet_thickness_2")
         self.comboBox_global_sheet_thickness_2.addItems(self.sheet_settings.get_thicknesses())
         self.comboBox_global_sheet_thickness_2.currentTextChanged.connect(lambda: (self.update_sheet_price(), self.global_sheet_thickness_changed()))
 
-        self.doubleSpinBox_overhead_items_2: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_overhead_items_2")
         self.doubleSpinBox_overhead_items_2.setValue(self.quote.item_overhead)
         self.doubleSpinBox_overhead_items_2.valueChanged.connect(
             lambda: (
@@ -363,7 +363,6 @@ class QuoteWidget(QWidget):
                 self.update_laser_cut_parts_price(),
             )
         )
-        self.doubleSpinBox_profit_margin_items_2: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_profit_margin_items_2")
         self.doubleSpinBox_profit_margin_items_2.setValue(self.quote.item_profit_margin)
         self.doubleSpinBox_profit_margin_items_2.valueChanged.connect(
             lambda: (
@@ -373,14 +372,11 @@ class QuoteWidget(QWidget):
             )
         )
 
-        self.doubleSpinBox_overhead_sheets_2: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_overhead_sheets_2")
         self.doubleSpinBox_overhead_sheets_2.setValue(self.quote.sheet_overhead)
         self.doubleSpinBox_overhead_sheets_2.valueChanged.connect(lambda: (self.global_quote_settings_changed(), self.update_sheet_price()))
-        self.doubleSpinBox_profit_margin_sheets_2: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_profit_margin_sheets_2")
         self.doubleSpinBox_profit_margin_sheets_2.setValue(self.quote.sheet_profit_margin)
         self.doubleSpinBox_profit_margin_sheets_2.valueChanged.connect(lambda: (self.global_quote_settings_changed(), self.update_sheet_price()))
 
-        self.pushButton_item_to_sheet: QPushButton = self.findChild(QPushButton, "pushButton_item_to_sheet")
         self.pushButton_item_to_sheet.setChecked(self.quote.match_item_to_sheet_cost)
         self.pushButton_item_to_sheet.clicked.connect(
             lambda: (
@@ -388,7 +384,6 @@ class QuoteWidget(QWidget):
                 self.update_laser_cut_parts_price(),
             )
         )
-        self.pushButton_match_sheet_to_item_2: QPushButton = self.findChild(QPushButton, "pushButton_match_sheet_to_item_2")
         self.pushButton_match_sheet_to_item_2.setChecked(self.quote.match_sheet_cost_to_item)
         self.pushButton_match_sheet_to_item_2.clicked.connect(
             lambda: (
@@ -397,24 +392,14 @@ class QuoteWidget(QWidget):
             )
         )
 
-        self.pushButton_add_laser_cut_part_2 = self.findChild(QPushButton, "pushButton_add_laser_cut_part_2")
         self.pushButton_add_laser_cut_part_2.clicked.connect(self.add_laser_cut_part)
-
-        self.pushButton_add_component_2: QPushButton = self.findChild(QPushButton, "pushButton_add_component_2")
         self.pushButton_add_component_2.clicked.connect(self.add_component)
-
-        self.pushButton_clear_all_components_2: QPushButton = self.findChild(QPushButton, "pushButton_clear_all_components_2")
         self.pushButton_clear_all_components_2.clicked.connect(self.clear_all_components)
-
-        self.pushButton_clear_all_nests: QPushButton = self.findChild(QPushButton, "pushButton_clear_all_nests")
         self.pushButton_clear_all_nests.clicked.connect(self.clear_all_nests)
 
-        self.doubleSpinBox_global_sheet_length_2: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_global_sheet_length_2")
         self.doubleSpinBox_global_sheet_length_2.valueChanged.connect(self.global_sheet_dimension_changed)
-        self.doubleSpinBox_global_sheet_width_2: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_global_sheet_width_2")
         self.doubleSpinBox_global_sheet_width_2.valueChanged.connect(self.global_sheet_dimension_changed)
 
-        self.checkBox_components_use_overhead_2: QCheckBox = self.findChild(QCheckBox, "checkBox_components_use_overhead_2")
         self.checkBox_components_use_overhead_2.setChecked(self.quote.component_use_overhead)
         self.checkBox_components_use_overhead_2.checkStateChanged.connect(
             lambda: (
@@ -422,7 +407,6 @@ class QuoteWidget(QWidget):
                 self.update_components_price(),
             )
         )
-        self.checkBox_components_use_profit_margin_2: QCheckBox = self.findChild(QCheckBox, "checkBox_components_use_profit_margin_2")
         self.checkBox_components_use_profit_margin_2.setChecked(self.quote.component_use_profit_margin)
         self.checkBox_components_use_profit_margin_2.checkStateChanged.connect(
             lambda: (
@@ -432,33 +416,23 @@ class QuoteWidget(QWidget):
         )
 
         # * Paint Settings
-        self.pushButton_toggle_primer: QPushButton = self.findChild(QPushButton, "pushButton_toggle_primer")
         self.pushButton_toggle_primer.clicked.connect(self.global_toggle_primer_clicked)
-        self.comboBox_primer_color: QComboBox = self.findChild(QComboBox, "comboBox_primer_color")
         self.comboBox_primer_color.addItems(["None"] + self.paint_inventory.get_all_primers())
         self.comboBox_primer_color.currentTextChanged.connect(self.global_primer_color_changed)
-        self.doubleSpinBox_primer_overspray: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_primer_overspray")
         self.doubleSpinBox_primer_overspray.setValue(self.quote.primer_overspray)
         self.doubleSpinBox_primer_overspray.valueChanged.connect(self.global_primer_overspray_changed)
 
-        self.pushButton_toggle_paint: QPushButton = self.findChild(QPushButton, "pushButton_toggle_paint")
         self.pushButton_toggle_paint.clicked.connect(self.global_toggle_paint_clicked)
-        self.comboBox_paint_color: QComboBox = self.findChild(QComboBox, "comboBox_paint_color")
         self.comboBox_paint_color.addItems(["None"] + self.paint_inventory.get_all_paints())
         self.comboBox_paint_color.currentTextChanged.connect(self.global_paint_color_changed)
-        self.doubleSpinBox_paint_overspray: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_paint_overspray")
         self.doubleSpinBox_paint_overspray.setValue(self.quote.paint_overspray)
         self.doubleSpinBox_paint_overspray.valueChanged.connect(self.global_paint_overspray_changed)
 
-        self.pushButton_toggle_powder_coating: QPushButton = self.findChild(QPushButton, "pushButton_toggle_powder_coating")
         self.pushButton_toggle_powder_coating.clicked.connect(self.global_toggle_powder_clicked)
-        self.comboBox_powder_color: QComboBox = self.findChild(QComboBox, "comboBox_powder_color")
         self.comboBox_powder_color.addItems(["None"] + self.paint_inventory.get_all_powders())
         self.comboBox_powder_color.currentTextChanged.connect(self.global_powder_color_changed)
-        self.doubleSpinBox_transfer_efficiency: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_transfer_efficiency")
         self.doubleSpinBox_transfer_efficiency.setValue(self.quote.transfer_efficiency)
         self.doubleSpinBox_transfer_efficiency.valueChanged.connect(self.global_powder_transfer_efficiency_changed)
-        self.doubleSpinBox_mil_thickness: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_mil_thickness")
         self.doubleSpinBox_mil_thickness.setValue(self.quote.mil_thickness)
         self.doubleSpinBox_mil_thickness.valueChanged.connect(
             lambda: (
@@ -468,49 +442,36 @@ class QuoteWidget(QWidget):
         )
 
         # * Quote Settings
-        self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_order_number")
         self.doubleSpinBox_order_number.setValue(self.quote.order_number)
-        self.doubleSpinBox_order_number.wheelEvent = lambda event: None
+        self.doubleSpinBox_order_number.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_order_number.valueChanged.connect(self.global_quote_settings_changed)
-        self.pushButton_get_order_number: QPushButton = self.findChild(QPushButton, "pushButton_get_order_number")
 
         def get_latest_order_number():
             self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
             self.global_quote_settings_changed()
 
         self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
-        self.comboBox_quote_status: QComboBox = self.findChild(QComboBox, "comboBox_quote_status")
         self.comboBox_quote_status.setCurrentText(self.quote.status)
         self.comboBox_quote_status.currentTextChanged.connect(self.global_quote_settings_changed)
-        self.comboBox_quote_status.wheelEvent = lambda event: None
-        self.dateEdit_shipped: QDateEdit = self.findChild(QDateEdit, "dateEdit_shipped")
+        self.comboBox_quote_status.wheelEvent = lambda event: self.parent.wheelEvent(event)
         try:
             year, month, day = map(int, self.quote.date_shipped.split("-"))
             self.dateEdit_shipped.setDate(QDate(year, month, day))
         except ValueError:
             self.dateEdit_shipped.setDate(QDate.currentDate())
         self.dateEdit_shipped.dateChanged.connect(self.global_quote_settings_changed)
-        self.dateEdit_shipped.wheelEvent = lambda event: None
-        self.dateEdit_expected: QDateEdit = self.findChild(QDateEdit, "dateEdit_expected")
+        self.dateEdit_shipped.wheelEvent = lambda event: self.parent.wheelEvent(event)
         try:
             year, month, day = map(int, self.quote.date_expected.split("-"))
             self.dateEdit_expected.setDate(QDate(year, month, day))
         except ValueError:
             self.dateEdit_expected.setDate(QDate.currentDate())
         self.dateEdit_expected.dateChanged.connect(self.global_quote_settings_changed)
-        self.dateEdit_expected.wheelEvent = lambda event: None
-        self.textEdit_ship_to: QTextEdit = self.findChild(QTextEdit, "textEdit_ship_to")
+        self.dateEdit_expected.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.textEdit_ship_to.setText(self.quote.ship_to)
         self.textEdit_ship_to.textChanged.connect(self.global_quote_settings_changed)
 
         # * Layouts
-        self.laser_cut_layout: QVBoxLayout = self.findChild(QVBoxLayout, "verticalLayout_55")
-        self.components_layout: QVBoxLayout = self.findChild(QVBoxLayout, "verticalLayout_49")
-        self.nests_layout: QVBoxLayout = self.findChild(QVBoxLayout, "verticalLayout_sheets_2")
-        self.gridLayout_nest_summary_2: QGridLayout = self.findChild(QGridLayout, "gridLayout_nest_summary_2")
-
-        self.label_total_sheet_cost_2: QLabel = self.findChild(QLabel, "label_total_sheet_cost_2")
-        self.label_total_item_cost_2: QLabel = self.findChild(QLabel, "label_total_item_cost_2")
 
     def quote_changed(self):
         self.quote.changes_made()
@@ -745,7 +706,7 @@ class QuoteWidget(QWidget):
 
             spinBox_sheet_count = QDoubleSpinBox(widget)
             spinBox_sheet_count.setMaximum(9999999999.9)
-            spinBox_sheet_count.wheelEvent = lambda event: None
+            spinBox_sheet_count.wheelEvent = lambda event: self.parent.wheelEvent(event)
             spinBox_sheet_count.setValue(nest.sheet_count)
 
             def change_sheet_count(nest_to_change: Nest, spinbox: QDoubleSpinBox):
@@ -826,7 +787,7 @@ class QuoteWidget(QWidget):
             grid_layout.addWidget(comboBox_sheet_thickness, 8, 2)
             lineEdit_sheet_size_x = QDoubleSpinBox(widget)
             lineEdit_sheet_size_x.setMaximum(9999999999.9)
-            lineEdit_sheet_size_x.wheelEvent = lambda event: None
+            lineEdit_sheet_size_x.wheelEvent = lambda event: self.parent.wheelEvent(event)
             lineEdit_sheet_size_x.setDecimals(3)
             lineEdit_sheet_size_x.setSuffix(" in")
             lineEdit_sheet_size_x.setValue(nest.sheet.length)
@@ -851,7 +812,7 @@ class QuoteWidget(QWidget):
             grid_layout.addWidget(label, 11, 1)
             lineEdit_sheet_size_y = QDoubleSpinBox(widget)
             lineEdit_sheet_size_y.setMaximum(9999999999.9)
-            lineEdit_sheet_size_y.wheelEvent = lambda event: None
+            lineEdit_sheet_size_y.wheelEvent = lambda event: self.parent.wheelEvent(event)
             lineEdit_sheet_size_y.setDecimals(3)
             lineEdit_sheet_size_y.setSuffix(" in")
             lineEdit_sheet_size_y.setValue(nest.sheet.width)
@@ -921,7 +882,7 @@ class QuoteWidget(QWidget):
         for i, (sheet_name, sheet_data) in enumerate(sorted_summary.items(), start=1):
             label_sheet_name = QLabel(sheet_name, self)
             if "x" not in sheet_name:
-                label_sheet_name.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                label_sheet_name.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_name, i + 1, 0)
 
             if "x" not in sheet_name:
@@ -929,7 +890,7 @@ class QuoteWidget(QWidget):
             else:
                 label_sheet_count = QLabel(str(sheet_data["total_sheet_count"]), self)
             if "x" not in sheet_name:
-                label_sheet_count.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                label_sheet_count.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_count, i + 1, 1)
 
             total_seconds = sheet_data["total_seconds"]
@@ -946,7 +907,7 @@ class QuoteWidget(QWidget):
             else:
                 label_sheet_cuttime = QLabel(total_seconds_string, self)
             if "x" not in sheet_name:
-                label_sheet_cuttime.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                label_sheet_cuttime.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_cuttime, i + 1, 2)
 
     def open_image(self, path: str, title: str):
@@ -1150,7 +1111,7 @@ class QuoteWidget(QWidget):
         return menu
 
     def add_laser_cut_part(self):
-        add_item_dialog = AddLaserCutPartDialog(self)
+        add_item_dialog = AddLaserCutPartDialog(self.laser_cut_inventory, self)
         if add_item_dialog.exec():
             if laser_cut_parts := add_item_dialog.get_selected_laser_cut_parts():
                 for laser_cut_part in laser_cut_parts:
@@ -1201,7 +1162,7 @@ class QuoteWidget(QWidget):
             item.setFont(font)
             self.laser_cut_table_widget.setItem(row_index, 0, item)
             self.laser_cut_table_widget.setSpan(row_index, 0, 1, self.laser_cut_table_widget.columnCount())
-            self.set_table_row_color(self.laser_cut_table_widget, row_index, "#141414")
+            self.set_table_row_color(self.laser_cut_table_widget, row_index, f"{theme_var('background')}")
             row_index += 1
             for laser_cut_part in nest.laser_cut_parts:
                 self.laser_cut_table_items.update({laser_cut_part: {"nest": nest}})
@@ -1246,7 +1207,7 @@ class QuoteWidget(QWidget):
                 material_combobox = QComboBox(self)
                 material_combobox.addItems(self.sheet_settings.get_materials())
                 material_combobox.setCurrentText(laser_cut_part.material)
-                material_combobox.wheelEvent = lambda event: None
+                material_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
                 material_combobox.setStyleSheet("border-radius: none;")
                 material_combobox.currentTextChanged.connect(partial(material_changed, laser_cut_part, material_combobox))
                 self.laser_cut_table_widget.setCellWidget(
@@ -1263,7 +1224,7 @@ class QuoteWidget(QWidget):
                 thickness_combobox = QComboBox(self)
                 thickness_combobox.addItems(self.sheet_settings.get_thicknesses())
                 thickness_combobox.setCurrentText(laser_cut_part.gauge)
-                thickness_combobox.wheelEvent = lambda event: None
+                thickness_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
                 thickness_combobox.setStyleSheet("border-radius: none;")
                 thickness_combobox.currentTextChanged.connect(partial(thickness_changed, laser_cut_part, thickness_combobox))
                 self.laser_cut_table_widget.setCellWidget(
@@ -1414,7 +1375,7 @@ class QuoteWidget(QWidget):
                 )
 
                 if not does_part_exist:
-                    self.set_table_row_color(self.laser_cut_table_widget, row_index, "#3F1E25")
+                    self.set_table_row_color(self.laser_cut_table_widget, row_index, f"{theme_var('table-red-quantity')}")
                 row_index += 1
         self.laser_cut_table_widget.resizeColumnsToContents()
         self.laser_cut_table_widget.cellChanged.connect(self.update_laser_cut_parts_price)
@@ -1622,7 +1583,7 @@ class QuoteWidget(QWidget):
         self.quote_changed()
 
     def add_component(self):
-        add_item_dialog = AddComponentDialog(self)
+        add_item_dialog = AddComponentDialog(self.components_inventory, self)
         if add_item_dialog.exec():
             if components := add_item_dialog.get_selected_components():
                 for component in components:
@@ -1899,7 +1860,7 @@ class QuoteWidget(QWidget):
         menu.exec(QCursor.pos())
 
     def sync_changes(self):
-        self.parent.parent.sync_changes()
+        self.parent.sync_changes()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):

@@ -2,18 +2,21 @@ import contextlib
 import os
 from datetime import datetime
 from functools import partial
+from typing import TYPE_CHECKING
 
 import sympy
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
+from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QCompleter, QDialog, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, FilterButton
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
+from ui.icons import Icons
+from ui.theme import theme_var
+from ui.widgets.laser_cut_tab_UI import Ui_Form
 from utils.inventory.category import Category
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -21,6 +24,9 @@ from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
+
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
 
 
 class EditLaserCutPart(QDialog):
@@ -63,14 +69,14 @@ class EditLaserCutPart(QDialog):
                 edit.setText(value)
             elif isinstance(value, float):
                 edit = QDoubleSpinBox(widget)
-                edit.wheelEvent = lambda event: None
+                edit.wheelEvent = lambda event: self.parent().wheelEvent(event)
                 edit.setValue(value)
             elif isinstance(value, bool):
                 edit = QCheckBox(widget)
                 edit.setChecked(value)
             elif isinstance(value, int):
                 edit = QDoubleSpinBox(widget)
-                edit.wheelEvent = lambda event: None
+                edit.wheelEvent = lambda event: self.parent().wheelEvent(event)
                 edit.setDecimals(0)
                 edit.setValue(value)
             else:
@@ -168,7 +174,7 @@ class PaintSettingsWidget(QWidget):
         self.primer_layout.setContentsMargins(3, 3, 3, 3)
         self.primer_layout.setSpacing(0)
         self.combobox_primer = QComboBox(self.widget_primer)
-        self.combobox_primer.wheelEvent = lambda event: None
+        self.combobox_primer.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_primer.addItems(["None"] + self.paint_inventory.get_all_primers())
         if self.laser_cut_part.primer_name:
             self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
@@ -186,7 +192,7 @@ class PaintSettingsWidget(QWidget):
         self.paint_color_layout.setContentsMargins(3, 3, 3, 3)
         self.paint_color_layout.setSpacing(0)
         self.combobox_paint_color = QComboBox(self.widget_paint_color)
-        self.combobox_paint_color.wheelEvent = lambda event: None
+        self.combobox_paint_color.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_paint_color.addItems(["None"] + self.paint_inventory.get_all_paints())
         if self.laser_cut_part.paint_name:
             self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
@@ -204,7 +210,7 @@ class PaintSettingsWidget(QWidget):
         self.powder_coating_layout.setContentsMargins(3, 3, 3, 3)
         self.powder_coating_layout.setSpacing(0)
         self.combobox_powder_coating_color = QComboBox(self.widget_powder_coating)
-        self.combobox_powder_coating_color.wheelEvent = lambda event: None
+        self.combobox_powder_coating_color.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_powder_coating_color.addItems(["None"] + self.paint_inventory.get_all_powders())
         if self.laser_cut_part.powder_name:
             self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_name)
@@ -279,11 +285,30 @@ class PaintWidget(QWidget):
         self.parent.parent.parent.sync_changes()
 
 
-class LaserCutTab(QWidget):
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "LaserCutTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Laser Cut Inventory Tab")
+        self.setLayout(self.original_layout)
+        self.setObjectName("popout_widget")
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
+
+
+class LaserCutTab(QWidget, Ui_Form):
     def __init__(self, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/laser_cut_tab.ui", self)
-        from main import MainWindow
+        self.setupUi(self)
 
         self.parent: MainWindow = parent
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
@@ -319,19 +344,14 @@ class LaserCutTab(QWidget):
         self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
         self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
-        self.gridLayout_laser_cut_parts_summary = self.findChild(QGridLayout, "gridLayout_laser_cut_parts_summary")
-        self.gridLayout_materials = self.findChild(QGridLayout, "gridLayout_materials")
         self.gridLayout_materials.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        self.gridLayout_thicknesses = self.findChild(QGridLayout, "gridLayout_thicknesses")
         self.gridLayout_thicknesses.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
-        self.lineEdit_search_laser_cut_parts = self.findChild(QLineEdit, "lineEdit_search_parts_in_inventory")
-        self.pushButton_add_quantity = self.findChild(QPushButton, "pushButton_add_quantity")
         self.pushButton_add_quantity.clicked.connect(partial(self.change_quantities, "ADD"))
-        self.pushButton_remove_quantity = self.findChild(QPushButton, "pushButton_remove_quantity")
+        self.pushButton_add_quantity.setIcon(Icons.plus_icon)
         self.pushButton_remove_quantity.clicked.connect(partial(self.change_quantities, "REMOVE"))
+        self.pushButton_remove_quantity.setIcon(Icons.minus_icon)
 
-        self.verticalLayout_11 = self.findChild(QVBoxLayout, "verticalLayout_11")
         self.clear_layout(self.verticalLayout_11)
         self.verticalLayout_11.addWidget(self.tab_widget)
 
@@ -361,14 +381,15 @@ class LaserCutTab(QWidget):
             col += 1
             self.laser_cut_parts_filter["thicknesses"].append(button)
 
-        self.lineEdit_search_laser_cut_parts.returnPressed.connect(self.load_table)
+        self.lineEdit_search_parts_in_inventory.returnPressed.connect(self.load_table)
         autofill_search_options = natsorted(self.laser_cut_inventory.get_all_part_names())
         completer = QCompleter(autofill_search_options, self)
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        self.lineEdit_search_laser_cut_parts.setCompleter(completer)
+        self.lineEdit_search_parts_in_inventory.setCompleter(completer)
 
-        self.pushButton_add_quantity.setIcon(QIcon("icons/list_add.png"))
-        self.pushButton_remove_quantity.setIcon(QIcon("icons/list_remove.png"))
+        self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
+        self.pushButton_popout.clicked.connect(self.popout)
+        self.pushButton_popout.setIcon(Icons.dock_icon)
 
     def add_category(self):
         new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
@@ -518,7 +539,7 @@ class LaserCutTab(QWidget):
 
             # We check to see if there are any items to show, if not, we dont loop through the group data
             for laser_cut_part in laser_cut_parts:
-                if self.lineEdit_search_laser_cut_parts.text() in laser_cut_part.name:
+                if self.lineEdit_search_parts_in_inventory.text() in laser_cut_part.name:
                     break
             else:
                 continue
@@ -531,10 +552,10 @@ class LaserCutTab(QWidget):
             item.setFont(font)
             current_table.setItem(row_index, 0, item)
             current_table.setSpan(row_index, 0, 1, current_table.columnCount())
-            self.set_table_row_color(current_table, row_index, "#141414")
+            self.set_table_row_color(current_table, row_index, f"{theme_var('background')}")
             row_index += 1
             for laser_cut_part in laser_cut_parts:
-                if self.lineEdit_search_laser_cut_parts.text() not in laser_cut_part.name:
+                if self.lineEdit_search_parts_in_inventory.text() not in laser_cut_part.name:
                     continue
                 if selected_materials := [button.text() for button in self.laser_cut_parts_filter["materials"] if button.isChecked()]:
                     if laser_cut_part.material not in selected_materials:
@@ -545,7 +566,7 @@ class LaserCutTab(QWidget):
                         continue
 
                 current_table.insertRow(row_index)
-                current_table.setRowHeight(row_index, 70)
+                current_table.setRowHeight(row_index, 80)
 
                 self.table_laser_cut_parts_widgets.update({laser_cut_part: {}})
                 self.table_laser_cut_parts_widgets[laser_cut_part].update({"row": row_index})
@@ -631,9 +652,9 @@ class LaserCutTab(QWidget):
 
                 if self.category.name != "Recut":
                     if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
-                        self.set_table_row_color(current_table, row_index, "#3F1E25")
+                        self.set_table_row_color(current_table, row_index, f"{theme_var('table-red-quantity')}")
                     elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
-                        self.set_table_row_color(current_table, row_index, "#413C28")
+                        self.set_table_row_color(current_table, row_index, f"{theme_var('table-yellow-quantity')}")
                 row_index += 1
 
         current_table.blockSignals(False)
@@ -653,26 +674,17 @@ class LaserCutTab(QWidget):
 
         self.load_context_menu()
 
-    def load_assembly_menu(self, menu: QMenu, job: Job, assemblies: list[Assembly], level=0, prefix=""):
-        for i, assembly in enumerate(assemblies):
-            is_last = i == len(assemblies) - 1
-            next_assembly = None if is_last else assemblies[i + 1]
-            has_next_assembly = next_assembly is not None
-
-            action_text = prefix + ("├ " if has_next_assembly else "└ ") + assembly.name
-
-            action = QAction(action_text, menu)
-            action.triggered.connect(partial(self.add_to_assembly, job, assembly))
-            menu.addAction(action)
-            if assembly.sub_assemblies:
-                sub_prefix = prefix + ("│   " if has_next_assembly else "    ")
-                self.load_assembly_menu(menu, job, assembly.sub_assemblies, level + 1, sub_prefix)
-
     def load_context_menu(self):
         current_table = self.category_tables[self.category]
-        if current_table.contextMenuPolicy() == Qt.ContextMenuPolicy.CustomContextMenu:
-            return
+        try:
+            # Disconnect the existing context menu if already connected
+            current_table.customContextMenuRequested.disconnect()
+        except TypeError:
+            # If not connected, do nothing
+            pass
+
         current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
         menu = QMenu(self)
         action = QAction("View Part Data", self)
         action.triggered.connect(self.edit_laser_cut_part)
@@ -826,15 +838,29 @@ class LaserCutTab(QWidget):
 
         menu.addSeparator()
 
-        job_planner_menu = QMenu("Add to Job", self)
+        job_planner_menu = QMenu("Add to Job Planner", self)
         for job_widget in self.parent.job_planner_widget.job_widgets:
             job = job_widget.job
             job_menu = QMenu(job.name, job_planner_menu)
-            for assembly in job.assemblies:
-                self.load_assembly_menu(job_menu, job, [assembly])
+            for assembly_widget in job_widget.get_all_assembly_widgets():
+                action = QAction(f"{assembly_widget.assembly.name}", menu)
+                action.triggered.connect(partial(self.add_to_assembly, job, assembly_widget.assembly))
+                job_menu.addAction(action)
             job_planner_menu.addMenu(job_menu)
 
         menu.addMenu(job_planner_menu)
+
+        job_quoter_menu = QMenu("Add to Job Quoter", self)
+        for job_widget in self.parent.job_quote_widget.job_widgets:
+            job = job_widget.job
+            job_menu = QMenu(job.name, job_quoter_menu)
+            for assembly_widget in job_widget.get_all_assembly_widgets():
+                action = QAction(f"{assembly_widget.assembly.name}", menu)
+                action.triggered.connect(partial(self.add_to_assembly, job, assembly_widget.assembly))
+                job_menu.addAction(action)
+            job_quoter_menu.addMenu(job_menu)
+
+        menu.addMenu(job_quoter_menu)
 
         # if self.category.name != "Recut":
         #     action1 = QAction("Generate Quote with Selected Parts", self)
@@ -951,19 +977,19 @@ class LaserCutTab(QWidget):
                         self.set_table_row_color(
                             current_table,
                             self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            "#3F1E25",
+                            f"{theme_var('table-red-quantity')}",
                         )
                     elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
                         self.set_table_row_color(
                             current_table,
                             self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            "#413C28",
+                            f"{theme_var('table-yellow-quantity')}",
                         )
                     else:
                         self.set_table_row_color(
                             current_table,
                             self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            "#2c2c2c",
+                            theme_var("surface-container-low"),
                         )
                 self.laser_cut_inventory.save()
                 self.sync_changes()
@@ -1098,9 +1124,9 @@ class LaserCutTab(QWidget):
                 <td>{laser_cut_part.shelf_number}</td>
                 <td>{laser_cut_part.modified_date.replace("\n", "<br>")}</td></tr>'''
             html += "</tbody></table><body><html>"
-        with open("print_selected_parts.html", "w", encoding="utf-8") as f:
-            f.write(html)
-        self.parent.open_print_selected_parts()
+            with open("print_selected_parts.html", "w", encoding="utf-8") as f:
+                f.write(html)
+            self.parent.open_print_selected_parts()
 
     def set_table_row_color(self, table: LaserCutPartsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
@@ -1138,8 +1164,15 @@ class LaserCutTab(QWidget):
         if scroll_position := self.parent.get_scroll_position(self.category):
             self.category_tables[self.category].verticalScrollBar().setValue(scroll_position)
 
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(Icons.redock_icon)
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
     def sync_changes(self):
-        self.parent.sync_changes()
+        self.parent.sync_changes("laser_cut_inventory_tab")
 
     def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())

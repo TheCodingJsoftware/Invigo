@@ -140,9 +140,6 @@ Press 'Generate' when finished.</string>
                <property name="autoFillBackground">
                 <bool>false</bool>
                </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
                <property name="text">
                 <string>Move Parts to Next Process</string>
                </property>
@@ -150,6 +147,12 @@ Press 'Generate' when finished.</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
                 <bool>true</bool>
                </property>
               </widget>
@@ -171,9 +174,6 @@ Press 'Generate' when finished.</string>
                <property name="toolTip">
                 <string>Will subtract sheet quantity based on whats in the nest.</string>
                </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
                <property name="text">
                 <string>Remove Sheet Quantities</string>
                </property>
@@ -181,6 +181,12 @@ Press 'Generate' when finished.</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
                 <bool>true</bool>
                </property>
               </widget>
@@ -211,6 +217,12 @@ Press 'Generate' when finished.</string>
                <property name="checked">
                 <bool>true</bool>
                </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item row="0" column="0">
@@ -237,6 +249,12 @@ Press 'Generate' when finished.</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
                 <bool>true</bool>
                </property>
               </widget>
@@ -287,6 +305,12 @@ if not found in Workspace</string>
                <property name="checked">
                 <bool>true</bool>
                </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item row="3" column="1">
@@ -314,6 +338,12 @@ if too many are nested</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
                 <bool>true</bool>
                </property>
               </widget>

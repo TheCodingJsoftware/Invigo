@@ -2,9 +2,12 @@ from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QColor, QTextCharFormat
 from PyQt6.QtWidgets import QApplication, QCalendarWidget
 
+from ui.theme import theme_var
+
 
 class DateRangeCalendar(QCalendarWidget):
     date_range_changed = pyqtSignal(tuple)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setObjectName("select_range_calendar")
@@ -14,7 +17,7 @@ class DateRangeCalendar(QCalendarWidget):
 
         self.highlighter_format = QTextCharFormat()
         # get the calendar default highlight setting
-        self.highlighter_format.setBackground(QColor("#3daee9"))
+        self.highlighter_format.setBackground(QColor(theme_var("primary")))
         self.highlighter_format.setForeground(QColor("white"))
         self.highlighter_format.setFontWeight(400)
 

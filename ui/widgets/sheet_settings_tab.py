@@ -1,20 +1,22 @@
 import contextlib
 import os
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QDoubleSpinBox, QInputDialog, QLineEdit, QListWidget, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtGui import QCursor, QFont
+from PyQt6.QtWidgets import QAbstractItemView, QInputDialog, QMenu, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget
+from ui.icons import Icons
+from ui.widgets.sheet_settings_tab_UI import Ui_Form
 from utils.settings import Settings
 from utils.sheet_settings.pounds_per_square_foot import Pound
 from utils.sheet_settings.price_per_pound import Price
-from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.sheet_settings.thickness import Thickness
 
-settings_file = Settings()
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
 
 
 class PricePerPoundTableWidget(CustomTableWidget):
@@ -60,13 +62,34 @@ class PoundsPerSquareFootTab(CustomTabWidget):
         super().__init__(parent)
 
 
-class SheetSettingsTab(QWidget):
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "SheetSettingsTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Sheet Settings")
+        self.setLayout(self.original_layout)
+        self.setObjectName("popout_widget")
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
+
+
+class SheetSettingsTab(QWidget, Ui_Form):
     def __init__(self, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/sheet_settings_tab.ui", self)
-        self.parent = parent
-        self.sheet_settings: SheetSettings = self.parent.sheet_settings
-        self.sheet_settings.load_data()
+        self.setupUi(self)
+        self.parent: MainWindow = parent
+        self.sheet_settings = self.parent.sheet_settings
+
+        self.settings_file = Settings()
 
         self.price_per_pound_table: PricePerPoundTableWidget = None
         self.price_per_pound_table_items: dict[Price, QTableWidgetItem] = {}
@@ -79,67 +102,39 @@ class SheetSettingsTab(QWidget):
         self.load_ui()
 
     def load_ui(self):
+        self.sheet_settings.load_data()
+        self.settings_file.load_data()
         self.tables_font = QFont()
-        self.tables_font.setFamily(settings_file.get_value("tables_font")["family"])
-        self.tables_font.setPointSize(settings_file.get_value("tables_font")["pointSize"])
-        self.tables_font.setWeight(settings_file.get_value("tables_font")["weight"])
-        self.tables_font.setItalic(settings_file.get_value("tables_font")["italic"])
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
-        self.nitrogen_cost_spinbox = self.findChild(QDoubleSpinBox, "nitrogen_cost_spinbox")
         self.nitrogen_cost_spinbox.setValue(self.sheet_settings.cost_for_laser["Nitrogen"])
         self.nitrogen_cost_spinbox.editingFinished.connect(self.nitrogen_spin_box_changed)
-        self.co2_cost_spinbox = self.findChild(QDoubleSpinBox, "co2_cost_spinbox")
+
         self.co2_cost_spinbox.setValue(self.sheet_settings.cost_for_laser["CO2"])
         self.co2_cost_spinbox.editingFinished.connect(self.co2_spin_box_changed)
 
-        self.tabWidget = self.findChild(QTabWidget, "tabWidget")
-
-        self.price_per_pound_layout = self.findChild(QVBoxLayout, "price_per_pound_layout")
-
-        self.pounds_per_square_foot_layout = self.findChild(QVBoxLayout, "pounds_per_square_foot_layout")
-
-        self.materials_list = self.findChild(QListWidget, "materials_list")
         self.materials_list.doubleClicked.connect(self.rename_material)
         self.materials_list.itemSelectionChanged.connect(self.material_list_clicked)
 
-        self.pushButton_add_material = self.findChild(QPushButton, "pushButton_add_material")
         self.pushButton_add_material.clicked.connect(self.add_material)
-        self.pushButton_add_material.setIcon(QIcon("icons/list_add.png"))
+        self.pushButton_add_material.setIcon(Icons.plus_icon)
 
-        self.pushButton_remove_material = self.findChild(QPushButton, "pushButton_remove_material")
         self.pushButton_remove_material.clicked.connect(self.remove_material)
-        self.pushButton_remove_material.setIcon(QIcon("icons/list_remove.png"))
+        self.pushButton_remove_material.setIcon(Icons.minus_icon)
 
-        self.thicknesses_list = self.findChild(QListWidget, "thicknesses_list")
         self.thicknesses_list.doubleClicked.connect(self.rename_thickness)
         self.thicknesses_list.itemSelectionChanged.connect(self.thickness_list_clicked)
 
-        self.pushButton_add_thickness = self.findChild(QPushButton, "pushButton_add_thickness")
         self.pushButton_add_thickness.clicked.connect(self.add_thickness)
-        self.pushButton_add_thickness.setIcon(QIcon("icons/list_add.png"))
+        self.pushButton_add_thickness.setIcon(Icons.plus_icon)
 
-        self.pushButton_remove_thickness = self.findChild(QPushButton, "pushButton_remove_thickness")
         self.pushButton_remove_thickness.clicked.connect(self.remove_thickness)
-        self.pushButton_remove_thickness.setIcon(QIcon("icons/list_remove.png"))
-
-        self.tableWidget_thickness_id = self.findChild(QTableWidget, "tableWidget_thickness_id")
+        self.pushButton_remove_thickness.setIcon(Icons.minus_icon)
 
         self.load_thickness_ids()
-
-        self.lineEdit_SS_name = self.findChild(QLineEdit, "lineEdit_SS_name")
-        self.comboBox_SS_cut = self.findChild(QComboBox, "comboBox_SS_cut")
-
-        self.lineEdit_ST_name = self.findChild(QLineEdit, "lineEdit_ST_name")
-        self.comboBox_ST_cut = self.findChild(QComboBox, "comboBox_ST_cut")
-
-        self.lineEdit_AL_name = self.findChild(QLineEdit, "lineEdit_AL_name")
-        self.comboBox_AL_cut = self.findChild(QComboBox, "comboBox_AL_cut")
-
-        self.lineEdit_GALV_name = self.findChild(QLineEdit, "lineEdit_GALV_name")
-        self.comboBox_GALV_cut = self.findChild(QComboBox, "comboBox_GALV_cut")
-
-        self.lineEdit_GALN_name = self.findChild(QLineEdit, "lineEdit_GALN_name")
-        self.comboBox_GALN_cut = self.findChild(QComboBox, "comboBox_GALN_cut")
 
         self.load_material_cutting_methods()
 
@@ -153,6 +148,10 @@ class SheetSettingsTab(QWidget):
         self.comboBox_GALV_cut.currentTextChanged.connect(self.material_cutting_changes)
         self.lineEdit_GALN_name.editingFinished.connect(self.material_cutting_changes)
         self.comboBox_GALN_cut.currentTextChanged.connect(self.material_cutting_changes)
+
+        self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
+        self.pushButton_popout.clicked.connect(self.popout)
+        self.pushButton_popout.setIcon(Icons.dock_icon)
 
         self.load_tabs()
 
@@ -410,11 +409,18 @@ class SheetSettingsTab(QWidget):
             self.sync_changes()
             self.load_tabs()
 
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(Icons.redock_icon)
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
     def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
     def sync_changes(self):
-        self.parent.sync_changes()
+        self.parent.sync_changes("sheet_settings_tab")
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):

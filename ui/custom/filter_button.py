@@ -4,6 +4,8 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QCheckBox, QPushButton, QVBoxLayout, QWidget
 
+from ui.icons import Icons
+
 
 class DropDownWidget(QWidget):
     checkbox_states_changed = pyqtSignal(dict)  # Signal with checkbox states dictionary
@@ -12,6 +14,7 @@ class DropDownWidget(QWidget):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.Popup)
         self.setLayout(QVBoxLayout())
+        self.setObjectName("drop_down")
         self.options = options
         self.checkbox_states = {option: False for option in self.options}
 
@@ -37,9 +40,7 @@ class FilterButton(QPushButton):
         self.dropdown.checkbox_states_changed.connect(self.on_checkbox_states_changed)
         self.clicked.connect(self.toggle_dropdown)
         self.update_title({})
-
-        icon = QIcon("ui/svg/filter.svg")
-        self.setIcon(icon)
+        self.setIcon(QIcon(Icons.filter_icon))
 
     def show_dropdown(self):
         button_rect = self.rect()

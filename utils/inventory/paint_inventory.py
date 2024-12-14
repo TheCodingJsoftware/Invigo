@@ -1,5 +1,5 @@
 import contextlib
-from typing import Union
+from typing import Union, Optional
 
 import msgspec
 
@@ -26,58 +26,66 @@ class PaintInventory(Inventory):
         self.primers.append(primer)
 
     def remove_primer(self, primer: Primer):
-        self.primers.remove(primer)
+        with contextlib.suppress(ValueError):  # Already removed
+            self.primers.remove(primer)
 
-    def get_primer(self, name: str) -> Primer:
+    def get_primer(self, name: str) -> Optional[Primer]:
         for primer in self.primers:
             if primer.name == name:
                 return primer
+        return None
 
     def get_all_primers(self) -> list[str]:
         return [primer.name for primer in self.primers]
 
     def get_primer_cost(self, laser_cut_part: LaserCutPart) -> float:
-        with contextlib.suppress(ZeroDivisionError):
+        with contextlib.suppress(ZeroDivisionError, AttributeError):
             if laser_cut_part.uses_primer:
                 if primer := self.get_primer(laser_cut_part.primer_name):
-                    primer_cost_per_gallon = primer.component.price
-                    gallons_used = (((laser_cut_part.surface_area * 2) / 144) / primer.average_coverage) * ((laser_cut_part.primer_overspray / 100) + 1)
-                    return primer_cost_per_gallon * gallons_used
+                    if primer.component:
+                        primer_cost_per_gallon = primer.component.price
+                        gallons_used = (((laser_cut_part.surface_area * 2) / 144) / primer.average_coverage) * ((laser_cut_part.primer_overspray / 100) + 1)
+                        return primer_cost_per_gallon * gallons_used
         return 0.0
 
     def add_paint(self, paint: Paint):
         self.paints.append(paint)
 
     def remove_paint(self, paint: Paint):
-        self.paints.remove(paint)
+        with contextlib.suppress(ValueError):  # Already removed
+            self.paints.remove(paint)
 
-    def get_paint(self, name: str) -> Paint:
+    def get_paint(self, name: str) -> Optional[Paint]:
         for paint in self.paints:
             if paint.name == name:
                 return paint
+        return None
 
     def get_all_paints(self) -> list[str]:
         return [paint.name for paint in self.paints]
 
     def get_paint_cost(self, laser_cut_part: LaserCutPart) -> float:
-        with contextlib.suppress(ZeroDivisionError):
+        with contextlib.suppress(ZeroDivisionError, AttributeError):
             if laser_cut_part.uses_paint:
                 if paint := self.get_paint(laser_cut_part.paint_name):
-                    paint_cost_per_gallon = paint.component.price
-                    gallons_used = (((laser_cut_part.surface_area * 2) / 144) / paint.average_coverage) * ((laser_cut_part.paint_overspray / 100) + 1)
-                    return paint_cost_per_gallon * gallons_used
+                    if paint.component:
+                        paint_cost_per_gallon = paint.component.price
+                        gallons_used = (((laser_cut_part.surface_area * 2) / 144) / paint.average_coverage) * ((laser_cut_part.paint_overspray / 100) + 1)
+                        return paint_cost_per_gallon * gallons_used
         return 0.0
 
     def add_powder(self, powder: Powder):
         self.powders.append(powder)
 
     def remove_powder(self, powder: Powder):
-        self.powders.remove(powder)
+        with contextlib.suppress(ValueError):  # Already removed
+            self.powders.remove(powder)
 
-    def get_powder(self, name: str) -> Powder:
+    def get_powder(self, name: str) -> Optional[Powder]:
         for powder in self.powders:
             if powder.name == name:
                 return powder
+        return None
 
     def get_all_powders(self) -> list[str]:
         return [powder.name for powder in self.powders]
@@ -86,9 +94,10 @@ class PaintInventory(Inventory):
         with contextlib.suppress(ZeroDivisionError, AttributeError):
             if laser_cut_part.uses_powder:
                 if powder := self.get_powder(laser_cut_part.powder_name):
-                    estimated_sq_ft_coverage = (192.3 / (powder.gravity * mil_thickness)) * (laser_cut_part.powder_transfer_efficiency / 100)
-                    estimated_lbs_needed = ((laser_cut_part.surface_area * 2) / 144) / estimated_sq_ft_coverage
-                    return estimated_lbs_needed * powder.component.price
+                    if powder.component:
+                        estimated_sq_ft_coverage = (192.3 / (powder.gravity * mil_thickness)) * (laser_cut_part.powder_transfer_efficiency / 100)
+                        estimated_lbs_needed = ((laser_cut_part.surface_area * 2) / 144) / estimated_sq_ft_coverage
+                        return estimated_lbs_needed * powder.component.price
         return 0.0
 
     def save(self):

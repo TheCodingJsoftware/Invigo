@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>506</width>
+    <width>548</width>
     <height>406</height>
    </rect>
   </property>
@@ -32,7 +32,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="contextMenuPolicy">
-      <enum>Qt::ActionsContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -79,8 +79,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>484</width>
-               <height>131</height>
+               <width>526</width>
+               <height>124</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -113,7 +113,7 @@
 Press 'Generate' when finished.</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -132,7 +132,7 @@ Press 'Generate' when finished.</string>
            <string>Options</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -187,43 +187,18 @@ Press 'Generate' when finished.</string>
                   <string>Primarily used to generate Quotes/Workorders from Workspace. Instead of combining all items into one list, it seperates them by their respective nest/assembly.</string>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton#pushButton_group{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_group:checked{
-    background-color: #3daee9;
-}
-QPushButton#pushButton_group:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_group:pressed{
-    background-color: #2b92c5;
-    color: #171717;
-}
-
-QPushButton#pushButton_group:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_group:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_group:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Group Items by Nest</string>
                  </property>
                  <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="autoDefault">
+                  <bool>false</bool>
+                 </property>
+                 <property name="flat">
                   <bool>true</bool>
                  </property>
                 </widget>
@@ -252,39 +227,7 @@ QPushButton:pressed#pushButton_group:!checked {
                     <string>Will generate and save a quote to the Quote directory</string>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">QPushButton#pushButton_quote{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_quote:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_quote:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_quote:pressed{
-    background-color: #2b92c5;
-    color: #171717;
-}
-
-QPushButton#pushButton_quote:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_quote:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_quote:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Generate Quote</string>
@@ -294,6 +237,12 @@ QPushButton:pressed#pushButton_quote:!checked {
                    </property>
                    <property name="checked">
                     <bool>false</bool>
+                   </property>
+                   <property name="autoDefault">
+                    <bool>false</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -312,43 +261,18 @@ QPushButton:pressed#pushButton_quote:!checked {
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">QPushButton#pushButton_packingslip{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_packingslip:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_packingslip:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_packingslip:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_packingslip:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_packingslip:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_packingslip:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Generate Packing Slip</string>
                    </property>
                    <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoDefault">
+                    <bool>false</bool>
+                   </property>
+                   <property name="flat">
                     <bool>true</bool>
                    </property>
                   </widget>
@@ -371,43 +295,18 @@ QPushButton:pressed#pushButton_packingslip:!checked {
                     <string>Will generate and save a workorder to the Workorder directory</string>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">QPushButton#pushButton_workorder{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_workorder:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_workorder:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_workorder:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_workorder:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_workorder:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_workorder:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Generate Workorder</string>
                    </property>
                    <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoDefault">
+                    <bool>false</bool>
+                   </property>
+                   <property name="flat">
                     <bool>true</bool>
                    </property>
                   </widget>
@@ -444,10 +343,10 @@ QPushButton:pressed#pushButton_workorder:!checked {
              <item>
               <spacer name="verticalSpacer">
                <property name="orientation">
-                <enum>Qt::Vertical</enum>
+                <enum>Qt::Orientation::Vertical</enum>
                </property>
                <property name="sizeType">
-                <enum>QSizePolicy::Fixed</enum>
+                <enum>QSizePolicy::Policy::Fixed</enum>
                </property>
                <property name="sizeHint" stdset="0">
                 <size>
@@ -474,38 +373,7 @@ QPushButton:pressed#pushButton_workorder:!checked {
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton#pushButton_remove_sheet_quantity{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_remove_sheet_quantity:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_remove_sheet_quantity:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_remove_sheet_quantity:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_remove_sheet_quantity:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_remove_sheet_quantity:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_remove_sheet_quantity:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Remove Sheet Quantities</string>
@@ -515,6 +383,12 @@ QPushButton:pressed#pushButton_remove_sheet_quantity:!checked {
                  </property>
                  <property name="checked">
                   <bool>false</bool>
+                 </property>
+                 <property name="autoDefault">
+                  <bool>false</bool>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
@@ -539,43 +413,18 @@ QPushButton:pressed#pushButton_remove_sheet_quantity:!checked {
                   <bool>false</bool>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton#pushButton_update_inventory{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_update_inventory:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_update_inventory:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_update_inventory:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_update_inventory:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_update_inventory:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_update_inventory:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Add Parts to Inventory</string>
                  </property>
                  <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="autoDefault">
+                  <bool>false</bool>
+                 </property>
+                 <property name="flat">
                   <bool>true</bool>
                  </property>
                 </widget>
@@ -592,7 +441,7 @@ QPushButton:pressed#pushButton_update_inventory:!checked {
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>

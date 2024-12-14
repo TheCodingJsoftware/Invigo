@@ -1,9 +1,11 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.set_custom_limit_dialog_UI import Ui_Form
+from ui.icons import Icons
 
-class SetCustomLimitDialog(QDialog):
+
+class SetCustomLimitDialog(QDialog, Ui_Form):
     def __init__(
         self,
         parent=None,
@@ -12,11 +14,11 @@ class SetCustomLimitDialog(QDialog):
         yellow_limit: int = 20,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/set_custom_limit_dialog.ui", self)
+        self.setupUi(self)
 
         self.message = message
 
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.setWindowTitle("Set Custom Quantity Limit")
         self.lblMessage.setText(self.message)

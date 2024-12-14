@@ -1,14 +1,15 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.add_sheet_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.inventory.category import Category
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 
-class AddSheetDialog(QDialog):
+class AddSheetDialog(QDialog, Ui_Form):
     def __init__(
         self,
         sheet: Sheet,
@@ -18,7 +19,7 @@ class AddSheetDialog(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/add_sheet_dialog.ui", self)
+        self.setupUi(self)
 
         self.sheet_settings = sheet_settings
         self.category = category
@@ -26,7 +27,7 @@ class AddSheetDialog(QDialog):
         self.sheets_inventory = sheets_inventory
 
         self.setWindowTitle("Add sheet")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)

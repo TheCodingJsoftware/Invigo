@@ -1,20 +1,20 @@
+import os
 from functools import partial
+
 from natsort import natsorted
-from PyQt6 import uic
-from PyQt6.QtCore import Qt, QUrl, QMarginsF, QEventLoop, QObject, QPointF
-from PyQt6.QtGui import QPainter
+from PyQt6.QtCore import Qt, QUrl
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout, QApplication
-from PyQt6.QtPrintSupport import QPrinter, QPrintDialog, QPrintPreviewDialog
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QPushButton
+
+from ui.icons import Icons
+from ui.windows.pdf_viewer_UI import Ui_MainWindow
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 
-import subprocess, sys, os
 
-
-class PDFViewer(QMainWindow):
+class PDFViewer(QMainWindow, Ui_MainWindow):
     def __init__(self, pdf_files: list[str], file_path: str, parent):
         super().__init__(parent)
-        uic.loadUi("ui/windows/pdf_viewer.ui", self)
+        self.setupUi(self)
 
         self.files = pdf_files
         self.buttons: list[QPushButton] = []
@@ -32,24 +32,21 @@ class PDFViewer(QMainWindow):
         self.webView.printRequested.connect(self.print_pdf)
         # self.webView.page().loadFinished.connect(self.hide_thumbnails)
 
-        self.webview_layout = self.findChild(QVBoxLayout, "webview_layout")
         self.webview_layout.addWidget(self.webView)
 
         self.current_pdf_file: str = ""
 
         self.load_pdf_buttons()
 
-        self.files_layout = self.findChild(QVBoxLayout, "files_layout")
         self.files_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.splitter = self.findChild(QSplitter, "splitter")
         self.splitter.setStretchFactor(0, 0)
         self.splitter.setStretchFactor(1, 1)
 
         self.pdf_button_pressed(file_path)
 
-        self.pushButton_print = self.findChild(QPushButton, "pushButton_print")
         self.pushButton_print.clicked.connect(self.print_pdf)
+        self.pushButton_print.setIcon(Icons.printer_icon)
 
     def pdf_button_pressed(self, path: str):
         file_name = path.split("\\")[-1].replace(".pdf", "")

@@ -32,7 +32,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="contextMenuPolicy">
-      <enum>Qt::ActionsContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -80,7 +80,7 @@
                <x>0</x>
                <y>0</y>
                <width>443</width>
-               <height>74</height>
+               <height>72</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -113,7 +113,7 @@
 Press 'Add' when finished.</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                 </property>
                </widget>
               </item>
@@ -145,7 +145,7 @@ Press 'Add' when finished.</string>
              <string>Item name:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
             <property name="buddy">
              <cstring>lineEdit_name</cstring>
@@ -166,7 +166,7 @@ Press 'Add' when finished.</string>
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -187,6 +187,12 @@ Press 'Add' when finished.</string>
             <property name="text">
              <string>Add</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -199,6 +205,12 @@ Press 'Add' when finished.</string>
             </property>
             <property name="text">
              <string>Cancel</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

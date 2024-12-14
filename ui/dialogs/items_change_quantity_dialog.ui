@@ -33,7 +33,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="contextMenuPolicy">
-      <enum>Qt::ActionsContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -81,7 +81,7 @@
                <x>0</x>
                <y>0</y>
                <width>462</width>
-               <height>227</height>
+               <height>219</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -112,7 +112,7 @@
                  <string>TextLabel</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -131,7 +131,7 @@
            <string>Change Quantities by</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -187,44 +187,18 @@
                 <string>Will remove quantities from the selected components.</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton#pushButton_item{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_item:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_item:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_item:pressed{
-    background-color: #2b92c5;
-    color: #171717;
-}
-
-QPushButton#pushButton_item:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_item:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_item:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>Selected Item</string>
                </property>
                <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
                 <bool>true</bool>
                </property>
               </widget>
@@ -247,39 +221,7 @@ QPushButton:pressed#pushButton_item:!checked {
                 <string>Will remove quantities from all items in the category that is currently open.</string>
                </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton#pushButton_category{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_category:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_category:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_category:pressed{
-    background-color: #2b92c5;
-    color: #171717;
-}
-
-QPushButton#pushButton_category:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_category:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_category:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string>All Items in Category</string>
@@ -289,6 +231,12 @@ QPushButton:pressed#pushButton_category:!checked {
                </property>
                <property name="checked">
                 <bool>false</bool>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -309,7 +257,7 @@ QPushButton:pressed#pushButton_category:!checked {
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -354,7 +302,7 @@ QPushButton:pressed#pushButton_category:!checked {
           <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -371,7 +319,7 @@ QPushButton:pressed#pushButton_category:!checked {
           <item>
            <spacer name="horizontalSpacer_3">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>

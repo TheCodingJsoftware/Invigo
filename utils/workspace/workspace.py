@@ -12,6 +12,7 @@ from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace_filter import SortingMethod, WorkspaceFilter
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
+from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
@@ -48,13 +49,13 @@ class Workspace:
                 new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
                 new_assembly.load_settings(assembly.to_dict())
 
-                parent_starting_date = datetime.strptime(parent.starting_date, '%Y-%m-%d')
+                parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
 
                 calculated_starting_date = parent_starting_date - timedelta(days=7.0)
                 calculated_ending_date = calculated_starting_date + timedelta(days=assembly.expected_time_to_complete)
 
-                new_assembly.starting_date = calculated_starting_date.strftime('%Y-%m-%d')
-                new_assembly.ending_date = calculated_ending_date.strftime('%Y-%m-%d')
+                new_assembly.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
+                new_assembly.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
 
                 new_assembly.quantity = 1
 
@@ -95,19 +96,29 @@ class Workspace:
         for job in self.jobs:
             assemblies.extend(job.get_all_assemblies())
         return assemblies
-
     def get_filtered_assemblies(self, job: Job) -> list[Assembly]:
         assemblies: list[Assembly] = []
         for assembly in job.get_all_assemblies():
-            if assembly.is_assembly_finished():
-                continue
-            if not assembly.all_laser_cut_parts_complete():
-                continue
-            if not assembly.all_sub_assemblies_complete():
-                continue
-            if current_tag := assembly.get_current_tag():
-                if current_tag.name != self.workspace_filter.current_tag:
+            # For assemblies marked as not part of process, show them when their parts are complete
+            # until their parent assembly is finished
+            if assembly.not_part_of_process:
+                if not assembly.all_laser_cut_parts_complete() or not assembly.all_sub_assemblies_complete():
                     continue
+                # Get parent assembly and check if it's finished
+                parent = assembly.parent_assembly
+                if parent and parent.is_assembly_finished():
+                    continue
+            else:
+                # Normal assembly filtering
+                if assembly.is_assembly_finished():
+                    continue
+                if not assembly.all_laser_cut_parts_complete():
+                    continue
+                if not assembly.all_sub_assemblies_complete():
+                    continue
+                if current_tag := assembly.get_current_tag():
+                    if current_tag.name != self.workspace_filter.current_tag:
+                        continue
 
             if any(self.workspace_filter.paint_filter.values()):
                 paints = assembly.get_all_paints()
@@ -172,8 +183,8 @@ class Workspace:
                 tag_start_date_str = job.flowtag_timeline.tags_data[laser_cut_part.get_current_tag()]["starting_date"]
                 tag_end_date_str = job.flowtag_timeline.tags_data[laser_cut_part.get_current_tag()]["ending_date"]
 
-                tag_start_date = datetime.strptime(tag_start_date_str, "%Y-%m-%d").date()
-                tag_end_date = datetime.strptime(tag_end_date_str, "%Y-%m-%d").date()
+                tag_start_date = datetime.strptime(tag_start_date_str, "%Y-%m-%d %I:%M %p").date()
+                tag_end_date = datetime.strptime(tag_end_date_str, "%Y-%m-%d %I:%M %p").date()
 
                 if filter_start_date and not filter_end_date:
                     if not (tag_start_date <= filter_start_date <= tag_end_date):
@@ -219,9 +230,9 @@ class Workspace:
         elif self.workspace_filter.sorting_method == SortingMethod.Z_TO_A:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.MOST_TO_LEAST:
-            grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity(), reverse=True)
+            grouped_laser_cut_parts.sort(key=lambda group: group.get_count(), reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.LEAST_TO_MOST:
-            grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity())
+            grouped_laser_cut_parts.sort(key=lambda group: group.get_count())
         elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_TO_LIGHT:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_TO_HEAVY:
@@ -232,6 +243,24 @@ class Workspace:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area)
 
         return grouped_laser_cut_parts
+
+    def get_grouped_assemblies(self, assemblies: list[Assembly]) -> list[WorkspaceAssemblyGroup]:
+        grouped_assemblies: list[WorkspaceAssemblyGroup] = []
+        parts_group: dict[str, WorkspaceAssemblyGroup] = {}
+
+        def create_part_group(base_assembly: Assembly):
+            group = WorkspaceAssemblyGroup()
+            group.add_assembly(base_assembly)
+            grouped_assemblies.append(group)
+            parts_group[base_assembly.name] = group
+
+        for assembly in assemblies:
+            if group := parts_group.get(assembly.name):
+                group.add_assembly(assembly)
+            else:
+                create_part_group(assembly)
+
+        return grouped_assemblies
 
     def get_grouped_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart]) -> list[WorkspaceLaserCutPartGroup]:
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []

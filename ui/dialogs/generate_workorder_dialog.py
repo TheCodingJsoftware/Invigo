@@ -1,15 +1,17 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.generate_workorder_dialog_UI import Ui_Form
+from ui.icons import Icons
 
-class GenerateWorkorderDialog(QDialog):
+
+class GenerateWorkorderDialog(QDialog, Ui_Form):
     def __init__(self, parent):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/generate_workorder_dialog.ui", self)
+        self.setupUi(self)
 
         self.setWindowTitle("Generate Workorder")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.pushButton_generate_printout.clicked.connect(self.generate_printout_pressed)
 

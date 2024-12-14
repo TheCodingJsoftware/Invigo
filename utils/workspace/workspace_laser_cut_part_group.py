@@ -22,7 +22,7 @@ class WorkspaceLaserCutPartGroup:
                 all_files.add(file)
         return list(all_files)
 
-    def get_all_files(self, file_ext: str) -> list[str]:
+    def get_all_files_with_ext(self, file_ext: str) -> list[str]:
         all_files: set[str] = set()
         for laser_cut_part in self:
             for bending_file in laser_cut_part.bending_files:
@@ -36,10 +36,21 @@ class WorkspaceLaserCutPartGroup:
                     all_files.add(cnc_milling_file)
         return list(all_files)
 
+    def get_all_files(self) -> list[str]:
+        all_files: set[str] = set()
+        for laser_cut_part in self:
+            for bending_file in laser_cut_part.bending_files:
+                all_files.add(bending_file)
+            for welding_file in laser_cut_part.welding_files:
+                all_files.add(welding_file)
+            for cnc_milling_file in laser_cut_part.cnc_milling_files:
+                all_files.add(cnc_milling_file)
+        return list(all_files)
+
     def get_parts_list(self) -> str:
         text = ""
         for laser_cut_part in self:
-            text += f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_name()}\n"
+            text += f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_flow_string()}\n"
         return text
 
     def mark_as_recoat(self, quantity: Optional[int] = None):
@@ -91,8 +102,14 @@ class WorkspaceLaserCutPartGroup:
         for i in range(quantity):
             self.laser_cut_parts[i].move_to_next_process()
 
-    def get_quantity(self) -> int:
+    def get_count(self) -> int:
         return len(self.laser_cut_parts)
+
+    def get_quantity(self) -> int:
+        quantity = 0
+        for laser_cut_part in self:
+            quantity += laser_cut_part.quantity
+        return quantity
 
     def __iter__(self) -> Iterator[LaserCutPart]:
         return iter(self.laser_cut_parts)

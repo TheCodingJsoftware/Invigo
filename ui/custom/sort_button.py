@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QToolButton, QVBoxLayout, QWidget
 
+from ui.icons import Icons
 from utils.workspace.workspace_filter import SortingMethod
 
 
@@ -14,6 +15,7 @@ class DropDownWidget(QWidget):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.Popup)
         self.setLayout(QVBoxLayout())
+        self.setObjectName("drop_down")
 
         for option in SortingMethod:
             button = QPushButton(self)
@@ -36,7 +38,7 @@ class SortButton(QPushButton):
         self.dropdown.sorting_method_selected.connect(self.on_sorting_method_selected)
         self.clicked.connect(self.toggle_dropdown)
 
-        icon = QIcon("ui/svg/sort.svg")
+        icon = QIcon(Icons.sort_fill_icon)
         self.setIcon(icon)
 
     def show_dropdown(self):
