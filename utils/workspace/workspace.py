@@ -10,14 +10,19 @@ from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
+from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_filter import SortingMethod, WorkspaceFilter
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
-from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class Workspace:
-    def __init__(self, workspace_settings: WorkspaceSettings, job_manager: JobManager, filename: str = "workspace"):
+    def __init__(
+        self,
+        workspace_settings: WorkspaceSettings,
+        job_manager: JobManager,
+        filename: str = "workspace",
+    ):
         self.jobs: list[Job] = []
 
         self.filename = filename
@@ -43,19 +48,34 @@ class Workspace:
         self.copy_assemblies(job.assemblies, new_job, job.ending_date)
         return new_job
 
-    def copy_assemblies(self, assemblies: list[Assembly], parent: Union[Job, Assembly], job_ending_date: str):
+    def copy_assemblies(
+        self,
+        assemblies: list[Assembly],
+        parent: Union[Job, Assembly],
+        job_ending_date: str,
+    ):
         for assembly in assemblies:
             for _ in range(int(assembly.quantity)):
-                new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
+                new_assembly = Assembly(
+                    {}, parent if isinstance(parent, Job) else parent.job
+                )
                 new_assembly.load_settings(assembly.to_dict())
 
-                parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
+                parent_starting_date = datetime.strptime(
+                    parent.starting_date, "%Y-%m-%d %I:%M %p"
+                )
 
                 calculated_starting_date = parent_starting_date - timedelta(days=7.0)
-                calculated_ending_date = calculated_starting_date + timedelta(days=assembly.expected_time_to_complete)
+                calculated_ending_date = calculated_starting_date + timedelta(
+                    days=assembly.expected_time_to_complete
+                )
 
-                new_assembly.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
-                new_assembly.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
+                new_assembly.starting_date = calculated_starting_date.strftime(
+                    "%Y-%m-%d %I:%M %p"
+                )
+                new_assembly.ending_date = calculated_ending_date.strftime(
+                    "%Y-%m-%d %I:%M %p"
+                )
 
                 new_assembly.quantity = 1
 
@@ -69,14 +89,18 @@ class Workspace:
                 if assembly.components:
                     self.copy_components(assembly.components, new_assembly)
                 if assembly.sub_assemblies:
-                    self.copy_assemblies(assembly.sub_assemblies, new_assembly, job_ending_date)
+                    self.copy_assemblies(
+                        assembly.sub_assemblies, new_assembly, job_ending_date
+                    )
 
     def copy_components(self, components: list[Component], assembly: Assembly):
         for component in components:
             new_component = Component(component.to_dict(), self.components_inventory)
             assembly.add_component(new_component)
 
-    def copy_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart], assembly: Assembly):
+    def copy_laser_cut_parts(
+        self, laser_cut_parts: list[LaserCutPart], assembly: Assembly
+    ):
         for part in laser_cut_parts:
             for _ in range(int(part.quantity)):
                 new_part = LaserCutPart(part.to_dict(), self.laser_cut_inventory)
@@ -96,13 +120,17 @@ class Workspace:
         for job in self.jobs:
             assemblies.extend(job.get_all_assemblies())
         return assemblies
+
     def get_filtered_assemblies(self, job: Job) -> list[Assembly]:
         assemblies: list[Assembly] = []
         for assembly in job.get_all_assemblies():
             # For assemblies marked as not part of process, show them when their parts are complete
             # until their parent assembly is finished
             if assembly.not_part_of_process:
-                if not assembly.all_laser_cut_parts_complete() or not assembly.all_sub_assemblies_complete():
+                if (
+                    not assembly.all_laser_cut_parts_complete()
+                    or not assembly.all_sub_assemblies_complete()
+                ):
                     continue
                 # Get parent assembly and check if it's finished
                 parent = assembly.parent_assembly
@@ -122,15 +150,27 @@ class Workspace:
 
             if any(self.workspace_filter.paint_filter.values()):
                 paints = assembly.get_all_paints()
-                if not any(self.workspace_filter.paint_filter.get(paint, False) for paint in paints.split()):
+                if not any(
+                    self.workspace_filter.paint_filter.get(paint, False)
+                    for paint in paints.split()
+                ):
                     continue
 
             search_text = self.workspace_filter.search_text.lower()
-            search_queries = [query.strip() for query in search_text.split(",")] if search_text else []
+            search_queries = (
+                [query.strip() for query in search_text.split(",")]
+                if search_text
+                else []
+            )
 
             if search_queries:
-                name_match = any(query in assembly.name.lower() for query in search_queries)
-                paint_match = any(query in assembly.get_all_paints().lower() for query in search_queries)
+                name_match = any(
+                    query in assembly.name.lower() for query in search_queries
+                )
+                paint_match = any(
+                    query in assembly.get_all_paints().lower()
+                    for query in search_queries
+                )
 
                 if not (name_match or paint_match):
                     continue
@@ -139,7 +179,11 @@ class Workspace:
         return self.sort_assemblies(assemblies)
 
     def sort_assemblies(self, assemblies: list[Assembly]) -> list[Assembly]:
-        if not self.workspace_filter.sorting_method or self.workspace_filter.sorting_method in [SortingMethod.LARGE_TO_SMALL, SortingMethod.SMALL_TO_LARGE]:
+        if (
+            not self.workspace_filter.sorting_method
+            or self.workspace_filter.sorting_method
+            in [SortingMethod.LARGE_TO_SMALL, SortingMethod.SMALL_TO_LARGE]
+        ):
             return assemblies
 
         if self.workspace_filter.sorting_method == SortingMethod.A_TO_Z:
@@ -157,7 +201,9 @@ class Workspace:
 
         return assemblies
 
-    def get_all_laser_cut_parts_with_similar_tag(self, query: str) -> list[LaserCutPart]:
+    def get_all_laser_cut_parts_with_similar_tag(
+        self, query: str
+    ) -> list[LaserCutPart]:
         laser_cut_parts: list[LaserCutPart] = []
         for job in self.jobs:
             for laser_cut_part in job.get_all_laser_cut_parts():
@@ -176,43 +222,84 @@ class Workspace:
                 if part_current_tag.name != self.workspace_filter.current_tag:
                     continue
 
-            if self.workspace_filter.enable_date_range and len(self.workspace_filter.date_range) > 0:
-                filter_start_date = self.workspace_filter.date_range[0].toPyDate() if self.workspace_filter.date_range[0] else None
-                filter_end_date = self.workspace_filter.date_range[1].toPyDate() if self.workspace_filter.date_range[1] else None
+            if (
+                self.workspace_filter.enable_date_range
+                and len(self.workspace_filter.date_range) > 0
+            ):
+                filter_start_date = (
+                    self.workspace_filter.date_range[0].toPyDate()
+                    if self.workspace_filter.date_range[0]
+                    else None
+                )
+                filter_end_date = (
+                    self.workspace_filter.date_range[1].toPyDate()
+                    if self.workspace_filter.date_range[1]
+                    else None
+                )
 
-                tag_start_date_str = job.flowtag_timeline.tags_data[laser_cut_part.get_current_tag()]["starting_date"]
-                tag_end_date_str = job.flowtag_timeline.tags_data[laser_cut_part.get_current_tag()]["ending_date"]
+                tag_start_date_str = job.flowtag_timeline.tags_data[
+                    laser_cut_part.get_current_tag()
+                ]["starting_date"]
+                tag_end_date_str = job.flowtag_timeline.tags_data[
+                    laser_cut_part.get_current_tag()
+                ]["ending_date"]
 
-                tag_start_date = datetime.strptime(tag_start_date_str, "%Y-%m-%d %I:%M %p").date()
-                tag_end_date = datetime.strptime(tag_end_date_str, "%Y-%m-%d %I:%M %p").date()
+                tag_start_date = datetime.strptime(
+                    tag_start_date_str, "%Y-%m-%d %I:%M %p"
+                ).date()
+                tag_end_date = datetime.strptime(
+                    tag_end_date_str, "%Y-%m-%d %I:%M %p"
+                ).date()
 
                 if filter_start_date and not filter_end_date:
                     if not (tag_start_date <= filter_start_date <= tag_end_date):
                         continue
                 elif filter_start_date and filter_end_date:
-                    if tag_end_date < filter_start_date or tag_start_date > filter_end_date:
+                    if (
+                        tag_end_date < filter_start_date
+                        or tag_start_date > filter_end_date
+                    ):
                         continue
 
             if any(self.workspace_filter.material_filter.values()):
-                if not self.workspace_filter.material_filter.get(laser_cut_part.material, False):
+                if not self.workspace_filter.material_filter.get(
+                    laser_cut_part.material, False
+                ):
                     continue
 
             if any(self.workspace_filter.thickness_filter.values()):
-                if not self.workspace_filter.thickness_filter.get(laser_cut_part.gauge, False):
+                if not self.workspace_filter.thickness_filter.get(
+                    laser_cut_part.gauge, False
+                ):
                     continue
 
             if any(self.workspace_filter.paint_filter.values()):
                 paints = laser_cut_part.get_all_paints()
-                if not any(self.workspace_filter.paint_filter.get(paint, False) for paint in paints.split()):
+                if not any(
+                    self.workspace_filter.paint_filter.get(paint, False)
+                    for paint in paints.split()
+                ):
                     continue
 
             search_text = self.workspace_filter.search_text.lower()
-            search_queries = [query.strip() for query in search_text.split(",")] if search_text else []
+            search_queries = (
+                [query.strip() for query in search_text.split(",")]
+                if search_text
+                else []
+            )
 
             if search_queries:
-                name_match = any(query in laser_cut_part.name.lower() for query in search_queries)
-                material_match = any(query in f"{laser_cut_part.gauge} {laser_cut_part.material}".lower() for query in search_queries)
-                paint_match = any(query in laser_cut_part.get_all_paints().lower() for query in search_queries)
+                name_match = any(
+                    query in laser_cut_part.name.lower() for query in search_queries
+                )
+                material_match = any(
+                    query in f"{laser_cut_part.gauge} {laser_cut_part.material}".lower()
+                    for query in search_queries
+                )
+                paint_match = any(
+                    query in laser_cut_part.get_all_paints().lower()
+                    for query in search_queries
+                )
 
                 if not (name_match or material_match or paint_match):
                     continue
@@ -221,30 +308,42 @@ class Workspace:
 
         return laser_cut_parts
 
-    def sort_grouped_laser_cut_parts(self, grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup]) -> list[WorkspaceLaserCutPartGroup]:
+    def sort_grouped_laser_cut_parts(
+        self, grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup]
+    ) -> list[WorkspaceLaserCutPartGroup]:
         if not self.workspace_filter.sorting_method:
             return grouped_laser_cut_parts
 
         if self.workspace_filter.sorting_method == SortingMethod.A_TO_Z:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name)
         elif self.workspace_filter.sorting_method == SortingMethod.Z_TO_A:
-            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name, reverse=True)
+            grouped_laser_cut_parts.sort(
+                key=lambda group: group.base_part.name, reverse=True
+            )
         elif self.workspace_filter.sorting_method == SortingMethod.MOST_TO_LEAST:
-            grouped_laser_cut_parts.sort(key=lambda group: group.get_count(), reverse=True)
+            grouped_laser_cut_parts.sort(
+                key=lambda group: group.get_count(), reverse=True
+            )
         elif self.workspace_filter.sorting_method == SortingMethod.LEAST_TO_MOST:
             grouped_laser_cut_parts.sort(key=lambda group: group.get_count())
         elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_TO_LIGHT:
-            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight, reverse=True)
+            grouped_laser_cut_parts.sort(
+                key=lambda group: group.base_part.weight, reverse=True
+            )
         elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_TO_HEAVY:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight)
         elif self.workspace_filter.sorting_method == SortingMethod.LARGE_TO_SMALL:
-            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area, reverse=True)
+            grouped_laser_cut_parts.sort(
+                key=lambda group: group.base_part.surface_area, reverse=True
+            )
         elif self.workspace_filter.sorting_method == SortingMethod.SMALL_TO_LARGE:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area)
 
         return grouped_laser_cut_parts
 
-    def get_grouped_assemblies(self, assemblies: list[Assembly]) -> list[WorkspaceAssemblyGroup]:
+    def get_grouped_assemblies(
+        self, assemblies: list[Assembly]
+    ) -> list[WorkspaceAssemblyGroup]:
         grouped_assemblies: list[WorkspaceAssemblyGroup] = []
         parts_group: dict[str, WorkspaceAssemblyGroup] = {}
 
@@ -262,7 +361,9 @@ class Workspace:
 
         return grouped_assemblies
 
-    def get_grouped_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart]) -> list[WorkspaceLaserCutPartGroup]:
+    def get_grouped_laser_cut_parts(
+        self, laser_cut_parts: list[LaserCutPart]
+    ) -> list[WorkspaceLaserCutPartGroup]:
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []
         parts_group: dict[str, WorkspaceLaserCutPartGroup] = {}
 
@@ -273,7 +374,11 @@ class Workspace:
             parts_group[(base_part.name, base_part.recut, base_part.recoat)] = group
 
         for laser_cut_part in laser_cut_parts:
-            group_key = (laser_cut_part.name, laser_cut_part.recut, laser_cut_part.recoat)
+            group_key = (
+                laser_cut_part.name,
+                laser_cut_part.recut,
+                laser_cut_part.recoat,
+            )
             if group := parts_group.get(group_key):
                 group.add_laser_cut_part(laser_cut_part)
             else:
@@ -286,7 +391,9 @@ class Workspace:
 
     def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.filename}.json"):
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as json_file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+            ) as json_file:
                 json_file.write("{}")
 
     def save(self):
@@ -296,7 +403,9 @@ class Workspace:
     def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-                data: dict[str, list[dict[str, object]]] = msgspec.json.decode(file.read())
+                data: dict[str, list[dict[str, object]]] = msgspec.json.decode(
+                    file.read()
+                )
         except msgspec.DecodeError:
             return
 

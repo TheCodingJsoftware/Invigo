@@ -32,7 +32,9 @@ class UploadJobThread(QThread):
                     "application/json",
                 )
             }
-            response = requests.post(self.upload_url, data=data, files=files, timeout=10)
+            response = requests.post(
+                self.upload_url, data=data, files=files, timeout=10
+            )
             if response.status_code == 200:
                 self.signal.emit("Job sent successfully")
             else:

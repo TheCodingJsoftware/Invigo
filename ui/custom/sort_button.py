@@ -2,14 +2,23 @@ from functools import partial
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QToolButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QPushButton,
+    QToolButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.icons import Icons
 from utils.workspace.workspace_filter import SortingMethod
 
 
 class DropDownWidget(QWidget):
-    sorting_method_selected = pyqtSignal(SortingMethod)  # Signal for the selected sorting method
+    sorting_method_selected = pyqtSignal(
+        SortingMethod
+    )  # Signal for the selected sorting method
 
     def __init__(self):
         super().__init__()

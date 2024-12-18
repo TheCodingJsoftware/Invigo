@@ -101,7 +101,11 @@ class MachineCutTimeDoubleSpinBox(QDoubleSpinBox):
         minutes = int(((value - days) * 24 - hours) * 60)
 
         current_date_time = QDateTime.currentDateTime()
-        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
+        end_date_time = current_date_time.addDays(days).addSecs(
+            hours * 3600 + minutes * 60
+        )
 
-        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        time_delta = (
+            end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        )
         return timedelta(seconds=time_delta)

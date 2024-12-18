@@ -73,13 +73,25 @@ class WorkspaceSettings:
         return None
 
     def get_all_assembly_flow_tags(self) -> dict[str, Flowtag]:
-        return {flow_tag.get_flow_string(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.ASSEMBLY}
+        return {
+            flow_tag.get_flow_string(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.ASSEMBLY
+        }
 
     def get_all_laser_cut_part_flow_tags(self) -> dict[str, Flowtag]:
-        return {flow_tag.get_flow_string(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.LASER_CUT_PART}
+        return {
+            flow_tag.get_flow_string(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.LASER_CUT_PART
+        }
 
     def get_all_component_flow_tags(self) -> dict[str, Flowtag]:
-        return {flow_tag.get_flow_string(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.COMPONENT}
+        return {
+            flow_tag.get_flow_string(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.COMPONENT
+        }
 
     def add_flow_tag(self, flow_tags: Flowtags, flow_tag: Flowtag):
         flow_tags.add_flow_tag(flow_tag)
@@ -96,7 +108,9 @@ class WorkspaceSettings:
             self._reset_file()
 
     def _reset_file(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
             file.write("{}")
 
     def load_data(self):

@@ -12,7 +12,16 @@ if TYPE_CHECKING:
 
 
 class JobManager:
-    def __init__(self, sheet_settings: SheetSettings, sheets_inventory: SheetsInventory, workspace_settings: WorkspaceSettings, components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, paint_inventory: PaintInventory, parent):
+    def __init__(
+        self,
+        sheet_settings: SheetSettings,
+        sheets_inventory: SheetsInventory,
+        workspace_settings: WorkspaceSettings,
+        components_inventory: ComponentsInventory,
+        laser_cut_inventory: LaserCutInventory,
+        paint_inventory: PaintInventory,
+        parent,
+    ):
         self.parent: MainWindow = parent
 
         self.sheet_settings = sheet_settings

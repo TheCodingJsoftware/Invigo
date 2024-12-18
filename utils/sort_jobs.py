@@ -29,12 +29,22 @@ def get_data_from_excel(path_to_excel_file: str) -> dict:
     workbook = load_workbook(filename=path_to_excel_file)
     worksheet = workbook.active
     part_names_new_with_thickness = {}
-    part_name_column: int = _find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Part")
-    material_column: int = _find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Material")
-    thickness_column: int = _find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Thick")
-    quantity_column: int = _find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Parts Per")
+    part_name_column: int = _find_column(
+        path_to_excel_file=path_to_excel_file, column_name_to_find="Part"
+    )
+    material_column: int = _find_column(
+        path_to_excel_file=path_to_excel_file, column_name_to_find="Material"
+    )
+    thickness_column: int = _find_column(
+        path_to_excel_file=path_to_excel_file, column_name_to_find="Thick"
+    )
+    quantity_column: int = _find_column(
+        path_to_excel_file=path_to_excel_file, column_name_to_find="Parts Per"
+    )
     if quantity_column == -1:
-        quantity_column: int = _find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Qty")
+        quantity_column: int = _find_column(
+            path_to_excel_file=path_to_excel_file, column_name_to_find="Qty"
+        )
     for row in islice(worksheet.iter_rows(values_only=True), 1, None):
         part_name: str = row[part_name_column]
         material: str = row[material_column]
@@ -146,7 +156,9 @@ def get_all_file_paths_from_directory(directory_to_sort: str) -> list[str]:
     return file_paths
 
 
-def filter_file_paths(file_paths: list[str], desired_file_names: list[str]) -> list[str]:
+def filter_file_paths(
+    file_paths: list[str], desired_file_names: list[str]
+) -> list[str]:
     filtered_paths = []
     for file_path in file_paths:
         file_name = os.path.basename(file_path)
@@ -162,14 +174,20 @@ def sort_jobs(path_to_file: str, directory_to_sort: str, output_directory: str):
         data = get_data_from_excel(path_to_file)
     elif path_to_file.lower().endswith(".pdf"):
         data = get_data_from_pdf(path_to_file)
-    all_file_paths = get_all_file_paths_from_directory(directory_to_sort=directory_to_sort)
+    all_file_paths = get_all_file_paths_from_directory(
+        directory_to_sort=directory_to_sort
+    )
     filtered_paths = filter_file_paths(all_file_paths, list(data.keys()))
     new_copy_location = {}
     for file_path in filtered_paths:
         file_name: str = os.path.basename(file_path)
         name_without_extension: str = os.path.splitext(file_name)[0]
         extension: str = os.path.splitext(file_name)[1].replace(".", "").upper()
-        quantity_mulitplier: str = f" x{data[name_without_extension]['quantity']}" if int(data[name_without_extension]["quantity"]) > 1 else ""
+        quantity_mulitplier: str = (
+            f" x{data[name_without_extension]['quantity']}"
+            if int(data[name_without_extension]["quantity"]) > 1
+            else ""
+        )
         new_copy_location[file_path] = {
             "new_location": f"{output_directory}\\{extension}\\{data[name_without_extension]['thickness']}",
             "old_name": f"{output_directory}\\{extension}\\{data[name_without_extension]['thickness']}\\{file_name}",

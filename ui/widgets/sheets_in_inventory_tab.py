@@ -7,14 +7,34 @@ from typing import TYPE_CHECKING
 import sympy
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont
-from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QDateEdit, QHBoxLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QComboBox,
+    QDateEdit,
+    QHBoxLayout,
+    QInputDialog,
+    QLabel,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
-from ui.custom_widgets import CustomTableWidget, CustomTabWidget, HumbleDoubleSpinBox, OrderStatusButton
+from ui.custom_widgets import (
+    CustomTableWidget,
+    CustomTabWidget,
+    HumbleDoubleSpinBox,
+    OrderStatusButton,
+)
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
-from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
+from ui.dialogs.update_component_order_pending_dialog import (
+    UpdateComponentOrderPendingDialog,
+)
 from ui.icons import Icons
 from ui.theme import theme_var
 from ui.widgets.sheets_in_inventory_tab_UI import Ui_Form
@@ -94,28 +114,40 @@ class OrderWidget(QWidget):
             v_layout.setContentsMargins(1, 1, 1, 1)
             v_layout.setSpacing(0)
             order_status_button = OrderStatusButton(self)
-            order_status_button.setStyleSheet("QPushButton#order_status{border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;}")
+            order_status_button.setStyleSheet(
+                "QPushButton#order_status{border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;}"
+            )
             order_status_button.setText(f"Order Pending ({int(order.quantity)})")
             order_status_button.setToolTip(str(order))
             order_status_button.setChecked(True)
-            order_status_button.clicked.connect(partial(self.order_button_pressed, order, order_status_button))
+            order_status_button.clicked.connect(
+                partial(self.order_button_pressed, order, order_status_button)
+            )
 
             year, month, day = map(int, order.expected_arrival_time.split("-"))
             date = QDate(year, month, day)
 
             arrival_date = QDateEdit(self)
-            arrival_date.setStyleSheet("QDateEdit{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;} QDateEdit:hover{border-color: #3bba6d; }")
+            arrival_date.setStyleSheet(
+                "QDateEdit{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;} QDateEdit:hover{border-color: #3bba6d; }"
+            )
             arrival_date.wheelEvent = lambda event: self.parent.wheelEvent(event)
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
-            arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
+            arrival_date.dateChanged.connect(
+                partial(self.date_changed, order, arrival_date)
+            )
 
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
             self.orders_layout.addLayout(v_layout)
-        self.parent.category_tables[self.parent.category].setColumnWidth(7, 400)  # Widgets don't like being resized with columns
-        self.parent.update_sheet_row_color(self.parent.category_tables[self.parent.category], self.sheet)
+        self.parent.category_tables[self.parent.category].setColumnWidth(
+            7, 400
+        )  # Widgets don't like being resized with columns
+        self.parent.update_sheet_row_color(
+            self.parent.category_tables[self.parent.category], self.sheet
+        )
 
     def create_order(self):
         select_date_dialog = SetComponentOrderPendingDialog(
@@ -136,9 +168,13 @@ class OrderWidget(QWidget):
             self.parent.sync_changes()
             self.load_ui()
 
-    def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
+    def order_button_pressed(
+        self, order: Order, order_status_button: OrderStatusButton
+    ):
         self.orderOpened.emit()
-        dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.sheet.get_name()}", self)
+        dialog = UpdateComponentOrderPendingDialog(
+            order, f"Update order for {self.sheet.get_name()}", self
+        )
         if dialog.exec():
             if dialog.action == "CANCEL_ORDER":
                 self.sheet.remove_order(order)
@@ -199,7 +235,9 @@ class PopoutWidget(QWidget):
         super().__init__(parent)
         self.parent: MainWindow = parent
         self.original_layout = layout_to_popout
-        self.original_layout_parent: "SheetsInInventoryTab" = self.original_layout.parentWidget()
+        self.original_layout_parent: "SheetsInInventoryTab" = (
+            self.original_layout.parentWidget()
+        )
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Sheets In Inventory Tab")
         self.setLayout(self.original_layout)
@@ -210,7 +248,9 @@ class PopoutWidget(QWidget):
             self.original_layout_parent.setLayout(self.original_layout)
             self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
             self.original_layout_parent.pushButton_popout.clicked.disconnect()
-            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+            self.original_layout_parent.pushButton_popout.clicked.connect(
+                self.original_layout_parent.popout
+            )
         super().closeEvent(event)
 
 
@@ -229,7 +269,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.category: Category = None
         self.finished_loading: bool = False
         self.category_tables: dict[Category, SheetsTableWidget] = {}
-        self.table_sheets_widgets: dict[Sheet, dict[str, QTableWidgetItem | HumbleDoubleSpinBox | QComboBox]] = {}
+        self.table_sheets_widgets: dict[
+            Sheet, dict[str, QTableWidgetItem | HumbleDoubleSpinBox | QComboBox]
+        ] = {}
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
         self.last_selected_sheet: str = ""
@@ -242,10 +284,18 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
 
     def load_ui(self):
         self.tables_font = QFont()
-        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
-        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
-        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
-        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
+        self.tables_font.setFamily(
+            self.settings_file.get_value("tables_font")["family"]
+        )
+        self.tables_font.setPointSize(
+            self.settings_file.get_value("tables_font")["pointSize"]
+        )
+        self.tables_font.setWeight(
+            self.settings_file.get_value("tables_font")["weight"]
+        )
+        self.tables_font.setItalic(
+            self.settings_file.get_value("tables_font")["italic"]
+        )
 
         self.pushButton_add_new_sheet.clicked.connect(self.add_sheet)
         self.pushButton_add_new_sheet.setIcon(Icons.plus_circle_icon)
@@ -253,12 +303,16 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.verticalLayout_10.addWidget(self.tab_widget)
         self.checkBox_edit_sheets.toggled.connect(self.toggle_edit_mode)
 
-        self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
+        self.pushButton_popout.setStyleSheet(
+            "background-color: transparent; border: none;"
+        )
         self.pushButton_popout.clicked.connect(self.popout)
         self.pushButton_popout.setIcon(Icons.dock_icon)
 
     def add_category(self):
-        new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
+        new_category_name, ok = QInputDialog.getText(
+            self, "New Category", "Enter a name for a category:"
+        )
         if new_category_name and ok:
             new_category = Category(new_category_name)
             self.sheets_inventory.add_category(new_category)
@@ -281,7 +335,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         )
         if category_to_remove and ok:
             category = self.sheets_inventory.delete_category(category_to_remove)
-            tab_index_to_remove = self.tab_widget.get_tab_order().index(category_to_remove)
+            tab_index_to_remove = self.tab_widget.get_tab_order().index(
+                category_to_remove
+            )
             self.tab_widget.removeTab(tab_index_to_remove)
             self.clear_layout(self.category_tables[category])
             del self.category_tables[category]
@@ -305,11 +361,15 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 new_name = input_text
                 if new_name == self.category.name:
                     new_name += " - Copy"
-                new_category = self.sheets_inventory.duplicate_category(self.category, new_name)
+                new_category = self.sheets_inventory.duplicate_category(
+                    self.category, new_name
+                )
                 # self.sheets_inventory.add_category(new_category)
                 table = SheetsTableWidget(self.tab_widget)
                 self.category_tables.update({new_category: table})
-                self.tab_widget.insertTab(self.tab_widget.currentIndex() + 1, table, new_category.name)
+                self.tab_widget.insertTab(
+                    self.tab_widget.currentIndex() + 1, table, new_category.name
+                )
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
                 self.sheets_inventory.save()
@@ -337,8 +397,12 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.settings_file.load_data()
         self.tab_widget.clear()
         self.category_tables.clear()
-        all_categories = [category.name for category in self.sheets_inventory.get_categories()]
-        tab_order: list[str] = self.settings_file.get_value("category_tabs_order")["Sheets In Inventory"]
+        all_categories = [
+            category.name for category in self.sheets_inventory.get_categories()
+        ]
+        tab_order: list[str] = self.settings_file.get_value("category_tabs_order")[
+            "Sheets In Inventory"
+        ]
 
         # Updates the tab order to add categories that have not previously been added
         for category in all_categories:
@@ -352,7 +416,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 self.tab_widget.addTab(table, category.name)
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
-                table.verticalScrollBar().valueChanged.connect(self.save_scroll_position)
+                table.verticalScrollBar().valueChanged.connect(
+                    self.save_scroll_position
+                )
         self.tab_widget.currentChanged.connect(self.load_table)
         self.tab_widget.tabOrderChanged.connect(self.save_category_tabs_order)
         self.tab_widget.tabOrderChanged.connect(self.save_current_tab)
@@ -361,14 +427,18 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.tab_widget.removeCategory.connect(self.remove_category)
 
     def load_table(self):
-        self.category = self.sheets_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex()))
+        self.category = self.sheets_inventory.get_category(
+            self.tab_widget.tabText(self.tab_widget.currentIndex())
+        )
         current_table = self.category_tables[self.category]
         current_table.blockSignals(True)
         current_table.clearContents()
         current_table.setRowCount(0)
         self.table_sheets_widgets.clear()
         row_index = 0
-        for group in self.sheets_inventory.get_all_sheets_material(self.sheets_inventory.get_sheets_by_category(self.category)):
+        for group in self.sheets_inventory.get_all_sheets_material(
+            self.sheets_inventory.get_sheets_by_category(self.category)
+        ):
             current_table.insertRow(row_index)
             group_table_item = QTableWidgetItem(group)
             group_table_item.setTextAlignment(4)  # Align text center
@@ -378,7 +448,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             group_table_item.setFont(font)
             current_table.setItem(row_index, 0, group_table_item)
             current_table.setSpan(row_index, 0, 1, current_table.columnCount())
-            self.set_table_row_color(current_table, row_index, f"{theme_var('background')}")
+            self.set_table_row_color(
+                current_table, row_index, f"{theme_var('background')}"
+            )
             row_index += 1
 
             for sheet in self.sheets_inventory.get_sheets_by_category(self.category):
@@ -398,9 +470,13 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 comboBox_thickness.wheelEvent = lambda event: event.ignore()
                 comboBox_thickness.addItems(self.sheet_settings.get_thicknesses())
                 comboBox_thickness.setCurrentText(sheet.thickness)
-                comboBox_thickness.currentTextChanged.connect(partial(self.table_changed, row_index))
+                comboBox_thickness.currentTextChanged.connect(
+                    partial(self.table_changed, row_index)
+                )
                 current_table.setCellWidget(row_index, col_index, comboBox_thickness)
-                self.table_sheets_widgets[sheet].update({"thickness": comboBox_thickness})
+                self.table_sheets_widgets[sheet].update(
+                    {"thickness": comboBox_thickness}
+                )
                 col_index += 1
 
                 # MATERIAL
@@ -410,7 +486,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 comboBox_material.wheelEvent = lambda event: event.ignore()
                 comboBox_material.addItems(self.sheet_settings.get_materials())
                 comboBox_material.setCurrentText(sheet.material)
-                comboBox_material.currentTextChanged.connect(partial(self.table_changed, row_index))
+                comboBox_material.currentTextChanged.connect(
+                    partial(self.table_changed, row_index)
+                )
                 current_table.setCellWidget(row_index, col_index, comboBox_material)
                 self.table_sheets_widgets[sheet].update({"material": comboBox_material})
                 col_index += 1
@@ -421,7 +499,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 spinbox_length.setDecimals(3)
                 spinbox_length.setStyleSheet("border-radius: none;")
                 spinbox_length.setValue(sheet.length)
-                spinbox_length.valueChanged.connect(partial(self.table_changed, row_index))
+                spinbox_length.valueChanged.connect(
+                    partial(self.table_changed, row_index)
+                )
                 current_table.setCellWidget(row_index, col_index, spinbox_length)
                 self.table_sheets_widgets[sheet].update({"length": spinbox_length})
                 col_index += 1
@@ -432,7 +512,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 spinbox_width.setDecimals(3)
                 spinbox_width.setStyleSheet("border-radius: none;")
                 spinbox_width.setValue(sheet.width)
-                spinbox_width.valueChanged.connect(partial(self.table_changed, row_index))
+                spinbox_width.valueChanged.connect(
+                    partial(self.table_changed, row_index)
+                )
                 current_table.setCellWidget(row_index, col_index, spinbox_width)
                 self.table_sheets_widgets[sheet].update({"width": spinbox_width})
                 col_index += 1
@@ -445,7 +527,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                     col_index,
                     table_item_cost,
                 )
-                current_table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+                current_table.item(row_index, col_index).setTextAlignment(
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+                )
                 current_table.item(row_index, col_index).setFont(self.tables_font)
                 self.table_sheets_widgets[sheet].update({"cost": table_item_cost})
                 col_index += 1
@@ -453,18 +537,28 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 # CURRENT QUANTITY
                 table_item_quantity = QTableWidgetItem(f"{sheet.quantity:,.2f}")
                 current_table.setItem(row_index, col_index, table_item_quantity)
-                current_table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+                current_table.item(row_index, col_index).setTextAlignment(
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+                )
                 current_table.item(row_index, col_index).setFont(self.tables_font)
-                self.table_sheets_widgets[sheet].update({"quantity": table_item_quantity})
+                self.table_sheets_widgets[sheet].update(
+                    {"quantity": table_item_quantity}
+                )
                 col_index += 1
 
                 # COST IN STOCK
                 total_cost_in_stock = cost_per_sheet * sheet.quantity
-                table_item_cost_in_stock = QTableWidgetItem(f"${total_cost_in_stock:,.2f}")
+                table_item_cost_in_stock = QTableWidgetItem(
+                    f"${total_cost_in_stock:,.2f}"
+                )
                 current_table.setItem(row_index, col_index, table_item_cost_in_stock)
-                current_table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+                current_table.item(row_index, col_index).setTextAlignment(
+                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+                )
                 current_table.item(row_index, col_index).setFont(self.tables_font)
-                self.table_sheets_widgets[sheet].update({"total_cost_in_stock": table_item_cost_in_stock})
+                self.table_sheets_widgets[sheet].update(
+                    {"total_cost_in_stock": table_item_cost_in_stock}
+                )
                 col_index += 1
 
                 # ORDERS
@@ -482,11 +576,15 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 col_index += 1
 
                 # MODIFIED DATE
-                table_item_modified_date = QTableWidgetItem(sheet.latest_change_quantity)
+                table_item_modified_date = QTableWidgetItem(
+                    sheet.latest_change_quantity
+                )
                 table_item_modified_date.setToolTip(sheet.latest_change_quantity)
                 current_table.setItem(row_index, col_index, table_item_modified_date)
                 current_table.item(row_index, col_index).setFont(self.tables_font)
-                self.table_sheets_widgets[sheet].update({"modified_date": table_item_modified_date})
+                self.table_sheets_widgets[sheet].update(
+                    {"modified_date": table_item_modified_date}
+                )
 
                 self.update_sheet_row_color(current_table, sheet)
 
@@ -522,9 +620,13 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             action.triggered.connect(delete_selected_sheets)
             menu.addAction(action)
 
-            current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+            current_table.customContextMenuRequested.connect(
+                partial(self.open_group_menu, menu)
+            )
 
-        current_table.setColumnWidth(7, 400)  # Widgets don't like being resized with columns
+        current_table.setColumnWidth(
+            7, 400
+        )  # Widgets don't like being resized with columns
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
@@ -542,7 +644,11 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
 
     def table_changed(self, row: int):
         sheet = next(
-            (sheet for sheet, table_data in self.table_sheets_widgets.items() if table_data["row"] == row),
+            (
+                sheet
+                for sheet, table_data in self.table_sheets_widgets.items()
+                if table_data["row"] == row
+            ),
             None,
         )
         if not sheet:
@@ -550,7 +656,10 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         old_quantity = sheet.quantity
         sheet.quantity = float(
             sympy.sympify(
-                self.table_sheets_widgets[sheet]["quantity"].text().strip().replace(",", ""),
+                self.table_sheets_widgets[sheet]["quantity"]
+                .text()
+                .strip()
+                .replace(",", ""),
                 evaluate=True,
             )
         )
@@ -566,7 +675,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.sync_changes()
         self.category_tables[self.category].blockSignals(True)
         self.table_sheets_widgets[sheet]["quantity"].setText(f"{sheet.quantity:,.2f}")
-        self.table_sheets_widgets[sheet]["modified_date"].setText(sheet.latest_change_quantity)
+        self.table_sheets_widgets[sheet]["modified_date"].setText(
+            sheet.latest_change_quantity
+        )
         self.category_tables[self.category].blockSignals(False)
         self.update_sheet_row_color(self.category_tables[self.category], sheet)
         self.update_sheet_costs()
@@ -580,7 +691,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             table_data["width"].setEnabled(self.checkBox_edit_sheets.isChecked())
 
     def add_sheet(self):
-        add_sheet_dialog = AddSheetDialog(None, self.category, self.sheets_inventory, self.sheet_settings, self)
+        add_sheet_dialog = AddSheetDialog(
+            None, self.category, self.sheets_inventory, self.sheet_settings, self
+        )
 
         if add_sheet_dialog.exec():
             new_sheet = Sheet(
@@ -594,7 +707,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 },
                 self.sheets_inventory,
             )
-            new_sheet.add_to_category(self.sheets_inventory.get_category(add_sheet_dialog.get_category()))
+            new_sheet.add_to_category(
+                self.sheets_inventory.get_category(add_sheet_dialog.get_category())
+            )
             for sheet in self.sheets_inventory.sheets:
                 if new_sheet.get_name() == sheet.get_name():
                     msg = QMessageBox(self)
@@ -615,13 +730,17 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             cost_per_sheet = self.sheets_inventory.get_sheet_cost(sheet)
             table_item_cost_in_stock = cost_per_sheet * sheet.quantity
             table_items["cost"].setText(f"${cost_per_sheet:,.2f}")
-            table_items["total_cost_in_stock"].setText(f"${table_item_cost_in_stock:,.2f}")
+            table_items["total_cost_in_stock"].setText(
+                f"${table_item_cost_in_stock:,.2f}"
+            )
         self.category_tables[self.category].blockSignals(False)
 
     def set_custom_quantity_limit(self):
         current_table = self.category_tables[self.category]
         if sheets := self.get_selected_sheets():
-            sheets_string = "".join(f"    {i + 1}. {sheet.get_name()}\n" for i, sheet in enumerate(sheets))
+            sheets_string = "".join(
+                f"    {i + 1}. {sheet.get_name()}\n" for i, sheet in enumerate(sheets)
+            )
             set_custom_limit_dialog = SetCustomLimitDialog(
                 self,
                 f"Set a custom red and yellow quantity limit for each of the {len(sheets)} selected sheets:\n{sheets_string}",
@@ -631,7 +750,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             if set_custom_limit_dialog.exec():
                 for sheet in sheets:
                     sheet.red_quantity_limit = set_custom_limit_dialog.get_red_limit()
-                    sheet.yellow_quantity_limit = set_custom_limit_dialog.get_yellow_limit()
+                    sheet.yellow_quantity_limit = (
+                        set_custom_limit_dialog.get_yellow_limit()
+                    )
                     self.update_sheet_row_color(current_table, sheet)
                 self.sheets_inventory.save()
                 self.sync_changes()
@@ -650,10 +771,14 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             grand_total += category_total
             i += 1
         lbl = QLabel("Total:", self)
-        lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
+        lbl.setStyleSheet(
+            f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}"
+        )
         self.gridLayout_sheet_prices.addWidget(lbl, i + 1, 0)
         lbl = QLabel(f"${grand_total:,.2f}", self)
-        lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
+        lbl.setStyleSheet(
+            f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}"
+        )
         self.gridLayout_sheet_prices.addWidget(lbl, i + 1, 1)
 
     def select_last_selected_item(self):
@@ -661,12 +786,18 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         for sheet, table_items in self.table_sheets_widgets.items():
             if sheet.name == self.last_selected_sheet:
                 current_table.selectRow(table_items["row"])
-                current_table.scrollTo(current_table.model().index(table_items["row"], 0))
+                current_table.scrollTo(
+                    current_table.model().index(table_items["row"], 0)
+                )
 
     def get_selected_sheets(self) -> list[Sheet]:
         selected_sheets: list[Sheet] = []
         selected_rows = self.get_selected_rows()
-        selected_sheets.extend(sheet for sheet, table_items in self.table_sheets_widgets.items() if table_items["row"] in selected_rows)
+        selected_sheets.extend(
+            sheet
+            for sheet, table_items in self.table_sheets_widgets.items()
+            if table_items["row"] in selected_rows
+        )
         return selected_sheets
 
     def get_selected_sheet(self) -> Sheet:
@@ -678,7 +809,9 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 return sheet
 
     def get_selected_rows(self) -> list[int]:
-        rows: set[int] = {item.row() for item in self.category_tables[self.category].selectedItems()}
+        rows: set[int] = {
+            item.row() for item in self.category_tables[self.category].selectedItems()
+        }
         return list(rows)
 
     def get_selected_row(self) -> int:
@@ -722,13 +855,29 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
 
     def update_sheet_row_color(self, table, sheet: Sheet):
         if sheet.orders:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('table-order-pending')}")
+            self.set_table_row_color(
+                table,
+                self.table_sheets_widgets[sheet]["row"],
+                f"{theme_var('table-order-pending')}",
+            )
         elif sheet.quantity <= sheet.red_quantity_limit:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('table-red-quantity')}")
+            self.set_table_row_color(
+                table,
+                self.table_sheets_widgets[sheet]["row"],
+                f"{theme_var('table-red-quantity')}",
+            )
         elif sheet.quantity <= sheet.yellow_quantity_limit:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('table-yellow-quantity')}")
+            self.set_table_row_color(
+                table,
+                self.table_sheets_widgets[sheet]["row"],
+                f"{theme_var('table-yellow-quantity')}",
+            )
         else:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('background')}")
+            self.set_table_row_color(
+                table,
+                self.table_sheets_widgets[sheet]["row"],
+                f"{theme_var('background')}",
+            )
 
     def set_table_row_color(self, table: SheetsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
@@ -744,13 +893,20 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
 
     def save_current_tab(self):
         if self.finished_loading:
-            self.parent.sheets_inventory_tab_widget_last_selected_tab_index = self.tab_widget.currentIndex()
+            self.parent.sheets_inventory_tab_widget_last_selected_tab_index = (
+                self.tab_widget.currentIndex()
+            )
 
     def restore_last_selected_tab(self):
-        if self.tab_widget.currentIndex() == self.parent.sheets_inventory_tab_widget_last_selected_tab_index:
+        if (
+            self.tab_widget.currentIndex()
+            == self.parent.sheets_inventory_tab_widget_last_selected_tab_index
+        ):
             self.sort_sheets()  # * This happens when the last selected tab is the first tab
         else:
-            self.tab_widget.setCurrentIndex(self.parent.sheets_inventory_tab_widget_last_selected_tab_index)
+            self.tab_widget.setCurrentIndex(
+                self.parent.sheets_inventory_tab_widget_last_selected_tab_index
+            )
 
     def save_category_tabs_order(self):
         self.settings_file.load_data()
@@ -760,11 +916,15 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
 
     def save_scroll_position(self):
         if self.finished_loading:
-            self.parent.save_scroll_position(self.category, self.category_tables[self.category])
+            self.parent.save_scroll_position(
+                self.category, self.category_tables[self.category]
+            )
 
     def restore_scroll_position(self):
         if scroll_position := self.parent.get_scroll_position(self.category):
-            self.category_tables[self.category].verticalScrollBar().setValue(scroll_position)
+            self.category_tables[self.category].verticalScrollBar().setValue(
+                scroll_position
+            )
 
     def popout(self):
         self.popout_widget = PopoutWidget(self.layout(), self.parent)

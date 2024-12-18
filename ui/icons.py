@@ -572,4 +572,3 @@ class Icons:
                 }
             ],
         )
-

@@ -24,7 +24,9 @@ class LoadNestsThread(LoadNestFileThread):
         laser_cut_inventory: LaserCutInventory,
         sheet_settings: SheetSettings,
     ):
-        super().__init__(parent, components_inventory, laser_cut_inventory, sheet_settings)
+        super().__init__(
+            parent, components_inventory, laser_cut_inventory, sheet_settings
+        )
         self.nest_files = nest_files
         self.nests: list[Nest] = []
 
@@ -37,34 +39,70 @@ class LoadNestsThread(LoadNestFileThread):
                 # variables
                 nest_name: str = os.path.basename(nest)
                 nest_data = self.convert_pdf_to_text(nest)
-                quantity_multiplier: int = int(self.get_values_from_text(nest_data, self.sheet_quantity_regex)[0])
-                scrap_percentage: float = float(self.get_values_from_text(nest_data, self.scrap_percentage_regex)[0])
-                sheet_dimension: str = self.get_values_from_text(nest_data, self.sheet_dimension_regex)[0]
-                sheet_material: str = self.material_id_to_name(self.get_values_from_text(nest_data, self.material_id_regex)[0])
-                sheet_gauge: str = self.get_values_from_text(nest_data, self.gauge_regex)[0]
-                sheet_cut_time: str = self.get_values_from_text(nest_data, self.sheet_cut_time_regex)[0]
+                quantity_multiplier: int = int(
+                    self.get_values_from_text(nest_data, self.sheet_quantity_regex)[0]
+                )
+                scrap_percentage: float = float(
+                    self.get_values_from_text(nest_data, self.scrap_percentage_regex)[0]
+                )
+                sheet_dimension: str = self.get_values_from_text(
+                    nest_data, self.sheet_dimension_regex
+                )[0]
+                sheet_material: str = self.material_id_to_name(
+                    self.get_values_from_text(nest_data, self.material_id_regex)[0]
+                )
+                sheet_gauge: str = self.get_values_from_text(
+                    nest_data, self.gauge_regex
+                )[0]
+                sheet_cut_time: str = self.get_values_from_text(
+                    nest_data, self.sheet_cut_time_regex
+                )[0]
                 (
                     sheet_cut_time_hours,
                     sheet_cut_time_minutes,
                     sheet_cut_time_seconds,
-                ) = sheet_cut_time.replace(
-                    " : ", ":"
-                ).split(":")
-                total_sheet_cut_time = (float(sheet_cut_time_hours) * 3600) + (float(sheet_cut_time_minutes) * 60) + float(sheet_cut_time_seconds)  # seconds
+                ) = sheet_cut_time.replace(" : ", ":").split(":")
+                total_sheet_cut_time = (
+                    (float(sheet_cut_time_hours) * 3600)
+                    + (float(sheet_cut_time_minutes) * 60)
+                    + float(sheet_cut_time_seconds)
+                )  # seconds
 
                 # lists
-                _quantities: list[str] = self.get_values_from_text(nest_data, self.quantity_regex)
+                _quantities: list[str] = self.get_values_from_text(
+                    nest_data, self.quantity_regex
+                )
                 quantities: list[int] = [int(quantity) for quantity in _quantities]
-                machining_times: list[str] = self.get_values_from_text(nest_data, self.machinging_time_regex)
-                weights: list[str] = self.get_values_from_text(nest_data, self.weight_regex)
-                surface_areas: list[str] = self.get_values_from_text(nest_data, self.surface_area_regex)
-                part_dimensions: list[str] = self.get_values_from_text(nest_data, self.part_dimensions_regex)
-                cutting_lengths: list[str] = self.get_values_from_text(nest_data, self.cutting_length_regex)
-                piercing_times: list[str] = self.get_values_from_text(nest_data, self.piercing_time_regex)
-                part_numbers: list[str] = self.get_values_from_text(nest_data, self.part_number_regex)
-                parts: list[str] = self.get_values_from_text(nest_data, self.part_path_regex)
-                piercing_points: list[str] = self.get_values_from_text(nest_data, self.piercing_points_regex)
-                geofile_names: list[str] = self.get_values_from_text(nest_data, self.geofile_name)
+                machining_times: list[str] = self.get_values_from_text(
+                    nest_data, self.machinging_time_regex
+                )
+                weights: list[str] = self.get_values_from_text(
+                    nest_data, self.weight_regex
+                )
+                surface_areas: list[str] = self.get_values_from_text(
+                    nest_data, self.surface_area_regex
+                )
+                part_dimensions: list[str] = self.get_values_from_text(
+                    nest_data, self.part_dimensions_regex
+                )
+                cutting_lengths: list[str] = self.get_values_from_text(
+                    nest_data, self.cutting_length_regex
+                )
+                piercing_times: list[str] = self.get_values_from_text(
+                    nest_data, self.piercing_time_regex
+                )
+                part_numbers: list[str] = self.get_values_from_text(
+                    nest_data, self.part_number_regex
+                )
+                parts: list[str] = self.get_values_from_text(
+                    nest_data, self.part_path_regex
+                )
+                piercing_points: list[str] = self.get_values_from_text(
+                    nest_data, self.piercing_points_regex
+                )
+                geofile_names: list[str] = self.get_values_from_text(
+                    nest_data, self.geofile_name
+                )
                 # Sheet information:
                 if int(sheet_gauge) >= 50:  # 1/2 inch
                     sheet_material = "Laser Grade Plate"
@@ -82,11 +120,21 @@ class LoadNestsThread(LoadNestFileThread):
                     self.sheet_settings,
                     self.laser_cut_inventory,
                 )
-                nest_object.sheet.length = float(sheet_dimension.strip().replace(" x ", "x").split("x")[0])
-                nest_object.sheet.width = float(sheet_dimension.strip().replace(" x ", "x").split("x")[1])
+                nest_object.sheet.length = float(
+                    sheet_dimension.strip().replace(" x ", "x").split("x")[0]
+                )
+                nest_object.sheet.width = float(
+                    sheet_dimension.strip().replace(" x ", "x").split("x")[1]
+                )
                 self.nests.append(nest_object)
                 for i, part_name in enumerate(parts):
-                    part_name = part_name.split("\\")[-1].replace("\n", "").replace(".GEO", "").replace(".geo", "").strip()
+                    part_name = (
+                        part_name.split("\\")[-1]
+                        .replace("\n", "")
+                        .replace(".GEO", "")
+                        .replace(".geo", "")
+                        .strip()
+                    )
                     laser_cut_part = LaserCutPart(
                         {
                             "name": part_name,
@@ -135,6 +183,10 @@ class LoadNestsThread(LoadNestFileThread):
         except Exception as e:
             print(e)
             try:
-                self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}")
+                self.signal.emit(
+                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
+                )
             except Exception:
-                self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nest_files[0]}")
+                self.signal.emit(
+                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nest_files[0]}"
+                )

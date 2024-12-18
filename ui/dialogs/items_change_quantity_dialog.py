@@ -57,7 +57,9 @@ class ItemsChangeQuantityDialog(QDialog, Ui_Form):
             self.pushButton_item.setChecked(False)
             self.pushButton_category.setChecked(True)
             self.pushButton_category.clicked.connect(self.quantity_changed)
-            self.label_component_selected.setText("* You don't have any items selected.")
+            self.label_component_selected.setText(
+                "* You don't have any items selected."
+            )
 
         self.pushButton_category.setChecked(False)
         self.pushButton_item.setChecked(False)
@@ -66,10 +68,22 @@ class ItemsChangeQuantityDialog(QDialog, Ui_Form):
         self.quantity_changed()
 
     def quantity_changed(self):
-        self.pushButton_add.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
-        self.pushButton_remove.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
+        self.pushButton_add.setEnabled(
+            self.doubleSpinBox_quantity.value() > 0
+            and (
+                self.pushButton_item.isChecked() or self.pushButton_category.isChecked()
+            )
+        )
+        self.pushButton_remove.setEnabled(
+            self.doubleSpinBox_quantity.value() > 0
+            and (
+                self.pushButton_item.isChecked() or self.pushButton_category.isChecked()
+            )
+        )
         if self.pushButton_category.isChecked():
-            self.lblMessage.setText(f"Before proceeding, it is important to confirm your intention to {self.add_or_remove} quantities.\n\nEach item in {self.title} will {self.add_or_remove} a multiple of {self.doubleSpinBox_quantity.value()} quantities with respect to its unit quantity.\n\nKindly ensure the accuracy of your decision.")
+            self.lblMessage.setText(
+                f"Before proceeding, it is important to confirm your intention to {self.add_or_remove} quantities.\n\nEach item in {self.title} will {self.add_or_remove} a multiple of {self.doubleSpinBox_quantity.value()} quantities with respect to its unit quantity.\n\nKindly ensure the accuracy of your decision."
+            )
         elif self.pushButton_item.isChecked() and self.items:
             items_string = "\n"
             for i, item in enumerate(self.items):
@@ -81,10 +95,15 @@ class ItemsChangeQuantityDialog(QDialog, Ui_Form):
                 f'Before proceeding, it is important to confirm your intention to {self.add_or_remove} quantities.\n\nFor each of the selected {len(self.items)} items {self.doubleSpinBox_quantity.value()} quantities will be {"ADDED" if self.add_or_remove == "ADD" else "REMOVED"}:{items_string}\nKindly ensure the accuracy of your decision.'
             )
         if self.doubleSpinBox_quantity.value() == 0:
-            self.lblMessage.setText("Nothing will happen since quantity is set to zero.")
+            self.lblMessage.setText(
+                "Nothing will happen since quantity is set to zero."
+            )
         if not self.pushButton_category.isChecked() and not self.items:
             self.lblMessage.setText("Nothing will happen since no option is selected.")
-        if not self.pushButton_category.isChecked() and not self.pushButton_item.isChecked():
+        if (
+            not self.pushButton_category.isChecked()
+            and not self.pushButton_item.isChecked()
+        ):
             self.lblMessage.setText("Nothing will happen since no option is selected.")
 
     def get_multiplier(self) -> float:

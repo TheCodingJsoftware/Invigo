@@ -24,15 +24,17 @@ class WorkspaceAssemblyTreeWidget(QTreeWidget):
         self.ROW_HEIGHT = 70
 
         self.setColumnCount(len(WorkspaceAssemblyTreeColumns))
-        self.setHeaderLabels([
-            "Picture",
-            "Assembly Name",
-            "Quantity",
-            "View Parts",
-            "Assembly Files",
-            "Paint",
-            "Process Controls",
-        ])
+        self.setHeaderLabels(
+            [
+                "Picture",
+                "Assembly Name",
+                "Quantity",
+                "View Parts",
+                "Assembly Files",
+                "Paint",
+                "Process Controls",
+            ]
+        )
 
         self.setUniformRowHeights(True)
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)

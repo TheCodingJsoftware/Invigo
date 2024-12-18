@@ -50,7 +50,9 @@ class WorkspaceLaserCutPartGroup:
     def get_parts_list(self) -> str:
         text = ""
         for laser_cut_part in self:
-            text += f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_flow_string()}\n"
+            text += (
+                f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_flow_string()}\n"
+            )
         return text
 
     def mark_as_recoat(self, quantity: Optional[int] = None):
@@ -60,7 +62,11 @@ class WorkspaceLaserCutPartGroup:
 
         for i in range(quantity):
             self.laser_cut_parts[i].timer.stop(self.get_current_tag())
-            self.laser_cut_parts[i].current_flow_tag_index = self.laser_cut_parts[i].get_first_tag_index_with_similar_keyword(["powder", "coating", "liquid", "paint", "gloss", "prime"])
+            self.laser_cut_parts[i].current_flow_tag_index = self.laser_cut_parts[
+                i
+            ].get_first_tag_index_with_similar_keyword(
+                ["powder", "coating", "liquid", "paint", "gloss", "prime"]
+            )
             self.laser_cut_parts[i].current_flow_tag_status_index = 0
             self.laser_cut_parts[i].recoat = True
             self.laser_cut_parts[i].recoat_count += 1

@@ -26,7 +26,13 @@ class JobFlowtagTimeline:
     def load_data(self, data: dict[str, dict[str, str]]):
         self.tags_data.clear()
         for tag in self.job.get_unique_parts_flowtag_tags():
-            tag_data = data.get(tag.name, {"starting_date": self.job.starting_date, "ending_date": self.job.ending_date})
+            tag_data = data.get(
+                tag.name,
+                {
+                    "starting_date": self.job.starting_date,
+                    "ending_date": self.job.ending_date,
+                },
+            )
             self.tags_data.update({tag: tag_data})
 
     def to_dict(self) -> dict[str, dict[str, str]]:

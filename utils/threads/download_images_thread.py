@@ -18,12 +18,16 @@ class DownloadImagesThread(QThread):
     def run(self):
         for file_to_download in self.files_to_download:
             try:
-                response = self.session.get(self.file_url + file_to_download, timeout=10)
+                response = self.session.get(
+                    self.file_url + file_to_download, timeout=10
+                )
                 if response.status_code == 200:
                     with open(file_to_download, "wb") as file:
                         file.write(response.content)
                 else:
-                    self.signal.emit(f"{response.status_code} {file_to_download} not found")
+                    self.signal.emit(
+                        f"{response.status_code} {file_to_download} not found"
+                    )
             except Exception as e:
                 self.signal.emit(f"{e} - {file_to_download}")
         self.signal.emit("Successfully downloaded")

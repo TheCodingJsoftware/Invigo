@@ -9,7 +9,12 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 class UploadThread(QThread):
     signal = pyqtSignal(object, list)
 
-    def __init__(self, files_to_upload: list[str], max_retries: int = 3, delay_between_requests: float = 0.1):
+    def __init__(
+        self,
+        files_to_upload: list[str],
+        max_retries: int = 3,
+        delay_between_requests: float = 0.1,
+    ):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -36,7 +41,9 @@ class UploadThread(QThread):
                     success = False
                     for attempt in range(self.max_retries):
                         try:
-                            response = self.session.post(self.upload_url, files=file, timeout=10)
+                            response = self.session.post(
+                                self.upload_url, files=file, timeout=10
+                            )
                             if response.status_code == 200:
                                 successful_uploads.append(file_to_upload)
                                 success = True
@@ -46,7 +53,10 @@ class UploadThread(QThread):
                         except Exception as e:
                             if attempt == self.max_retries - 1:
                                 failed_uploads.append(file_to_upload)
-                                self.signal.emit({"status": "error", "error": str(e)}, self.files_to_upload)
+                                self.signal.emit(
+                                    {"status": "error", "error": str(e)},
+                                    self.files_to_upload,
+                                )
                         time.sleep(self.delay_between_requests)  # Rate limiting
 
                     if not success:

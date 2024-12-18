@@ -10,7 +10,9 @@ class QImageViewer(QMainWindow):
         self.resize(600, 600)
 
         self.image_label = QLabel()
-        self.image_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.image_label.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
         self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.scroll_area = QScrollArea()

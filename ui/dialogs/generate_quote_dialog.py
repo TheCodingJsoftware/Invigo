@@ -12,16 +12,36 @@ class GenerateQuoteDialog(QDialog, Ui_Form):
         self.setupUi(self)
         self.settings_file = Settings()
 
-        self.should_open_quote_when_generated: bool = self.settings_file.get_value("open_quote_when_generated")
-        self.should_open_workorder_when_generated: bool = self.settings_file.get_value("open_workorder_when_generated")
-        self.should_open_packing_slip_when_generated: bool = self.settings_file.get_value("open_packing_slip_when_generated")
+        self.should_open_quote_when_generated: bool = self.settings_file.get_value(
+            "open_quote_when_generated"
+        )
+        self.should_open_workorder_when_generated: bool = self.settings_file.get_value(
+            "open_workorder_when_generated"
+        )
+        self.should_open_packing_slip_when_generated: bool = (
+            self.settings_file.get_value("open_packing_slip_when_generated")
+        )
         self.pushButton_group.setHidden(True)
 
         self.checkBox_quote.setChecked(self.should_open_quote_when_generated)
-        self.checkBox_quote.toggled.connect(lambda: (self.settings_file.set_value("open_quote_when_generated", self.checkBox_quote.isChecked())))
+        self.checkBox_quote.toggled.connect(
+            lambda: (
+                self.settings_file.set_value(
+                    "open_quote_when_generated", self.checkBox_quote.isChecked()
+                )
+            )
+        )
         self.checkBox_workorder.setChecked(self.should_open_workorder_when_generated)
-        self.checkBox_workorder.toggled.connect(lambda: (self.settings_file.set_value("open_workorder_when_generated", self.checkBox_workorder.isChecked())))
-        self.checkBox_packing_slip.setChecked(self.should_open_packing_slip_when_generated)
+        self.checkBox_workorder.toggled.connect(
+            lambda: (
+                self.settings_file.set_value(
+                    "open_workorder_when_generated", self.checkBox_workorder.isChecked()
+                )
+            )
+        )
+        self.checkBox_packing_slip.setChecked(
+            self.should_open_packing_slip_when_generated
+        )
         self.checkBox_packing_slip.toggled.connect(
             lambda: (
                 self.settings_file.set_value(
@@ -34,7 +54,13 @@ class GenerateQuoteDialog(QDialog, Ui_Form):
         self.setWindowTitle("Generate Printout")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.pushButton_quote.clicked.connect(lambda: ((self.pushButton_packingslip.setChecked(False),) if self.pushButton_quote.isChecked() else self.pushButton_quote.isChecked()))
+        self.pushButton_quote.clicked.connect(
+            lambda: (
+                (self.pushButton_packingslip.setChecked(False),)
+                if self.pushButton_quote.isChecked()
+                else self.pushButton_quote.isChecked()
+            )
+        )
         self.pushButton_workorder.clicked.connect(
             lambda: (
                 (
@@ -47,7 +73,13 @@ class GenerateQuoteDialog(QDialog, Ui_Form):
                 else self.pushButton_workorder.isChecked()
             )
         )
-        self.pushButton_packingslip.clicked.connect(lambda: ((self.pushButton_quote.setChecked(False),) if self.pushButton_packingslip.isChecked() else self.pushButton_packingslip.isChecked()))
+        self.pushButton_packingslip.clicked.connect(
+            lambda: (
+                (self.pushButton_quote.setChecked(False),)
+                if self.pushButton_packingslip.isChecked()
+                else self.pushButton_packingslip.isChecked()
+            )
+        )
 
         self.pushButton_generate.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)

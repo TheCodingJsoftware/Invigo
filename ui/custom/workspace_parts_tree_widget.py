@@ -21,24 +21,27 @@ class WorkspacePartsTreeColumns(AutoNumber):
     RECUT = auto()
     RECOAT = auto()
 
+
 class WorkspacePartsTreeWidget(QTreeWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setColumnCount(len(WorkspacePartsTreeColumns))
         self.ROW_HEIGHT = 50
-        self.setHeaderLabels([
-            "Job/Part Name",
-            "Files",
-            "Material",
-            "Paint",
-            "Quantity",
-            "Quantity in Stock",
-            "Process Controls",
-            "Shelf #",
-            "Notes",
-            "Recut",
-            "Recoat"
-        ])
+        self.setHeaderLabels(
+            [
+                "Job/Part Name",
+                "Files",
+                "Material",
+                "Paint",
+                "Quantity",
+                "Quantity in Stock",
+                "Process Controls",
+                "Shelf #",
+                "Notes",
+                "Recut",
+                "Recoat",
+            ]
+        )
 
         self.setUniformRowHeights(True)
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)

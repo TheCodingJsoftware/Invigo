@@ -16,7 +16,9 @@ class Inventory:
             self._reset_file()
 
     def _reset_file(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
             file.write("{}")
 
     def get_categories(self) -> list[Category]:
