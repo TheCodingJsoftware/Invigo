@@ -102,8 +102,8 @@ class NestsTable:
     def __init__(self, nests: list[Nest]):
         self.headers = [
             "Nest Name",
-            "Thickness",
             "Material",
+            "Dimensions",
             "Qty",
             "Sheet Cut Time",
             "Nest Cut Time",
@@ -143,8 +143,8 @@ class NestsTable:
                 self.grand_total_cut_time += nest.get_machining_time()
                 html += f"""<tr>
                 <td class="small-text" data-label="{self.headers[0]}" data-column="0">{nest.name}</td>
-                <td class="small-text" data-label="{self.headers[1]}" data-column="1">{nest.sheet.thickness}</td>
-                <td class="small-text" data-label="{self.headers[2]}" data-column="2">{nest.sheet.material}</td>
+                <td class="small-text" data-label="{self.headers[1]}" data-column="1">{nest.sheet.thickness} {nest.sheet.material}</td>
+                <td class="small-text" data-label="{self.headers[2]}" data-column="2">{nest.sheet.get_sheet_dimension()}</td>
                 <td class="small-text" data-label="{self.headers[3]}" data-column="3">{nest.sheet_count}</td>
                 <td class="small-text" data-label="{self.headers[4]}" data-column="4">{single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</td>
                 <td class="small-text" data-label="{self.headers[5]}" data-column="5">{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>

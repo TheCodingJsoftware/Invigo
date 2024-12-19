@@ -329,6 +329,7 @@ class NestEditorWidget(QWidget, Ui_Form):
                     )
                     self.nest.add_laser_cut_part(new_laser_cut_part)
             self.load_parts_table()
+            self.update_sheet_scrap_percentage()
 
     def parts_table_row_changed(self, row: int):
         current_laser_cut_part = next(
