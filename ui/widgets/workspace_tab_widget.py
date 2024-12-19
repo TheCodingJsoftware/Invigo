@@ -45,16 +45,24 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.load_ui()
 
     def load_ui(self):
-        view_parts = self.settings_file.get_value("user_workspace_settings").get("view_parts", True)
-        view_assemblies = self.settings_file.get_value("user_workspace_settings").get("view_assemblies", True)
+        view_parts = self.settings_file.get_value("user_workspace_settings").get(
+            "view_parts", True
+        )
+        view_assemblies = self.settings_file.get_value("user_workspace_settings").get(
+            "view_assemblies", True
+        )
 
         self.pushButton_view_parts.clicked.connect(self.view_parts_table)
         self.pushButton_view_parts.setVisible(view_parts)
-        self.pushButton_view_parts.setChecked(True if view_parts and not view_assemblies else False)
+        self.pushButton_view_parts.setChecked(
+            True if view_parts and not view_assemblies else False
+        )
 
         self.pushButton_view_assemblies.clicked.connect(self.view_assemblies_table)
         self.pushButton_view_assemblies.setVisible(view_assemblies)
-        self.pushButton_view_assemblies.setChecked(True if view_assemblies and not view_parts else False)
+        self.pushButton_view_assemblies.setChecked(
+            True if view_assemblies and not view_parts else False
+        )
 
         self.pushButton_search.clicked.connect(self.search_pressed)
 
@@ -94,8 +102,12 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
 
     def user_workspace_settings_changed(self):
         self.settings_file.load_data()
-        view_parts = self.settings_file.get_value("user_workspace_settings").get("view_parts", True)
-        view_assemblies = self.settings_file.get_value("user_workspace_settings").get("view_assemblies", True)
+        view_parts = self.settings_file.get_value("user_workspace_settings").get(
+            "view_parts", True
+        )
+        view_assemblies = self.settings_file.get_value("user_workspace_settings").get(
+            "view_assemblies", True
+        )
 
         self.pushButton_view_parts.setVisible(view_parts)
         self.pushButton_view_assemblies.setVisible(view_assemblies)
@@ -106,7 +118,9 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
     def load_tags(self):
         self.clear_layout(self.tags_layout)
         self.tag_buttons.clear()
-        selected_tags = self.settings_file.get_value("user_workspace_settings").get("visible_process_tags", [])
+        selected_tags = self.settings_file.get_value("user_workspace_settings").get(
+            "visible_process_tags", []
+        )
         for tag in self.workspace_settings.get_all_tags():
             if tag not in selected_tags:
                 continue
@@ -121,20 +135,41 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
     def load_menu_buttons(self):
         self.clear_layout(self.menu_buttons_layout)
 
-        self.materials_menu_button = FilterButton("Materials", self.sheet_settings.get_materials())
+        self.materials_menu_button = FilterButton(
+            "Materials", self.sheet_settings.get_materials()
+        )
         self.materials_menu_button.setIcon(Icons.filter_icon)
-        self.materials_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
-        self.workspace_filter.material_filter = self.materials_menu_button.dropdown.checkbox_states
+        self.materials_menu_button.checkbox_states_changed.connect(
+            self.filter_button_changed
+        )
+        self.workspace_filter.material_filter = (
+            self.materials_menu_button.dropdown.checkbox_states
+        )
 
-        self.thickness_menu_button = FilterButton("Thicknesses", self.sheet_settings.get_thicknesses())
+        self.thickness_menu_button = FilterButton(
+            "Thicknesses", self.sheet_settings.get_thicknesses()
+        )
         self.thickness_menu_button.setIcon(Icons.filter_icon)
-        self.thickness_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
-        self.workspace_filter.thickness_filter = self.thickness_menu_button.dropdown.checkbox_states
+        self.thickness_menu_button.checkbox_states_changed.connect(
+            self.filter_button_changed
+        )
+        self.workspace_filter.thickness_filter = (
+            self.thickness_menu_button.dropdown.checkbox_states
+        )
 
-        self.paint_menu_button = FilterButton("Paint", self.paint_inventory.get_all_paints() + self.paint_inventory.get_all_primers() + self.paint_inventory.get_all_powders())
+        self.paint_menu_button = FilterButton(
+            "Paint",
+            self.paint_inventory.get_all_paints()
+            + self.paint_inventory.get_all_primers()
+            + self.paint_inventory.get_all_powders(),
+        )
         self.paint_menu_button.setIcon(Icons.filter_icon)
-        self.paint_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
-        self.workspace_filter.paint_filter = self.paint_menu_button.dropdown.checkbox_states
+        self.paint_menu_button.checkbox_states_changed.connect(
+            self.filter_button_changed
+        )
+        self.workspace_filter.paint_filter = (
+            self.paint_menu_button.dropdown.checkbox_states
+        )
 
         self.calendar_button = CalendarButton("Date Range")
         self.calendar_button.setIcon(Icons.date_range_icon)

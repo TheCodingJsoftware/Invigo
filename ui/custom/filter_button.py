@@ -20,7 +20,9 @@ class DropDownWidget(QWidget):
 
         for option in self.options:
             checkbox = QCheckBox(option)
-            checkbox.stateChanged.connect(partial(self.on_checkbox_state_changed, option))
+            checkbox.stateChanged.connect(
+                partial(self.on_checkbox_state_changed, option)
+            )
             self.layout().addWidget(checkbox)
 
     def on_checkbox_state_changed(self, name: str, state: int):

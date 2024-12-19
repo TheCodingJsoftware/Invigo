@@ -31,8 +31,12 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.parent: MainWindow = parent
         self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.widget_components)
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.widget_laser_cut_parts)
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_components, self.widget_components
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_laser_cut_parts, self.widget_laser_cut_parts
+        )
 
         self.load_components_table()
         self.load_laser_cut_parts_table()
@@ -106,18 +110,26 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
             original_width = image.width()
             original_height = image.height()
             new_width = int(original_width * (new_height / original_height))
-            pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+            pixmap = image.scaled(
+                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
+            )
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
         self.tableWidget_components.setRowHeight(current_row, new_height)
         self.tableWidget_components.setItem(current_row, 0, image_item)
-        self.tableWidget_components.setItem(current_row, 1, QTableWidgetItem(component.name))
-        self.tableWidget_components.setItem(current_row, 2, QTableWidgetItem(f"{component.quantity}"))
+        self.tableWidget_components.setItem(
+            current_row, 1, QTableWidgetItem(component.name)
+        )
+        self.tableWidget_components.setItem(
+            current_row, 2, QTableWidgetItem(f"{component.quantity}")
+        )
 
     def load_components_table(self):
         self.tableWidget_components.setRowCount(0)
         for component in self.assembly.components:
             self.add_component_to_table(component)
-        self.tableWidget_components.setFixedHeight((len(self.assembly.components) + 1) * 70)
+        self.tableWidget_components.setFixedHeight(
+            (len(self.assembly.components) + 1) * 70
+        )
         self.tableWidget_components.resizeColumnsToContents()
 
     def add_laser_cut_part_to_table(self, laser_cut_part: LaserCutPart):
@@ -134,23 +146,45 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
             except ZeroDivisionError:
                 new_width = 0
                 new_height = 0
-            pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+            pixmap = image.scaled(
+                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
+            )
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
         self.tableWidget_laser_cut_parts.setRowHeight(current_row, new_height)
         self.tableWidget_laser_cut_parts.setItem(current_row, 0, image_item)
-        self.tableWidget_laser_cut_parts.setItem(current_row, 1, QTableWidgetItem(laser_cut_part.name))
-        self.tableWidget_laser_cut_parts.setItem(current_row, 2, QTableWidgetItem(f"{laser_cut_part.gauge} {laser_cut_part.material}"))
-        self.tableWidget_laser_cut_parts.setItem(current_row, 3, QTableWidgetItem("TODO: FILES_WIDGET"))
-        self.tableWidget_laser_cut_parts.setItem(current_row, 4, QTableWidgetItem(f"{laser_cut_part.quantity}"))
-        self.tableWidget_laser_cut_parts.setItem(current_row, 5, QTableWidgetItem(f"{laser_cut_part.flowtag.get_flow_string()}"))
-        self.tableWidget_laser_cut_parts.setItem(current_row, 6, QTableWidgetItem("TODO: RECUT_BUTTON"))
-        self.tableWidget_laser_cut_parts.setItem(current_row, 7, QTableWidgetItem("TODO: RECOAT_BUTTON"))
+        self.tableWidget_laser_cut_parts.setItem(
+            current_row, 1, QTableWidgetItem(laser_cut_part.name)
+        )
+        self.tableWidget_laser_cut_parts.setItem(
+            current_row,
+            2,
+            QTableWidgetItem(f"{laser_cut_part.gauge} {laser_cut_part.material}"),
+        )
+        self.tableWidget_laser_cut_parts.setItem(
+            current_row, 3, QTableWidgetItem("TODO: FILES_WIDGET")
+        )
+        self.tableWidget_laser_cut_parts.setItem(
+            current_row, 4, QTableWidgetItem(f"{laser_cut_part.quantity}")
+        )
+        self.tableWidget_laser_cut_parts.setItem(
+            current_row,
+            5,
+            QTableWidgetItem(f"{laser_cut_part.flowtag.get_flow_string()}"),
+        )
+        self.tableWidget_laser_cut_parts.setItem(
+            current_row, 6, QTableWidgetItem("TODO: RECUT_BUTTON")
+        )
+        self.tableWidget_laser_cut_parts.setItem(
+            current_row, 7, QTableWidgetItem("TODO: RECOAT_BUTTON")
+        )
 
     def load_laser_cut_parts_table(self):
         self.tableWidget_laser_cut_parts.setRowCount(0)
         for laser_cut_part in self.assembly.laser_cut_parts:
             self.add_laser_cut_part_to_table(laser_cut_part)
-        self.tableWidget_laser_cut_parts.setFixedHeight((len(self.assembly.laser_cut_parts) + 1) * 70)
+        self.tableWidget_laser_cut_parts.setFixedHeight(
+            (len(self.assembly.laser_cut_parts) + 1) * 70
+        )
         self.tableWidget_laser_cut_parts.resizeColumnsToContents()
 
     def sync_changes(self):

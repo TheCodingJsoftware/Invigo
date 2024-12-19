@@ -4,8 +4,33 @@ from datetime import datetime, timedelta
 from functools import partial
 
 from natsort import natsorted
-from PyQt6.QtCore import QDateTime, QEasingCurve, QEvent, QMimeData, QModelIndex, QPoint, QPropertyAnimation, QRegularExpression, QSortFilterProxyModel, Qt, QTimer, pyqtProperty, pyqtSignal
-from PyQt6.QtGui import QColor, QCursor, QDrag, QDragEnterEvent, QDropEvent, QFileSystemModel, QFont, QIcon, QMouseEvent, QRegularExpressionValidator
+from PyQt6.QtCore import (
+    QDateTime,
+    QEasingCurve,
+    QEvent,
+    QMimeData,
+    QModelIndex,
+    QPoint,
+    QPropertyAnimation,
+    QRegularExpression,
+    QSortFilterProxyModel,
+    Qt,
+    QTimer,
+    pyqtProperty,
+    pyqtSignal,
+)
+from PyQt6.QtGui import (
+    QColor,
+    QCursor,
+    QDrag,
+    QDragEnterEvent,
+    QDropEvent,
+    QFileSystemModel,
+    QFont,
+    QIcon,
+    QMouseEvent,
+    QRegularExpressionValidator,
+)
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QCheckBox,
@@ -39,7 +64,9 @@ class PreviousQuoteItem(QGroupBox):
     def __init__(self, file_info: dict[str, str], parent: QWidget):
         super().__init__(parent)
         quote_name = file_info.get("name")
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
+        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime(
+            "%A, %B %d, %Y, %I:%M:%S %p"
+        )
 
         self.setTitle(quote_name)
 
@@ -47,7 +74,9 @@ class PreviousQuoteItem(QGroupBox):
         modified.setWordWrap(True)
         load_quote_button = QPushButton("Load Quote", self)
         load_quote_button.clicked.connect(self.load_quote.emit)
-        load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
+        load_quote_button.setToolTip(
+            "Loads the selected quote into a new tab for detailed viewing and editing."
+        )
 
         open_external = QPushButton(self)
         open_external.setObjectName("pushButton_open_in_browser")
@@ -64,7 +93,9 @@ QPushButton#pushButton_open_in_browser:flat {
         open_external.setFixedSize(25, 25)
         open_external.setIcon(QIcon("icons/website.png"))
         open_external.clicked.connect(self.open_webpage.emit)
-        open_external.setToolTip("Will open up the printout in your default web browser.")
+        open_external.setToolTip(
+            "Will open up the printout in your default web browser."
+        )
 
         delete_button = DeletePushButton(
             self,
@@ -99,7 +130,9 @@ class SavedQuoteItem(QGroupBox):
     def __init__(self, file_info: dict[str, str], parent: QWidget):
         super().__init__(parent)
         quote_name = file_info.get("name")
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
+        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime(
+            "%A, %B %d, %Y, %I:%M:%S %p"
+        )
         order_number = file_info.get("order_number")
         status = file_info.get("status")
 
@@ -110,7 +143,9 @@ class SavedQuoteItem(QGroupBox):
         quote_status.setFixedWidth(50)
 
         self.status_combobox = QComboBox(self)
-        self.status_combobox.addItems(["In progress", "Need more info", "Quoted", "Confirmed"])
+        self.status_combobox.addItems(
+            ["In progress", "Need more info", "Quoted", "Confirmed"]
+        )
         self.status_combobox.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.status_combobox.setCurrentText(status)
         self.status_combobox.currentTextChanged.connect(self.status_changed.emit)
@@ -120,7 +155,9 @@ class SavedQuoteItem(QGroupBox):
 
         load_quote_button = QPushButton("Load Quote", self)
         load_quote_button.clicked.connect(self.load_quote.emit)
-        load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
+        load_quote_button.setToolTip(
+            "Loads the selected quote into a new tab for detailed viewing and editing."
+        )
 
         open_external = QPushButton(self)
         open_external.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -137,7 +174,9 @@ QPushButton#pushButton_open_in_browser:flat {
         open_external.setFixedSize(25, 25)
         open_external.setIcon(QIcon("icons/website.png"))
         open_external.clicked.connect(self.open_webpage.emit)
-        open_external.setToolTip("Will open up the printout in your default web browser.")
+        open_external.setToolTip(
+            "Will open up the printout in your default web browser."
+        )
 
         delete_button = DeletePushButton(
             self,
@@ -182,7 +221,9 @@ class ScrollPositionManager:
         self.scroll_positions: dict[str, int] = {}
 
     def save_scroll_position(self, category: str, scroll: QTableWidget | QScrollArea):
-        scroll_position = QPoint(scroll.horizontalScrollBar().value(), scroll.verticalScrollBar().value())
+        scroll_position = QPoint(
+            scroll.horizontalScrollBar().value(), scroll.verticalScrollBar().value()
+        )
         if not scroll_position.y():
             return
         self.scroll_positions[category] = scroll_position.y()
@@ -201,7 +242,6 @@ class MachineCutTimeSpinBox(QDoubleSpinBox):
         self.setRange(0, 99999999)
         self.setSingleStep(0.001)
         self.setDecimals(9)
-        self.setFixedWidth(200)
         self.setWrapping(True)
         self.setAccelerated(True)
         self.wheelEvent = lambda event: self.parent().wheelEvent(event)
@@ -292,9 +332,13 @@ class MachineCutTimeSpinBox(QDoubleSpinBox):
         minutes = int(((value - days) * 24 - hours) * 60)
 
         current_date_time = QDateTime.currentDateTime()
-        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
+        end_date_time = current_date_time.addDays(days).addSecs(
+            hours * 3600 + minutes * 60
+        )
 
-        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        time_delta = (
+            end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        )
         return timedelta(seconds=time_delta)
 
 
@@ -394,10 +438,23 @@ class AssemblyMultiToolBox(QWidget):
             parent=widget,
             tool_tip=f"Delete {title} forever",
         )
-        delete_button.setStyleSheet(f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')};")
+        delete_button.setStyleSheet(
+            f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')};"
+        )
         delete_button.setFixedWidth(33)
         delete_button.setFixedHeight(34)
-        drop_down_toggle_button.clicked.connect(partial(self.toggle_style_sheet, drop_down_toggle_button, widget, input_box, delete_button, base_color, hover_color, font_color))
+        drop_down_toggle_button.clicked.connect(
+            partial(
+                self.toggle_style_sheet,
+                drop_down_toggle_button,
+                widget,
+                input_box,
+                delete_button,
+                base_color,
+                hover_color,
+                font_color,
+            )
+        )
 
         duplicate_button = QPushButton()
         duplicate_button.setFlat(True)
@@ -448,7 +505,16 @@ class AssemblyMultiToolBox(QWidget):
 
         self.layout().addWidget(_widget)
 
-    def toggle_style_sheet(self, button: QPushButton, widget: QWidget, input_box: QLineEdit, delete_button: QPushButton, base_color: str, hover_color: str, font_color: str):
+    def toggle_style_sheet(
+        self,
+        button: QPushButton,
+        widget: QWidget,
+        input_box: QLineEdit,
+        delete_button: QPushButton,
+        base_color: str,
+        hover_color: str,
+        font_color: str,
+    ):
         self.toggle_widget_visibility(widget)
         button.setText("🡇" if widget.isVisible() else "🡆")
         if widget.isVisible():
@@ -470,7 +536,9 @@ class AssemblyMultiToolBox(QWidget):
                         background-color: {hover_color};
                     }}"""
             )
-            delete_button.setStyleSheet(f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')};")
+            delete_button.setStyleSheet(
+                f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')};"
+            )
         else:
             input_box.setStyleSheet(
                 f"""QLineEdit#input_box_multitoolbox{{
@@ -492,15 +560,21 @@ class AssemblyMultiToolBox(QWidget):
                         color: {theme_var('on-surface')}
                     }}"""
             )
-            delete_button.setStyleSheet(f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')}; border-bottom-right-radius: {theme_var('border-radius')};")
+            delete_button.setStyleSheet(
+                f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')}; border-bottom-right-radius: {theme_var('border-radius')};"
+            )
 
     def removeItem(self, widget_to_delete: QWidget):
         main_layout = self.layout()  # Get the reference to the main layout
         for i in range(main_layout.count()):
             layout_item = main_layout.itemAt(i)
-            widget = layout_item.widget().layout().itemAt(1).widget()  # This is what were trying to find
+            widget = (
+                layout_item.widget().layout().itemAt(1).widget()
+            )  # This is what were trying to find
             # layout = widget.layout()
-            if widget == widget_to_delete:  # Check if the layout's widget matches the given widget
+            if (
+                widget == widget_to_delete
+            ):  # Check if the layout's widget matches the given widget
                 self.delete_buttons[i].disconnect()
                 self.buttons[i].disconnect()
                 self.buttons.pop(i)
@@ -562,7 +636,9 @@ class AssemblyMultiToolBox(QWidget):
                         color: {theme_var('on-surface')}
                     }}"""
         )
-        self.delete_buttons[-1].setStyleSheet(f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')}; border-bottom-right-radius: {theme_var('border-radius')};")
+        self.delete_buttons[-1].setStyleSheet(
+            f"border-radius: 0px; border-top-right-radius: {theme_var('border-radius')}; border-bottom-right-radius: {theme_var('border-radius')};"
+        )
 
     def setItemText(self, index: int, new_name: str):
         if 0 <= index < len(self.input_boxes):
@@ -849,7 +925,9 @@ class TabButton(QPushButton):
     def mouseMoveEvent(self, e: QMouseEvent):
         super().mouseMoveEvent(e)
         if e.buttons() == Qt.MouseButton.LeftButton and self.drag_start_pos is not None:
-            if (e.position().toPoint() - self.drag_start_pos).manhattanLength() > self.move_threshold:
+            if (
+                e.position().toPoint() - self.drag_start_pos
+            ).manhattanLength() > self.move_threshold:
                 if not self.drag_timer.isActive():
                     self.initiateDrag()
 
@@ -870,7 +948,9 @@ class TabButton(QPushButton):
         drag.setMimeData(mime)
         pixmap = self.grab()
         drag.setPixmap(pixmap)
-        drag.setHotSpot(self.drag_start_pos - QPoint(pixmap.width() // 2, pixmap.height() // 2))
+        drag.setHotSpot(
+            self.drag_start_pos - QPoint(pixmap.width() // 2, pixmap.height() // 2)
+        )
         drag.exec(Qt.DropAction.MoveAction)
         self.dropped.emit(self, QCursor.pos())
 
@@ -916,13 +996,17 @@ class CustomTabWidget(QWidget):
         add_category.setFlat(True)
         add_category.setObjectName("add_category")
         add_category.setIcon(Icons.plus_icon)
-        add_category.setStyleSheet("QPushButton#add_category{border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;}")
+        add_category.setStyleSheet(
+            "QPushButton#add_category{border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;}"
+        )
         add_category.clicked.connect(self.addCategory.emit)
         remove_category = QPushButton(self)
         remove_category.setFlat(True)
         remove_category.setObjectName("remove_category")
         remove_category.setIcon(Icons.minus_icon)
-        remove_category.setStyleSheet("QPushButton#remove_category{border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;}")
+        remove_category.setStyleSheet(
+            "QPushButton#remove_category{border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;}"
+        )
         remove_category.clicked.connect(self.removeCategory.emit)
         layout.addWidget(add_category)
         layout.addWidget(remove_category)
@@ -960,7 +1044,9 @@ class CustomTabWidget(QWidget):
         self.buttons[index].setText(text)
 
     def currentIndex(self) -> int:
-        return next((i for i, button in enumerate(self.buttons) if button.isChecked()), 0)
+        return next(
+            (i for i, button in enumerate(self.buttons) if button.isChecked()), 0
+        )
 
     def setCurrentIndex(self, index: int):
         try:
@@ -969,7 +1055,9 @@ class CustomTabWidget(QWidget):
             self.setCurrentIndex(index - 1)
 
     def currentTabText(self) -> str:
-        return next((button.text() for button in self.buttons if button.isChecked()), None)
+        return next(
+            (button.text() for button in self.buttons if button.isChecked()), None
+        )
 
     def currentTab(self) -> TabButton:
         return next((button for button in self.buttons if button.isChecked()), None)
@@ -1044,7 +1132,9 @@ class CustomTabWidget(QWidget):
             for i, btn in enumerate(self.buttons):
                 if btn != button and btn.geometry().contains(position):
                     self.buttons.insert(i, self.buttons.pop(original_index))
-                    self.stacked_widget.insertWidget(i, self.stacked_widget.widget(original_index))
+                    self.stacked_widget.insertWidget(
+                        i, self.stacked_widget.widget(original_index)
+                    )
                     break
             self.rearrange_buttons()
         event.accept()
@@ -1058,7 +1148,9 @@ class CustomTabWidget(QWidget):
             while row.count():
                 row.itemAt(0).widget().setParent(None)
         for i, button in enumerate(self.buttons):
-            self.rows[i // self.tabs_per_row].addWidget(button, alignment=Qt.AlignmentFlag.AlignBottom)
+            self.rows[i // self.tabs_per_row].addWidget(
+                button, alignment=Qt.AlignmentFlag.AlignBottom
+            )
         self.stacked_widget.setCurrentIndex(self.currentIndex())
         self.tabOrderChanged.emit()
 
@@ -1137,7 +1229,10 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
     def directoryContainsPdf(self, directory):
         if self.path not in directory:
             return False
-        return any(any(file.lower().endswith(".pdf") for file in files) for root, dirs, files in os.walk(directory))
+        return any(
+            any(file.lower().endswith(".pdf") for file in files)
+            for root, dirs, files in os.walk(directory)
+        )
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):
         left_index = left.sibling(left.row(), 0)
@@ -1145,7 +1240,12 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         left_is_folder = self.sourceModel().isDir(left_index)
         right_is_folder = self.sourceModel().isDir(right_index)
 
-        if left_is_folder and not right_is_folder or not left_is_folder and right_is_folder:
+        if (
+            left_is_folder
+            and not right_is_folder
+            or not left_is_folder
+            and right_is_folder
+        ):
             return False  # Folders come first
         left_modified = self.sourceModel().fileInfo(left_index).lastModified()
         right_modified = self.sourceModel().fileInfo(right_index).lastModified()
@@ -1181,7 +1281,9 @@ class PdfTreeView(QTreeView):
 
     def on_selection_changed(self, selected, deselected):
         self.selected_indexes = self.selectionModel().selectedIndexes()
-        self.selected_items = [index.data() for index in self.selected_indexes if ".pdf" in index.data()]
+        self.selected_items = [
+            index.data() for index in self.selected_indexes if ".pdf" in index.data()
+        ]
         self.full_paths.clear()
         for index in self.selected_indexes:
             source_index = self.filterModel.mapToSource(index)
@@ -1199,6 +1301,14 @@ class RecutButton(QPushButton):
         self.setFlat(True)
         self.setText("No Recut")
         self.clicked.connect(self.toggle_state)
+
+    def set_to_recut(self):
+        self.setChecked(True)
+        self.setText("Recut")
+
+    def set_to_no_recut(self):
+        self.setChecked(False)
+        self.setText("No Recut")
 
     def toggle_state(self):
         if self.isChecked():
@@ -1302,7 +1412,19 @@ class ClickableLabel(QLabel):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setWordWrap(True)
+
+    def mousePressEvent(self, event):
+        self.clicked.emit()  # Emit the clicked signal
+
+
+class ClickableRichTextLabel(QLabel):
+    clicked = pyqtSignal()  # Signal emitted when the label is clicked
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setTextFormat(Qt.TextFormat.RichText)
 
     def mousePressEvent(self, event):
         self.clicked.emit()  # Emit the clicked signal
@@ -1319,14 +1441,20 @@ class RichTextPushButton(QPushButton):
         self.__layout.setSpacing(0)
         self.setLayout(self.__layout)
         self.__lbl.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.__lbl.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.__lbl.setAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
         self.__lbl.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-        self.__lbl.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.__lbl.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+        )
         self.__lbl.setTextFormat(Qt.TextFormat.RichText)
         self.__layout.addWidget(self.__lbl)
         self.__timer = QTimer(self)
         self.__timer.setSingleShot(True)
-        self.__timer.timeout.connect(self.make_transparent)  # Make the button transparent when the timer times out
+        self.__timer.timeout.connect(
+            self.make_transparent
+        )  # Make the button transparent when the timer times out
 
         # Initialize colors and animations
         self._bg_color = QColor(theme_var("surface"))

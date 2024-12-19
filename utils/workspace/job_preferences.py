@@ -102,7 +102,13 @@ class JobPreferences:
         except Exception:
             return True
 
-    def nest_widget_toolbox_toggled(self, nest: Nest, setting_button: QPushButton, laser_cut_button: QPushButton, image_button: QPushButton):
+    def nest_widget_toolbox_toggled(
+        self,
+        nest: Nest,
+        setting_button: QPushButton,
+        laser_cut_button: QPushButton,
+        image_button: QPushButton,
+    ):
         self.closed_toolboxes.setdefault(
             nest.get_name(),
             {
@@ -112,9 +118,15 @@ class JobPreferences:
                 "is_image_closed": False,
             },
         )
-        self.closed_toolboxes[nest.get_name()]["is_setting_closed"] = setting_button.isChecked()
-        self.closed_toolboxes[nest.get_name()]["is_laser_cut_closed"] = laser_cut_button.isChecked()
-        self.closed_toolboxes[nest.get_name()]["is_image_closed"] = image_button.isChecked()
+        self.closed_toolboxes[nest.get_name()]["is_setting_closed"] = (
+            setting_button.isChecked()
+        )
+        self.closed_toolboxes[nest.get_name()]["is_laser_cut_closed"] = (
+            laser_cut_button.isChecked()
+        )
+        self.closed_toolboxes[nest.get_name()]["is_image_closed"] = (
+            image_button.isChecked()
+        )
 
     def is_nest_setting_closed(self, nest: Nest) -> bool:
         try:

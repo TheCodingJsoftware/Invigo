@@ -22,7 +22,9 @@ class AddComponentDialog(QDialog, Ui_Form):
         self.setWindowTitle("Add New Component")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.completer = QCompleter(natsorted(self.components_inventory.get_all_part_names()))
+        self.completer = QCompleter(
+            natsorted(self.components_inventory.get_all_part_names())
+        )
         self.completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.completer.setFilterMode(Qt.MatchFlag.MatchContains)
         self.completer.setWidget(self.lineEdit_component_name)
@@ -30,7 +32,9 @@ class AddComponentDialog(QDialog, Ui_Form):
         self.lineEdit_component_name.textChanged.connect(self.component_name_changed)
         self._completing = False
 
-        self.listWidget_components.addItems(natsorted(self.components_inventory.get_all_part_names()))
+        self.listWidget_components.addItems(
+            natsorted(self.components_inventory.get_all_part_names())
+        )
         self.listWidget_components.currentTextChanged.connect(self.selection_changed)
         self.label_component_status.setStyleSheet(f"color: {theme_var('error')};")
         self.pushButton_add.clicked.connect(self.accept)
@@ -40,7 +44,9 @@ class AddComponentDialog(QDialog, Ui_Form):
         if not self._completing:
             self._completing = True
             prefix = self.completer.completionPrefix()
-            self.lineEdit_component_name.setText(self.lineEdit_component_name.text()[: -len(prefix)] + text)
+            self.lineEdit_component_name.setText(
+                self.lineEdit_component_name.text()[: -len(prefix)] + text
+            )
             self._completing = False
 
     def selection_changed(self):
@@ -51,18 +57,28 @@ class AddComponentDialog(QDialog, Ui_Form):
                 self.lineEdit_component_name.blockSignals(True)
                 self.lineEdit_component_name.setText(component.part_name)
                 self.lineEdit_component_name.blockSignals(False)
-                self.label_component_status.setStyleSheet(f"color: {theme_var('primary-green')};")
+                self.label_component_status.setStyleSheet(
+                    f"color: {theme_var('primary-green')};"
+                )
                 self.label_component_status.setText(" * Component exists in inventory.")
                 self.selected_component = component
                 return
             else:
-                self.label_component_status.setStyleSheet(f"color: {theme_var('error')};")
-                self.label_component_status.setText(" * Component does NOT exists in inventory.")
+                self.label_component_status.setStyleSheet(
+                    f"color: {theme_var('error')};"
+                )
+                self.label_component_status.setText(
+                    " * Component does NOT exists in inventory."
+                )
                 self.selected_component = None
 
     def get_component_row(self, component_name: str) -> int:
         return next(
-            (row for row in range(self.listWidget_components.count()) if self.listWidget_components.item(row).text() == component_name),
+            (
+                row
+                for row in range(self.listWidget_components.count())
+                if self.listWidget_components.item(row).text() == component_name
+            ),
             0,
         )
 
@@ -96,9 +112,14 @@ class AddComponentDialog(QDialog, Ui_Form):
         return self.spinBox_current_quantity.value()
 
     def get_selected_components(self) -> list[Component]:
-        if len(self.listWidget_components.selectedItems()) == 0 or not self.selected_component:
+        if (
+            len(self.listWidget_components.selectedItems()) == 0
+            or not self.selected_component
+        ):
             return []
         selected_components: list[Component] = []
         for list_item in self.listWidget_components.selectedItems():
-            selected_components.append(self.components_inventory.get_component_by_part_name(list_item.text()))
+            selected_components.append(
+                self.components_inventory.get_component_by_part_name(list_item.text())
+            )
         return selected_components

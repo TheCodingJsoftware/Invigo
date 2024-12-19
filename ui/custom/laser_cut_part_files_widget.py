@@ -1,29 +1,46 @@
-
-from functools import partial
 import os
+from functools import partial
+from typing import Literal, Optional, Union
+
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap, QIcon
-from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget, QTreeWidgetItem
+from PyQt6.QtGui import QAction, QCursor, QFont, QIcon, QPixmap
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QHBoxLayout,
+    QLabel,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QTableWidgetItem,
+    QTreeWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.file_button import FileButton
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
 from utils.inventory.laser_cut_part import LaserCutPart
-from typing import Literal, Optional, Union
-
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
+
 class LaserCutPartFilesWidget(QWidget):
-    def __init__(self, item: Union[WorkspaceLaserCutPartGroup, WorkspaceAssemblyGroup, LaserCutPart], file_types: list[
+    def __init__(
+        self,
+        item: Union[WorkspaceLaserCutPartGroup, WorkspaceAssemblyGroup, LaserCutPart],
+        file_types: list[
             Union[
                 Literal["bending_files"],
                 Literal["welding_files"],
                 Literal["cnc_milling_files"],
                 Literal["assembly_files"],
             ]
-        ], parent=None):
+        ],
+        parent=None,
+    ):
         super().__init__(parent)
         self.item = item
         self.file_types = file_types
@@ -69,7 +86,9 @@ class LaserCutPartFilesWidget(QWidget):
         file_path: str,
     ):
         file_button = FileButton(f"{os.getcwd()}\\{file_path}", self)
-        file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, file_path))
+        file_button.buttonClicked.connect(
+            partial(self.laser_cut_part_file_clicked, file_path)
+        )
         file_name = os.path.basename(file_path)
         file_ext = file_name.split(".")[-1].upper()
         file_button.setText(file_ext)
@@ -94,7 +113,9 @@ class LaserCutPartFilesWidget(QWidget):
                     file_path,
                 )
 
-    def file_downloaded(self, file_ext: Optional[str], file_name: str, open_when_done: bool):
+    def file_downloaded(
+        self, file_ext: Optional[str], file_name: str, open_when_done: bool
+    ):
         if file_ext is None:
             msg = QMessageBox(
                 QMessageBox.Icon.Critical,

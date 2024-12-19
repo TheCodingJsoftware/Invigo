@@ -72,7 +72,9 @@ class Sheet(InventoryItem):
             for category in self.sheets_inventory.get_categories():
                 if category.name in categories:
                     self.categories.append(category)
-        except AttributeError:  # Because these sheets come from utils.threads.load_nests.py
+        except (
+            AttributeError
+        ):  # Because these sheets come from utils.threads.load_nests.py
             self.categories = []
 
     def to_dict(self) -> dict[str, dict]:

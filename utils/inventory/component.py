@@ -73,7 +73,10 @@ class Component(InventoryItem):
         self.category_quantities[category] = quantity
 
     def print_category_quantities(self) -> str:
-        return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
+        return "".join(
+            f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n"
+            for i, category in enumerate(self.categories)
+        )
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.part_number = data.get("part_number", "")
@@ -90,8 +93,12 @@ class Component(InventoryItem):
         self.shelf_number: str = data.get("shelf_number", "")
         self.notes: str = data.get("notes", "")
         self.image_path: str = data.get("image_path", "")
-        self.latest_change_quantity: str = data.get("latest_change_quantity", "Nothing recorded")
-        self.latest_change_price: str = data.get("latest_change_price", "Nothing recorded")
+        self.latest_change_quantity: str = data.get(
+            "latest_change_quantity", "Nothing recorded"
+        )
+        self.latest_change_price: str = data.get(
+            "latest_change_price", "Nothing recorded"
+        )
         self.red_quantity_limit: float = data.get("red_quantity_limit", 10.0)
         self.yellow_quantity_limit: float = data.get("yellow_quantity_limit", 20.0)
 
@@ -126,5 +133,8 @@ class Component(InventoryItem):
             "yellow_quantity_limit": self.yellow_quantity_limit,
             "orders": [order.to_dict() for order in self.orders],
             "categories": [category.name for category in self.categories],
-            "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
+            "category_quantities": {
+                category.name: self.category_quantities.get(category, 1.0)
+                for category in self.categories
+            },
         }

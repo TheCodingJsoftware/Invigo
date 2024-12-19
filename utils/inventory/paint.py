@@ -17,7 +17,11 @@ class Paint(InventoryItem):
         self.load_data(data)
 
     def get_component(self):
-        self.component = self.paint_inventory.components_inventory.get_component_by_part_name(self.name)
+        self.component = (
+            self.paint_inventory.components_inventory.get_component_by_part_name(
+                self.name
+            )
+        )
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.categories.clear()

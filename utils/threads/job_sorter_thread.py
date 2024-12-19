@@ -48,12 +48,22 @@ class JobSorterThread(QThread):
         workbook = load_workbook(filename=path_to_excel_file)
         worksheet = workbook.active
         part_names_new_with_thickness = {}
-        part_name_column: int = self._find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Part")
-        material_column: int = self._find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Material")
-        thickness_column: int = self._find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Thick")
-        quantity_column: int = self._find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Parts Per")
+        part_name_column: int = self._find_column(
+            path_to_excel_file=path_to_excel_file, column_name_to_find="Part"
+        )
+        material_column: int = self._find_column(
+            path_to_excel_file=path_to_excel_file, column_name_to_find="Material"
+        )
+        thickness_column: int = self._find_column(
+            path_to_excel_file=path_to_excel_file, column_name_to_find="Thick"
+        )
+        quantity_column: int = self._find_column(
+            path_to_excel_file=path_to_excel_file, column_name_to_find="Parts Per"
+        )
         if quantity_column == -1:
-            quantity_column: int = self._find_column(path_to_excel_file=path_to_excel_file, column_name_to_find="Qty")
+            quantity_column: int = self._find_column(
+                path_to_excel_file=path_to_excel_file, column_name_to_find="Qty"
+            )
         for row in islice(worksheet.iter_rows(values_only=True), 1, None):
             part_name: str = row[part_name_column]
             material: str = row[material_column]
@@ -75,7 +85,9 @@ class JobSorterThread(QThread):
                 file_paths.append(file_path)
         return file_paths
 
-    def filter_file_paths(self, file_paths: list[str], desired_file_names: list[str]) -> list[str]:
+    def filter_file_paths(
+        self, file_paths: list[str], desired_file_names: list[str]
+    ) -> list[str]:
         filtered_paths = []
         for file_path in file_paths:
             file_name = os.path.basename(file_path)
@@ -87,14 +99,20 @@ class JobSorterThread(QThread):
     def run(self):
         try:
             data = self.get_data_from_excel(self.path_to_excel_file)
-            all_file_paths = self.get_all_file_paths_from_directory(directory_to_sort=self.directory_to_sort)
+            all_file_paths = self.get_all_file_paths_from_directory(
+                directory_to_sort=self.directory_to_sort
+            )
             filtered_paths = self.filter_file_paths(all_file_paths, list(data.keys()))
             new_copy_location = {}
             for file_path in filtered_paths:
                 file_name: str = os.path.basename(file_path)
                 name_without_extension: str = os.path.splitext(file_name)[0]
                 extension: str = os.path.splitext(file_name)[1].replace(".", "").upper()
-                quantity_mulitplier: str = f" x{data[name_without_extension]['quantity']}" if int(data[name_without_extension]["quantity"]) > 1 else ""
+                quantity_mulitplier: str = (
+                    f" x{data[name_without_extension]['quantity']}"
+                    if int(data[name_without_extension]["quantity"]) > 1
+                    else ""
+                )
                 new_copy_location[file_path] = {
                     "new_location": f"{self.output_directory}\\{extension}\\{data[name_without_extension]['thickness']}",
                     "old_name": f"{self.output_directory}\\{extension}\\{data[name_without_extension]['thickness']}\\{file_name}",
@@ -115,4 +133,6 @@ class JobSorterThread(QThread):
 
             self.signal.emit("Done")
         except Exception as e:
-            self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\n")
+            self.signal.emit(
+                f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\n"
+            )

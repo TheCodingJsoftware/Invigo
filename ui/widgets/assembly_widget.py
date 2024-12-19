@@ -3,10 +3,19 @@ from typing import TYPE_CHECKING, Optional, Union
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
-from PyQt6.QtWidgets import QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QMenu,
+    QPushButton,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
-from ui.dialogs.laser_cut_parts_list_summary_dialog import LaserCutPartsListSummaryDialog
+from ui.dialogs.laser_cut_parts_list_summary_dialog import (
+    LaserCutPartsListSummaryDialog,
+)
 from ui.theme import theme_var
 from ui.widgets.assembly_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
@@ -51,16 +60,26 @@ background-color: {theme_var('surface')};
         self.verticalLayout_3.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_10.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
-        self.doubleSpinBox_quantity.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_laser_cut_parts, self.laser_cut_widget
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_components, self.component_widget
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_sub_assemblies, self.sub_assemblies_widget
+        )
+        self.doubleSpinBox_quantity.wheelEvent = lambda event: self.parent.wheelEvent(
+            event
+        )
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.checkBox_not_part_of_process.setChecked(self.assembly.not_part_of_process)
         self.checkBox_not_part_of_process.clicked.connect(self.changes_made)
 
-        self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
+        self.pushButton_show_parts_list_summary.clicked.connect(
+            self.show_parts_list_summary
+        )
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color
@@ -155,7 +174,9 @@ background-color: {theme_var('surface')};
         self.parent.update_context_menu()
 
     def changes_made(self):
-        self.assembly.not_part_of_process = self.checkBox_not_part_of_process.isChecked()
+        self.assembly.not_part_of_process = (
+            self.checkBox_not_part_of_process.isChecked()
+        )
         self.parent.changes_made()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):

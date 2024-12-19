@@ -19,12 +19,18 @@ if TYPE_CHECKING:
 
 
 class LaserCutPart(InventoryItem):
-    def __init__(self, data: dict[str, Union[str, float, int, dict[str, object], list[object]]], laser_cut_inventory):
+    def __init__(
+        self,
+        data: dict[str, Union[str, float, int, dict[str, object], list[object]]],
+        laser_cut_inventory,
+    ):
         super().__init__()
 
         self.laser_cut_inventory: LaserCutInventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
-        self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
+        self.workspace_settings: WorkspaceSettings = (
+            self.laser_cut_inventory.workspace_settings
+        )
 
         self.quantity: int = 0
         self.red_quantity_limit: int = 10
@@ -89,7 +95,7 @@ class LaserCutPart(InventoryItem):
 
         # NOTE Only for Quote Generator and load_nest.py
         self.nest: Nest = None
-        self.quantity_in_nest: int = None
+        self.quantity_on_sheet: int = None
         self.matched_to_sheet_cost_price: float = 0.0
 
         self.load_data(data)
@@ -106,7 +112,9 @@ class LaserCutPart(InventoryItem):
 
     def mark_as_recoat(self):
         self.timer.stop(self.get_current_tag())
-        self.current_flow_tag_index = self.get_first_tag_index_with_similar_keyword(["powder", "coating", "liquid", "paint", "gloss", "prime"])
+        self.current_flow_tag_index = self.get_first_tag_index_with_similar_keyword(
+            ["powder", "coating", "liquid", "paint", "gloss", "prime"]
+        )
         self.current_flow_tag_status_index = 0
         self.recoat = True
         self.recoat_count += 1
@@ -137,10 +145,20 @@ class LaserCutPart(InventoryItem):
             self.timer.start(self.get_current_tag())
 
     def check_update_quantity_tags(self):
-        if self.flowtag.add_quantity_tag and self.get_current_tag().name == self.flowtag.add_quantity_tag.name:
-            self.laser_cut_inventory.add_or_update_laser_cut_part(self, f"workspace tag: {self.get_current_tag().name}")
-        if self.flowtag.remove_quantity_tag and self.get_current_tag().name == self.flowtag.remove_quantity_tag.name:
-            self.laser_cut_inventory.remove_laser_cut_part_quantity(self, f"workspace tag: {self.get_current_tag().name}")
+        if (
+            self.flowtag.add_quantity_tag
+            and self.get_current_tag().name == self.flowtag.add_quantity_tag.name
+        ):
+            self.laser_cut_inventory.add_or_update_laser_cut_part(
+                self, f"workspace tag: {self.get_current_tag().name}"
+            )
+        if (
+            self.flowtag.remove_quantity_tag
+            and self.get_current_tag().name == self.flowtag.remove_quantity_tag.name
+        ):
+            self.laser_cut_inventory.remove_laser_cut_part_quantity(
+                self, f"workspace tag: {self.get_current_tag().name}"
+            )
 
     def get_current_tag(self) -> Optional[Tag]:
         try:
@@ -167,7 +185,9 @@ class LaserCutPart(InventoryItem):
     def get_expected_time_to_complete(self) -> int:
         total_time: int = 0
         for tag in self.flowtag_data.tags_data:
-            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
+            total_time += self.flowtag_data.get_tag_data(
+                tag, "expected_time_to_complete"
+            )
         return total_time
 
     def move_to_category(self, from_category: Category, to_category: Category):
@@ -187,17 +207,24 @@ class LaserCutPart(InventoryItem):
         except KeyError:
             return 1.0
 
-    def set_category_quantity(self, category: Union[str, Category], quantity: float) -> float:
+    def set_category_quantity(
+        self, category: Union[str, Category], quantity: float
+    ) -> float:
         if isinstance(category, str):
             category = self.laser_cut_inventory.get_category(category)
         self.category_quantities[category] = quantity
 
     def print_category_quantities(self) -> str:
-        return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
+        return "".join(
+            f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n"
+            for i, category in enumerate(self.categories)
+        )
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.name = data.get("name", "")
-        self.quantity = data.get("quantity", 0)  # In the context of assemblies, quantity is unit_quantity
+        self.quantity = data.get(
+            "quantity", 0
+        )  # In the context of assemblies, quantity is unit_quantity
         self.red_quantity_limit = data.get("red_quantity_limit", 10)
         self.yellow_quantity_limit = data.get("yellow_quantity_limit", 20)
         self.category_quantities.clear()
@@ -252,9 +279,13 @@ class LaserCutPart(InventoryItem):
         self.recoat = data.get("recoat", False)
         self.recoat_count = data.get("recoat_count", 0)
 
-        self.flowtag = Flowtag("", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings)
+        self.flowtag = Flowtag(
+            "", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings
+        )
         self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
-        self.current_flow_tag_status_index = data.get("current_flow_tag_status_index", 0)
+        self.current_flow_tag_status_index = data.get(
+            "current_flow_tag_status_index", 0
+        )
         self.bending_files.clear()
         self.bending_files = data.get("bending_files", [])
         self.welding_files.clear()
@@ -268,10 +299,14 @@ class LaserCutPart(InventoryItem):
         self.flowtag_data = FlowtagData(self.flowtag)
         self.flowtag_data.load_data(data.get("flow_tag_data", {}))
         if tag := self.flowtag.get_tag_with_similar_name("laser"):
-            self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(self.machine_time * 60))
+            self.flowtag_data.set_tag_data(
+                tag, "expected_time_to_complete", int(self.machine_time * 60)
+            )
         elif tag := self.flowtag.get_tag_with_similar_name("picking"):
-            self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", self.weight)
-        self.quantity_in_nest = data.get("quantity_in_nest", 0)
+            self.flowtag_data.set_tag_data(
+                tag, "expected_time_to_complete", self.weight
+            )
+        self.quantity_on_sheet = data.get("quantity_on_sheet", 0)
 
         self.categories.clear()
         categories = data.get("categories", [])
@@ -295,7 +330,7 @@ class LaserCutPart(InventoryItem):
         self.sheet_dim = data.get("sheet_dim", "")
         self.part_dim = data.get("part_dim", "")
         self.geofile_name = data.get("geofile_name", "")
-        self.quantity_in_nest = data.get("quantity_in_nest")
+        self.quantity_on_sheet = data.get("quantity_on_sheet")
 
     def get_copy(self) -> "LaserCutPart":
         return copy.deepcopy(self)
@@ -344,9 +379,12 @@ class LaserCutPart(InventoryItem):
             "welding_files": self.welding_files,
             "cnc_milling_files": self.cnc_milling_files,
             "categories": [category.name for category in self.categories],
-            "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
+            "category_quantities": {
+                category.name: self.category_quantities.get(category, 1.0)
+                for category in self.categories
+            },
             "quantity": self.quantity,
-            "quantity_in_nest": self.quantity_in_nest,
+            "quantity_on_sheet": self.quantity_on_sheet,
             "red_quantity_limit": self.red_quantity_limit,
             "yellow_quantity_limit": self.yellow_quantity_limit,
             "flow_tag": self.flowtag.to_dict(),

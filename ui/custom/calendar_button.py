@@ -63,7 +63,9 @@ class DropDownCalendarWidget(QWidget):
         self.date_range_calendar.clear_highlight()
         self.date_range_calendar.from_date = start_of_week
         self.date_range_calendar.set_range(end_of_next_week)
-        self.date_range_calendar.date_range_changed.emit((start_of_week, end_of_next_week))
+        self.date_range_calendar.date_range_changed.emit(
+            (start_of_week, end_of_next_week)
+        )
 
     def set_this_month(self):
         today = QDate.currentDate()
@@ -131,7 +133,9 @@ class CalendarButton(QPushButton):
     def update_title(self, dates: tuple[QDate, QDate]):
         if self.dropdown_calendar.use_date_range.isChecked() and dates:
             try:
-                self.setText(f"  {self.base_title} ({dates[0].toString()} - {dates[1].toString()})")
+                self.setText(
+                    f"  {self.base_title} ({dates[0].toString()} - {dates[1].toString()})"
+                )
             except (KeyError, AttributeError):
                 self.setText(f"  {self.base_title} ({dates[0].toString()})")
         else:

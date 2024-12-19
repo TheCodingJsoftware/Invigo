@@ -16,7 +16,9 @@ class ChatFile:
 
     def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w") as json_file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w"
+            ) as json_file:
                 json_file.write("{}")
 
     def load_chat(self, chat_name: str, chat_data: dict[str, any]) -> Chat:

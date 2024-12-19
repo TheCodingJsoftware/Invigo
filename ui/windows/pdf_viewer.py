@@ -21,14 +21,30 @@ class PDFViewer(QMainWindow, Ui_MainWindow):
         self.download_file_thread: WorkspaceDownloadFile = None
 
         self.webView = QWebEngineView(self)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PluginsEnabled, True)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PdfViewerEnabled, True)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.AllowRunningInsecureContent, True)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.AutoLoadImages, True)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.ErrorPageEnabled, True)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.FullScreenSupportEnabled, True)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PrintElementBackgrounds, True)
-        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.WebGLEnabled, True)
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.PluginsEnabled, True
+        )
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.PdfViewerEnabled, True
+        )
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.AllowRunningInsecureContent, True
+        )
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.AutoLoadImages, True
+        )
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.ErrorPageEnabled, True
+        )
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.FullScreenSupportEnabled, True
+        )
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.PrintElementBackgrounds, True
+        )
+        self.webView.settings().setAttribute(
+            self.webView.settings().WebAttribute.WebGLEnabled, True
+        )
         self.webView.printRequested.connect(self.print_pdf)
         # self.webView.page().loadFinished.connect(self.hide_thumbnails)
 
@@ -64,7 +80,9 @@ class PDFViewer(QMainWindow, Ui_MainWindow):
         self.current_pdf_file = path
 
     def get_pdf_files(self) -> list[str]:
-        pdf_files: set[str] = {file for file in self.files if file.lower().endswith(".pdf")}
+        pdf_files: set[str] = {
+            file for file in self.files if file.lower().endswith(".pdf")
+        }
         return list(pdf_files)
 
     def load_pdf_file(self, file_path: str):

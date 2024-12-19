@@ -89,7 +89,9 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
             if not os.path.exists("images"):
                 os.makedirs("images")
             # Resize the image to fit the specified height while maintaining aspect ratio
-            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+            pixmap = QPixmap.fromImage(image).scaled(
+                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
+            )
             image_path = f'images/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
             pixmap.save(image_path)
 

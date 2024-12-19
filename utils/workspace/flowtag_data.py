@@ -14,7 +14,14 @@ class FlowtagData:
     def load_data(self, data: dict[str, dict[str, str]]):
         self.tags_data.clear()
         for tag in self.flowtag.tags:
-            tag_data = data.get(tag.name, {"expected_time_to_complete": self.workspace_settings.get_tag(tag.name).attributes.expected_time_to_complete})
+            tag_data = data.get(
+                tag.name,
+                {
+                    "expected_time_to_complete": self.workspace_settings.get_tag(
+                        tag.name
+                    ).attributes.expected_time_to_complete
+                },
+            )
             self.tags_data.update({tag: tag_data})
 
     def get_tag(self, tag_name: str) -> Optional[Tag]:

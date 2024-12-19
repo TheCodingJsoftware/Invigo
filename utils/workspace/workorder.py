@@ -7,7 +7,12 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class Workorder:
-    def __init__(self, data: list[dict[str, object]], sheet_settings: SheetSettings, laser_cut_inventory: LaserCutInventory):
+    def __init__(
+        self,
+        data: list[dict[str, object]],
+        sheet_settings: SheetSettings,
+        laser_cut_inventory: LaserCutInventory,
+    ):
         self.nests: list[Nest] = []
         self.sheet_settings = sheet_settings
         self.laser_cut_inventory = laser_cut_inventory

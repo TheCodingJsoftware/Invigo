@@ -415,8 +415,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>281</width>
-              <height>845</height>
+              <width>282</width>
+              <height>847</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1057,11 +1057,8 @@ QPushButton#pushButton_reload_job:flat:hover {
                      <number>0</number>
                     </property>
                     <item>
-                     <layout class="QVBoxLayout" name="nests_layout">
+                     <layout class="QVBoxLayout" name="verticalLayout_16">
                       <property name="leftMargin">
-                       <number>9</number>
-                      </property>
-                      <property name="topMargin">
                        <number>9</number>
                       </property>
                       <property name="rightMargin">
@@ -1070,6 +1067,32 @@ QPushButton#pushButton_reload_job:flat:hover {
                       <property name="bottomMargin">
                        <number>9</number>
                       </property>
+                      <item>
+                       <layout class="QVBoxLayout" name="nests_layout">
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>9</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                       </layout>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_open_nest_editor">
+                        <property name="text">
+                         <string>Open Nest Editor</string>
+                        </property>
+                        <property name="default">
+                         <bool>false</bool>
+                        </property>
+                       </widget>
+                      </item>
                      </layout>
                     </item>
                    </layout>
@@ -1115,8 +1138,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1178</width>
-            <height>819</height>
+            <width>1177</width>
+            <height>821</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

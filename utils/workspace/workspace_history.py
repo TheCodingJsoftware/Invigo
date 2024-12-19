@@ -30,7 +30,9 @@ class WorkspaceHistory:
 
     def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.filename}.json"):
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as json_file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+            ) as json_file:
                 json_file.write("[]")
 
     def save(self):

@@ -21,7 +21,9 @@ class AddLaserCutPartDialog(QDialog, Ui_Form):
         self.setWindowTitle("Add New Laser Cut Part")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.completer = QCompleter(natsorted(self.laser_cut_inventory.get_all_part_names()))
+        self.completer = QCompleter(
+            natsorted(self.laser_cut_inventory.get_all_part_names())
+        )
         self.completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.completer.setFilterMode(Qt.MatchFlag.MatchContains)
         self.completer.setWidget(self.lineEdit_name)
@@ -29,8 +31,12 @@ class AddLaserCutPartDialog(QDialog, Ui_Form):
         self.lineEdit_name.textChanged.connect(self.name_changed)
         self._completing = False
 
-        self.listWidget_laser_cut_parts.addItems(natsorted(self.laser_cut_inventory.get_all_part_names()))
-        self.listWidget_laser_cut_parts.currentTextChanged.connect(self.selection_changed)
+        self.listWidget_laser_cut_parts.addItems(
+            natsorted(self.laser_cut_inventory.get_all_part_names())
+        )
+        self.listWidget_laser_cut_parts.currentTextChanged.connect(
+            self.selection_changed
+        )
         self.label_laser_cut_part_status.setStyleSheet(f"color: {theme_var('error')};")
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
@@ -46,20 +52,36 @@ class AddLaserCutPartDialog(QDialog, Ui_Form):
         if len(self.listWidget_laser_cut_parts.selectedItems()) > 1:
             return
         for laser_cut_part in self.laser_cut_inventory.laser_cut_parts:
-            if laser_cut_part.name == self.listWidget_laser_cut_parts.currentItem().text():
+            if (
+                laser_cut_part.name
+                == self.listWidget_laser_cut_parts.currentItem().text()
+            ):
                 self.lineEdit_name.blockSignals(True)
                 self.lineEdit_name.setText(laser_cut_part.name)
                 self.lineEdit_name.blockSignals(False)
-                self.label_laser_cut_part_status.setStyleSheet(f"color: {theme_var('primary-green')};")
-                self.label_laser_cut_part_status.setText(" * Laser Cut Part exists in inventory.")
+                self.label_laser_cut_part_status.setStyleSheet(
+                    f"color: {theme_var('primary-green')};"
+                )
+                self.label_laser_cut_part_status.setText(
+                    " * Laser Cut Part exists in inventory."
+                )
                 return
             else:
-                self.label_laser_cut_part_status.setStyleSheet(f"color: {theme_var('error')};")
-                self.label_laser_cut_part_status.setText(" * Laser Cut Part does NOT exists in inventory.")
+                self.label_laser_cut_part_status.setStyleSheet(
+                    f"color: {theme_var('error')};"
+                )
+                self.label_laser_cut_part_status.setText(
+                    " * Laser Cut Part does NOT exists in inventory."
+                )
 
     def get_laser_cut_part_row(self, laser_cut_part_name: str) -> int:
         return next(
-            (row for row in range(self.listWidget_laser_cut_parts.count()) if self.listWidget_laser_cut_parts.item(row).text() == laser_cut_part_name),
+            (
+                row
+                for row in range(self.listWidget_laser_cut_parts.count())
+                if self.listWidget_laser_cut_parts.item(row).text()
+                == laser_cut_part_name
+            ),
             0,
         )
 
@@ -97,5 +119,7 @@ class AddLaserCutPartDialog(QDialog, Ui_Form):
             return []
         selected_laser_cut_parts: list[LaserCutPart] = []
         for list_item in self.listWidget_laser_cut_parts.selectedItems():
-            selected_laser_cut_parts.append(self.laser_cut_inventory.get_laser_cut_part_by_name(list_item.text()))
+            selected_laser_cut_parts.append(
+                self.laser_cut_inventory.get_laser_cut_part_by_name(list_item.text())
+            )
         return selected_laser_cut_parts

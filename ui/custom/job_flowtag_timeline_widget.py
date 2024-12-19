@@ -33,8 +33,12 @@ class JobFlowtagTimelineWidget(QWidget):
         self.sliders.clear()
         self.flowtag_timeline.load_data(self.flowtag_timeline.to_dict())
 
-        job_start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
-        job_end_date = datetime.strptime(self.flowtag_timeline.job.ending_date, "%Y-%m-%d %I:%M %p")
+        job_start_date = datetime.strptime(
+            self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p"
+        )
+        job_end_date = datetime.strptime(
+            self.flowtag_timeline.job.ending_date, "%Y-%m-%d %I:%M %p"
+        )
         job_duration = (job_end_date - job_start_date).days
 
         row = 0
@@ -43,14 +47,20 @@ class JobFlowtagTimelineWidget(QWidget):
             slider.setTickPosition(QSlider.TickPosition.NoTicks)
             slider.setMaximum(job_duration)
             try:
-                tag_start_date = datetime.strptime(tag_data["starting_date"], "%Y-%m-%d %I:%M %p")
-                tag_end_date = datetime.strptime(tag_data["ending_date"], "%Y-%m-%d %I:%M %p")
+                tag_start_date = datetime.strptime(
+                    tag_data["starting_date"], "%Y-%m-%d %I:%M %p"
+                )
+                tag_end_date = datetime.strptime(
+                    tag_data["ending_date"], "%Y-%m-%d %I:%M %p"
+                )
             except ValueError:  # For when it was never initialized
                 tag_start_date = job_start_date
                 tag_end_date = job_end_date
 
             start_value = (tag_start_date - job_start_date).days
-            end_value = start_value + (tag_end_date - tag_start_date).days  # Adjusted to be relative to the start_value
+            end_value = (
+                start_value + (tag_end_date - tag_start_date).days
+            )  # Adjusted to be relative to the start_value
 
             tag_name_label = QLabel(f"{tag.name} ({end_value - start_value} days)")
 
@@ -59,27 +69,58 @@ class JobFlowtagTimelineWidget(QWidget):
 
             slider.setValue((start_value, end_value))
 
-            slider.valueChanged.connect(lambda value, tag=tag, slider=slider, start_label=start_label, end_label=end_label, tag_name_label=tag_name_label: self.update_labels(value, tag, slider, start_label, end_label, tag_name_label))
+            slider.valueChanged.connect(
+                lambda value,
+                tag=tag,
+                slider=slider,
+                start_label=start_label,
+                end_label=end_label,
+                tag_name_label=tag_name_label: self.update_labels(
+                    value, tag, slider, start_label, end_label, tag_name_label
+                )
+            )
 
             self.grid_layout.addWidget(tag_name_label, row, 0)
             self.grid_layout.addWidget(start_label, row, 1)
             self.grid_layout.addWidget(slider, row, 2)
             self.grid_layout.addWidget(end_label, row, 3)
 
-            self.sliders.append({"tag": tag, "slider": slider, "start_label": start_label, "end_label": end_label, "tag_name_label": tag_name_label})
+            self.sliders.append(
+                {
+                    "tag": tag,
+                    "slider": slider,
+                    "start_label": start_label,
+                    "end_label": end_label,
+                    "tag_name_label": tag_name_label,
+                }
+            )
             row += 1
 
-    def update_labels(self, value: tuple[int, int], tag: Tag, slider: QRangeSlider, start_label: QLabel, end_label: QLabel, tag_name_label: QLabel):
+    def update_labels(
+        self,
+        value: tuple[int, int],
+        tag: Tag,
+        slider: QRangeSlider,
+        start_label: QLabel,
+        end_label: QLabel,
+        tag_name_label: QLabel,
+    ):
         start_label.setText(str(value[0]))
         end_label.setText(str(value[1]))
 
-        job_start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
+        job_start_date = datetime.strptime(
+            self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p"
+        )
 
         tag_start_date = job_start_date + timedelta(days=value[0])
         tag_end_date = tag_start_date + timedelta(days=(value[1] - value[0]))
 
-        self.flowtag_timeline.tags_data[tag]["starting_date"] = tag_start_date.strftime("%Y-%m-%d %I:%M %p")
-        self.flowtag_timeline.tags_data[tag]["ending_date"] = tag_end_date.strftime("%Y-%m-%d %I:%M %p")
+        self.flowtag_timeline.tags_data[tag]["starting_date"] = tag_start_date.strftime(
+            "%Y-%m-%d %I:%M %p"
+        )
+        self.flowtag_timeline.tags_data[tag]["ending_date"] = tag_end_date.strftime(
+            "%Y-%m-%d %I:%M %p"
+        )
 
         tag_name_label.setText(f"{tag.name} ({value[1] - value[0]} days)")
         self.changes_made()

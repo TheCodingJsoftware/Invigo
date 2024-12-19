@@ -13,14 +13,20 @@ class GenerateWorkorderDialog(QDialog, Ui_Form):
         self.setWindowTitle("Generate Workorder")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.pushButton_generate_printout.clicked.connect(self.generate_printout_pressed)
+        self.pushButton_generate_printout.clicked.connect(
+            self.generate_printout_pressed
+        )
 
         self.pushButton_generate.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
     def generate_printout_pressed(self):
-        self.pushButton_show_qr_code.setChecked(self.pushButton_generate_printout.isChecked())
-        self.checkBox_open_workorder_when_generated.setChecked(self.pushButton_generate_printout.isChecked())
+        self.pushButton_show_qr_code.setChecked(
+            self.pushButton_generate_printout.isChecked()
+        )
+        self.checkBox_open_workorder_when_generated.setChecked(
+            self.pushButton_generate_printout.isChecked()
+        )
 
     def should_update_inventory(self) -> bool:
         return self.pushButton_update_inventory.isChecked()

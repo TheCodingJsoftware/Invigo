@@ -35,7 +35,11 @@ class ComponentsInventory(Inventory):
     def get_components_by_category(self, category: str | Category) -> list[Component]:
         if isinstance(category, str):
             category = self.get_category(category)
-        return [component for component in self.components if category in component.categories]
+        return [
+            component
+            for component in self.components
+            if category in component.categories
+        ]
 
     def get_total_stock_cost_for_similar_categories(self, text: str) -> float:
         total = 0.0
@@ -43,7 +47,10 @@ class ComponentsInventory(Inventory):
         for category in self.get_categories():
             if text in category.name:
                 for component in self.components:
-                    if category in component.categories and component not in used_components:
+                    if (
+                        category in component.categories
+                        and component not in used_components
+                    ):
                         total += component.get_total_cost_in_stock()
                         used_components.add(component)
         return total
@@ -72,7 +79,9 @@ class ComponentsInventory(Inventory):
     def remove_component(self, component: Component):
         self.components.remove(component)
 
-    def duplicate_category(self, category_to_duplicate: Category, new_category_name: str) -> Category:
+    def duplicate_category(
+        self, category_to_duplicate: Category, new_category_name: str
+    ) -> Category:
         new_category = Category(new_category_name)
         super().add_category(new_category)
         for component in self.get_components_by_category(category_to_duplicate):
@@ -87,18 +96,28 @@ class ComponentsInventory(Inventory):
 
     def get_component_by_name(self, component_name: str) -> Component:
         return next(
-            (component for component in self.components if component.name == component_name),
+            (
+                component
+                for component in self.components
+                if component.name == component_name
+            ),
             None,
         )
 
     def get_component_by_part_name(self, component_name: str) -> Component:
         return next(
-            (component for component in self.components if component.part_name == component_name),
+            (
+                component
+                for component in self.components
+                if component.part_name == component_name
+            ),
             None,
         )
 
     def sort_by_quantity(self, ascending: bool) -> list[Component]:
-        self.components = natsorted(self.components, key=lambda component: component.quantity, reverse=ascending)
+        self.components = natsorted(
+            self.components, key=lambda component: component.quantity, reverse=ascending
+        )
         return self.components
 
     def sort_by_name(self, ascending: bool) -> list[Component]:
@@ -116,7 +135,9 @@ class ComponentsInventory(Inventory):
     def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-                data: dict[str, Union[dict[str, object], list[object]]] = msgspec.json.decode(file.read())
+                data: dict[str, Union[dict[str, object], list[object]]] = (
+                    msgspec.json.decode(file.read())
+                )
             self.categories.from_dict(data["categories"])
             self.components.clear()
 

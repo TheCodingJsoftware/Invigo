@@ -107,8 +107,12 @@ class SheetsTable:
         sheets_table_html += "</tr>"
         sheets_table_html += '<tbody id="table-body">'
         for nest in self.nests:
-            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
+            single_hours, single_minutes, single_seconds = (
+                self.get_hours_minutes_seconds(nest.sheet_cut_time)
+            )
+            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(
+                nest.get_machining_time()
+            )
             self.grand_total_cut_time += nest.get_machining_time()
             sheets_table_html += f"""<tr>
             <td>{nest.name}</td>
@@ -121,7 +125,9 @@ class SheetsTable:
             <td>{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
             </tr>"""
 
-        grand_total_hours, grand_total_minutes, grand_total_seconds = self.get_hours_minutes_seconds(self.grand_total_cut_time)
+        grand_total_hours, grand_total_minutes, grand_total_seconds = (
+            self.get_hours_minutes_seconds(self.grand_total_cut_time)
+        )
         sheets_table_html += f"""<tr>
         <td>Total:</td>
         <td></td>
@@ -348,7 +354,9 @@ class QuotePrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable("Quote", self.quote.grouped_laser_cut_parts)
+            laser_cut_parts_table = LaserCutPartsTable(
+                "Quote", self.quote.grouped_laser_cut_parts
+            )
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'
@@ -390,7 +398,9 @@ class WorkorderPrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable("Workorder", self.quote.grouped_laser_cut_parts)
+            laser_cut_parts_table = LaserCutPartsTable(
+                "Workorder", self.quote.grouped_laser_cut_parts
+            )
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'
@@ -432,7 +442,9 @@ class PackingSlipPrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable("Packing Slip", self.quote.grouped_laser_cut_parts)
+            laser_cut_parts_table = LaserCutPartsTable(
+                "Packing Slip", self.quote.grouped_laser_cut_parts
+            )
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'
