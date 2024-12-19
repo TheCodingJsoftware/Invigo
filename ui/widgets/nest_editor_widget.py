@@ -464,8 +464,8 @@ class NestEditorWidget(QWidget, Ui_Form):
         self.parts_table.blockSignals(False)
         self.update_total_nest_cut_time()
 
-    def notes_changed(self, new_notes: str):
-        self.nest.notes = new_notes
+    def notes_changed(self):
+        self.nest.notes = self.plainTextEdit_notes.toPlainText()
 
     def delete_selected_laser_cut_parts(self):
         selected_rows: set[int] = {
