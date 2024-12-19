@@ -242,7 +242,7 @@ class SheetImages:
                         <img class="round" src="{self.server_directory}/{part.image_index}">
                         <div class="max">
                             <h6 class="small">{part.name}</h6>
-                            <div>Quantity: {part.quantity_in_nest}</div>
+                            <div>Quantity: {part.quantity_on_sheet}</div>
                         </div>
                         <div class="badge none">#{part.part_number}</div>
                     </a>

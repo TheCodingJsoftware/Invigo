@@ -67,7 +67,6 @@ class LaserCutInventory(Inventory):
     def add_or_update_laser_cut_part(
         self, laser_cut_part_to_add: LaserCutPart, from_where: str
     ):
-        laser_cut_part_to_add.quantity_in_nest = None
         if laser_cut_part_to_add.recut:
             new_recut_part = LaserCutPart(
                 laser_cut_part_to_add.to_dict(),

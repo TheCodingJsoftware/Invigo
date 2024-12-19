@@ -138,8 +138,8 @@ class LoadNestsThread(LoadNestFileThread):
                     laser_cut_part = LaserCutPart(
                         {
                             "name": part_name,
-                            "quantity": int(quantities[i]),
-                            "quantity_in_nest": int(quantities[i]),
+                            "quantity": int(quantities[i]) * quantity_multiplier,
+                            "quantity_on_sheet": int(quantities[i]),
                             "machine_time": float(machining_times[i]),
                             "weight": float(weights[i]),
                             "part_number": part_numbers[i],

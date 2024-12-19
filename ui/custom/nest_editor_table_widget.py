@@ -20,7 +20,6 @@ class NestEditorPartsTableColumns(AutoNumber):
     TOTAL_QUANTITY = auto()
     PART_DIMENSION = auto()
     RECUT = auto()
-    ADD_PART_TO_INVENTORY = auto()
 
 
 class NestEditorPartsTableWidget(CustomTableWidget):
@@ -50,7 +49,6 @@ class NestEditorPartsTableWidget(CustomTableWidget):
             "Total\nQuantity": NestEditorPartsTableColumns.TOTAL_QUANTITY.value,
             "Part Dim": NestEditorPartsTableColumns.PART_DIMENSION.value,
             "Recut": NestEditorPartsTableColumns.RECUT.value,
-            "Add Part to Inventory": NestEditorPartsTableColumns.ADD_PART_TO_INVENTORY.value,
         }
 
         self.setColumnCount(len(headers))

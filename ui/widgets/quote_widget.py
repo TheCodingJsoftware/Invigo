@@ -937,7 +937,7 @@ class QuoteWidget(QWidget, Ui_Form):
                     self.laser_cut_table_items[laser_cut_part]["quantity"].setText(
                         str(
                             int(
-                                laser_cut_part.quantity_in_nest
+                                laser_cut_part.quantity_on_sheet
                                 * nest_to_change.sheet_count
                             )
                         )
@@ -1437,7 +1437,7 @@ class QuoteWidget(QWidget, Ui_Form):
                         laser_cut_part.to_dict(), self.laser_cut_inventory
                     )
                     new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
-                    new_laser_cut_part.quantity_in_nest = 1
+                    new_laser_cut_part.quantity_on_sheet = 1
                     self.quote.add_laser_cut_part_to_custom_nest(new_laser_cut_part)
                     self.parent.parent.download_required_images_thread(
                         [new_laser_cut_part.image_index]
@@ -1462,7 +1462,7 @@ class QuoteWidget(QWidget, Ui_Form):
                     laser_cut_part.to_dict(), self.laser_cut_inventory
                 )
                 new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
-                new_laser_cut_part.quantity_in_nest = 1
+                new_laser_cut_part.quantity_on_sheet = 1
                 self.quote.add_laser_cut_part_to_custom_nest(new_laser_cut_part)
                 self.parent.parent.download_required_images_thread(
                     [new_laser_cut_part.image_index]
@@ -1595,17 +1595,17 @@ class QuoteWidget(QWidget, Ui_Form):
                     {"thickness": thickness_combobox}
                 )
 
-                if not laser_cut_part.quantity_in_nest:  # I dont understand why I need to check, it throws TypeError in the following lines
-                    laser_cut_part.quantity_in_nest = laser_cut_part.quantity
+                if not laser_cut_part.quantity_on_sheet:  # I dont understand why I need to check, it throws TypeError in the following lines
+                    laser_cut_part.quantity_on_sheet = laser_cut_part.quantity
                 table_widget_item_quantity = QTableWidgetItem(
-                    str(laser_cut_part.quantity_in_nest * nest.sheet_count)
+                    str(laser_cut_part.quantity_on_sheet * nest.sheet_count)
                 )
                 table_widget_item_quantity.setFont(self.tables_font)
                 table_widget_item_quantity.setTextAlignment(
                     Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
                 )
                 table_widget_item_quantity.setToolTip(
-                    f"One sheet has: {laser_cut_part.quantity_in_nest}"
+                    f"One sheet has: {laser_cut_part.quantity_on_sheet}"
                 )
                 self.laser_cut_table_widget.setItem(
                     row_index,

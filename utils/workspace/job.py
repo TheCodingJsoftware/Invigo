@@ -132,7 +132,7 @@ class Job:
                 else:
                     laser_cut_part_dict[new_laser_cut_part.name] = new_laser_cut_part
                 # This is because we group the data, so all nest reference is lost.
-                new_laser_cut_part.quantity_in_nest = None
+                new_laser_cut_part.quantity_on_sheet = None
 
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()
         self.sort_laser_cut_parts()

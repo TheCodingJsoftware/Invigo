@@ -20,7 +20,8 @@ from ui.custom.nest_editor_table_widget import (
     NestEditorPartsTableColumns,
     NestEditorPartsTableWidget,
 )
-from ui.custom_widgets import MachineCutTimeSpinBox, ClickableRichTextLabel
+from ui.custom_widgets import MachineCutTimeSpinBox, ClickableRichTextLabel, RecutButton
+from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.theme import theme_var
 from ui.widgets.nest_editor_widget_UI import Ui_Form
@@ -48,11 +49,12 @@ class NestEditorWidget(QWidget, Ui_Form):
 
         self.nest = nest
         self.parts_table_items: dict[
-            LaserCutPart, dict[str, int | QTableWidgetItem | QComboBox]
+            LaserCutPart, dict[str, int | QTableWidgetItem | QComboBox | RecutButton]
         ] = {}
         self.pushButton_nest_name.setText(self.nest.get_name())
         self.sheet_settings = self.parent.parent.sheet_settings
         self.sheets_inventory = self.parent.parent.sheets_inventory
+        self.laser_cut_inventory = self.parent.parent.laser_cut_inventory
 
         self.settings_file = Settings()
         self.tables_font = QFont()
@@ -162,9 +164,13 @@ class NestEditorWidget(QWidget, Ui_Form):
         self.doubleSpinBox_sheet_count.valueChanged.connect(self.sheet_count_changed)
         self.plainTextEdit_notes.textChanged.connect(self.notes_changed)
 
+        self.pushButton_add_laser_cut_part.clicked.connect(self.add_new_laser_cut_part_to_nest)
+
         if "404" not in self.nest.image_path:
             self.label_nest_image.setFixedSize(485, 345)
             pixmap = QPixmap(self.nest.image_path)
+            if pixmap.isNull():
+                pixmap = QPixmap("images/404.jpeg")
             scaled_pixmap = pixmap.scaled(
                 self.label_nest_image.size(),
                 aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio,
@@ -192,6 +198,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         self.parts_table.setColumnWidth(NestEditorPartsTableColumns.PICTURE.value, 74)
         self.update_sheet_scrap_percentage()
         self.update_sheet_status()
+        self.update_total_nest_cut_time()
 
     def add_laser_cut_part(self, laser_cut_part: LaserCutPart):
         current_row = self.parts_table.rowCount()
@@ -253,7 +260,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
         self.parts_table_items[laser_cut_part].update({"thickness": combobox_thickness})
 
-        sheet_quantity_item = QTableWidgetItem(f"{laser_cut_part.quantity:,.0f}")
+        sheet_quantity_item = QTableWidgetItem(f"{laser_cut_part.quantity_on_sheet:,.0f}")
         sheet_quantity_item.setTextAlignment(
             Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
         )
@@ -268,7 +275,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
 
         total_quantity_item = QTableWidgetItem(
-            f"{(laser_cut_part.quantity * self.nest.sheet_count):,.0f}"
+            f"{(laser_cut_part.quantity_on_sheet * self.nest.sheet_count):,.0f}"
         )
         total_quantity_item.setTextAlignment(
             Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
@@ -295,6 +302,34 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
         self.parts_table_items[laser_cut_part].update({"part_dimension": part_dim_item})
 
+        def recut_pressed(recut_part: LaserCutPart, button: RecutButton):
+            recut_part.recut = button.isChecked()
+
+        recut_button = RecutButton(self)
+        recut_button.clicked.connect(
+            partial(recut_pressed, laser_cut_part, recut_button)
+        )
+        recut_button.setStyleSheet("margin: 5%;")
+        self.parts_table.setCellWidget(
+            current_row, NestEditorPartsTableColumns.RECUT.value, recut_button
+        )
+        self.parts_table_items[laser_cut_part].update({"recut_button": recut_button})
+
+    def add_new_laser_cut_part_to_nest(self):
+        add_item_dialog = AddLaserCutPartDialog(self.laser_cut_inventory, self)
+        if add_item_dialog.exec():
+            if selected_laser_cut_parts := add_item_dialog.get_selected_laser_cut_parts():
+                for laser_cut_part in selected_laser_cut_parts:
+                    new_laser_cut_part = LaserCutPart(
+                        laser_cut_part.to_dict(), self.laser_cut_inventory
+                    )
+                    new_laser_cut_part.quantity_on_sheet = 1
+                    new_laser_cut_part.quantity = (
+                        laser_cut_part.quantity_on_sheet * self.nest.sheet_count
+                    )
+                    self.nest.add_laser_cut_part(new_laser_cut_part)
+            self.load_parts_table()
+
     def parts_table_row_changed(self, row: int):
         current_laser_cut_part = next(
             (
@@ -316,7 +351,8 @@ class NestEditorWidget(QWidget, Ui_Form):
             .replace(",", "")
         )
 
-        current_laser_cut_part.quantity = sheet_quantity
+        current_laser_cut_part.quantity_on_sheet = sheet_quantity
+        current_laser_cut_part.quantity = sheet_quantity * self.nest.sheet_count
 
         self.parts_table_items[current_laser_cut_part]["sheet_quantity"].setText(
             f"{sheet_quantity:,.0f}"
@@ -408,20 +444,23 @@ class NestEditorWidget(QWidget, Ui_Form):
         self.nest.sheet.length = new_length
         self.update_name()
         self.update_sheet_status()
+        self.update_sheet_scrap_percentage()
 
     def sheet_width_changed(self, new_width: float):
         self.nest.sheet.width = new_width
         self.update_name()
         self.update_sheet_status()
+        self.update_sheet_scrap_percentage()
 
-    def sheet_count_changed(self, new_count: int):
-        self.nest.sheet_count = new_count
+    def sheet_count_changed(self, new_sheet_count: int):
+        self.nest.sheet_count = new_sheet_count
         self.parts_table.blockSignals(True)
         for laser_cut_part, table_data in self.parts_table_items.items():
             sheet_quantity = int(
                 table_data["sheet_quantity"].text().strip().replace(",", "")
             )
-            table_data["total_quantity"].setText(f"{(new_count * sheet_quantity):,.0f}")
+            table_data["total_quantity"].setText(f"{(new_sheet_count * sheet_quantity):,.0f}")
+            laser_cut_part.quantity = sheet_quantity * new_sheet_count
         self.parts_table.blockSignals(False)
         self.update_total_nest_cut_time()
 
@@ -453,6 +492,37 @@ class NestEditorWidget(QWidget, Ui_Form):
                 table_item_data[setting_name].blockSignals(True)
                 table_item_data[setting_name].setCurrentText(new_value)
                 table_item_data[setting_name].blockSignals(False)
+
+    def mark_selected_parts_as_recut(self):
+        selected_rows: set[int] = {
+            selection.row() for selection in self.parts_table.selectedItems()
+        }
+        for laser_cut_part, table_item_data in self.parts_table_items.items():
+            if table_item_data["row"] in selected_rows:
+                table_item_data["recut_button"].set_to_recut()
+                laser_cut_part.recut = True
+
+    def unmark_selected_parts_as_recut(self):
+        selected_rows: set[int] = {
+            selection.row() for selection in self.parts_table.selectedItems()
+        }
+        for laser_cut_part, table_item_data in self.parts_table_items.items():
+            if table_item_data["row"] in selected_rows:
+                table_item_data["recut_button"].set_to_no_recut()
+                laser_cut_part.recut = False
+
+    def add_selected_parts_to_inventory(self):
+        selected_rows: set[int] = {
+            selection.row() for selection in self.parts_table.selectedItems()
+        }
+        for laser_cut_part, table_item_data in self.parts_table_items.items():
+            if table_item_data["row"] in selected_rows:
+                self.parent.parent.add_laser_cut_part_to_inventory(
+                    laser_cut_part, self.nest.get_name()
+                )
+        else:
+            self.laser_cut_inventory.save()
+            self.parent.parent.sync_changes()
 
     def update_sheet_status(self):
         if self.sheets_inventory.exists(self.nest.sheet):
@@ -508,6 +578,7 @@ class NestEditorWidget(QWidget, Ui_Form):
                 laser_cut_part.material = new_sheet.material
             self.sheets_inventory.add_sheet(new_sheet)
             self.sheets_inventory.save()
+            self.sync_changes()
             self.update_sheet_status()
 
     def load_context_menu(self) -> QMenu:
@@ -516,6 +587,23 @@ class NestEditorWidget(QWidget, Ui_Form):
         delete_selected_parts_action = QAction("Delete selected items", self)
         delete_selected_parts_action.triggered.connect(
             self.delete_selected_laser_cut_parts
+        )
+
+        recut_menu = QMenu("Recut", menu)
+        mark_selected_parts_as_recut_action = QAction("Mark as Recut", self)
+        mark_selected_parts_as_recut_action.triggered.connect(
+            self.mark_selected_parts_as_recut
+        )
+        unmark_selected_parts_as_recut_action = QAction("Unmark as Recut", self)
+        unmark_selected_parts_as_recut_action.triggered.connect(
+            self.unmark_selected_parts_as_recut
+        )
+        recut_menu.addAction(mark_selected_parts_as_recut_action)
+        recut_menu.addAction(unmark_selected_parts_as_recut_action)
+
+        add_selected_parts_to_inventory_action = QAction("Add to inventory", self)
+        add_selected_parts_to_inventory_action.triggered.connect(
+            self.add_selected_parts_to_inventory
         )
 
         material_menu = QMenu("Set Material", menu)
@@ -540,15 +628,21 @@ class NestEditorWidget(QWidget, Ui_Form):
             )
             thickness_menu.addAction(thickness_action)
 
-        menu.addAction(delete_selected_parts_action)
+        menu.addAction(add_selected_parts_to_inventory_action)
         menu.addSeparator()
         menu.addMenu(material_menu)
         menu.addMenu(thickness_menu)
+        menu.addSeparator()
+        menu.addMenu(recut_menu)
+        menu.addAction(delete_selected_parts_action)
 
         return menu
 
     def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
+
+    def sync_changes(self):
+        self.parent.sync_changes()
 
     def get_total_cutting_time(self) -> str:
         total_seconds = self.nest.sheet_cut_time * self.nest.sheet_count

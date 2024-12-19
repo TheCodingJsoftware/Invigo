@@ -1154,7 +1154,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
         )
 
     def add_laser_cut_part_to_inventory(self, laser_cut_part_to_add: LaserCutPart):
-        laser_cut_part_to_add.quantity_in_nest = None
         if laser_cut_part_to_add.recut:
             new_recut_part = LaserCutPart(
                 laser_cut_part_to_add.to_dict(),

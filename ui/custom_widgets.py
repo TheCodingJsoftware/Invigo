@@ -1302,6 +1302,14 @@ class RecutButton(QPushButton):
         self.setText("No Recut")
         self.clicked.connect(self.toggle_state)
 
+    def set_to_recut(self):
+        self.setChecked(True)
+        self.setText("Recut")
+
+    def set_to_no_recut(self):
+        self.setChecked(False)
+        self.setText("No Recut")
+
     def toggle_state(self):
         if self.isChecked():
             self.setText("Recut")

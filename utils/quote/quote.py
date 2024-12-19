@@ -102,7 +102,7 @@ class Quote:
                         self.laser_cut_inventory,
                     )
                     # This is because we group the data, so all nest reference is lost.
-                    new_laser_cut_part.quantity_in_nest = None
+                    new_laser_cut_part.quantity_on_sheet = None
                     laser_cut_part_dict[laser_cut_part.name] = new_laser_cut_part
 
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()

@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(628, 417)
+        Form.resize(1368, 720)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -188,6 +188,7 @@ class Ui_Form(object):
         self.horizontalLayout_5.addLayout(self.verticalLayout_6)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem)
+        self.horizontalLayout_5.setStretch(1, 1)
         self.horizontalLayout_2.addLayout(self.horizontalLayout_5)
         self.horizontalLayout_2.setStretch(1, 1)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -263,7 +264,6 @@ class Ui_Form(object):
         self.doubleSpinBox_sheet_length.setSuffix(_translate("Form", " in"))
         self.label_8.setText(_translate("Form", "×"))
         self.doubleSpinBox_sheet_width.setSuffix(_translate("Form", " in"))
-        self.label.setToolTip(_translate("Form", "This is how much of the sheet is left over."))
         self.label.setText(_translate("Form", "Sheet scrap:"))
         self.pushButton_laser_cut_parts_toggle_view.setText(_translate("Form", "Laser Cut Parts"))
         self.pushButton_add_laser_cut_part.setText(_translate("Form", "Add Laser Cut Part"))

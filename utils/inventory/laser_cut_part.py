@@ -95,7 +95,7 @@ class LaserCutPart(InventoryItem):
 
         # NOTE Only for Quote Generator and load_nest.py
         self.nest: Nest = None
-        self.quantity_in_nest: int = None
+        self.quantity_on_sheet: int = None
         self.matched_to_sheet_cost_price: float = 0.0
 
         self.load_data(data)
@@ -306,7 +306,7 @@ class LaserCutPart(InventoryItem):
             self.flowtag_data.set_tag_data(
                 tag, "expected_time_to_complete", self.weight
             )
-        self.quantity_in_nest = data.get("quantity_in_nest", 0)
+        self.quantity_on_sheet = data.get("quantity_on_sheet", 0)
 
         self.categories.clear()
         categories = data.get("categories", [])
@@ -330,7 +330,7 @@ class LaserCutPart(InventoryItem):
         self.sheet_dim = data.get("sheet_dim", "")
         self.part_dim = data.get("part_dim", "")
         self.geofile_name = data.get("geofile_name", "")
-        self.quantity_in_nest = data.get("quantity_in_nest")
+        self.quantity_on_sheet = data.get("quantity_on_sheet")
 
     def get_copy(self) -> "LaserCutPart":
         return copy.deepcopy(self)
@@ -384,7 +384,7 @@ class LaserCutPart(InventoryItem):
                 for category in self.categories
             },
             "quantity": self.quantity,
-            "quantity_in_nest": self.quantity_in_nest,
+            "quantity_on_sheet": self.quantity_on_sheet,
             "red_quantity_limit": self.red_quantity_limit,
             "yellow_quantity_limit": self.yellow_quantity_limit,
             "flow_tag": self.flowtag.to_dict(),
