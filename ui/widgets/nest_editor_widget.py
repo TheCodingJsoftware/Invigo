@@ -23,6 +23,7 @@ from ui.custom.nest_editor_table_widget import (
 from ui.custom_widgets import MachineCutTimeSpinBox, ClickableRichTextLabel, RecutButton
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
+from ui.dialogs.recut_dialog import RecutDialog
 from ui.theme import theme_var
 from ui.widgets.nest_editor_widget_UI import Ui_Form
 from utils.colors import get_contrast_text_color, lighten_color
@@ -302,18 +303,44 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
         self.parts_table_items[laser_cut_part].update({"part_dimension": part_dim_item})
 
-        def recut_pressed(recut_part: LaserCutPart, button: RecutButton):
-            recut_part.recut = button.isChecked()
-
         recut_button = RecutButton(self)
         recut_button.clicked.connect(
-            partial(recut_pressed, laser_cut_part, recut_button)
+            partial(self.recut_pressed, laser_cut_part, recut_button)
         )
         recut_button.setStyleSheet("margin: 5%;")
         self.parts_table.setCellWidget(
             current_row, NestEditorPartsTableColumns.RECUT.value, recut_button
         )
         self.parts_table_items[laser_cut_part].update({"recut_button": recut_button})
+
+    def recut_pressed(self, recut_part: LaserCutPart, button: RecutButton):
+        if button.isChecked():
+            recut_dialog = RecutDialog("How many are Recut?", recut_part.quantity, self)
+            if recut_dialog.exec() and recut_dialog.get_quantity() >= 1:
+                recut_part.recut = button.isChecked()
+                recut_count = recut_dialog.get_quantity()
+                recut_part.recut_count_notes = recut_count
+                button.setText(f"Recut ({recut_count})")
+                self.plainTextEdit_notes.setPlainText(self.generate_recut_part_summary())
+            else:
+                button.blockSignals(True)
+                button.set_to_no_recut()
+                button.blockSignals(False)
+        else:
+            button.setText("No Recut")
+            recut_part.recut = False
+            recut_part.recut_count_notes = 0
+            self.plainTextEdit_notes.setPlainText(self.generate_recut_part_summary())
+
+    def generate_recut_part_summary(self) -> str:
+        summary = ""
+        for part in self.nest.laser_cut_parts:
+            if part.recut:
+                if part.recut_count_notes == 1:
+                    summary += f"{part.name} has {part.recut_count_notes} recut\n"
+                else:
+                    summary += f"{part.name} has {part.recut_count_notes} recuts\n"
+        return summary
 
     def add_new_laser_cut_part_to_nest(self):
         add_item_dialog = AddLaserCutPartDialog(self.laser_cut_inventory, self)
@@ -494,24 +521,6 @@ class NestEditorWidget(QWidget, Ui_Form):
                 table_item_data[setting_name].setCurrentText(new_value)
                 table_item_data[setting_name].blockSignals(False)
 
-    def mark_selected_parts_as_recut(self):
-        selected_rows: set[int] = {
-            selection.row() for selection in self.parts_table.selectedItems()
-        }
-        for laser_cut_part, table_item_data in self.parts_table_items.items():
-            if table_item_data["row"] in selected_rows:
-                table_item_data["recut_button"].set_to_recut()
-                laser_cut_part.recut = True
-
-    def unmark_selected_parts_as_recut(self):
-        selected_rows: set[int] = {
-            selection.row() for selection in self.parts_table.selectedItems()
-        }
-        for laser_cut_part, table_item_data in self.parts_table_items.items():
-            if table_item_data["row"] in selected_rows:
-                table_item_data["recut_button"].set_to_no_recut()
-                laser_cut_part.recut = False
-
     def add_selected_parts_to_inventory(self):
         selected_rows: set[int] = {
             selection.row() for selection in self.parts_table.selectedItems()
@@ -590,18 +599,6 @@ class NestEditorWidget(QWidget, Ui_Form):
             self.delete_selected_laser_cut_parts
         )
 
-        recut_menu = QMenu("Recut", menu)
-        mark_selected_parts_as_recut_action = QAction("Mark as Recut", self)
-        mark_selected_parts_as_recut_action.triggered.connect(
-            self.mark_selected_parts_as_recut
-        )
-        unmark_selected_parts_as_recut_action = QAction("Unmark as Recut", self)
-        unmark_selected_parts_as_recut_action.triggered.connect(
-            self.unmark_selected_parts_as_recut
-        )
-        recut_menu.addAction(mark_selected_parts_as_recut_action)
-        recut_menu.addAction(unmark_selected_parts_as_recut_action)
-
         add_selected_parts_to_inventory_action = QAction("Add to inventory", self)
         add_selected_parts_to_inventory_action.triggered.connect(
             self.add_selected_parts_to_inventory
@@ -634,7 +631,6 @@ class NestEditorWidget(QWidget, Ui_Form):
         menu.addMenu(material_menu)
         menu.addMenu(thickness_menu)
         menu.addSeparator()
-        menu.addMenu(recut_menu)
         menu.addAction(delete_selected_parts_action)
 
         return menu

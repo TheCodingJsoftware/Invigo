@@ -94,6 +94,7 @@ class LaserCutPart(InventoryItem):
         self.flowtag_data: FlowtagData = None
 
         # NOTE Only for Quote Generator and load_nest.py
+        self.recut_count_notes: int = 0
         self.nest: Nest = None
         self.quantity_on_sheet: int = None
         self.matched_to_sheet_cost_price: float = 0.0
@@ -246,6 +247,7 @@ class LaserCutPart(InventoryItem):
         self.cost_of_goods = data.get("cost_of_goods", 0.0)
         self.recut = data.get("recut", False)
         self.recut_count = data.get("recut_count", 0)
+        self.recut_count_notes = data.get("recut_count_notes", 0)
         self.shelf_number = data.get("shelf_number", "")
         self.sheet_dim = data.get("sheet_dim", "")
         self.part_dim = data.get("part_dim", "")
@@ -361,6 +363,7 @@ class LaserCutPart(InventoryItem):
             "labor_cost": self.labor_cost,
             "recut": self.recut,
             "recut_count": self.recut_count,
+            "recut_count_notes": self.recut_count_notes,
             "uses_primer": self.uses_primer,
             "primer_name": None if self.primer_name == "None" else self.primer_name,
             "primer_overspray": self.primer_overspray,

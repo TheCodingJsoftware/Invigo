@@ -81,6 +81,16 @@ class Nest:
             self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.part_number
         )
 
+    def get_nest_recut_part_summary(self) -> str:
+        summary = ""
+        for part in self.laser_cut_parts:
+            if part.recut:
+                if part.recut_count_notes == 1:
+                    summary += f"{part.name} has {part.recut_count_notes} recut\n"
+                else:
+                    summary += f"{part.name} has {part.recut_count_notes} recuts\n"
+        return summary
+
     def load_data(self, data: dict[str, float | int | str | dict[str, float | str]]):
         self.name = data.get("name", "")
         self.cutting_method = data.get("cutting_method", "CO2")

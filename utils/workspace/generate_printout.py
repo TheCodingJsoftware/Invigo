@@ -95,7 +95,47 @@ class WorkorderID:
         self.workorder_id = workorder_id
 
     def generate(self) -> str:
-        return f"""<h5 class="center-align">Scan to Open Workorder</h5><div class='padding' id='workorder-id' data-workorder-id={self.workorder_id}></div>"""
+        return f"""<div><h5 class="center-align">Scan to Open Workorder</h5><div class='padding' id='workorder-id' data-workorder-id={self.workorder_id}></div></div>"""
+
+
+class NestRecutPartSummary:
+    def __init__(self, nests: list[Nest]):
+        self.nests = natsorted(nests, key=lambda nest: nest.name)
+        self.headers = ["Nest", "Recut Part Summary"]
+
+    def get_nest_recut_part_summary(self, nest: Nest) -> str:
+        summary = "<p class='small-text'>"
+        for part in nest.laser_cut_parts:
+            if part.recut:
+                if part.recut_count_notes == 1:
+                    summary += f"<span class='small-text' id='{part.name}-summary'>{part.name} (Part #{part.part_number}) has {part.recut_count_notes} recut</span><br>"
+                else:
+                    summary += f"<span class='small-text' id='{part.name}-summary'>{part.name} (Part #{part.part_number}) has {part.recut_count_notes} recuts</span><br>"
+        summary += "</p>"
+        return summary
+
+    def generate(self) -> str:
+        html = "<div class='max' id='recut-parts-summary-layout'>"
+        html += "<article class='border'>"
+        html += "<table class='small-space border responsiveTable'><thead><tr>"
+        for i, header in enumerate(self.headers):
+            html += f'<th class="small-text" data-column="{i}">{header}</th>'
+        html += "</tr></thead><tbody>"
+        for nest in self.nests:
+            if not nest.notes:
+                continue
+            html += f"""<tr>
+            <td class="min" data-label="{self.headers[0]}" data-column="0" data-name="nest-name">
+                <span class="small-text">{nest.get_name()}</span>
+            </td>
+            <td class="small-text left-align" data-label="{self.headers[1]}" data-column="1" data-name="notes">{self.get_nest_recut_part_summary(nest)}</td>
+            </tr>"""
+        html += """<tr>
+                <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="nest-name"></th>
+                <th class="small-text max" data-label="{self.headers[1]}" data-column="1" data-name="notes"></th>
+            </tr></tbody></table>"""
+        html += "</article></div>"
+        return html
 
 
 class NestsTable:
@@ -142,23 +182,23 @@ class NestsTable:
                 )
                 self.grand_total_cut_time += nest.get_machining_time()
                 html += f"""<tr>
-                <td class="small-text" data-label="{self.headers[0]}" data-column="0">{nest.name}</td>
-                <td class="small-text" data-label="{self.headers[1]}" data-column="1">{nest.sheet.thickness} {nest.sheet.material}</td>
-                <td class="small-text" data-label="{self.headers[2]}" data-column="2">{nest.sheet.get_sheet_dimension()}</td>
-                <td class="small-text" data-label="{self.headers[3]}" data-column="3">{nest.sheet_count}</td>
-                <td class="small-text" data-label="{self.headers[4]}" data-column="4">{single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</td>
-                <td class="small-text" data-label="{self.headers[5]}" data-column="5">{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
+                <td data-label="{self.headers[0]}" data-column="0"><span class="small-text">{nest.name}</span></td>
+                <td data-label="{self.headers[1]}" data-column="1"><span class="small-text">{nest.sheet.thickness} {nest.sheet.material}</span></td>
+                <td data-label="{self.headers[2]}" data-column="2"><span class="small-text">{nest.sheet.get_sheet_dimension()}</span></td>
+                <td data-label="{self.headers[3]}" data-column="3"><span class="small-text">{nest.sheet_count}</span></td>
+                <td data-label="{self.headers[4]}" data-column="4"><span class="small-text">{single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</span></td>
+                <td data-label="{self.headers[5]}" data-column="5"><span class="small-text">{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</span></td>
                 </tr>"""
             grand_total_hours, grand_total_minutes, grand_total_seconds = (
                 self.get_formatted_time(self.grand_total_cut_time)
             )
             html += f"""<tr>
-            <td class="small-text" data-label="" data-column="0"></td>
-            <td class="small-text" data-label="" data-column="1"></td>
-            <td class="small-text" data-label="" data-column="2"></td>
-            <td class="small-text" data-label="{self.headers[3]}" data-column="3">{self.get_total_sheet_count()}</td>
-            <td class="small-text" data-label="" data-column="4"></td>
-            <td class="small-text" data-label="{self.headers[5]}" data-column="5">{grand_total_hours:02d}h {grand_total_minutes:02d}m {grand_total_seconds:02d}s</td>
+            <td data-label="" data-column="0"></td>
+            <td data-label="" data-column="1"></td>
+            <td data-label="" data-column="2"></td>
+            <td data-label="{self.headers[3]}" data-column="3"><span class="small-text">{self.get_total_sheet_count()}</span></td>
+            <td data-label="" data-column="4"></td>
+            <td data-label="{self.headers[5]}" data-column="5"><span class="small-text">{grand_total_hours:02d}h {grand_total_minutes:02d}m {grand_total_seconds:02d}s</span></td>
             </tr>
             </tbody>
             </table>"""
@@ -242,7 +282,7 @@ class SheetImages:
                         <img class="round" src="{self.server_directory}/{part.image_index}">
                         <div class="max">
                             <h6 class="small">{part.name}</h6>
-                            <div>Quantity: {part.quantity_on_sheet}</div>
+                            <div>Quantity: {part.quantity_on_sheet:,.0f}</div>
                         </div>
                         <div class="badge none">#{part.part_number}</div>
                     </a>
@@ -266,10 +306,10 @@ class SheetImages:
                                 <h5 class="small max">{nest.name}</h5>
                                 <h5>× {int(nest.sheet_count)}</h5>
                             </div>
-                            <div class="row surface-container">
+                            <div class="row">
                                 <div class="max">
                                     <div class="small-text">
-                                        <button class="transparent square small">
+                                        <button class="transparent circle small-round small">
                                             <i>qr_code_2</i>
                                             <div class="tooltip right">
                                                 <div class="qr-item" data-name="{nest.sheet.get_name()}">
@@ -310,6 +350,9 @@ class NestedLaserCutParts:
         html += "</thead>"
         html += "<tbody>"
         for laser_cut_part in nest.laser_cut_parts:
+            recut_part_string = ""
+            if laser_cut_part.recut:
+                recut_part_string = f"<br><span class='small-text no-line'>(Recuts: {laser_cut_part.recut_count_notes})</span>"
             html += f"""<tr>
             <td class="min" data-label="{self.headers[0]}" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#NEST-{self.format_filename(laser_cut_part.name)}');">
@@ -317,9 +360,9 @@ class NestedLaserCutParts:
                 <span class="small-text">{laser_cut_part.name}</span>
                 </button>
             </td>
-            <td class="small-text" data-label="{self.headers[1]}" data-column="1" data-name="part-#"><i>tag</i>{laser_cut_part.part_number}</td>
-            <td class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="sheet-qty">{int(laser_cut_part.quantity)}</td>
-            <td class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="qty">{int(laser_cut_part.quantity * nest.sheet_count):,.2f}</td>
+            <td data-label="{self.headers[1]}" data-column="1" data-name="part-#"><i>tag</i><span class="small-text">{laser_cut_part.part_number}</span></td>
+            <td data-label="{self.headers[2]}" data-column="2" data-name="sheet-qty"><span class="small-text">{laser_cut_part.quantity_on_sheet:,.0f}</span></td>
+            <td data-label="{self.headers[3]}" data-column="3" data-name="qty"><span class="small-text">{laser_cut_part.quantity:,.0f}{recut_part_string}</span></td>
             </tr>"""
         html += """<tr>
             <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="part"></th>
@@ -448,14 +491,14 @@ class LaserCutPartsTable:
                     <span class="small-text">{laser_cut_part.name}</span>
                 </button>
             </td>
-            <td class="small-text min" data-label="{self.headers[1]}" data-column="1" data-name="material">{laser_cut_part.gauge}<br>{laser_cut_part.material}</td>
-            <td class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="process">{laser_cut_part.flowtag.get_flow_string()}{self.get_paint(laser_cut_part)}</td>
-            <td class="small-text left-align" data-label="{self.headers[3]}" data-column="3" data-name="notes">{laser_cut_part.notes}</td>
-            <td class="small-text" data-label="{self.headers[4]}" data-column="4" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
-            <td class="small-text min" data-label="{self.headers[5]}" data-column="5" data-name="unit-qty">{laser_cut_part.quantity:,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[6]}" data-column="6" data-name="qty">{(laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[7]}" data-column="7" data-name="unit-price">${unit_price:,.2f}</td>
-            <td class="small-text" data-label="{self.headers[8]}" data-column="8" data-name="price">${(unit_price * laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
+            <td class="min" data-label="{self.headers[1]}" data-column="1" data-name="material"><span class="small-text">{laser_cut_part.gauge}<br>{laser_cut_part.material}</span></td>
+            <td data-label="{self.headers[2]}" data-column="2" data-name="process"><span class="small-text">{laser_cut_part.flowtag.get_flow_string()}{self.get_paint(laser_cut_part)}</span></td>
+            <td class="small-text left-align" data-label="{self.headers[3]}" data-column="3" data-name="notes"><span class="small-text">{laser_cut_part.notes}</span></td>
+            <td data-label="{self.headers[4]}" data-column="4" data-name="shelf-#"><span class="small-text">{laser_cut_part.shelf_number}</span></td>
+            <td class="min" data-label="{self.headers[5]}" data-column="5" data-name="unit-qty"><span class="small-text">{laser_cut_part.quantity:,.0f}</span></td>
+            <td class="min" data-label="{self.headers[6]}" data-column="6" data-name="qty"><span class="small-text">{(laser_cut_part.quantity * self.assembly_quantity):,.0f}</span></td>
+            <td class="min" data-label="{self.headers[7]}" data-column="7" data-name="unit-price"><span class="small-text">${unit_price:,.2f}</span></td>
+            <td data-label="{self.headers[8]}" data-column="8" data-name="price"><span class="small-text">${(unit_price * laser_cut_part.quantity * self.assembly_quantity):,.2f}</span></td>
             </tr>"""
         html += f"""<tr>
                 <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="part"></th>
@@ -545,13 +588,13 @@ class ComponentsTable:
                 <img class="responsive" src="{self.server_directory}/{component.image_path}">
                 <span class="small-text">{component.part_name}</span>
             </td>
-            <td class="small-text min" data-label="{self.headers[1]}" data-column="1" data-name="part-#">{component.part_number}</td>
-            <td class="small-text left-align" data-label="{self.headers[2]}" data-column="2" data-name="notes">{component.notes}</td>
-            <td class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="shelf-#">{component.shelf_number}</td>
-            <td class="small-text min" data-label="{self.headers[4]}" data-column="4" data-name="unit-qty">{component.quantity:,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[5]}" data-column="5" data-name="qty">{(component.quantity * self.assembly_quantity):,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[6]}" data-column="6" data-name="unit-price">${unit_price:,.2f}</td>
-            <td class="small-text" data-label="{self.headers[7]}" data-column="7" data-name="price">${(unit_price * component.quantity * self.assembly_quantity):,.2f}</td>
+            <td class="min" data-label="{self.headers[1]}" data-column="1" data-name="part-#"><span class="small-text">{component.part_number}</span></td>
+            <td class="small-text left-align" data-label="{self.headers[2]}" data-column="2" data-name="notes"><span class="small-text">{component.notes}</span></td>
+            <td data-label="{self.headers[3]}" data-column="3" data-name="shelf-#"><span class="small-text">{component.shelf_number}</span></td>
+            <td class="min" data-label="{self.headers[4]}" data-column="4" data-name="unit-qty"><span class="small-text">{component.quantity:,.0f}</span></td>
+            <td class="min" data-label="{self.headers[5]}" data-column="5" data-name="qty"><span class="small-text">{(component.quantity * self.assembly_quantity):,.0f}</span></td>
+            <td class="min" data-label="{self.headers[6]}" data-column="6" data-name="unit-price"><span class="small-text">${unit_price:,.2f}</span></td>
+            <td data-label="{self.headers[7]}" data-column="7" data-name="price">${(unit_price * component.quantity * self.assembly_quantity):,.2f}</span></td>
             </tr>"""
         html += f"""</tbody><tfoot><tr>
         <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="picture"></th>
@@ -615,13 +658,13 @@ class AssemblyTable:
         else:
             for assembly in self.job.get_all_assemblies():
                 html += f"""
-                <a class="row tiny-padding surface-container wave" onclick="ui('#A-{self.format_filename(assembly.name)}');">
+                <a class="row tiny-padding ripple" onclick="ui('#A-{self.format_filename(assembly.name)}');">
                     <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
                     <div class="max">
                         <h6>{assembly.name}</h6>
                         <div id="assembly-proess-layout">{assembly.flowtag.get_flow_string()}</div>
                     </div>
-                    <h5>× {int(assembly.quantity)}</h5>
+                    <h5>× {assembly.quantity:,.0f}</h5>
                 </a><div class="divider"></div>"""
         html += "</article></div><br>"
         return html
@@ -656,7 +699,7 @@ class AssemblyDiv:
         html += image_html
         html += '<div class="padding">'
         html += f"<h5>{self.assembly.name}</h5>"
-        html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity}</p>'
+        html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity:,.0f}</p>'
         html += f'<p class="small-text">Process: {self.assembly.flowtag.get_flow_string()}</p>'
         html += f'<p class="small-text">Paint: {self.get_paint()}</p>'
         html += "</div>"
@@ -666,7 +709,7 @@ class AssemblyDiv:
     def generate(self) -> str:
         html = '<details class="assembly_details" open>'
         html += (
-            f"<summary>{self.assembly.name} × {int(self.assembly.quantity)}</summary>"
+            f"<summary>{self.assembly.name} × {self.assembly.quantity:,.0f}</summary>"
         )
         html += '<div class="assembly">'
         html += self.get_assembly_data_html()
@@ -746,8 +789,8 @@ class PrintoutHeader:
         self.name = name
         self.printout_type = printout_type
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
-        self.html = f"""<header>
-            <nav class="wrap">
+        self.html = f"""<header class="surface">
+            <nav class="row">
                 <img class="logo" src="{self.server_directory}/images/logo.png">
                 <h5 class="max center-align small">
                     {self.name}
@@ -755,6 +798,9 @@ class PrintoutHeader:
                 <div class="date">
                     {str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y"))}
                 </div>
+                <button class="circle transparent" id="theme-toggle">
+                    <i id="theme-icon">dark_mode</i>
+                </button>
             </nav>
             <nav class="tabbed primary-container">
                 <a {'class="active primary"' if self.printout_type == "QUOTE" else ''} data-target="quote">
@@ -1003,6 +1049,12 @@ class WorkorderPrintout:
                 </a>
                 <a class="surface-container">
                     <label class="checkbox">
+                        <input type="checkbox" id="showRecutPartsSummary" data-name="show-recut-parts-summary" data-layout="recut-parts-summary-layout">
+                        <span>Show Recut Parts Summary</span>
+                    </label>
+                </a>
+                <a class="surface-container">
+                    <label class="checkbox">
                         <input type="checkbox" id="usePageBreaks" data-name="use-page-breaks" data-layout="page-break">
                         <span>Use Page Breaks</span>
                     </label>
@@ -1011,9 +1063,16 @@ class WorkorderPrintout:
         <main class="responsive">
         {header_html}<br>"""
 
+
+        html += '<div class="row">'
+        all_nest_notes = ''.join(nest.notes for nest in self.sorted_nests)
+        if all_nest_notes:
+            nest_recut_part_summary = NestRecutPartSummary(self.sorted_nests)
+            html += nest_recut_part_summary.generate()
         if self.should_include_qr_to_workorder:
             workorder_id = WorkorderID(self.workorder_id)
             html += workorder_id.generate()
+        html += '</div>'
 
         sheets_table = NestsTable(self.sorted_nests)
         html += sheets_table.generate()
