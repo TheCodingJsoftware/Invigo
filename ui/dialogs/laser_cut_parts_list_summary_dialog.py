@@ -1,39 +1,17 @@
-import os
-from functools import partial
-
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QIcon, QPixmap
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QDialog,
-    QHBoxLayout,
-    QMessageBox,
-    QScrollArea,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QComboBox, QDialog, QTableWidgetItem, QWidget
 
-from ui.custom.file_button import FileButton
 from ui.custom.flowtag_data_widget import FlowtagDataButton
-from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_files_widget import LaserCutPartFilesWidget
-from ui.custom.laser_cut_part_paint_settings_widget import (
-    LasserCutPartPaintSettingsWidget,
-)
-from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_planning_table_widget import (
     LaserCutPartsPlanningTableWidget,
     LaserCutTableColumns,
 )
 from ui.dialogs.laser_cut_parts_list_summary_dialog_UI import Ui_Form
 from ui.icons import Icons
-from ui.theme import theme_var
-from ui.windows.pdf_viewer import PDFViewer
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 

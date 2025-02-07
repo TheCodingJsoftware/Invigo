@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QAbstractItemView, QTableWidgetItem, QTreeWidget
+from PyQt6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 from ui.custom_widgets import CustomTableWidget
 

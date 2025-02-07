@@ -54,14 +54,15 @@ class Settings:
         self.data.setdefault(
             "tab_visibility",
             {
-                "Chat": True,
                 "Components": True,
                 "Job Planner": True,
                 "Job Quoter": True,
                 "Laser Cut Inventory": True,
-                "Quote Generator": True,
+                "Quote Generator": False,
                 "Sheet Settings": True,
                 "Sheets In Inventory": True,
+                "Structural Steel Inventory": True,
+                "Structural Steel Settings": True,
                 "View Price Changes History": False,
                 "View Removed Quantities History": False,
                 "Workspace": True,
@@ -102,14 +103,16 @@ class Settings:
         self.data.setdefault(
             "tabs_order",
             [
-                "components_tab",
-                "sheets_in_inventory_tab",
-                "sheet_settings_tab",
-                "laser_cut_inventory_tab",
-                "job_planner_tab",
-                "job_quoter_tab",
-                "quote_generator_tab",
-                "workspace_tab",
+                "Components",
+                "Sheets In Inventory",
+                "Laser Cut Inventory",
+                "Sheet Settings",
+                "Structural Steel Inventory",
+                "Structural Steel Settings",
+                "Job Planner",
+                "Job Quoter",
+                "Quote Generator",
+                "Workspace"
             ],
         )
         self.data.setdefault(

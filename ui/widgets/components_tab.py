@@ -12,12 +12,9 @@ from PyQt6.QtWidgets import (
     QAbstractItemView,
     QCompleter,
     QDateEdit,
-    QGridLayout,
     QHBoxLayout,
     QInputDialog,
     QLabel,
-    QLineEdit,
-    QListWidget,
     QMenu,
     QMessageBox,
     QPushButton,
@@ -454,9 +451,12 @@ class ComponentsTab(QWidget, Ui_Form):
         all_categories = [
             category.name for category in self.components_inventory.get_categories()
         ]
-        tab_order: list[str] = self.settings_file.get_value("category_tabs_order")[
-            "Components"
-        ]
+        try:
+            tab_order: list[str] = self.settings_file.get_value("category_tabs_order")[
+                "Components"
+            ]
+        except KeyError:
+            tab_order = []
 
         # Updates the tab order to add categories that have not previously been added
         for category in all_categories:
@@ -481,7 +481,7 @@ class ComponentsTab(QWidget, Ui_Form):
         self.tab_widget.removeCategory.connect(self.remove_category)
 
     def load_table(self):
-        self.category: Category = self.components_inventory.get_category(
+        self.category = self.components_inventory.get_category(
             self.tab_widget.tabText(self.tab_widget.currentIndex())
         )
         self.po_buttons.clear()

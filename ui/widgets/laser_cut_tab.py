@@ -594,9 +594,12 @@ class LaserCutTab(QWidget, Ui_Form):
         all_categories = [
             category.name for category in self.laser_cut_inventory.get_categories()
         ]
-        tab_order: list[str] = self.settings_file.get_value("category_tabs_order")[
-            "Laser Cut Inventory"
-        ]
+        try:
+            tab_order: list[str] = self.settings_file.get_value("category_tabs_order")[
+                "Laser Cut Inventory"
+            ]
+        except KeyError:
+            tab_order = []
 
         # Updates the tab order to add categories that have not previously been added
         for category in all_categories:

@@ -1063,16 +1063,15 @@ class WorkorderPrintout:
         <main class="responsive">
         {header_html}<br>"""
 
-
         html += '<div class="row">'
-        all_nest_notes = ''.join(nest.notes for nest in self.sorted_nests)
+        all_nest_notes = "".join(nest.notes for nest in self.sorted_nests)
         if all_nest_notes:
             nest_recut_part_summary = NestRecutPartSummary(self.sorted_nests)
             html += nest_recut_part_summary.generate()
         if self.should_include_qr_to_workorder:
             workorder_id = WorkorderID(self.workorder_id)
             html += workorder_id.generate()
-        html += '</div>'
+        html += "</div>"
 
         sheets_table = NestsTable(self.sorted_nests)
         html += sheets_table.generate()

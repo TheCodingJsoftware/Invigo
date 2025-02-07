@@ -56,7 +56,7 @@ class WorkspaceSettings:
         return tag
 
     def create_flow_tag(self, flow_tags: Flowtags, name: str):
-        flow_tag = Flowtag(name, [], self)
+        flow_tag = Flowtag({"name": name}, self)
         self.add_flow_tag(flow_tags, flow_tag)
 
     def get_all_flow_tags(self) -> list[Flowtag]:
@@ -142,7 +142,7 @@ Tags such as, "Staging", "Editing", and "Planning" cannot be used as flow tags, 
             flow_tag_group = Flowtags(group)
             self.flow_tags_group.append(flow_tag_group)
             for flow_tag_data in flow_tags:
-                flow_tag = Flowtag(flow_tag_data["name"], flow_tag_data, self)
+                flow_tag = Flowtag(flow_tag_data, self)
                 flow_tag_group.group = flow_tag.group
                 flow_tag_group.add_flow_tag(flow_tag)
 

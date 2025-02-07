@@ -1,22 +1,28 @@
 import contextlib
 from copy import deepcopy
 from functools import partial
+from typing import TYPE_CHECKING
 
+from natsort import natsorted
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QDialog, QDialogButtonBox, QMessageBox, QVBoxLayout, QWidget, QTreeWidgetItem
-from natsort import natsorted
+from PyQt6.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QMessageBox,
+    QTreeWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.dialogs.nest_editor_dialog_UI import Ui_Form
 from ui.icons import Icons
 from ui.widgets.nest_editor_widget import NestEditorWidget
 from utils.inventory.nest import Nest
 
-
-from typing import TYPE_CHECKING
-
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
+
 
 class NestEditorDialog(QDialog, Ui_Form):
     def __init__(
@@ -48,7 +54,6 @@ class NestEditorDialog(QDialog, Ui_Form):
         self.resize(1600, 1000)
 
         self.showMaximized()
-
 
         self.buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(
             self.accept

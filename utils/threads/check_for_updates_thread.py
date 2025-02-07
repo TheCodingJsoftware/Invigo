@@ -30,6 +30,6 @@ class CheckForUpdatesThread(QThread):
                 message = response_message.text
                 if version != self.current_version:
                     self.signal.emit(version, message)
-            except Exception as e:
+            except Exception:
                 continue
             time.sleep(60)

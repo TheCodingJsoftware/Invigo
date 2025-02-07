@@ -1,5 +1,4 @@
 import math
-from functools import partial
 
 from PyQt6 import *
 from PyQt6.QtCore import *

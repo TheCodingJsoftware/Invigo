@@ -3,20 +3,7 @@ from functools import partial
 from typing import Literal, Optional, Union
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QAction, QCursor, QFont, QIcon, QPixmap
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QHBoxLayout,
-    QLabel,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QScrollArea,
-    QTableWidgetItem,
-    QTreeWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QHBoxLayout, QMessageBox, QScrollArea, QWidget
 
 from ui.custom.file_button import FileButton
 from ui.windows.image_viewer import QImageViewer

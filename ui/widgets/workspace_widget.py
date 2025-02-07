@@ -1,6 +1,5 @@
 import contextlib
 import os
-import shutil
 from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Literal, Optional, Union
@@ -22,10 +21,6 @@ from PyQt6.QtWidgets import (
 )
 
 from ui.custom.file_button import FileButton
-from ui.custom.workspace_assembly_table_widget import (
-    WorkspaceAssemblyTableColumns,
-    WorkspaceAssemblyTableWidget,
-)
 from ui.custom.workspace_assembly_tree_widget import (
     WorkspaceAssemblyTreeColumns,
     WorkspaceAssemblyTreeWidget,

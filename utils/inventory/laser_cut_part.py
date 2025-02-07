@@ -282,7 +282,7 @@ class LaserCutPart(InventoryItem):
         self.recoat_count = data.get("recoat_count", 0)
 
         self.flowtag = Flowtag(
-            "", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings
+            data.get("flow_tag", {}), self.workspace_settings
         )
         self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
         self.current_flow_tag_status_index = data.get(

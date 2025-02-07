@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1458</width>
-    <height>984</height>
+    <height>987</height>
    </rect>
   </property>
   <property name="font">
@@ -212,6 +212,20 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="structural_steel_settings_tab">
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <item>
+         <layout class="QVBoxLayout" name="structural_steel_settings_layout"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="structural_steel_tab">
+       <layout class="QVBoxLayout" name="verticalLayout_39">
+        <item>
+         <layout class="QVBoxLayout" name="structural_steel_layout"/>
+        </item>
+       </layout>
+      </widget>
       <widget class="QWidget" name="laser_cut_inventory_tab">
        <layout class="QVBoxLayout" name="verticalLayout_12">
         <property name="spacing">
@@ -312,8 +326,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1401</width>
-                       <height>685</height>
+                       <width>1398</width>
+                       <height>683</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -353,8 +367,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1401</width>
-                       <height>685</height>
+                       <width>68</width>
+                       <height>16</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -708,8 +722,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1405</width>
-                     <height>300</height>
+                     <width>68</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -762,8 +776,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1405</width>
-                     <height>300</height>
+                     <width>68</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -1120,8 +1134,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1366</width>
-                        <height>728</height>
+                        <width>68</width>
+                        <height>16</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1192,8 +1206,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1366</width>
-                        <height>728</height>
+                        <width>68</width>
+                        <height>16</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1524,7 +1538,9 @@
      <addaction name="actionComponents"/>
      <addaction name="actionSheets_in_Inventory"/>
      <addaction name="actionLaser_Cut_Inventory"/>
+     <addaction name="actionStructural_Steel_Inventory"/>
      <addaction name="actionSheet_Settings"/>
+     <addaction name="actionStructural_Steel_Settings"/>
      <addaction name="actionJob_Planner"/>
      <addaction name="actionJob_Quoter"/>
      <addaction name="actionQuote_Generator"/>
@@ -2029,6 +2045,20 @@
     <string>Laser Cut Inventory</string>
    </property>
   </action>
+  <action name="actionStructural_Steel_Inventory">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="format-justify-left"/>
+   </property>
+   <property name="text">
+    <string>Structural Steel Inventory</string>
+   </property>
+  </action>
   <action name="actionSheet_Settings">
    <property name="checkable">
     <bool>true</bool>
@@ -2041,6 +2071,20 @@
    </property>
    <property name="text">
     <string>Sheet Settings</string>
+   </property>
+  </action>
+  <action name="actionStructural_Steel_Settings">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="document-properties"/>
+   </property>
+   <property name="text">
+    <string>Structural Steel Settings</string>
    </property>
   </action>
   <action name="actionJob_Planner">

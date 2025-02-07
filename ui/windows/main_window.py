@@ -84,6 +84,8 @@ from ui.widgets.quote_generator_tab import QuoteGeneratorTab
 from ui.widgets.saved_job_item import SavedPlanningJobItem
 from ui.widgets.sheet_settings_tab import SheetSettingsTab
 from ui.widgets.sheets_in_inventory_tab import SheetsInInventoryTab
+from ui.widgets.structural_steel_settings_tab import StructuralSteelSettingsTab
+from ui.widgets.structural_steel_tab import StructuralSteelInventoryTab
 from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
 from ui.windows.main_window_UI import Ui_MainWindow
 from utils.colors import lighten_color
@@ -96,6 +98,7 @@ from utils.inventory.nest import Nest
 from utils.inventory.paint_inventory import PaintInventory
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
+from utils.inventory.structural_steel_inventory import StructuralSteelInventory
 from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
@@ -103,6 +106,7 @@ from utils.quote.generate_printout import GeneratePrintout
 from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
+from utils.structural_steel_settings.structural_steel_settings import StructuralSteelSettings
 from utils.threads.add_job_to_production_planner_thread import (
     AddJobToProductionPlannerThread,
 )
@@ -247,17 +251,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.status_button.setText("Downloading all files, please wait...", "yellow")
         self.verticalLayout_status.addWidget(self.status_button)
 
-        self.get_order_number_thread()
-        self.connect_client()
-
         check_po_directories()
 
         self.settings_file = Settings()
         self.sheet_settings = SheetSettings()
+        self.structural_steel_settings = StructuralSteelSettings()
         self.workspace_settings = WorkspaceSettings()
         self.job_preferences = JobPreferences()
 
         self.sheets_inventory = SheetsInventory(self.sheet_settings)
+        self.structural_steel_inventory = StructuralSteelInventory(self.structural_steel_settings, self.workspace_settings)
         self.components_inventory = ComponentsInventory()
         self.paint_inventory = PaintInventory(self.components_inventory)
         self.laser_cut_inventory = LaserCutInventory(
@@ -279,6 +282,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             0  # * Used inside components_tab.py
         )
         self.sheets_inventory_tab_widget_last_selected_tab_index = (
+            0  # * Used inside sheets_in_inventory_tab.py
+        )
+        self.structural_steel_inventory_tab_widget_last_selected_tab_index = (
             0  # * Used inside sheets_in_inventory_tab.py
         )
         self.laser_cut_tab_widget_last_selected_tab_index = (
@@ -345,6 +351,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "icon": "ri.list-settings-fill",
                 "object_name": "sheet_settings_tab",
             },
+            "Structural Steel Settings": {
+                "icon": "ri.list-settings-fill",
+                "object_name": "structural_steel_settings_tab",
+            },
+            "Structural Steel Inventory": {
+                "icon": "ph.package-fill",
+                "object_name": "structural_steel_tab",
+            },
             "Quote Generator": {
                 "icon": "ph.calculator-fill",
                 "object_name": "quote_generator_tab",
@@ -367,6 +381,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.scroll_position_manager = ScrollPositionManager()
         self.saved_jobs: dict[str, dict[str, str]] = {}
 
+        self.get_order_number_thread()
+        self.connect_client()
+
     def on_trusted_user_checked(self):
         self.download_all_files()
 
@@ -380,9 +397,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menu_tab_manager = ButtonManagerWidget(self)
         self.menu_tab_manager.tabOrderChanged.connect(self.save_menu_tab_order)
         self.horizontalLayout_tab_buttons.addWidget(self.menu_tab_manager)
-        for tab_order in self.settings_file.get_value("tabs_order"):
+        saved_tab_order = self.settings_file.get_value("tabs_order")
+        for tab in saved_tab_order:
             for tab_name, tab_data in self.stack_tab_buttons_data.items():
-                if tab_order == tab_name:
+                if tab == tab_name:
                     object_name = tab_data["object_name"]
                     tab_button = MainTabButton(tab_name, self)
                     tab_button.setVisible(
@@ -459,6 +477,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sheets_inventory.load_data()
         self.laser_cut_inventory.load_data()
         self.sheet_settings.load_data()
+        self.structural_steel_settings.load_data()
         self.workspace_settings.load_data()
         self.workspace.load_data()
 
@@ -468,7 +487,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.set_tab_visibility("Components", False)
             self.set_tab_visibility("Sheets In Inventory", False)
             self.set_tab_visibility("Laser Cut Inventory", False)
+            self.set_tab_visibility("Structural Steel Inventory", False)
             self.set_tab_visibility("Sheet Settings", False)
+            self.set_tab_visibility("Structural Steel Settings", False)
             self.set_tab_visibility("Job Planner", False)
             self.set_tab_visibility("Job Quoter", False)
             self.set_tab_visibility("Quote Generator", False)
@@ -486,6 +507,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionEditTags.setEnabled(False)
             self.actionComponents.setEnabled(False)
             self.actionSheets_in_Inventory.setEnabled(False)
+            self.actionStructural_Steel_Settings.setEnabled(False)
+            self.actionStructural_Steel_Inventory.setEnabled(False)
             self.actionLaser_Cut_Inventory.setEnabled(False)
             self.actionSheet_Settings.setEnabled(False)
             self.actionJob_Planner.setEnabled(False)
@@ -565,6 +588,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.clear_layout(self.sheet_settings_layout)
         self.sheet_settings_tab_widget = SheetSettingsTab(self)
         self.sheet_settings_layout.addWidget(self.sheet_settings_tab_widget)
+
+        self.clear_layout(self.structural_steel_settings_layout)
+        self.structural_steel_settings_tab_widget = StructuralSteelSettingsTab(self)
+        self.structural_steel_settings_layout.addWidget(self.structural_steel_settings_tab_widget)
+
+        self.clear_layout(self.structural_steel_layout)
+        self.structural_steel_tab_widget = StructuralSteelInventoryTab(self)
+        self.structural_steel_layout.addWidget(self.structural_steel_tab_widget)
 
         self.clear_layout(self.workspace_layout)
         self.workspace_tab_widget = WorkspaceTabWidget(self)
@@ -788,6 +819,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
         )
         self.actionLaser_Cut_Inventory.setIcon(Icons.inventory_icon)
+        self.actionStructural_Steel_Inventory.triggered.connect(
+            partial(self.toggle_tab_visibility, self.actionStructural_Steel_Inventory)
+        )
+        self.actionStructural_Steel_Inventory.setChecked(
+            self.settings_file.get_value("tab_visibility").get(
+                "Structural Steel Inventory", True
+            )
+        )
+        self.actionStructural_Steel_Inventory.setIcon(Icons.inventory_icon)
+        self.actionStructural_Steel_Settings.triggered.connect(
+            partial(
+                self.toggle_tab_visibility,
+                self.actionStructural_Steel_Settings,
+            )
+        )
+        self.actionStructural_Steel_Settings.setChecked(
+            self.settings_file.get_value("tab_visibility").get("Structural Steel Settings", True)
+        )
+        self.actionStructural_Steel_Settings.setIcon(Icons.sheet_settings_icon)
         self.actionSheet_Settings.triggered.connect(
             partial(self.toggle_tab_visibility, self.actionSheet_Settings)
         )
@@ -1009,6 +1059,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.laser_cut_tab_widget.restore_last_selected_tab()
         elif self.tab_text(self.stackedWidget.currentIndex()) == "sheet_settings_tab":
             self.sheet_settings_tab_widget.load_tabs()
+        elif self.tab_text(self.stackedWidget.currentIndex()) == "structural_steel_settings_tab":
+            self.structural_steel_settings_tab_widget.load_tabs()
         elif self.tab_text(self.stackedWidget.currentIndex()) == "quote_generator_tab":
             self.load_cuttoff_drop_down()
             self.load_saved_quoted_thread()
@@ -1611,7 +1663,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
-            self.components_inventory.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
                 self.add_job_to_production_plan(
                     self.job_planner_widget,
@@ -2600,10 +2651,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     f"{self.sheets_inventory.filename}.json",
                 ],
             )
+        if tab_name in [
+            "structural_steel_inventory_tab"
+        ]:
+            self.upload_files(
+                [
+                    f"{self.structural_steel_inventory.filename}.json",
+                ],
+            )
         if tab_name == "sheet_settings_tab":
             self.upload_files(
                 [
                     f"{self.sheet_settings.filename}.json",
+                ],
+            )
+        if tab_name == "structural_steel_settings_tab":
+            self.upload_files(
+                [
+                    f"{self.structural_steel_settings.filename}.json",
                 ],
             )
         if tab_name == "workspace_tab":
@@ -2732,7 +2797,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.upload_files([f"{self.sheets_inventory.filename}.json"])
 
     def subtract_component_quantity_from_job(self, job: Job):
-        self.components_inventory.load_data()
         for assembly in job.get_all_assemblies():
             for component_from_job in assembly.components:
                 if not (
@@ -2746,6 +2810,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     component_from_job.quantity * assembly.quantity
                 )
                 component_from_inventory.latest_change_quantity = f"{os.getlogin().title()} removed {component_from_job.quantity * assembly.quantity} quantity from sending {job.name} to workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+        self.components_inventory.save()
 
     def generate_single_sheet_report(self, sheet: Sheet, old_quantity: int):
         notes = sheet.notes
@@ -2898,7 +2963,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if f"{self.sheet_settings.filename}.json" in response["successful_files"]:
                 self.sheet_settings.load_data()
                 self.sheet_settings_tab_widget.load_tabs()
-
+            if f"{self.structural_steel_settings.filename}.json" in response["successful_files"]:
+                self.structural_steel_settings.load_data()
+                self.structural_steel_settings_tab_widget.load_tabs()
             if (
                 f"{self.workspace_settings.filename}.json"
                 in response["successful_files"]
@@ -2998,6 +3065,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.download_files(
             [
                 f"{self.sheet_settings.filename}.json",
+                f"{self.structural_steel_inventory.filename}.json",
+                f"{self.structural_steel_settings.filename}.json",
                 f"{self.paint_inventory.filename}.json",
                 f"{self.workspace_settings.filename}.json",
                 f"{self.laser_cut_inventory.filename}.json",

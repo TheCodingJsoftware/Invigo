@@ -116,7 +116,7 @@ class JsonFile:
                 self.data[category][item][key_name]
                 for item in list(self.data[category].keys())
             )
-        except Exception as error:
+        except Exception:
             return 1
 
     def get_exact_total_unit_count(self, category: str) -> float:
@@ -133,7 +133,7 @@ class JsonFile:
                         / self.data[category][item]["unit_quantity"]
                     )
             return total_count
-        except Exception as error:
+        except Exception:
             return 1
 
     def get_total_unit_cost(self, category: str, last_exchange_rate: float) -> float:

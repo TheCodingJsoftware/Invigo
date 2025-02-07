@@ -310,7 +310,7 @@ class FlowTagsTableWidget(QTableWidget):
 
         self.insertRow(self.rowCount())
         flow_tag = Flowtag(
-            f"Flowtag{self.flow_tag_counter}", [], self.workspace_settings
+            f"Flowtag{self.flow_tag_counter}", {}, self.workspace_settings
         )
 
         self.flow_tag_group.add_flow_tag(flow_tag)

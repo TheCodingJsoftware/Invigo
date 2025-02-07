@@ -1,5 +1,5 @@
-from PyQt6.QtCore import QEvent, Qt, pyqtSignal
-from PyQt6.QtWidgets import QDoubleSpinBox, QHBoxLayout, QLabel, QWidget
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtWidgets import QDoubleSpinBox, QHBoxLayout, QWidget
 
 
 class SpinBox(QDoubleSpinBox):

@@ -1,4 +1,3 @@
-import copy
 import os
 from datetime import datetime, timedelta
 from typing import Union
@@ -244,12 +243,23 @@ class Workspace:
                     laser_cut_part.get_current_tag()
                 ]["ending_date"]
 
-                tag_start_date = datetime.strptime(
-                    tag_start_date_str, "%Y-%m-%d %I:%M %p"
-                ).date()
-                tag_end_date = datetime.strptime(
-                    tag_end_date_str, "%Y-%m-%d %I:%M %p"
-                ).date()
+                try:
+                    tag_start_date = datetime.strptime(
+                        tag_start_date_str, "%Y-%m-%d %I:%M %p"
+                    ).date()
+                except ValueError:
+                    tag_start_date = datetime.strptime(
+                        tag_start_date_str, "%Y-%m-%d"
+                    ).date()
+
+                try:
+                    tag_end_date = datetime.strptime(
+                        tag_end_date_str, "%Y-%m-%d %I:%M %p"
+                    ).date()
+                except ValueError:
+                    tag_end_date = datetime.strptime(
+                        tag_end_date_str, "%Y-%m-%d"
+                    ).date()
 
                 if filter_start_date and not filter_end_date:
                     if not (tag_start_date <= filter_start_date <= tag_end_date):

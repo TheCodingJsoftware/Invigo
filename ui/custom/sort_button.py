@@ -2,14 +2,7 @@ from functools import partial
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QPushButton,
-    QToolButton,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QPushButton, QVBoxLayout, QWidget
 
 from ui.icons import Icons
 from utils.workspace.workspace_filter import SortingMethod

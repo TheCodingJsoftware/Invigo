@@ -11,7 +11,6 @@ from utils.workspace.flowtag import Flowtag
 from utils.workspace.flowtag_data import FlowtagData
 from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
-from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
@@ -191,7 +190,7 @@ class Assembly:
         )
         self.ending_date = assembly_data.get("ending_date", "")
         self.flowtag = Flowtag(
-            "", assembly_data.get("flow_tag", {}), self.workspace_settings
+            assembly_data.get("flow_tag", {}), self.workspace_settings
         )
         self.current_flow_tag_index = assembly_data.get("current_flow_tag_index", 0)
         self.current_flow_tag_status_index = assembly_data.get(
