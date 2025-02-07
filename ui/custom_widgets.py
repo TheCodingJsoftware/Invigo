@@ -1119,7 +1119,10 @@ class CustomTabWidget(QWidget):
         return next((i for i in range(self.count()) if self.tabText(i) == name), -1)
 
     def tabText(self, index: int) -> str:
-        return self.buttons[index].text()
+        try:
+            return self.buttons[index].text()
+        except IndexError:
+            return None
 
     def count(self) -> int:
         return len(self.buttons)

@@ -441,6 +441,8 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         self.category = self.structural_steel_inventory.get_category(
             self.tab_widget.tabText(self.tab_widget.currentIndex())
         )
+        if not self.category:
+            return
         current_table = self.category_tables[self.category]
         current_table.blockSignals(True)
         current_table.clearContents()

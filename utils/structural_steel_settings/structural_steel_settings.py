@@ -62,6 +62,16 @@ class StructuralSteelSettings:
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
             file.write(msgspec.json.encode(self.to_dict()))
 
+    def __create_file(self):
+        if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.filename}.json"):
+            self._reset_file()
+
+    def _reset_file(self):
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
+            file.write("{}")
+
     def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
@@ -85,6 +95,9 @@ class StructuralSteelSettings:
         except KeyError:  # Inventory was just created
             return
         except msgspec.DecodeError:  # Inventory file got cleared
+            self.load_data()
+        except FileNotFoundError:
+            self.__create_file()
             self.load_data()
 
     def to_dict(self):
