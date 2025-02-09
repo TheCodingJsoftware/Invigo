@@ -2,11 +2,19 @@ import copy
 from typing import TYPE_CHECKING, Optional, Union
 
 from ui.theme import theme_var
+from utils.inventory.angle_bar import AngleBar
 from utils.inventory.component import Component
+from utils.inventory.dom_round_tube import DOMRoundTube
+from utils.inventory.flat_bar import FlatBar
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint import Paint
+from utils.inventory.pipe import Pipe
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
+from utils.inventory.rectangular_bar import RectangularBar
+from utils.inventory.rectangular_tube import RectangularTube
+from utils.inventory.round_bar import RoundBar
+from utils.inventory.round_tube import RoundTube
 from utils.workspace.flowtag import Flowtag
 from utils.workspace.flowtag_data import FlowtagData
 from utils.workspace.flowtag_timer import FlowtagTimer
@@ -28,6 +36,7 @@ class Assembly:
         self.assembly_files: list[str] = []
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
+        self.structural_steel_components: list[Pipe | RectangularBar | AngleBar | FlatBar | RoundBar | RectangularTube | RoundTube | DOMRoundTube] = []
         self.sub_assemblies: list[Assembly] = []
         self.not_part_of_process = False
 

@@ -39,6 +39,7 @@ class FlatBar(StructuralProfile):
 
     def to_dict(self) -> dict[str, Union[float, str]]:
         return {
+            "profile_type": self.PROFILE_TYPE.value,
             "name": self.get_name(),
             "part_number": self.part_number,
             "length": self.length,
