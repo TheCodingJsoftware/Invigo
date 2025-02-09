@@ -66,6 +66,7 @@ class Job:
         self.components_inventory = self.job_manager.components_inventory
         self.laser_cut_inventory = self.job_manager.laser_cut_inventory
         self.paint_inventory = self.job_manager.paint_inventory
+        self.structural_steel_inventory = self.job_manager.structural_steel_inventory
         self.price_calculator = JobPriceCalculator(
             self, self.sheet_settings, self.paint_inventory, {}
         )

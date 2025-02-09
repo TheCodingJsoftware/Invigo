@@ -15,6 +15,7 @@ from utils.inventory.rectangular_bar import RectangularBar
 from utils.inventory.rectangular_tube import RectangularTube
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
+from utils.inventory.structural_profile import ProfilesTypes
 from utils.workspace.flowtag import Flowtag
 from utils.workspace.flowtag_data import FlowtagData
 from utils.workspace.flowtag_timer import FlowtagTimer
@@ -259,6 +260,53 @@ class Assembly:
         for component_data in components:
             component = Component(component_data, self.job.components_inventory)
             self.add_component(component)
+
+        self.structural_steel_components.clear()
+        structural_steel_components = data.get("structural_steel_components", [])
+        for structural_steel_component_data in structural_steel_components:
+            if structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_BAR.value:
+                structural_steel_component = RectangularBar(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_BAR.value:
+                structural_steel_component = RoundBar(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.FLAT_BAR.value:
+                structural_steel_component = FlatBar(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ANGLE_BAR.value:
+                structural_steel_component = AngleBar(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_TUBE.value:
+                structural_steel_component = RectangularTube(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_TUBE.value:
+                structural_steel_component = RoundTube(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.DOM_ROUND_TUBE.value:
+                structural_steel_component = DOMRoundTube(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.PIPE.value:
+                structural_steel_component = Pipe(
+                    structural_steel_component_data,
+                    self.job.structural_steel_inventory,
+                )
+            else:
+                continue
+            self.structural_steel_components.append(structural_steel_component)
 
         self.sub_assemblies.clear()
         sub_assemblies = data.get("sub_assemblies", [])

@@ -273,6 +273,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.components_inventory,
             self.laser_cut_inventory,
             self.paint_inventory,
+            self.structural_steel_inventory,
             self,
         )
         self.workspace = Workspace(self.workspace_settings, self.job_manager)

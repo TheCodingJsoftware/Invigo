@@ -60,11 +60,15 @@ background-color: {theme_var('surface')};
         self.verticalLayout_3.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_10.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.verticalLayout_15.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.apply_stylesheet_to_toggle_buttons(
             self.pushButton_laser_cut_parts, self.laser_cut_widget
         )
         self.apply_stylesheet_to_toggle_buttons(
             self.pushButton_components, self.component_widget
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_structural_steel_items, self.structural_steel_items_widget
         )
         self.apply_stylesheet_to_toggle_buttons(
             self.pushButton_sub_assemblies, self.sub_assemblies_widget

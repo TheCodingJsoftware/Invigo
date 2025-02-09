@@ -51,7 +51,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_14" stretch="0,0,0,0,1">
+       <layout class="QVBoxLayout" name="verticalLayout_14" stretch="0,0,0,0,0,1">
         <property name="leftMargin">
          <number>3</number>
         </property>
@@ -479,6 +479,84 @@
          </layout>
         </item>
         <item>
+         <layout class="QVBoxLayout" name="verticalLayout_15">
+          <item>
+           <widget class="QPushButton" name="pushButton_structural_steel_items">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="text">
+             <string>Structural Steel Items</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="structural_steel_items_widget" native="true">
+            <layout class="QVBoxLayout" name="verticalLayout_20">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_19">
+               <item>
+                <layout class="QVBoxLayout" name="structural_steel_items_layout"/>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QPushButton" name="pushButton">
+                   <property name="text">
+                    <string>Add Item</string>
+                   </property>
+                   <property name="default">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="horizontalSpacer_4">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
          <layout class="QVBoxLayout" name="verticalLayout_10">
           <property name="spacing">
            <number>0</number>
@@ -658,6 +736,22 @@
     <hint type="destinationlabel">
      <x>489</x>
      <y>769</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_structural_steel_items</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>structural_steel_items_widget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>472</x>
+     <y>357</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>472</x>
+     <y>398</y>
     </hint>
    </hints>
   </connection>
