@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon, QPixmap
 from PyQt6.QtWidgets import (
     QComboBox,
@@ -19,6 +19,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+import msgspec
 
 from ui.custom.file_button import FileButton
 from ui.custom.workspace_assembly_tree_widget import (
@@ -37,14 +38,21 @@ from ui.dialogs.recut_dialog import RecutDialog
 from ui.dialogs.select_files_to_download_dialog import SelectFilesToDownloadDialog
 from ui.dialogs.view_assembly_dialog import ViewAssemblyDialog
 from ui.icons import Icons
+from ui.theme import theme_var
 from ui.widgets.workspace_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
+from utils.colors import get_contrast_text_color, lighten_color
+from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
+from utils.threads.get_all_jobs_from_workspace_thread import GetAllJobsFromWorkspaceThread
+from utils.threads.get_job_from_workspace_thread import GetJobFromWorkspaceThread
 from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.workspace.assembly import Assembly
+from utils.workspace.job import Job
+from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
@@ -53,6 +61,8 @@ if TYPE_CHECKING:
 
 
 class WorkspaceWidget(QWidget, Ui_Form):
+    loadedAllJobs = pyqtSignal(list)
+
     def __init__(
         self,
         parent,
@@ -61,11 +71,13 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.setupUi(self)
 
         self.parent: WorkspaceTabWidget = parent
-        self.workspace = self.parent.workspace
+        self.workspace: Workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
         self.workspace_filter = self.parent.workspace_filter
-
+        self.threads: list[QThread] = []
         self.laser_cut_inventory = self.workspace.laser_cut_inventory
+        self.components_inventory = self.workspace.components_inventory
+        self.job_manager = self.workspace.job_manager
 
         self.settings_file = Settings()
 
@@ -133,11 +145,78 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.parts_layout.addWidget(self.parts_tree_widget)
 
         self.recut_parts_layout.addWidget(self.recut_parts_table_widget)
-
         self.recoat_parts_layout.addWidget(self.recoat_parts_table_widget)
+
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_recoat, self.widget_2
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_recut, self.widget
+        )
 
         self.assembly_widget.setHidden(True)
         self.assembly_layout.addWidget(self.assemblies_tree_widget)
+
+        self.loadedAllJobs.connect(self.load_parts_tree)
+
+        # self.get_all_workspace_jobs_thread()
+
+    def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
+        base_color = theme_var("primary")
+        hover_color = lighten_color(base_color)
+        font_color = get_contrast_text_color(base_color)
+        button.setObjectName("assembly_button_drop_menu")
+        button.setStyleSheet(
+            f"""
+            QPushButton#assembly_button_drop_menu {{
+                border: 1px solid {theme_var('surface')};
+                background-color: {theme_var('surface')};
+                border-radius: {theme_var('border-radius')};
+                text-align: left;
+            }}
+            /* CLOSED */
+            QPushButton:!checked#assembly_button_drop_menu {{
+                color: {theme_var('on-surface')};
+                border: 1px solid {theme_var('outline')};
+            }}
+
+            QPushButton:!checked:hover#assembly_button_drop_menu {{
+                background-color: {theme_var('outline-variant')};
+            }}
+            QPushButton:!checked:pressed#assembly_button_drop_menu{{
+                color: {theme_var('on-surface')};
+                background-color: {theme_var('surface')};
+            }}
+            /* OPENED */
+            QPushButton:checked#assembly_button_drop_menu {{
+                color: {font_color};
+                border-color: {base_color};
+                background-color: {base_color};
+                border-top-left-radius: {theme_var('border-radius')};
+                border-top-right-radius: {theme_var('border-radius')};
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
+            }}
+
+            QPushButton:checked:hover#assembly_button_drop_menu {{
+                background-color: {hover_color};
+            }}
+
+            QPushButton:checked:pressed#assembly_button_drop_menu {{
+                background-color: {base_color};
+            }}"""
+        )
+        widget.setObjectName("assembly_widget_drop_menu")
+        widget.setStyleSheet(
+            f"""QWidget#assembly_widget_drop_menu{{
+            border: 1px solid {base_color};
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            background-color: {theme_var('background')};
+            }}"""
+        )
 
     def view_parts_table(self):
         self.parts_widget.setVisible(True)
@@ -320,10 +399,10 @@ class WorkspaceWidget(QWidget, Ui_Form):
     def add_part_group_to_tree(
         self, group: WorkspaceLaserCutPartGroup, parent: QTreeWidgetItem
     ):
-        if group.base_part.recut or group.base_part.recoat:
-            return
-        # PART NAME
         part_tree_widget_item = QTreeWidgetItem(parent)
+        # PART NAME
+        if group.base_part.recut or group.base_part.recoat:
+            part_tree_widget_item.setDisabled(True)
         parent.addChild(part_tree_widget_item)
         self.parts_tree_index.update({id(part_tree_widget_item): group})
         part_tree_widget_item.setText(
@@ -411,6 +490,16 @@ class WorkspaceWidget(QWidget, Ui_Form):
                 WorkspacePartsTreeColumns.PROCESS_CONTROLS.value,
                 flow_tag_controls_widget,
             )
+        elif group.base_part.recut:
+            part_tree_widget_item.setText(
+                WorkspacePartsTreeColumns.PROCESS_CONTROLS.value,
+                "Part is a Recut"
+            )
+        elif group.base_part.recoat:
+            part_tree_widget_item.setText(
+                WorkspacePartsTreeColumns.PROCESS_CONTROLS.value,
+                "Part is a Recoat"
+            )
 
         # RECUT
         recut_button = QPushButton("Recut", self)
@@ -440,9 +529,15 @@ class WorkspaceWidget(QWidget, Ui_Form):
             part_tree_widget_item, WorkspacePartsTreeColumns.RECOAT.value, recoat_button
         )
 
+    # TODO: Get jobs from workspace DB before loading UI
     def tree_parts_item_expanded(self, item: QTreeWidgetItem):
         self.parts_parent_tree_items[item.text(0)]["is_expanded"] = item.isExpanded()
         job = self.parts_parent_tree_items[item.text(0)]["job"]
+        job_id = self.parts_parent_tree_items[item.text(0)]["id"]
+
+        self.get_workspace_job_thread(job, job_id)
+
+        print(job)
 
         if not (filtered_parts := self.workspace.get_filtered_laser_cut_parts(job)):
             return
@@ -456,11 +551,12 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.parts_parent_tree_items[item.text(0)]["is_expanded"] = item.isExpanded()
         item.takeChildren()
 
+    # TODO: How to handle callback such that it loads what is being loaded by the thread?
     def recut_pressed(self, laser_cut_part_group: WorkspaceLaserCutPartGroup):
         if laser_cut_part_group.base_part.recut:
             laser_cut_part_group.unmark_as_recut()
             self.load_parts_table()
-            self.load_parts_tree()
+            # self.load_parts_tree()
             self.workspace.save()
             self.sync_changes()
         else:
@@ -483,15 +579,16 @@ class WorkspaceWidget(QWidget, Ui_Form):
                     self.laser_cut_inventory.save()
                     self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
                 self.load_parts_table()
-                self.load_parts_tree()
+                # self.load_parts_tree()
                 self.workspace.save()
                 self.sync_changes()
 
+    # TODO: How to handle callback such that it loads what is being loaded by the thread?
     def recoat_pressed(self, laser_cut_part_group: WorkspaceLaserCutPartGroup):
         if laser_cut_part_group.base_part.recoat:
             laser_cut_part_group.unmark_as_recoat()
             self.load_parts_table()
-            self.load_parts_tree()
+            # self.load_parts_tree()
             self.workspace.save()
             self.sync_changes()
         else:
@@ -506,7 +603,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
                 for i in range(recut_count):
                     laser_cut_part_group.laser_cut_parts[i].mark_as_recoat()
                 self.load_parts_table()
-                self.load_parts_tree()
+                # self.load_parts_tree()
                 self.workspace.save()
                 self.sync_changes()
 
@@ -615,7 +712,8 @@ class WorkspaceWidget(QWidget, Ui_Form):
                     file_path,
                 )
 
-    def load_parts_tree(self):
+    def load_parts_tree(self, jobs: list[dict]):
+        print(jobs)
         if any(
             keyword in self.workspace_filter.current_tag.lower()
             for keyword in ["laser"]
@@ -648,14 +746,16 @@ class WorkspaceWidget(QWidget, Ui_Form):
         font = QFont()
         font.setPointSize(15)
 
-        for job in self.workspace.jobs:
-            if not (filtered_parts := self.workspace.get_filtered_laser_cut_parts(job)):
-                continue
+        for job_data in jobs:
+            job = Job({"job_data": msgspec.json.decode(job_data["data"])}, self.job_manager)
+            self.workspace.add_job(job)
+            # if not (filtered_parts := self.workspace.get_filtered_laser_cut_parts(job)):
+            #     continue
 
             parent_job_item = QTreeWidgetItem(self.parts_tree_widget)
             parent_job_item.setText(
                 0,
-                f"{job.name} #{job.order_number}: {job.starting_date} - {job.ending_date}",
+                f"{job_data['id']}. {job.name} #{job.order_number}: {job.starting_date} - {job.ending_date}",
             )
             parent_job_item.setFont(0, font)
             parent_job_item.setChildIndicatorPolicy(
@@ -664,22 +764,22 @@ class WorkspaceWidget(QWidget, Ui_Form):
             parent_job_item.setFirstColumnSpanned(True)
             self.parts_parent_tree_items.setdefault(
                 parent_job_item.text(0),
-                {"job": job, "item": parent_job_item, "is_expanded": False},
+                {"job": job, "item": parent_job_item, "id": job_data["id"], "is_expanded": False},
             )
             self.parts_parent_tree_items[parent_job_item.text(0)]["item"] = (
                 parent_job_item
             )
             self.parts_tree_widget.addTopLevelItem(parent_job_item)
 
-            if self.parts_parent_tree_items[parent_job_item.text(0)].get(
-                "is_expanded", False
-            ):
-                self.parts_tree_widget.expandItem(parent_job_item)
-                grouped_parts = self.workspace.get_grouped_laser_cut_parts(
-                    filtered_parts
-                )
-                for laser_cut_part_group in grouped_parts:
-                    self.add_part_group_to_tree(laser_cut_part_group, parent_job_item)
+            # if self.parts_parent_tree_items[parent_job_item.text(0)].get(
+            #     "is_expanded", False
+            # ):
+            #     self.parts_tree_widget.expandItem(parent_job_item)
+            #     grouped_parts = self.workspace.get_grouped_laser_cut_parts(
+            #         filtered_parts
+            #     )
+            #     for laser_cut_part_group in grouped_parts:
+            #         self.add_part_group_to_tree(laser_cut_part_group, parent_job_item)
 
         self.parts_tree_widget.setColumnWidth(
             WorkspacePartsTreeColumns.PART_NAME.value, 200
@@ -781,13 +881,14 @@ class WorkspaceWidget(QWidget, Ui_Form):
             partial(self.open_context_menu, menu)
         )
 
+    # TODO: How to handle callback such that it loads what is being loaded by the thread?
     def move_parts_to_next_process(self):
         if selected_items := self.parts_tree_get_selected_items():
             for selected_item in selected_items:
                 selected_item.move_to_next_process()
             self.check_if_assemblies_are_ready_to_start_timer()
             self.load_parts_table()
-            self.load_parts_tree()
+            # self.load_parts_tree()
             self.workspace.save()
             self.laser_cut_inventory.save()
             self.sync_changes()
@@ -1101,6 +1202,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.workspace.save()
         self.sync_changes()
 
+    # TODO: How to handle callback such that it loads what is being loaded by the thread?
     def move_item_process_forward(
         self,
         part_group_or_assembly: Union[
@@ -1111,7 +1213,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.check_if_assemblies_are_ready_to_start_timer()
         self.load_assembly_tree()
         self.load_parts_table()
-        self.load_parts_tree()
+        # self.load_parts_tree()
         self.workspace.save()
         self.laser_cut_inventory.save()
         self.sync_changes()
@@ -1167,3 +1269,64 @@ class WorkspaceWidget(QWidget, Ui_Form):
                         widget.deleteLater()
                     else:
                         self.clear_layout(item.layout())
+
+    def get_all_workspace_jobs_thread(self):
+        self.get_all_workspace_jobs = GetAllJobsFromWorkspaceThread()
+        self.get_all_workspace_jobs.signal.connect(self.get_all_workspace_jobs_response)
+        self.get_all_workspace_jobs.finished.connect(self.get_all_workspace_jobs.deleteLater)  # Auto cleanup
+        self.get_all_workspace_jobs.start()
+
+    def get_all_workspace_jobs_response(self, response: dict, status_code: int):
+        if status_code == 200:
+            # self.workspace.load_data()
+            # self.workspace.jobs.clear()
+            # for job_data in response["jobs"]:
+                # self.workspace.add_job(Job(job_data, self.job_manager))
+            # self.workspace.save()
+            # return response["jobs"]
+            self.loadedAllJobs.emit(response["jobs"])
+        else:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setWindowTitle("Error loading jobs")
+            msg.setText(f"{response}")
+            msg.exec()
+            self.loadedAllJobs.emit([])
+        self.get_all_workspace_jobs = None
+
+    def get_workspace_job_thread(self, job: Job, job_id: int):
+        self.get_workspace_job = GetJobFromWorkspaceThread(job, job_id)
+        self.get_workspace_job.signal.connect(self.get_workspace_job_response)
+        self.get_workspace_job.start()
+        self.get_workspace_job.wait()
+
+    def process_children(self, job: Job, parent: Assembly, children: list[dict[str, dict | list | str]]):
+        """
+        Recursively processes child elements within an assembly or job.
+        """
+        for child in children:
+            if child["type"] == "assembly":
+                assembly = Assembly(child["data"], job)
+                parent.add_sub_assembly(assembly)
+                self.process_children(job, assembly, child.get("children", []))  # Recurse for sub-assemblies
+            elif child["type"] == "laser_cut_part":
+                part = LaserCutPart(child["data"], self.laser_cut_inventory)
+                parent.add_laser_cut_part(part)
+            elif child["type"] == "component":
+                part = Component(child["data"], self.components_inventory)
+                parent.add_component(part)
+
+    def get_workspace_job_response(self, job: Job, response: dict, status_code: int):
+        if status_code == 200:
+            job.load_data(response['data'])
+            for child in response.get("children", []):
+                if child["type"] == "assembly":
+                    assembly = Assembly(child["data"], job)
+                    job.add_assembly(assembly)
+                    self.process_children(job, assembly, child.get("children", []))
+        else:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setWindowTitle("Error loading job")
+            msg.setText(f"{response}")
+            msg.exec()

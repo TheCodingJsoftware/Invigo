@@ -687,6 +687,10 @@ QTreeWidget::item {
     border-bottom: 1px solid var(--outline);
     padding: 5px;
 }
+QTreeWidget::item:disabled {
+    /* background: var(--primary-container); */
+    color: var(--disabled);
+}
 
 QTreeWidget::item:selected:focus {
     background-color: var(--primary);

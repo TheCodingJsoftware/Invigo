@@ -110,6 +110,7 @@ from utils.structural_steel_settings.structural_steel_settings import Structural
 from utils.threads.add_job_to_production_planner_thread import (
     AddJobToProductionPlannerThread,
 )
+from utils.threads.add_job_to_workspace_thread import AddJobToWorkspaceThread
 from utils.threads.changes_thread import ChangesThread
 from utils.threads.check_for_updates_thread import CheckForUpdatesThread
 from utils.threads.connect_thread import ConnectThread
@@ -121,7 +122,9 @@ from utils.threads.download_quote_thread import DownloadQuoteThread
 from utils.threads.download_thread import DownloadThread
 from utils.threads.exchange_rate import ExchangeRate
 from utils.threads.generate_quote_thread import GenerateQuoteThread
+from utils.threads.get_all_jobs_from_workspace_thread import GetAllJobsFromWorkspaceThread
 from utils.threads.get_client_data_thread import IsClientTrustedThread
+from utils.threads.get_job_from_workspace_thread import GetJobFromWorkspaceThread
 from utils.threads.get_jobs_thread import GetJobsThread
 from utils.threads.get_order_number_thread import GetOrderNumberThread
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
@@ -480,7 +483,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sheet_settings.load_data()
         self.structural_steel_settings.load_data()
         self.workspace_settings.load_data()
-        self.workspace.load_data()
+        # self.workspace.load_data()
 
         self.setup_tab_buttons()
 
@@ -1714,6 +1717,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             new_job = self.workspace.add_job(job)
             for laser_cut_part in new_job.get_all_laser_cut_parts():
                 laser_cut_part.timer.start_timer()
+            self.add_job_to_workspace_thread(new_job)
 
     def send_job_to_workspace(self):
         active_jobs_in_planning = {}
@@ -1755,7 +1759,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
-            self.workspace.load_data()
+            # self.workspace.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
                 self.add_job_to_workspace(
                     self.job_planner_widget,
@@ -2703,6 +2707,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setText(f"{response}")
             msg.exec()
 
+    def add_job_to_workspace_thread(self, job: Job):
+        add_job_to_workspace_thread = AddJobToWorkspaceThread(job)
+        self.threads.append(add_job_to_workspace_thread)
+        add_job_to_workspace_thread.signal.connect(self.add_job_to_workspace_response)
+        add_job_to_workspace_thread.start()
+
+    def add_job_to_workspace_response(self, response: dict, status_code: int):
+        if status_code == 200:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Information)
+            msg.setWindowTitle("Job added")
+            msg.setText("Successfully added job to workspace")
+            msg.exec()
+        else:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setWindowTitle("Job not added")
+            msg.setText(f"{response}")
+            msg.exec()
+
     def add_laser_cut_part_to_inventory(
         self, laser_cut_part_to_add: LaserCutPart, from_where: str
     ):
@@ -2972,7 +2996,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 in response["successful_files"]
             ):
                 self.workspace_settings.load_data()
-                self.workspace.load_data()
+                # self.workspace.load_data()
                 with contextlib.suppress(AttributeError):
                     self.job_planner_widget.workspace_settings_changed()
                 with contextlib.suppress(AttributeError):
@@ -2999,7 +3023,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.should_update_laser_cut_inventory_tab = True
 
             if f"{self.workspace.filename}.json" in response["successful_files"]:
-                self.workspace.load_data()
+                # self.workspace.load_data()
                 self.should_update_workspace_tab = True
 
             if f"{self.paint_inventory.filename}.json" in response["successful_files"]:

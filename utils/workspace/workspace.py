@@ -37,8 +37,8 @@ class Workspace:
         self.grouped_components: list[Component] = []
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
 
-        self.__create_file()
-        self.load_data()
+        # self.__create_file()
+        # self.load_data()
 
     def deep_split_job_copy(self, job: Job) -> Job:
         new_job = Job({}, self.job_manager)
