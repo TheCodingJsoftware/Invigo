@@ -1,5 +1,7 @@
 from typing import Iterator, Optional
 
+import msgspec
+
 from utils.workspace.assembly import Assembly
 from utils.workspace.tag import Tag
 
@@ -27,6 +29,17 @@ class WorkspaceAssemblyGroup:
             for file in assembly.assembly_files:
                 all_files.add(file)
         return list(all_files)
+
+    def get_ids(self) -> str:
+        return ",".join(str(assembly.id) for assembly in self)
+
+    def update_entry(self, entry_data: dict) -> Optional[Assembly]:
+        for assembly in self:
+            if assembly.id == entry_data["id"]:
+                json_data = msgspec.json.decode(entry_data["data"])
+                assembly.load_data(json_data)
+                return assembly
+        return None
 
     def get_current_tag(self) -> Optional[Tag]:
         return self.base_assembly.get_current_tag()

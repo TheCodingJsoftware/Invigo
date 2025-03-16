@@ -125,27 +125,27 @@ class Workspace:
         for assembly in job.get_all_assemblies():
             # For assemblies marked as not part of process, show them when their parts are complete
             # until their parent assembly is finished
-            if assembly.not_part_of_process:
-                if (
-                    not assembly.all_laser_cut_parts_complete()
-                    or not assembly.all_sub_assemblies_complete()
-                ):
-                    continue
+            # if assembly.not_part_of_process:
+            #     if (
+            #         not assembly.all_laser_cut_parts_complete()
+            #         or not assembly.all_sub_assemblies_complete()
+            #     ):
+            #         continue
                 # Get parent assembly and check if it's finished
-                parent = assembly.parent_assembly
-                if parent and parent.is_assembly_finished():
-                    continue
-            else:
+                # parent = assembly.parent_assembly
+                # if parent and parent.is_assembly_finished():
+                #     continue
+            # else:
                 # Normal assembly filtering
-                if assembly.is_assembly_finished():
-                    continue
-                if not assembly.all_laser_cut_parts_complete():
-                    continue
-                if not assembly.all_sub_assemblies_complete():
-                    continue
-                if current_tag := assembly.get_current_tag():
-                    if current_tag.name != self.workspace_filter.current_tag:
-                        continue
+                # if assembly.is_assembly_finished():
+                #     continue
+                # if not assembly.all_laser_cut_parts_complete():
+                #     continue
+                # if not assembly.all_sub_assemblies_complete():
+                #     continue
+                # if current_tag := assembly.get_current_tag():
+                #     if current_tag.name != self.workspace_filter.current_tag:
+                #         continue
 
             if any(self.workspace_filter.paint_filter.values()):
                 paints = assembly.get_all_paints()
@@ -215,11 +215,11 @@ class Workspace:
     def get_filtered_laser_cut_parts(self, job: Job) -> list[LaserCutPart]:
         laser_cut_parts: list[LaserCutPart] = []
         for laser_cut_part in job.get_all_laser_cut_parts():
-            if laser_cut_part.is_process_finished():
-                continue
-            if part_current_tag := laser_cut_part.get_current_tag():
-                if part_current_tag.name != self.workspace_filter.current_tag:
-                    continue
+            # if laser_cut_part.is_process_finished():
+            #     continue
+            # if part_current_tag := laser_cut_part.get_current_tag():
+            #     if part_current_tag.name != self.workspace_filter.current_tag:
+            #         continue
 
             if (
                 self.workspace_filter.enable_date_range
@@ -330,6 +330,8 @@ class Workspace:
             grouped_laser_cut_parts.sort(
                 key=lambda group: group.base_part.name, reverse=True
             )
+        elif self.workspace_filter.sorting_method == SortingMethod.PROCESS:
+            grouped_laser_cut_parts.sort(key=lambda group: group.get_process_status())
         elif self.workspace_filter.sorting_method == SortingMethod.MOST_TO_LEAST:
             grouped_laser_cut_parts.sort(
                 key=lambda group: group.get_count(), reverse=True

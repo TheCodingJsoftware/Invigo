@@ -29,6 +29,9 @@ class Component(InventoryItem):
         self.yellow_quantity_limit: float = 0.0
         self.orders: list[Order] = []
 
+        # NOTE Non serializable variables
+        self.id = -1
+
         self.load_data(data)
 
     def get_exchange_rate(self) -> float:

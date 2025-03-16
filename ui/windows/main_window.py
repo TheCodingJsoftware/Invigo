@@ -124,7 +124,8 @@ from utils.threads.exchange_rate import ExchangeRate
 from utils.threads.generate_quote_thread import GenerateQuoteThread
 from utils.threads.get_all_jobs_from_workspace_thread import GetAllJobsFromWorkspaceThread
 from utils.threads.get_client_data_thread import IsClientTrustedThread
-from utils.threads.get_job_from_workspace_thread import GetJobFromWorkspaceThread
+from utils.threads.get_workspace_entry_thread import GetWorkspaceEntryThread
+from utils.threads.load_job_from_workspace_thread import LoadJobFromWorkspaceThread
 from utils.threads.get_jobs_thread import GetJobsThread
 from utils.threads.get_order_number_thread import GetOrderNumberThread
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
@@ -2913,11 +2914,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.load_saved_quoted_thread()
             elif response[0] == "reload_saved_jobs":
                 self.load_jobs_thread()
+            elif "workspace_get_entry" in response[0]:
+                get_workspace_entry_thread = GetWorkspaceEntryThread(response[0].split("/")[-1])
+                get_workspace_entry_thread.signal.connect(self.get_workspace_entry_response)
+                get_workspace_entry_thread.finished.connect(get_workspace_entry_thread.deleteLater)
+                self.threads.append(get_workspace_entry_thread)
+                get_workspace_entry_thread.start()
+                get_workspace_entry_thread.wait()
             else:
                 self.download_files(response)
             self.status_button.setText("Synched", "lime")
         else:
             self.status_button.setText(f"Syncing Error: {response}", "red")
+
+    def get_workspace_entry_response(self, entry_data: dict, status_code: int):
+        if status_code == 200:
+            self.workspace_tab_widget.update_entry(entry_data)
+        else:
+            self.status_button.setText(f"Error: {entry_data}", "red")
 
     def data_received(self, data):
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
@@ -3578,9 +3592,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if generate_workorder_dialog.should_open_printout():
                     self.open_workorder(folder_name)
 
-            self.workspace_tab_widget.workspace_widget.load_parts_table()
-            self.workspace_tab_widget.workspace_widget.load_parts_tree()
-            self.workspace_tab_widget.workspace_widget.load_assembly_tree()
+            self.workspace_tab_widget.workspace_widget.get_all_workspace_jobs_thread()
+            # self.workspace_tab_widget.workspace_widget.load_parts_table()
+            # self.workspace_tab_widget.workspace_widget.load_parts_tree()
+            # self.workspace_tab_widget.workspace_widget.load_assembly_tree()
 
     def workorder_update_nest_parts_data(
         self,

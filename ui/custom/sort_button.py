@@ -34,7 +34,7 @@ class SortButton(QPushButton):
     sorting_method_selected = pyqtSignal(SortingMethod)
 
     def __init__(self):
-        super().__init__("Sort")
+        super().__init__("Sort: A ➜ Z")
         self.base_title = "Sort"
         self.dropdown = DropDownWidget()
         self.dropdown.sorting_method_selected.connect(self.on_sorting_method_selected)

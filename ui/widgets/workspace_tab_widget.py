@@ -54,15 +54,20 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
 
         self.pushButton_view_parts.clicked.connect(self.view_parts_table)
         self.pushButton_view_parts.setVisible(view_parts)
-        self.pushButton_view_parts.setChecked(
-            True if view_parts and not view_assemblies else False
-        )
 
         self.pushButton_view_assemblies.clicked.connect(self.view_assemblies_table)
         self.pushButton_view_assemblies.setVisible(view_assemblies)
-        self.pushButton_view_assemblies.setChecked(
-            True if view_assemblies and not view_parts else False
-        )
+
+        if view_parts and view_assemblies:
+            self.pushButton_view_parts.setChecked(True)
+            self.pushButton_view_assemblies.setChecked(False)
+        else:
+            self.pushButton_view_parts.setChecked(
+                True if view_parts and not view_assemblies else False
+            )
+            self.pushButton_view_assemblies.setChecked(
+                True if view_assemblies and not view_parts else False
+            )
 
         self.pushButton_search.clicked.connect(self.search_pressed)
 
@@ -79,6 +84,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.load_sort_button()
 
     def view_parts_table(self):
+        self.workspace_widget.get_all_workspace_jobs_thread()
         self.lineEdit_search.setPlaceholderText("Search parts...")
 
         self.pushButton_view_parts.setChecked(True)
@@ -90,6 +96,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.workspace_widget.view_parts_table()
 
     def view_assemblies_table(self):
+        self.workspace_widget.get_all_workspace_jobs_thread()
         self.lineEdit_search.setPlaceholderText("Search assemblies...")
 
         self.pushButton_view_parts.setChecked(False)
@@ -183,21 +190,21 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.menu_buttons_layout.addWidget(self.calendar_button)
 
     def filter_button_changed(self, states: dict[str, bool]):
-        self.workspace_widget.load_parts_table()
+        # self.workspace_widget.load_parts_table()
         self.workspace_widget.get_all_workspace_jobs_thread()
-        self.workspace_widget.load_assembly_tree()
+        # self.workspace_widget.load_assembly_tree()
 
     def date_range_changed(self, dates: dict[QDate, QDate]):
         self.workspace_filter.date_range = dates
-        self.workspace_widget.load_parts_table()
+        # self.workspace_widget.load_parts_table()
         self.workspace_widget.get_all_workspace_jobs_thread()
-        self.workspace_widget.load_assembly_tree()
+        # self.workspace_widget.load_assembly_tree()
 
     def date_range_toggled(self, checked: bool):
         self.workspace_filter.enable_date_range = checked
-        self.workspace_widget.load_parts_table()
+        # self.workspace_widget.load_parts_table()
         self.workspace_widget.get_all_workspace_jobs_thread()
-        self.workspace_widget.load_assembly_tree()
+        # self.workspace_widget.load_assembly_tree()
 
     def load_sort_button(self):
         self.clear_layout(self.sort_layout)
@@ -209,9 +216,9 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
 
     def sort(self, method: SortingMethod):
         self.workspace_filter.sorting_method = method
-        self.workspace_widget.load_parts_table()
+        # self.workspace_widget.load_parts_table()
         self.workspace_widget.get_all_workspace_jobs_thread()
-        self.workspace_widget.load_assembly_tree()
+        # self.workspace_widget.load_assembly_tree()
 
     def search_typing(self):
         self.workspace_filter.search_text = self.lineEdit_search.text()
@@ -219,9 +226,9 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
 
     def search_pressed(self):
         if not self.has_searched:
-            self.workspace_widget.load_parts_table()
+            # self.workspace_widget.load_parts_table()
             self.workspace_widget.get_all_workspace_jobs_thread()
-            self.workspace_widget.load_assembly_tree()
+            # self.workspace_widget.load_assembly_tree()
             self.has_searched = True
 
     def clear_search(self):
@@ -236,9 +243,9 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
                 tag_button.setEnabled(True)
         self.last_selected_tag = pressed_tag_button.text()
         self.workspace_filter.current_tag = pressed_tag_button.text()
-        self.workspace_widget.load_parts_table()
+        # self.workspace_widget.load_parts_table()
         self.workspace_widget.get_all_workspace_jobs_thread()
-        self.workspace_widget.load_assembly_tree()
+        # self.workspace_widget.load_assembly_tree()
         self.tabChanged.emit(pressed_tag_button.text())
 
     def set_current_tab(self, tab_name: str):
@@ -251,14 +258,17 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
                 tag_button.setEnabled(True)
         self.last_selected_tag = tab_name
         self.workspace_filter.current_tag = tab_name
-        self.workspace_widget.load_parts_table()
+        # self.workspace_widget.load_parts_table()
         self.workspace_widget.get_all_workspace_jobs_thread()
-        self.workspace_widget.load_assembly_tree()
+        # self.workspace_widget.load_assembly_tree()
         self.tabChanged.emit(tab_name)
 
     def workspace_settings_changed(self):
         self.workspace.load_data()
         self.set_current_tab(self.last_selected_tag)
+
+    def update_entry(self, entry_data: dict):
+        self.workspace_widget.update_tree_entry(entry_data)
 
     def sync_changes(self):
         self.parent.sync_changes("workspace_tab")

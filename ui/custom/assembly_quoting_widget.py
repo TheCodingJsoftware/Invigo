@@ -1529,6 +1529,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1539,6 +1540,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1560,6 +1562,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1570,6 +1573,18 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
+                sub_assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        sub_assembly_widget.pushButton_structural_steel_items.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                sub_assembly_widget.pushButton_laser_cut_parts,
+                sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1580,6 +1595,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1596,6 +1612,12 @@ class AssemblyQuotingWidget(AssemblyWidget):
         )
         sub_assembly_widget.laser_cut_widget.setHidden(
             not self.job_preferences.is_assembly_laser_cut_closed(sub_assembly.name)
+        )
+        sub_assembly_widget.pushButton_structural_steel_items.setChecked(
+            self.job_preferences.is_structural_steel_closed(sub_assembly.name)
+        )
+        sub_assembly_widget.structural_steel_items_widget.setHidden(
+            not self.job_preferences.is_structural_steel_closed(sub_assembly.name)
         )
         sub_assembly_widget.pushButton_components.setChecked(
             self.job_preferences.is_assembly_component_closed(sub_assembly.name)

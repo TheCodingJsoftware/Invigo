@@ -37,7 +37,7 @@ class Assembly:
         self.assembly_files: list[str] = []
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
-        self.structural_steel_components: list[Pipe | RectangularBar | AngleBar | FlatBar | RoundBar | RectangularTube | RoundTube | DOMRoundTube] = []
+        self.structural_steel_items: list[Pipe | RectangularBar | AngleBar | FlatBar | RoundBar | RectangularTube | RoundTube | DOMRoundTube] = []
         self.sub_assemblies: list[Assembly] = []
         self.not_part_of_process = False
 
@@ -73,6 +73,7 @@ class Assembly:
         self.flowtag_data: FlowtagData = None
 
         # NOTE Non serializable variables
+        self.id = -1
         self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
 
         self.load_data(assembly_data)
@@ -261,7 +262,7 @@ class Assembly:
             component = Component(component_data, self.job.components_inventory)
             self.add_component(component)
 
-        self.structural_steel_components.clear()
+        self.structural_steel_items.clear()
         structural_steel_components = data.get("structural_steel_components", [])
         for structural_steel_component_data in structural_steel_components:
             if structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_BAR.value:
@@ -306,7 +307,7 @@ class Assembly:
                 )
             else:
                 continue
-            self.structural_steel_components.append(structural_steel_component)
+            self.structural_steel_items.append(structural_steel_component)
 
         self.sub_assemblies.clear()
         sub_assemblies = data.get("sub_assemblies", [])
@@ -348,6 +349,10 @@ class Assembly:
                 laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts
             ],
             "components": [component.to_dict() for component in self.components],
+            "structural_steel_components": [
+                structural_steel_component.to_dict()
+                for structural_steel_component in self.structural_steel_items
+            ],
             "sub_assemblies": [
                 sub_assembly.to_dict() for sub_assembly in self.sub_assemblies
             ],

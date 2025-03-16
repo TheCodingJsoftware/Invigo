@@ -6,6 +6,7 @@ from PyQt6.QtCore import QDate
 class SortingMethod(Enum):
     A_TO_Z = "A ➜ Z"
     Z_TO_A = "Z ➜ A"
+    PROCESS = "Current Process"
     MOST_TO_LEAST = "Most ➜ Least"
     LEAST_TO_MOST = "Least ➜ Most"
     HEAVY_TO_LIGHT = "Heavy ➜ Light"
@@ -21,6 +22,6 @@ class WorkspaceFilter:
         self.material_filter: dict[str, bool] = {}
         self.thickness_filter: dict[str, bool] = {}
         self.paint_filter: dict[str, bool] = {}
-        self.sorting_method: SortingMethod = ""
+        self.sorting_method: SortingMethod = SortingMethod.A_TO_Z
         self.date_range: tuple[QDate, QDate] = ()
         self.enable_date_range: bool = False

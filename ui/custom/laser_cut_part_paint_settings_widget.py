@@ -148,6 +148,18 @@ class LasserCutPartPaintSettingsWidget(QWidget):
 
         self.setLayout(self.paint_settings_layout)
 
+    def update_inputs(self):
+        self.spinbox_primer_overspray.setValue(self.laser_cut_part.primer_overspray)
+        self.spinbox_paint_overspray.setValue(self.laser_cut_part.paint_overspray)
+        self.spinbox_powder_transfer_efficiency.setValue(
+            self.laser_cut_part.powder_transfer_efficiency
+        )
+        self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
+        self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
+        self.combobox_powder_coating_color.setCurrentText(
+            self.laser_cut_part.powder_name
+        )
+
     def update_paint_settings(self):
         self.laser_cut_part.primer_overspray = self.spinbox_primer_overspray.value()
         self.laser_cut_part.paint_overspray = self.spinbox_paint_overspray.value()

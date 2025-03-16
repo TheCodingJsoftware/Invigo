@@ -99,6 +99,9 @@ class LaserCutPart(InventoryItem):
         self.quantity_on_sheet: int = None
         self.matched_to_sheet_cost_price: float = 0.0
 
+        # NOTE Non serializable variables
+        self.id = -1
+
         self.load_data(data)
 
     def is_process_finished(self) -> bool:

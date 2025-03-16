@@ -75,12 +75,14 @@ class JobPreferences:
         button: QPushButton,
         laser_cut_button: QPushButton,
         component_button: QPushButton,
+        structural_steel_button: QPushButton,
         sub_assembly_button: QPushButton,
     ):
         self.closed_toolboxes[name.text()] = {
             "is_closed": button.isChecked(),
             "is_laser_cut_closed": laser_cut_button.isChecked(),
             "is_component_closed": component_button.isChecked(),
+            "is_structural_steel_closed": structural_steel_button.isChecked(),
             "is_sub_assembly_closed": sub_assembly_button.isChecked(),
         }
 
@@ -162,6 +164,12 @@ class JobPreferences:
     def is_assembly_laser_cut_closed(self, name: str) -> bool:
         try:
             return self.closed_toolboxes[name]["is_laser_cut_closed"]
+        except Exception:
+            return False
+
+    def is_structural_steel_closed(self, name: str) -> bool:
+        try:
+            return self.closed_toolboxes[name]["is_structural_steel_closed"]
         except Exception:
             return False
 

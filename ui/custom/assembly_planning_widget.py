@@ -1109,12 +1109,6 @@ class AssemblyPlanningWidget(AssemblyWidget):
         )
         file_name = os.path.basename(file_path)
         file_ext = file_name.split(".")[-1].upper()
-        if "dxf" in file_ext.lower():
-            laser_cut_part.file_name = file_name.split(".")[0]
-            current_row = self.laser_cut_part_table_items[laser_cut_part]["row"]
-            self.laser_cut_parts_table.item(
-                current_row, LaserCutTableColumns.PART_NAME.value
-            ).setText(laser_cut_part.file_name)
         file_button.setText(file_ext)
         file_button.setToolTip(file_path)
         file_button.setToolTipDuration(0)
@@ -1459,6 +1453,56 @@ class AssemblyPlanningWidget(AssemblyWidget):
             file_ext = file_path.split(".")[-1].upper()
             file_name = os.path.basename(file_path)
 
+            if "dxf" in file_ext.lower():
+                laser_cut_part.file_name = file_name.split(".")[0]
+                if existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.file_name):
+                    print("Found part in inventory")
+                    # self.laser_cut_part_table_items[laser_cut_part]["material"].setCurrentText(existing_laser_cut_part.material)
+                    # self.laser_cut_part_table_items[laser_cut_part]["thickness"].setCurrentText(existing_laser_cut_part.gauge)
+                    laser_cut_part.material = existing_laser_cut_part.material
+                    laser_cut_part.gauge = existing_laser_cut_part.gauge
+                    laser_cut_part.machine_time = existing_laser_cut_part.machine_time
+                    laser_cut_part.weight = existing_laser_cut_part.weight
+                    laser_cut_part.surface_area = existing_laser_cut_part.surface_area
+                    laser_cut_part.cutting_length = existing_laser_cut_part.cutting_length
+                    laser_cut_part.piercing_time = existing_laser_cut_part.piercing_time
+                    laser_cut_part.piercing_points = existing_laser_cut_part.piercing_points
+                    laser_cut_part.shelf_number = existing_laser_cut_part.shelf_number
+                    laser_cut_part.sheet_dim = existing_laser_cut_part.sheet_dim
+                    laser_cut_part.part_dim = existing_laser_cut_part.part_dim
+                    laser_cut_part.geofile_name = existing_laser_cut_part.geofile_name
+                    laser_cut_part.modified_date = existing_laser_cut_part.modified_date
+                    laser_cut_part.notes = existing_laser_cut_part.notes
+                    laser_cut_part.price = existing_laser_cut_part.price
+                    laser_cut_part.cost_of_goods = existing_laser_cut_part.cost_of_goods
+                    laser_cut_part.bend_cost = existing_laser_cut_part.bend_cost
+                    laser_cut_part.labor_cost = existing_laser_cut_part.labor_cost
+                    laser_cut_part.uses_primer = existing_laser_cut_part.uses_primer
+                    laser_cut_part.primer_name = existing_laser_cut_part.primer_name
+                    laser_cut_part.primer_overspray = existing_laser_cut_part.primer_overspray
+                    laser_cut_part.cost_for_primer = existing_laser_cut_part.cost_for_primer
+                    laser_cut_part.uses_paint = existing_laser_cut_part.uses_paint
+                    laser_cut_part.paint_name = existing_laser_cut_part.paint_name
+                    laser_cut_part.paint_overspray = existing_laser_cut_part.paint_overspray
+                    laser_cut_part.cost_for_paint = existing_laser_cut_part.cost_for_paint
+                    laser_cut_part.uses_powder = existing_laser_cut_part.uses_powder
+                    laser_cut_part.powder_name = existing_laser_cut_part.powder_name
+                    laser_cut_part.powder_transfer_efficiency = existing_laser_cut_part.powder_transfer_efficiency
+                    laser_cut_part.cost_for_powder_coating = existing_laser_cut_part.cost_for_powder_coating
+                    # with contextlib.suppress(KeyError):
+                    self.laser_cut_part_table_items[laser_cut_part]['painting_widget'].update_checkboxes()
+                    self.laser_cut_part_table_items[laser_cut_part]['painting_settings_widget'].update_inputs()
+                    self.laser_cut_part_table_items[laser_cut_part][
+                        "flowtag_data_button"
+                    ].dropdown.load_ui()
+                    # laser_cut_part.bending_files = existing_laser_cut_part.bending_files
+                    # laser_cut_part.welding_files = existing_laser_cut_part.welding_files
+                    # laser_cut_part.cnc_milling_files = existing_laser_cut_part.cnc_milling_files
+
+                current_row = self.laser_cut_part_table_items[laser_cut_part]["row"]
+                self.laser_cut_parts_table.item(
+                    current_row, LaserCutTableColumns.PART_NAME.value
+                ).setText(laser_cut_part.file_name)
             target_dir = f"data\\workspace\\{file_ext}"
             target_path = os.path.join(target_dir, file_name)
 
@@ -1537,6 +1581,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1547,6 +1592,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1568,6 +1614,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1578,6 +1625,18 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
+                sub_assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        sub_assembly_widget.pushButton_structural_steel_items.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                sub_assembly_widget.pushButton_laser_cut_parts,
+                sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1588,6 +1647,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 toggle_button,
                 sub_assembly_widget.pushButton_laser_cut_parts,
                 sub_assembly_widget.pushButton_components,
+                sub_assembly_widget.pushButton_structural_steel_items,
                 sub_assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -1604,6 +1664,12 @@ class AssemblyPlanningWidget(AssemblyWidget):
         )
         sub_assembly_widget.laser_cut_widget.setHidden(
             not self.job_preferences.is_assembly_laser_cut_closed(sub_assembly.name)
+        )
+        sub_assembly_widget.pushButton_structural_steel_items.setChecked(
+            self.job_preferences.is_structural_steel_closed(sub_assembly.name)
+        )
+        sub_assembly_widget.structural_steel_items_widget.setHidden(
+            not self.job_preferences.is_structural_steel_closed(sub_assembly.name)
         )
         sub_assembly_widget.pushButton_components.setChecked(
             self.job_preferences.is_assembly_component_closed(sub_assembly.name)

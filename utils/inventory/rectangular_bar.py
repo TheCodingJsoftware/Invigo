@@ -40,24 +40,13 @@ class RectangularBar(StructuralProfile):
             self.structural_steel_inventory.remove_rectangular_bar(self)
 
     def to_dict(self) -> dict[str, Union[float, str]]:
-        return {
-            "profile_type": self.PROFILE_TYPE.value,
-            "name": self.get_name(),
-            "part_number": self.part_number,
-            "width": self.width,
-            "length": self.length,
-            "height": self.height,
-            "wall_thickness": self.wall_thickness,
-            "material": self.material,
-            "notes": self.notes,
-            "cost": self.get_cost(),
-            "quantity": self.quantity,
-            "latest_change_quantity": self.latest_change_quantity,
-            "latest_change_cost": self.latest_change_cost,
-            "red_quantity_limit": self.red_quantity_limit,
-            "yellow_quantity_limit": self.yellow_quantity_limit,
-            "has_sent_warning": self.has_sent_warning,
-            "orders": [order.to_dict() for order in self.orders],
-            "flow_tag": self.flow_tag.to_dict(),
-            "categories": [category.name for category in self.categories],
-        }
+        data = super().to_dict()
+        data.update(
+            {
+                "profile_type": self.PROFILE_TYPE.value,
+                "width": self.width,
+                "height": self.height,
+                "wall_thickness": self.wall_thickness,
+            }
+        )
+        return data

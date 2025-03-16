@@ -480,6 +480,9 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_15">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QPushButton" name="pushButton_structural_steel_items">
             <property name="minimumSize">
@@ -524,6 +527,18 @@
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>3</number>
+                 </property>
                  <item>
                   <widget class="QPushButton" name="pushButton">
                    <property name="text">

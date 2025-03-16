@@ -539,6 +539,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
+                assembly_widget.pushButton_structural_steel_items,
                 assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -549,6 +550,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
+                assembly_widget.pushButton_structural_steel_items,
                 assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -566,6 +568,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
+                assembly_widget.pushButton_structural_steel_items,
                 assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -576,6 +579,18 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
+                assembly_widget.pushButton_structural_steel_items,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        assembly_widget.pushButton_structural_steel_items.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_structural_steel_items,
                 assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -586,6 +601,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
+                assembly_widget.pushButton_structural_steel_items,
                 assembly_widget.pushButton_sub_assemblies,
             )
         )
@@ -602,6 +618,12 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         )
         assembly_widget.laser_cut_widget.setHidden(
             not self.job_preferences.is_assembly_laser_cut_closed(assembly.name)
+        )
+        assembly_widget.pushButton_structural_steel_items.setChecked(
+            self.job_preferences.is_structural_steel_closed(assembly.name)
+        )
+        assembly_widget.structural_steel_items_widget.setHidden(
+            not self.job_preferences.is_structural_steel_closed(assembly.name)
         )
         assembly_widget.pushButton_components.setChecked(
             self.job_preferences.is_assembly_component_closed(assembly.name)

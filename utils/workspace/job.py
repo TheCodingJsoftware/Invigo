@@ -59,6 +59,7 @@ class Job:
         self.status = JobStatus.PLANNING
 
         # NOTE Non serialized variables
+        self.id = -1
         self.grouped_components: list[Component] = []
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
         self.sheet_settings = self.job_manager.sheet_settings
@@ -213,6 +214,9 @@ class Job:
 
     def get_grouped_components(self) -> list[Component]:
         return self.group_components()
+
+    def get_workspace_name(self) -> str:
+        return f"{self.id}. {self.name} #{self.order_number}: {self.starting_date} - {self.ending_date}"
 
     def load_settings(self, data: dict[str, dict[str, object]]):
         job_data = data.get("job_data", {})

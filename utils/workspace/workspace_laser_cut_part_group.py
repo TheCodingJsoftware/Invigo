@@ -1,5 +1,7 @@
 from typing import Iterator, Optional
 
+import msgspec
+
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.tag import Tag
 
@@ -55,6 +57,17 @@ class WorkspaceLaserCutPartGroup:
             )
         return text
 
+    def get_ids(self) -> str:
+        return ",".join(str(laser_cut_part.id) for laser_cut_part in self)
+
+    def update_entry(self, entry_data: dict) -> Optional[LaserCutPart]:
+        for laser_cut_part in self:
+            if laser_cut_part.id == entry_data["id"]:
+                json_data = msgspec.json.decode(entry_data["data"])
+                laser_cut_part.load_data(json_data)
+                return laser_cut_part
+        return None
+
     def mark_as_recoat(self, quantity: Optional[int] = None):
         max_quantity = len(self.laser_cut_parts)
         if quantity is None or quantity > max_quantity:
@@ -107,6 +120,23 @@ class WorkspaceLaserCutPartGroup:
 
         for i in range(quantity):
             self.laser_cut_parts[i].move_to_next_process()
+
+    def get_process_status(self) -> str:
+        try:
+            if self.base_part.recut:
+                return "Part is a Recut"
+            elif self.base_part.recoat:
+                return "Part is a Recoat"
+            elif self.base_part.is_process_finished():
+                return "Part is Finished"
+            else:
+                if self.get_current_tag().statuses:
+                    return f"Part is currently in {self.get_current_tag().name}: {self.get_current_tag().statuses[self.base_part.current_flow_tag_status_index].name}"
+                else:
+                    return f"Part is currently in {self.get_current_tag().name}"
+        except Exception as e:
+            print(e)
+            return ""
 
     def get_count(self) -> int:
         return len(self.laser_cut_parts)
