@@ -3,6 +3,7 @@ from typing import Optional
 
 import msgspec
 
+from config.environments import Environment
 from utils.workspace.flowtag import Flowtag, Group
 from utils.workspace.flowtags import Flowtags
 from utils.workspace.tag import Tag
@@ -12,7 +13,7 @@ from utils.workspace.tag_status import TagStatus
 class WorkspaceSettings:
     def __init__(self):
         self.filename: str = "workspace_settings"
-        self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
+        self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/data"
         self.notes: str = ""
         self.tags: list[Tag] = []
         self.flow_tags_group: list[Flowtags] = []

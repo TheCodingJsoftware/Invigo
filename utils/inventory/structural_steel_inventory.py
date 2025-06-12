@@ -13,7 +13,8 @@ from utils.inventory.rectangular_tube import RectangularTube
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
 from utils.inventory.structural_profile import ProfilesTypes, StructuralProfile
-from utils.structural_steel_settings.structural_steel_settings import StructuralSteelSettings
+from utils.structural_steel_settings.structural_steel_settings import \
+    StructuralSteelSettings
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
@@ -188,7 +189,7 @@ class StructuralSteelInventory(Inventory):
                 f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8"
             ) as file:
                 data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
-            self.categories.from_dict(data["categories"])
+            self.categories.from_list(data["categories"])
             self.angle_bars.clear()
             self.flat_bars.clear()
             self.rectangular_bars.clear()

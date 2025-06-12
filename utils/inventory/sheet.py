@@ -13,6 +13,7 @@ class Sheet(InventoryItem):
     def __init__(self, data: dict, sheets_inventory):
         super().__init__()
         self.sheets_inventory: SheetsInventory = sheets_inventory
+        self.id: int = -1
         self.quantity: int = 0
         self.length: float = 0.0
         self.width: float = 0.0
@@ -50,6 +51,7 @@ class Sheet(InventoryItem):
         return [category.name for category in self.categories]
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
+        self.id: int = data.get("id", -1)
         self.quantity: int = data.get("quantity", 0)
         self.latest_change_quantity: str = data.get("latest_change_quantity", "")
         self.length: str = data.get("length", 120.0)
@@ -79,6 +81,7 @@ class Sheet(InventoryItem):
 
     def to_dict(self) -> dict[str, dict]:
         return {
+            "id": self.id,
             "name": self.get_name(),
             "thickness": self.thickness,
             "material": self.material,

@@ -5,13 +5,15 @@ from datetime import date
 
 from openpyxl import load_workbook
 
+from config.environments import Environment
+
 
 class POTemplate:
     def __init__(self, po_template: str):
         self.po_template = po_template
         self.order_number_cell = (4, 6)  # F4
         self.date_cell = (6, 6)  # F6
-        self.cwd: str = os.path.abspath(os.getcwd()).replace("\\", "/")
+        self.cwd: str = os.path.abspath(Environment.DATA_PATH).replace("\\", "/")
         self.date = date.today().strftime("%m/%d/%y")
         self.signature: str = f"Lynden Gross                                                          {self.date}"
         self.vendor: str = self.get_vendor()

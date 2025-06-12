@@ -121,6 +121,7 @@ class Component(InventoryItem):
 
     def to_dict(self) -> dict[str, dict]:
         return {
+            "name": self.name,
             "part_number": self.part_number,
             "part_name": self.part_name,
             "quantity": round(self.quantity, 2),

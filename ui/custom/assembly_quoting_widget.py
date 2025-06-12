@@ -20,6 +20,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from config.environments import Environment
 from ui.custom.assembly_image import AssemblyImage
 from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
@@ -46,8 +47,8 @@ from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
+from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
 
 
@@ -1080,7 +1081,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         files_layout: QHBoxLayout,
         file_path: str,
     ):
-        file_button = FileButton(f"{os.getcwd()}\\{file_path}", self)
+        file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
         file_button.buttonClicked.connect(
             partial(self.laser_cut_part_file_clicked, laser_cut_part, file_path)
         )

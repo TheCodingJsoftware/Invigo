@@ -120,7 +120,7 @@ class PaintInventory(Inventory):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
                 data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
-            self.categories.from_dict(["Primer", "Paint", "Powder"])
+            self.categories.from_list(["Primer", "Paint", "Powder"])
             self.primers.clear()
             self.paints.clear()
             self.powders.clear()

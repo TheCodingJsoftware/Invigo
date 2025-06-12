@@ -4,12 +4,14 @@ import os
 
 import ujson as json
 
+from config.environments import Environment
+
 
 class JsonFile:
     def __init__(self, file_name: str = "json_file"):
         self.data = None
         self.file_name: str = file_name.replace(".json", "")
-        self.FOLDER_LOCATION: str = f"{os.getcwd()}/"
+        self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/"
         self.__create_file()
         self.load_data()
 

@@ -4,6 +4,7 @@ from functools import partial
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog, QFileDialog, QPushButton
 
+from config.environments import Environment
 from ui.dialogs.select_files_to_download_dialog_UI import Ui_Form
 from ui.icons import Icons
 
@@ -33,7 +34,7 @@ class SelectFilesToDownloadDialog(QDialog, Ui_Form):
         self.pushButton_cancel.clicked.connect(self.reject)
 
         self.lineEdit_download_path.setText(
-            os.path.join(os.getcwd(), "data", "workspace")
+            os.path.join(Environment.DATA_PATH, "data", "workspace")
         )
         self.lineEdit_download_path.textChanged.connect(
             self.lineEdit_download_path_changed

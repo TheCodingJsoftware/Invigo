@@ -61,9 +61,15 @@ class WorkspaceLaserCutPartGroup:
         return ",".join(str(laser_cut_part.id) for laser_cut_part in self)
 
     def update_entry(self, entry_data: dict) -> Optional[LaserCutPart]:
+        raw_data = entry_data["data"]
+        if isinstance(raw_data, dict):
+            json_data = raw_data
+        elif isinstance(raw_data, (bytes, bytearray)):
+            json_data = msgspec.json.decode(raw_data)
+        else:
+            raise TypeError(f"Unsupported data type for entry_data['data']: {type(raw_data)}")
         for laser_cut_part in self:
             if laser_cut_part.id == entry_data["id"]:
-                json_data = msgspec.json.decode(entry_data["data"])
                 laser_cut_part.load_data(json_data)
                 return laser_cut_part
         return None

@@ -1,7 +1,6 @@
-import os
-
 import msgspec
 
+from config.environments import Environment
 from utils.sheet_settings.collection import Collection
 from utils.sheet_settings.material import Material
 from utils.sheet_settings.pounds_per_square_foot import PoundsPerSquareFoot
@@ -19,7 +18,7 @@ class SheetSettings:
         self.pounds_per_square_foot: PoundsPerSquareFoot = PoundsPerSquareFoot()
         self.price_per_pound: PricePerPound = PricePerPound()
         self.cost_for_laser: dict[str, float] = {}
-        self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
+        self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/data"
         self.load_data()
 
     def get_materials(self) -> list[str]:

@@ -2,12 +2,14 @@ import json
 import os
 from datetime import datetime
 
+from config.environments import Environment
+
 
 class Settings:
     def __init__(self):
         self.data = {}
         self.file_name: str = "settings"
-        self.FOLDER_LOCATION: str = f"{os.getcwd()}/"
+        self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/"
         self.__create_file()
         self.load_data()
         self.default_settings()
@@ -112,7 +114,7 @@ class Settings:
                 "Job Planner",
                 "Job Quoter",
                 "Quote Generator",
-                "Workspace"
+                "Workspace",
             ],
         )
         self.data.setdefault(

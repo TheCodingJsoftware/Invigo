@@ -3,6 +3,7 @@ from datetime import datetime
 
 import msgspec
 
+from config.environments import Environment
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
 
@@ -12,7 +13,7 @@ class WorkspaceHistory:
         self.jobs: list[Job] = []
 
         self.filename: str = f"workspace_{datetime.now().year}_history"
-        self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
+        self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/data"
         self.job_manager = job_manager
 
         self.__create_file()

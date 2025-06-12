@@ -23,6 +23,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from config.environments import Environment
 from ui.custom_widgets import (
     CustomTableWidget,
     CustomTabWidget,
@@ -509,12 +510,19 @@ class ComponentsTab(QWidget, Ui_Form):
             # PART NAME
             table_item_part_name = QTableWidgetItem(component.part_name)
             table_item_part_name.setFont(self.tables_font)
+            image_path = f"{component.image_path}"  # Adjust path if needed
+
+            tooltip_html = f"""
+            <b>{component.part_name}</b><br>
+            {component.part_number}<br>
+            <img src="{image_path}" width="150"><br>
+            <p>Component is present in:<br>{component.print_categories()}</p>
+            """
+
             table_item_part_name.setTextAlignment(
                 Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
             )
-            table_item_part_name.setToolTip(
-                f"{component.part_name}\n\nComponent is present in:\n{component.print_categories()}"
-            )
+            table_item_part_name.setToolTip(tooltip_html)
             current_table.setItem(row_index, col_index, table_item_part_name)
             self.table_components_widgets[component].update(
                 {"part_name": table_item_part_name}
@@ -525,9 +533,7 @@ class ComponentsTab(QWidget, Ui_Form):
             # PART NUMBER
             table_item_part_number = QTableWidgetItem(component.part_number)
             table_item_part_number.setFont(self.tables_font)
-            table_item_part_number.setToolTip(
-                f"{component.part_number}\n\nComponent is present in:\n{component.print_categories()}"
-            )
+            table_item_part_number.setToolTip(tooltip_html)
             table_item_part_number.setTextAlignment(
                 Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
             )
@@ -1450,7 +1456,7 @@ class ComponentsTab(QWidget, Ui_Form):
                 if response == DialogButtons.open:
                     try:
                         po_template = POTemplate(
-                            f"{os.path.abspath(os.getcwd())}/PO's/templates/{input_dialog.get_selected_item()}.xlsx"
+                            f"{os.path.abspath(Environment.DATA_PATH)}/PO's/templates/{input_dialog.get_selected_item()}.xlsx"
                         )
                         po_template.generate()
                         os.startfile(po_template.get_output_path())
@@ -1460,7 +1466,7 @@ class ComponentsTab(QWidget, Ui_Form):
                     return
         else:
             po_template = POTemplate(
-                f"{os.path.abspath(os.getcwd())}/PO's/templates/{po_name}.xlsx"
+                f"{os.path.abspath(Environment.DATA_PATH)}/PO's/templates/{po_name}.xlsx"
             )
             po_template.generate()
             os.startfile(po_template.get_output_path())
@@ -1507,6 +1513,7 @@ class ComponentsTab(QWidget, Ui_Form):
 
     def print_selected_items(self):
         headers = [
+            "Image",
             "Part Name",
             "Part Number",
             "Unit Qty",
@@ -1531,6 +1538,7 @@ class ComponentsTab(QWidget, Ui_Form):
                 else:
                     order_status = "No order is pending"
                 html += f"""<tr style="border-bottom: 1px solid black;">
+                <td><img src="{component.image_path}" width="150"></td>
                 <td>{component.part_name}</td>
                 <td>{component.part_number}</td>
                 <td>{component.get_category_quantity(self.category)}</td>

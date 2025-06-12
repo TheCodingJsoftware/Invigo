@@ -34,9 +34,15 @@ class WorkspaceAssemblyGroup:
         return ",".join(str(assembly.id) for assembly in self)
 
     def update_entry(self, entry_data: dict) -> Optional[Assembly]:
+        raw_data = entry_data["data"]
+        if isinstance(raw_data, dict):
+            json_data = raw_data
+        elif isinstance(raw_data, (bytes, bytearray)):
+            json_data = msgspec.json.decode(raw_data)
+        else:
+            raise TypeError(f"Unsupported data type for entry_data['data']: {type(raw_data)}")
         for assembly in self:
             if assembly.id == entry_data["id"]:
-                json_data = msgspec.json.decode(entry_data["data"])
                 assembly.load_data(json_data)
                 return assembly
         return None

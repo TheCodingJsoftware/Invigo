@@ -138,6 +138,13 @@ class LaserCutPart(InventoryItem):
         self.recut = False
         self.move_to_next_process()
 
+    def get_files(self, file_type: str) -> list[str]:
+        all_files: set[str] = set()
+        files = getattr(self, file_type)
+        for file in files:
+            all_files.add(file)
+        return list(all_files)
+
     def move_to_next_process(self):
         self.timer.stop(self.get_current_tag())
         self.check_update_quantity_tags()

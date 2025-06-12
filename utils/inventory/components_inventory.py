@@ -138,7 +138,7 @@ class ComponentsInventory(Inventory):
                 data: dict[str, Union[dict[str, object], list[object]]] = (
                     msgspec.json.decode(file.read())
                 )
-            self.categories.from_dict(data["categories"])
+            self.categories.from_list(data["categories"])
             self.components.clear()
 
             for component_data in data["components"]:

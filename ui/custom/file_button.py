@@ -4,7 +4,7 @@ from PyQt6.QtCore import QMimeData, Qt, QUrl, pyqtSignal
 from PyQt6.QtGui import QDrag, QMouseEvent
 from PyQt6.QtWidgets import QMenu, QPushButton
 
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
 
 
 class FileButton(QPushButton):

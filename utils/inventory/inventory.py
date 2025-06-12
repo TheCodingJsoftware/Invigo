@@ -1,5 +1,6 @@
 import os
 
+from config.environments import Environment
 from utils.inventory.categories import Categories
 from utils.inventory.category import Category
 
@@ -8,7 +9,7 @@ class Inventory:
     def __init__(self, filename: str):
         self.categories: Categories = Categories()
         self.filename: str = filename.replace(".json", "")
-        self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
+        self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/data"
         self.__create_file()
 
     def __create_file(self):

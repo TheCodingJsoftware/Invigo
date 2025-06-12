@@ -838,7 +838,7 @@ class WorkspaceJobPrintout:
         html = f"""<!DOCTYPE html>
                 <html>{head_html}
         <body class="{self.printout_type.lower()}">
-            <nav class="drawer left border" style="align-content: center" id="printout-controls">
+            <nav class="drawer left" style="align-content: center" id="printout-controls">
                 <a class="surface-container">
                     <label class="checkbox">
                         <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" checked>
@@ -1028,7 +1028,7 @@ class WorkorderPrintout:
         html = f"""<!DOCTYPE html>
                 <html>{head_html}
         <body class="{self.printout_type.lower()}">
-            <nav class="drawer left border" style="align-content: center" id="printout-controls">
+            <nav class="drawer left" style="align-content: center" id="printout-controls">
                 <a class="surface-container">
                     <label class="checkbox">
                         <input type="checkbox" id="showNests" data-name="show-nests" data-layout="nests-layout" {"checked" if self.nests else ""}>

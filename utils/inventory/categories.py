@@ -29,7 +29,7 @@ class Categories:
         data = {category.name for category in self.categories}
         return list(data)
 
-    def from_dict(self, data: list[str]):
+    def from_list(self, data: list[str]):
         self.categories.clear()
         for category_name in data:
             self.categories.append(Category(category_name))

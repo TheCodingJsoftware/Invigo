@@ -4,11 +4,12 @@ import re
 
 from PyQt6.QtWidgets import QApplication
 
+from config.environments import Environment
 from utils.settings import Settings
 
 settings = Settings()
 
-UI_PATH = f"{os.getcwd()}/ui/"
+UI_PATH = f"{Environment.DATA_PATH}/ui/"
 STYLE_PATH = os.path.join(UI_PATH, "style", "style.qss")
 THEME_PATH = os.path.join(UI_PATH, "themes", f"{settings.get_value('theme')}.css")
 

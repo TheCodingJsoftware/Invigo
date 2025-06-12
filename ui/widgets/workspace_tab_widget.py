@@ -270,6 +270,9 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
     def update_entry(self, entry_data: dict):
         self.workspace_widget.update_tree_entry(entry_data)
 
+    def get_all_recut_parts_thread(self):
+        self.workspace_widget.get_all_recut_parts_thread()
+
     def sync_changes(self):
         self.parent.sync_changes("workspace_tab")
 

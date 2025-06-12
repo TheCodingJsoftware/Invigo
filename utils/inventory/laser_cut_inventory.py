@@ -199,7 +199,7 @@ class LaserCutInventory(Inventory):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
                 data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
-            self.categories.from_dict(data["categories"])
+            self.categories.from_list(data["categories"])
             self.laser_cut_parts.clear()
             self.recut_parts.clear()
             for laser_cut_part_data in data["laser_cut_parts"]:

@@ -4,6 +4,7 @@ from typing import Union
 
 import msgspec
 
+from config.environments import Environment
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
@@ -25,7 +26,7 @@ class Workspace:
         self.jobs: list[Job] = []
 
         self.filename = filename
-        self.FOLDER_LOCATION = f"{os.getcwd()}/data"
+        self.FOLDER_LOCATION = f"{Environment.DATA_PATH}/data"
 
         self.workspace_settings = workspace_settings
         self.job_manager = job_manager
@@ -131,21 +132,21 @@ class Workspace:
             #         or not assembly.all_sub_assemblies_complete()
             #     ):
             #         continue
-                # Get parent assembly and check if it's finished
-                # parent = assembly.parent_assembly
-                # if parent and parent.is_assembly_finished():
-                #     continue
+            # Get parent assembly and check if it's finished
+            # parent = assembly.parent_assembly
+            # if parent and parent.is_assembly_finished():
+            #     continue
             # else:
-                # Normal assembly filtering
-                # if assembly.is_assembly_finished():
-                #     continue
-                # if not assembly.all_laser_cut_parts_complete():
-                #     continue
-                # if not assembly.all_sub_assemblies_complete():
-                #     continue
-                # if current_tag := assembly.get_current_tag():
-                #     if current_tag.name != self.workspace_filter.current_tag:
-                #         continue
+            # Normal assembly filtering
+            # if assembly.is_assembly_finished():
+            #     continue
+            # if not assembly.all_laser_cut_parts_complete():
+            #     continue
+            # if not assembly.all_sub_assemblies_complete():
+            #     continue
+            # if current_tag := assembly.get_current_tag():
+            #     if current_tag.name != self.workspace_filter.current_tag:
+            #         continue
 
             if any(self.workspace_filter.paint_filter.values()):
                 paints = assembly.get_all_paints()

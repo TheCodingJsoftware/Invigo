@@ -5,7 +5,8 @@ from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.threads.download_images_thread import DownloadImagesThread
 from utils.threads.download_job_thread import DownloadJobThread
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace.workspace_get_file_thread import \
+    WorkspaceDownloadFile
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
 
@@ -69,7 +70,6 @@ class JobLoaderThread(QThread):
         download_job_thread.wait()
 
     def download_job_data_response(self, data: dict, folder_name: str):
-        print(f"download_job_data_response: {data} {folder_name}")
         if isinstance(data, dict):
             self.job = Job(data, self.job_manager)
             self.job.downloaded_from_server = True

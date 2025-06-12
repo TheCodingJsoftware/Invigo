@@ -713,9 +713,14 @@ class LaserCutTab(QWidget, Ui_Form):
 
                 table_item_name = QTableWidgetItem(laser_cut_part.name)
                 table_item_name.setFont(self.tables_font)
-                table_item_name.setToolTip(
-                    f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}"
-                )
+                image_path = f"images/{laser_cut_part.image_index}"
+                tooltip_html = f"""
+                <b>{laser_cut_part.geofile_name}</b><br>
+                <img src="{image_path}" width="150"><br>
+                <p>Laser cut part is present in:<br>{laser_cut_part.print_categories()}</p>
+                """
+
+                table_item_name.setToolTip(tooltip_html)
                 current_table.setItem(
                     row_index, current_table.part_name_column, table_item_name
                 )
@@ -1376,6 +1381,7 @@ class LaserCutTab(QWidget, Ui_Form):
 
     def print_selected_items(self):
         headers = [
+            "Image",
             "Part Name",
             "Unit Qty",
             "Qty in Stock",
@@ -1406,6 +1412,7 @@ class LaserCutTab(QWidget, Ui_Form):
                 ):
                     paint_message = "Not painted"
                 html += f"""<tr style="border-bottom: 1px solid black;">
+                <td><img src="images/{laser_cut_part.image_index}.jpeg" width="150"></td>
                 <td>{laser_cut_part.name}</td>
                 <td>{laser_cut_part.get_category_quantity(self.category)}</td>
                 <td>{laser_cut_part.quantity}</td>

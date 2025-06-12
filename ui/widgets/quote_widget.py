@@ -9,33 +9,16 @@ from typing import TYPE_CHECKING
 from natsort import natsorted
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import (
-    QAbstractItemView,
-    QCheckBox,
-    QComboBox,
-    QDoubleSpinBox,
-    QGridLayout,
-    QHBoxLayout,
-    QLabel,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
+                             QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel,
+                             QMenu, QMessageBox, QPushButton, QTableWidgetItem,
+                             QVBoxLayout, QWidget)
 
 from ui.custom.components_quoting_table_widget import (
-    ComponentsQuotingTableWidget,
-    ComponentsTableColumns,
-)
-from ui.custom_widgets import (
-    ClickableLabel,
-    CustomTableWidget,
-    MachineCutTimeSpinBox,
-    MultiToolBox,
-    RecutButton,
-)
+    ComponentsQuotingTableWidget, ComponentsTableColumns)
+from ui.custom_widgets import (ClickableLabel, CustomTableWidget,
+                               MachineCutTimeSpinBox, MultiToolBox,
+                               RecutButton)
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
@@ -2449,7 +2432,7 @@ class QuoteWidget(QWidget, Ui_Form):
                     new_sheet.material
                 )
             self.sheets_inventory.add_sheet(new_sheet)
-            self.sheets_inventory.save()
+            self.sheets_inventory.save_local_copy()
             self.sync_changes()
             self.nests_tool_box.setItemText(
                 self.nest_items[nest]["tab_index"], nest.get_name()

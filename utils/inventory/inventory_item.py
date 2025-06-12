@@ -8,8 +8,12 @@ class InventoryItem:
 
     def print_categories(self) -> str:
         return "".join(
-            f"{i + 1}. {category.name}\n" for i, category in enumerate(self.categories)
+            f"{i + 1}. {category.name}<br>"
+            for i, category in enumerate(self.categories)
         )
+
+    def get_categories(self):
+        return [category.name for category in self.categories]
 
     def rename(self, new_name: str):
         self.name = new_name

@@ -5,11 +5,12 @@ from typing import Literal, Optional, Union
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QHBoxLayout, QMessageBox, QScrollArea, QWidget
 
+from config.environments import Environment
 from ui.custom.file_button import FileButton
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
@@ -72,7 +73,7 @@ class LaserCutPartFilesWidget(QWidget):
         files_layout: QHBoxLayout,
         file_path: str,
     ):
-        file_button = FileButton(f"{os.getcwd()}\\{file_path}", self)
+        file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
         file_button.buttonClicked.connect(
             partial(self.laser_cut_part_file_clicked, file_path)
         )

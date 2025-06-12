@@ -11,7 +11,7 @@ class GetJobsThread(QThread):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
-        self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/get_jobs"
+        self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/get_job_directories"
 
     def run(self):
         try:

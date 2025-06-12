@@ -6,21 +6,13 @@ from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QWidget,
-)
+from PyQt6.QtWidgets import (QComboBox, QMenu, QMessageBox, QPushButton,
+                             QTableWidget, QTableWidgetItem, QWidget)
 
-from ui.custom.nest_editor_table_widget import (
-    NestEditorPartsTableColumns,
-    NestEditorPartsTableWidget,
-)
-from ui.custom_widgets import ClickableRichTextLabel, MachineCutTimeSpinBox, RecutButton
+from ui.custom.nest_editor_table_widget import (NestEditorPartsTableColumns,
+                                                NestEditorPartsTableWidget)
+from ui.custom_widgets import (ClickableRichTextLabel, MachineCutTimeSpinBox,
+                               RecutButton)
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.dialogs.recut_dialog import RecutDialog
@@ -598,7 +590,7 @@ class NestEditorWidget(QWidget, Ui_Form):
                 laser_cut_part.gauge = new_sheet.thickness
                 laser_cut_part.material = new_sheet.material
             self.sheets_inventory.add_sheet(new_sheet)
-            self.sheets_inventory.save()
+            self.sheets_inventory.save_local_copy()
             self.sync_changes()
             self.update_sheet_status()
 

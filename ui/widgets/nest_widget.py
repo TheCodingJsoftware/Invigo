@@ -5,16 +5,11 @@ from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QPixmap
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QTreeWidgetItem,
-    QWidget,
-)
+from PyQt6.QtWidgets import (QComboBox, QMenu, QMessageBox, QPushButton,
+                             QTreeWidgetItem, QWidget)
 
-from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
+from ui.custom.machine_cut_time_double_spin_box import \
+    MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.widgets.nest_widget_UI import Ui_Form
 from utils.inventory.category import Category
@@ -307,7 +302,7 @@ class NestWidget(QWidget, Ui_Form):
                 laser_cut_part.material = new_sheet.material
             self.updateLaserCutPartSettings.emit(self)
             self.sheets_inventory.add_sheet(new_sheet)
-            self.sheets_inventory.save()
+            self.sheets_inventory.save_local_copy()
             self.sync_changes()
             self.changes_made()
             # self.nests_tool_box.setItemText(self.nest_items[nest]["tab_index"], nest.get_name())

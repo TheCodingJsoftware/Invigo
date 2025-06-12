@@ -19,6 +19,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from config.environments import Environment
 from ui.custom.assembly_file_drop_widget import AssemblyFileDropWidget
 from ui.custom.assembly_image import AssemblyImage
 from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
@@ -48,8 +49,8 @@ from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
+from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
 
 
@@ -413,6 +414,12 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.copy_file_with_overwrite(image_file_name, target_path)
 
         component.image_path = target_path
+
+        # Update parts in the inventory
+        if component_in_inventory := self.components_inventory.get_component_by_name(
+            component.name
+        ):
+            component_in_inventory.image_path = target_path
         self.upload_images([target_path])
         self.changes_made()
 
@@ -1094,7 +1101,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         files_layout: QHBoxLayout,
         file_path: str,
     ):
-        file_button = FileButton(f"{os.getcwd()}\\{file_path}", self)
+        file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
         file_button.buttonClicked.connect(
             partial(self.laser_cut_part_file_clicked, laser_cut_part, file_path)
         )
@@ -1455,7 +1462,12 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
             if "dxf" in file_ext.lower():
                 laser_cut_part.file_name = file_name.split(".")[0]
-                if existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.file_name):
+                if (
+                    existing_laser_cut_part
+                    := self.laser_cut_inventory.get_laser_cut_part_by_name(
+                        laser_cut_part.file_name
+                    )
+                ):
                     print("Found part in inventory")
                     # self.laser_cut_part_table_items[laser_cut_part]["material"].setCurrentText(existing_laser_cut_part.material)
                     # self.laser_cut_part_table_items[laser_cut_part]["thickness"].setCurrentText(existing_laser_cut_part.gauge)
@@ -1464,9 +1476,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
                     laser_cut_part.machine_time = existing_laser_cut_part.machine_time
                     laser_cut_part.weight = existing_laser_cut_part.weight
                     laser_cut_part.surface_area = existing_laser_cut_part.surface_area
-                    laser_cut_part.cutting_length = existing_laser_cut_part.cutting_length
+                    laser_cut_part.cutting_length = (
+                        existing_laser_cut_part.cutting_length
+                    )
                     laser_cut_part.piercing_time = existing_laser_cut_part.piercing_time
-                    laser_cut_part.piercing_points = existing_laser_cut_part.piercing_points
+                    laser_cut_part.piercing_points = (
+                        existing_laser_cut_part.piercing_points
+                    )
                     laser_cut_part.shelf_number = existing_laser_cut_part.shelf_number
                     laser_cut_part.sheet_dim = existing_laser_cut_part.sheet_dim
                     laser_cut_part.part_dim = existing_laser_cut_part.part_dim
@@ -1479,19 +1495,35 @@ class AssemblyPlanningWidget(AssemblyWidget):
                     laser_cut_part.labor_cost = existing_laser_cut_part.labor_cost
                     laser_cut_part.uses_primer = existing_laser_cut_part.uses_primer
                     laser_cut_part.primer_name = existing_laser_cut_part.primer_name
-                    laser_cut_part.primer_overspray = existing_laser_cut_part.primer_overspray
-                    laser_cut_part.cost_for_primer = existing_laser_cut_part.cost_for_primer
+                    laser_cut_part.primer_overspray = (
+                        existing_laser_cut_part.primer_overspray
+                    )
+                    laser_cut_part.cost_for_primer = (
+                        existing_laser_cut_part.cost_for_primer
+                    )
                     laser_cut_part.uses_paint = existing_laser_cut_part.uses_paint
                     laser_cut_part.paint_name = existing_laser_cut_part.paint_name
-                    laser_cut_part.paint_overspray = existing_laser_cut_part.paint_overspray
-                    laser_cut_part.cost_for_paint = existing_laser_cut_part.cost_for_paint
+                    laser_cut_part.paint_overspray = (
+                        existing_laser_cut_part.paint_overspray
+                    )
+                    laser_cut_part.cost_for_paint = (
+                        existing_laser_cut_part.cost_for_paint
+                    )
                     laser_cut_part.uses_powder = existing_laser_cut_part.uses_powder
                     laser_cut_part.powder_name = existing_laser_cut_part.powder_name
-                    laser_cut_part.powder_transfer_efficiency = existing_laser_cut_part.powder_transfer_efficiency
-                    laser_cut_part.cost_for_powder_coating = existing_laser_cut_part.cost_for_powder_coating
+                    laser_cut_part.powder_transfer_efficiency = (
+                        existing_laser_cut_part.powder_transfer_efficiency
+                    )
+                    laser_cut_part.cost_for_powder_coating = (
+                        existing_laser_cut_part.cost_for_powder_coating
+                    )
                     # with contextlib.suppress(KeyError):
-                    self.laser_cut_part_table_items[laser_cut_part]['painting_widget'].update_checkboxes()
-                    self.laser_cut_part_table_items[laser_cut_part]['painting_settings_widget'].update_inputs()
+                    self.laser_cut_part_table_items[laser_cut_part][
+                        "painting_widget"
+                    ].update_checkboxes()
+                    self.laser_cut_part_table_items[laser_cut_part][
+                        "painting_settings_widget"
+                    ].update_inputs()
                     self.laser_cut_part_table_items[laser_cut_part][
                         "flowtag_data_button"
                     ].dropdown.load_ui()

@@ -2,6 +2,7 @@ import os
 
 import msgspec
 
+from config.environments import Environment
 from utils.chat.chat import Chat
 
 
@@ -10,7 +11,7 @@ class ChatFile:
         self.file_name: str = file_name
         self.chats: list[Chat] = []
         self.chat_data: dict[str, Chat] = {}
-        self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
+        self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/data"
         self.__create_file()
         self.load_data()
 
