@@ -2,7 +2,7 @@ from typing import Union
 
 import msgspec
 from natsort import natsorted
-from PyQt6.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread
 
 from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
@@ -21,8 +21,19 @@ class SheetsInventory(Inventory):
         super().__init__("sheets_inventory")
         self.sheets: list[Sheet] = []
         self.sheet_settings = sheet_settings
-
         self.threads: list[QThread] = []
+
+    def _track_thread(self, thread: QThread):
+        self.threads.append(thread)
+
+        def cleanup():
+            try:
+                self.threads.remove(thread)
+            except ValueError:
+                pass
+
+        thread.finished.connect(cleanup)
+        thread.finished.connect(thread.deleteLater)
 
     def get_all_sheets_material(self, sheets: list[Sheet] | None = None) -> list[str]:
         if sheets:
@@ -36,11 +47,13 @@ class SheetsInventory(Inventory):
             category = self.get_category(category)
         return [sheet for sheet in self.sheets if category in sheet.categories]
 
-    def add_sheet(self, new_sheet: Sheet):
+    def add_sheet(self, new_sheet: Sheet, on_finished: callable = None):
         add_sheet_thread = AddSheetThread(new_sheet)
         self.threads.append(add_sheet_thread)
         add_sheet_thread.signal.connect(self.add_sheet_thread_finished)
-        add_sheet_thread.finished.connect(add_sheet_thread.deleteLater)
+        if on_finished:
+            add_sheet_thread.finished.connect(on_finished)
+        self._track_thread(add_sheet_thread)
         add_sheet_thread.start()
 
     def add_sheet_thread_finished(self, response: dict, status_code: int, sheet: Sheet):
@@ -54,7 +67,7 @@ class SheetsInventory(Inventory):
         remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
         if on_finished:
             remove_sheet_thread.finished.connect(on_finished)
-        remove_sheet_thread.finished.connect(remove_sheet_thread.deleteLater)
+        self._track_thread(remove_sheet_thread)
         remove_sheet_thread.start()
 
     def remove_sheet(self, sheet: Sheet, on_finished: callable = None):
@@ -63,7 +76,8 @@ class SheetsInventory(Inventory):
         remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
         if on_finished:
             remove_sheet_thread.finished.connect(on_finished)
-        remove_sheet_thread.finished.connect(remove_sheet_thread.deleteLater)
+        self._track_thread(remove_sheet_thread)
+
         remove_sheet_thread.start()
 
     def sheets_removed_responsed(
@@ -77,8 +91,10 @@ class SheetsInventory(Inventory):
     def save_sheet(self, sheet: Sheet):
         update_sheet_thread = UpdateSheetThread(sheet)
         self.threads.append(update_sheet_thread)
+
         update_sheet_thread.signal.connect(self.save_sheet_response)
-        update_sheet_thread.finished.connect(update_sheet_thread.deleteLater)
+        self._track_thread(update_sheet_thread)
+
         update_sheet_thread.start()
 
     def save_sheet_response(self, response: dict, status_code: int):
@@ -149,6 +165,9 @@ class SheetsInventory(Inventory):
 
         chain.add(get_categories_thread, self.get_categories_response)
         chain.add(get_all_sheets_thread, self.get_all_sheets_response)
+
+        self._track_thread(get_categories_thread)
+        self._track_thread(get_all_sheets_thread)
 
         if on_loaded:
             chain.finished.connect(on_loaded)

@@ -1035,11 +1035,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def update_sheets_inventory_inventory_tab(self):
         if not self.should_update_sheets_in_inventory_tab:
             return
+        self.sheets_inventory_tab_widget.block_table_signals()
         self.sheets_inventory_tab_widget.load_categories()
         self.sheets_inventory.sort_by_thickness()
         self.sheets_inventory_tab_widget.restore_last_selected_tab()
         self.sheets_inventory_tab_widget.update_stock_costs()
         self.should_update_sheets_in_inventory_tab = False
+        self.sheets_inventory_tab_widget.unblock_table_signals()
 
     # * \/ SLOTS & SIGNALS \/
     def tool_box_menu_changed(self):

@@ -668,10 +668,12 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.restore_scroll_position()
 
     def block_table_signals(self):
-        self.category_tables[self.category].blockSignals(True)
+        with contextlib.suppress(KeyError):  # Table is not loaded yet
+            self.category_tables[self.category].blockSignals(True)
 
     def unblock_table_signals(self):
-        self.category_tables[self.category].blockSignals(False)
+        with contextlib.suppress(KeyError):  # Table is not loaded yet
+            self.category_tables[self.category].blockSignals(False)
 
     def table_selected_changed(self):
         if sheet := self.get_selected_sheet():
@@ -756,11 +758,14 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                     msg.exec()
                     return
 
-            self.sheets_inventory.add_sheet(new_sheet)
-            self.sheets_inventory.save_local_copy()
-            self.sync_changes()
-            self.sort_sheets()
-            self.update_stock_costs()
+            def sheet_added():
+                self.sheets_inventory.save_local_copy()
+                self.sync_changes()
+                self.sort_sheets()
+                self.update_stock_costs()
+                self.sheets_inventory.save_local_copy()
+
+            self.sheets_inventory.add_sheet(new_sheet, sheet_added)
 
     def update_sheet_costs(self):
         self.category_tables[self.category].blockSignals(True)
