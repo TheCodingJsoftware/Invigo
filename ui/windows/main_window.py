@@ -2955,7 +2955,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 get_sheet_thread.signal.connect(self.get_sheet_response)
                 get_sheet_thread.finished.connect(get_sheet_thread.deleteLater)
                 get_sheet_thread.start()
-            elif "sheets_inventory/get_all" in responses[0]:
+            elif "sheets_inventory/all_sheets" in responses[0]:
                 self.sheets_inventory.load_data(
                     on_loaded=self.update_sheets_inventory_tab
                 )
