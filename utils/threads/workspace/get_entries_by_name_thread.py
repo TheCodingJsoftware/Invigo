@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 import msgspec
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
@@ -5,7 +7,7 @@ from PyQt6.QtCore import QThread, pyqtSignal
 from utils.ip_utils import get_server_ip_address, get_server_port
 
 
-class GetEntriesByNameThread(QThread):
+class GetWorkspaceEntriesByNameThread(QThread):
     signal = pyqtSignal(object, int)
 
     def __init__(self, job_id: int, entry_name: str):
@@ -14,7 +16,8 @@ class GetEntriesByNameThread(QThread):
         self.SERVER_PORT: int = get_server_port()
         self.job_id = job_id
         self.entry_name = entry_name
-        self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace/get_entries_by_name/{self.job_id}/{self.entry_name}"
+        encoded_entry_name = quote(self.entry_name, safe="")
+        self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace/get_entries_by_name/{self.job_id}/{encoded_entry_name}"
 
     def run(self):
         try:
@@ -25,8 +28,7 @@ class GetEntriesByNameThread(QThread):
                 job_data = msgspec.json.decode(
                     response.content
                 )  # Convert response to JSON using msgspec
-
-                if isinstance(job_data, dict):
+                if isinstance(job_data, list):
                     self.signal.emit(
                         job_data, 200
                     )  # Emit the job data with HTTP 200 status
