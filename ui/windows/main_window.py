@@ -140,6 +140,9 @@ from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.threads.upload_workorder_thread import UploadWorkorderThread
 from utils.threads.workspace.add_job_to_workspace_thread import AddJobToWorkspaceThread
+from utils.threads.workspace.get_entries_by_name_thread import (
+    GetWorkspaceEntriesByNameThread,
+)
 from utils.threads.workspace.get_workspace_entry_thread import GetWorkspaceEntryThread
 from utils.workspace.generate_printout import WorkorderPrintout, WorkspaceJobPrintout
 from utils.workspace.job import Job, JobColor, JobStatus
@@ -2925,18 +2928,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         images = set(images_to_upload)
         self.upload_files(list(images))
 
-    def changes_response(self, response: str | list[str]):
+    def changes_response(self, responses: str | list[str]):
         tab_name = self.tab_text(self.stackedWidget.currentIndex())
-        if isinstance(response, list):
+        if isinstance(responses, list):
             self.status_button.setText("Syncing", "yellow")
             self.downloading_changes = True
-            if response == "reload_saved_quotes":
+            if responses == "reload_saved_quotes":
                 self.load_saved_quoted_thread()
-            elif response[0] == "reload_saved_jobs":
+            elif responses[0] == "reload_saved_jobs":
                 self.load_jobs_thread()
-            elif "workspace/get_entry" in response[0] and tab_name == "workspace_tab":
+            elif "workspace/get_entry" in responses[0] and tab_name == "workspace_tab":
                 get_workspace_entry_thread = GetWorkspaceEntryThread(
-                    response[0].split("/")[-1]
+                    responses[0].split("/")[-1]
                 )
                 get_workspace_entry_thread.signal.connect(
                     self.get_workspace_entry_response
@@ -2946,23 +2949,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
                 self.threads.append(get_workspace_entry_thread)
                 get_workspace_entry_thread.start()
-            elif "sheets_inventory/get_sheet" in response[0]:
-                get_sheet_thread = GetSheetThread(response[0].split("/")[-1])
+            elif "sheets_inventory/get_sheet" in responses[0]:
+                get_sheet_thread = GetSheetThread(responses[0].split("/")[-1])
                 self.threads.append(get_sheet_thread)
                 get_sheet_thread.signal.connect(self.get_sheet_response)
                 get_sheet_thread.finished.connect(get_sheet_thread.deleteLater)
                 get_sheet_thread.start()
-            elif "sheets_inventory/get_all" in response[0]:
+            elif "sheets_inventory/all_sheets" in responses[0]:
                 self.sheets_inventory.load_data(
                     on_loaded=self.update_sheets_inventory_tab
                 )
-            elif "workspace/get_entries_by_name" in response[0]:
-                print(response)
+            elif "workspace/get_entries_by_name" in responses[0]:
+                for response in responses:
+                    job_id = int(response.split("/")[-2])
+                    entry_name = response.split("/")[-1]
+                    get_workspace_entry_by_name_thread = (
+                        GetWorkspaceEntriesByNameThread(job_id, entry_name)
+                    )
+                    self.threads.append(get_workspace_entry_by_name_thread)
+                    get_workspace_entry_by_name_thread.signal.connect(
+                        self.get_workspace_entries_response
+                    )
+                    get_workspace_entry_by_name_thread.finished.connect(
+                        get_workspace_entry_by_name_thread.deleteLater
+                    )
+                    get_workspace_entry_by_name_thread.start()
             else:
-                self.download_files(response)
+                self.download_files(responses)
             self.status_button.setText("Synched", "lime")
         else:
-            self.status_button.setText(f"Syncing Error: {response}", "red")
+            self.status_button.setText(f"Syncing Error: {responses}", "red")
 
     def get_workspace_entry_response(self, entry_data: dict, status_code: int):
         if status_code == 200:
@@ -2975,6 +2991,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.workspace_tab_widget.get_all_recut_parts_thread()
         else:
             self.status_button.setText(f"Error: {entry_data}", "red")
+
+    def get_workspace_entries_response(
+        self, entries_data: list[dict], status_code: int
+    ):
+        if status_code == 200:
+            self.workspace_tab_widget.update_entries(entries_data)
+        else:
+            self.status_button.setText(f"Error: {entries_data}", "red")
 
     def get_sheet_response(self, sheet_data: dict, status_code: int):
         if status_code == 200:

@@ -10,11 +10,9 @@ from utils.inventory.sheet import Sheet
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.threads.sheets_inventory.add_sheet import AddSheetThread
 from utils.threads.sheets_inventory.get_all_sheets import GetAllSheetsThread
-from utils.threads.sheets_inventory.get_categories import \
-    GetSheetCategoriesThread
+from utils.threads.sheets_inventory.get_categories import GetSheetCategoriesThread
 from utils.threads.sheets_inventory.remove_sheets import RemoveSheetsThread
-from utils.threads.sheets_inventory.update_sheet_thread import \
-    UpdateSheetThread
+from utils.threads.sheets_inventory.update_sheet_thread import UpdateSheetThread
 from utils.threads.thread_chain import ThreadChain
 
 
@@ -26,7 +24,7 @@ class SheetsInventory(Inventory):
 
         self.threads: list[QThread] = []
 
-    def get_all_sheets_material(self, sheets: list[Sheet] = None) -> list[str]:
+    def get_all_sheets_material(self, sheets: list[Sheet] | None = None) -> list[str]:
         if sheets:
             materials: dict[str] = {sheet.material for sheet in sheets}
         else:
@@ -68,7 +66,9 @@ class SheetsInventory(Inventory):
         remove_sheet_thread.finished.connect(remove_sheet_thread.deleteLater)
         remove_sheet_thread.start()
 
-    def sheets_removed_responsed(self, response: dict, status_code: int, sheets: list[Sheet]):
+    def sheets_removed_responsed(
+        self, response: dict, status_code: int, sheets: list[Sheet]
+    ):
         if status_code == 200:
             for sheet in sheets:
                 self.sheets.remove(sheet)
@@ -77,13 +77,13 @@ class SheetsInventory(Inventory):
     def save_sheet(self, sheet: Sheet):
         update_sheet_thread = UpdateSheetThread(sheet)
         self.threads.append(update_sheet_thread)
-        # update_sheet_thread.signal.connect(self.save_sheet_response)
+        update_sheet_thread.signal.connect(self.save_sheet_response)
         update_sheet_thread.finished.connect(update_sheet_thread.deleteLater)
         update_sheet_thread.start()
 
-    # def save_sheet_response(self, response: dict, status_code: int):
-    #     if status_code == 200:
-    #         self.save_local_copy()
+    def save_sheet_response(self, response: dict, status_code: int):
+        if status_code == 200:
+            self.save_local_copy()
 
     def update_sheet_data(self, sheet_id: int, data: dict) -> Sheet | None:
         for sheet in self.sheets:
@@ -123,7 +123,7 @@ class SheetsInventory(Inventory):
             total += self.get_sheet_cost(sheet) * sheet.quantity
         return total
 
-    def get_sheet_by_name(self, sheet_name: str) -> Sheet:
+    def get_sheet_by_name(self, sheet_name: str) -> Sheet | None:
         return next(
             (sheet for sheet in self.sheets if sheet.get_name() == sheet_name), None
         )

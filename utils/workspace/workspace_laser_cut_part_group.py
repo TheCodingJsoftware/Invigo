@@ -9,7 +9,7 @@ from utils.workspace.tag import Tag
 class WorkspaceLaserCutPartGroup:
     def __init__(self):
         self.laser_cut_parts: list[LaserCutPart] = []
-        self.base_part: LaserCutPart = None
+        self.base_part: LaserCutPart | None = None
 
     def add_laser_cut_part(self, laser_cut_part: LaserCutPart):
         if not self.base_part:
@@ -60,19 +60,28 @@ class WorkspaceLaserCutPartGroup:
     def get_ids(self) -> str:
         return ",".join(str(laser_cut_part.id) for laser_cut_part in self)
 
-    def update_entry(self, entry_data: dict) -> Optional[LaserCutPart]:
+    def update_entry(self, entry_data: dict) -> LaserCutPart | None:
         raw_data = entry_data["data"]
         if isinstance(raw_data, dict):
             json_data = raw_data
-        elif isinstance(raw_data, (bytes, bytearray)):
+        elif isinstance(raw_data, (bytes, bytearray, str)):
             json_data = msgspec.json.decode(raw_data)
         else:
-            raise TypeError(f"Unsupported data type for entry_data['data']: {type(raw_data)}")
+            raise TypeError(
+                f"Unsupported data type for entry_data['data']: {type(raw_data)}"
+            )
         for laser_cut_part in self:
             if laser_cut_part.id == entry_data["id"]:
                 laser_cut_part.load_data(json_data)
                 return laser_cut_part
         return None
+
+    def update_all_entries(
+        self, entries_data: list[dict]
+    ) -> "WorkspaceLaserCutPartGroup":
+        for entry_data in entries_data:
+            self.update_entry(entry_data)
+        return self
 
     def mark_as_recoat(self, quantity: Optional[int] = None):
         max_quantity = len(self.laser_cut_parts)

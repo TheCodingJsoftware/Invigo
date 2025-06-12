@@ -736,39 +736,53 @@ class WorkspaceWidget(QWidget, Ui_Form):
         update_workspace_entries_thread.start()
 
     # TODO: HANDLE
-    def update_entries_response(self, response: str, status_code: int):
+    def update_entries_response(self, response: dict, status_code: int):
         if status_code == 200:
+            for job_id, part_names in response["job_name_map"].items():
+                for part_name in part_names:
+                    (
+                        workspace_laser_cut_part_group,
+                        workspace_laser_cut_part_group_item,
+                    ) = self.get_workspace_laser_cut_part_group_item_by_name(part_name)
+                    if (
+                        workspace_laser_cut_part_group
+                        and workspace_laser_cut_part_group_item
+                    ):
+                        self.update_part_tree_widget_item(
+                            workspace_laser_cut_part_group,
+                            workspace_laser_cut_part_group_item,
+                        )
             print(f"Success: {response}")
             # self.load_parts_table()
-            self.update_tree_entry()
-            self.load_parts_tree()
+            # self.update_tree_entry()
+            # self.load_parts_tree()
         else:
             print(f"Error: {response}")
 
-    def update_entry(
-        self, entry_id: int, entry: Job | Assembly | LaserCutPart | Component
-    ):
-        update_workspace_entry_thread = UpdateWorkspaceEntryThread(entry_id, entry)
-        self.threads.append(update_workspace_entry_thread)
-        update_workspace_entry_thread.signal.connect(self.update_entry_response)
-        update_workspace_entry_thread.finished.connect(
-            update_workspace_entry_thread.deleteLater
-        )
-        update_workspace_entry_thread.start()
+    # def update_entry(
+    #     self, entry_id: int, entry: Job | Assembly | LaserCutPart | Component
+    # ):
+    #     update_workspace_entry_thread = UpdateWorkspaceEntryThread(entry_id, entry)
+    #     self.threads.append(update_workspace_entry_thread)
+    #     update_workspace_entry_thread.signal.connect(self.update_entry_response)
+    #     update_workspace_entry_thread.finished.connect(
+    #         update_workspace_entry_thread.deleteLater
+    #     )
+    #     update_workspace_entry_thread.start()
 
-    # ! TODO Update this to use memory safe methods of loading the data
-    # ! TODO Find a better way to handle recut parts
-    def update_entry_response(self, response: dict, status_code: int):
-        if status_code == 200:
-            # if "laser" in self.workspace_filter.current_tag.lower():
-            #     self.get_all_recut_parts_thread()
-            self.update_tree_entry(response["entry_data"])
-        else:
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Error")
-            msg.setText(f"{response}")
-            msg.exec()
+    # # ! TODO Update this to use memory safe methods of loading the data
+    # # ! TODO Find a better way to handle recut parts
+    # def update_entry_response(self, response: dict, status_code: int):
+    #     if status_code == 200:
+    #         # if "laser" in self.workspace_filter.current_tag.lower():
+    #         #     self.get_all_recut_parts_thread()
+    #         self.update_tree_entry(response["entry_data"])
+    #     else:
+    #         msg = QMessageBox(self)
+    #         msg.setIcon(QMessageBox.Icon.Critical)
+    #         msg.setWindowTitle("Error")
+    #         msg.setText(f"{response}")
+    #         msg.exec()
 
     def get_paint_text(self, item: Union[Assembly, LaserCutPart]) -> str:
         text: list[str] = []
@@ -1109,14 +1123,6 @@ class WorkspaceWidget(QWidget, Ui_Form):
         return selected_items
 
     def update_tree_entry(self, entry_data: dict[str, dict | bytes | bytearray]):
-        # entry_id = entry_data["id"]
-        # raw_data = entry_data["data"]
-        # if isinstance(raw_data, dict):
-        #     data = raw_data
-        # elif isinstance(raw_data, (bytes, bytearray)):
-        #     data = msgspec.json.decode(raw_data)
-        # else:
-        #     raise TypeError(f"Unsupported data type for entry_data['data']: {type(raw_data)}")
         entry_type = entry_data["type"]
         if entry_type == "assembly":
             for parent_tree_item in self.assemblies_parent_tree_items.values():
@@ -1130,6 +1136,38 @@ class WorkspaceWidget(QWidget, Ui_Form):
                 for child in parent_tree_item["children"]:
                     if child["group"].update_entry(entry_data):
                         self.update_part_tree_widget_item(child["group"], child["item"])
+
+    def get_workspace_laser_cut_part_group_item_by_name(
+        self, name: str
+    ) -> (
+        tuple[
+            WorkspaceLaserCutPartGroup,
+            QTreeWidgetItem,
+        ]
+        | None
+    ):
+        for parent_tree_item in self.parts_parent_tree_items.values():
+            for child in parent_tree_item["children"]:
+                if child["group"].base_part.name == name:
+                    return child["group"], child["item"]
+        return None
+
+    def update_tree_entries(
+        self, entries_data: list[dict[str, str | bytes | bytearray]]
+    ):
+        part_name = str(entries_data[0]["name"])
+        if not entries_data:
+            return
+        workspace_laser_cut_part_group, workspace_laser_cut_part_group_item = (
+            self.get_workspace_laser_cut_part_group_item_by_name(part_name)
+        )
+
+        if workspace_laser_cut_part_group and workspace_laser_cut_part_group_item:
+            workspace_laser_cut_part_group.update_all_entries(entries_data)
+            self.update_part_tree_widget_item(
+                workspace_laser_cut_part_group,
+                workspace_laser_cut_part_group_item,
+            )
 
     # ASSEMBLIES
     def add_assembly_group_to_tree(
