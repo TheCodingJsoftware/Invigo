@@ -2,18 +2,21 @@ from typing import Union
 
 import msgspec
 from natsort import natsorted
-from PyQt6.QtCore import QThread
+from PyQt6.QtCore import QThread, QThreadPool
 
 from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
 from utils.inventory.sheet import Sheet
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.threads.sheets_inventory.add_sheet import AddSheetThread
-from utils.threads.sheets_inventory.get_all_sheets import GetAllSheetsThread
-from utils.threads.sheets_inventory.get_categories import GetSheetCategoriesThread
-from utils.threads.sheets_inventory.remove_sheets import RemoveSheetsThread
-from utils.threads.sheets_inventory.update_sheet_thread import UpdateSheetThread
-from utils.threads.thread_chain import ThreadChain
+from utils.threads.runnable_chain import RunnableChain
+from utils.threads.sheets_inventory.add_sheet import AddSheetWorker
+from utils.threads.sheets_inventory.get_all_sheets import GetAllSheetsWorker
+from utils.threads.sheets_inventory.get_categories import GetSheetCategoriesWorker
+from utils.threads.sheets_inventory.get_sheet import GetSheetWorker
+from utils.threads.sheets_inventory.remove_sheets import RemoveSheetsWorker
+from utils.threads.sheets_inventory.update_sheet_thread import (
+    UpdateSheetWorker,
+)
 
 
 class SheetsInventory(Inventory):
@@ -48,13 +51,16 @@ class SheetsInventory(Inventory):
         return [sheet for sheet in self.sheets if category in sheet.categories]
 
     def add_sheet(self, new_sheet: Sheet, on_finished: callable = None):
-        add_sheet_thread = AddSheetThread(new_sheet)
-        self.threads.append(add_sheet_thread)
-        add_sheet_thread.signal.connect(self.add_sheet_thread_finished)
+        worker = AddSheetWorker(new_sheet)
+        worker.signals.signal.connect(self.add_sheet_thread_finished)
         if on_finished:
-            add_sheet_thread.finished.connect(on_finished)
-        self._track_thread(add_sheet_thread)
-        add_sheet_thread.start()
+            worker.signals.signal.connect(on_finished)
+        QThreadPool.globalInstance().start(worker)
+        # add_sheet_thread = AddSheetThread(new_sheet)
+        # self.threads.append(add_sheet_thread)
+        # add_sheet_thread.signal.connect(self.add_sheet_thread_finished)
+        # self._track_thread(add_sheet_thread)
+        # add_sheet_thread.start()
 
     def add_sheet_thread_finished(self, response: dict, status_code: int, sheet: Sheet):
         if status_code == 200:
@@ -62,23 +68,33 @@ class SheetsInventory(Inventory):
             # self.save_local_copy()
 
     def remove_sheets(self, sheets: list[Sheet], on_finished: callable = None):
-        remove_sheet_thread = RemoveSheetsThread(sheets)
-        self.threads.append(remove_sheet_thread)
-        remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
+        worker = RemoveSheetsWorker(sheets)
+        worker.signals.signal.connect(self.sheets_removed_responsed)
         if on_finished:
-            remove_sheet_thread.finished.connect(on_finished)
-        self._track_thread(remove_sheet_thread)
-        remove_sheet_thread.start()
+            worker.signals.signal.connect(on_finished)
+        QThreadPool.globalInstance().start(worker)
+        # remove_sheet_thread = RemoveSheetsThread(sheets)
+        # self.threads.append(remove_sheet_thread)
+        # remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
+        # if on_finished:
+        #     remove_sheet_thread.finished.connect(on_finished)
+        # self._track_thread(remove_sheet_thread)
+        # remove_sheet_thread.start()
 
     def remove_sheet(self, sheet: Sheet, on_finished: callable = None):
-        remove_sheet_thread = RemoveSheetsThread([sheet])
-        self.threads.append(remove_sheet_thread)
-        remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
+        worker = RemoveSheetsWorker([sheet])
+        worker.signals.signal.connect(self.sheets_removed_responsed)
         if on_finished:
-            remove_sheet_thread.finished.connect(on_finished)
-        self._track_thread(remove_sheet_thread)
+            worker.signals.signal.connect(on_finished)
+        QThreadPool.globalInstance().start(worker)
+        # remove_sheet_thread = RemoveSheetsThread([sheet])
+        # self.threads.append(remove_sheet_thread)
+        # remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
+        # if on_finished:
+        #     remove_sheet_thread.finished.connect(on_finished)
+        # self._track_thread(remove_sheet_thread)
 
-        remove_sheet_thread.start()
+        # remove_sheet_thread.start()
 
     def sheets_removed_responsed(
         self, response: dict, status_code: int, sheets: list[Sheet]
@@ -89,13 +105,29 @@ class SheetsInventory(Inventory):
             # self.save_local_copy()
 
     def save_sheet(self, sheet: Sheet):
-        update_sheet_thread = UpdateSheetThread(sheet)
-        self.threads.append(update_sheet_thread)
+        worker = UpdateSheetWorker(sheet)
+        worker.signals.signal.connect(self.save_sheet_response)
+        QThreadPool.globalInstance().start(worker)
+        # update_sheet_thread = UpdateSheetThread(sheet)
+        # self.threads.append(update_sheet_thread)
 
-        update_sheet_thread.signal.connect(self.save_sheet_response)
-        self._track_thread(update_sheet_thread)
+        # update_sheet_thread.signal.connect(self.save_sheet_response)
+        # self._track_thread(update_sheet_thread)
 
-        update_sheet_thread.start()
+        # update_sheet_thread.start()
+
+    def get_sheet(self, sheet_id: int | str, on_finished: callable = None):
+        worker = GetSheetWorker(sheet_id)
+        worker.signals.signal.connect(on_finished)
+        QThreadPool.globalInstance().start(worker)
+        # get_sheet_thread = GetSheetThread(sheet_id)
+        # self.threads.append(get_sheet_thread)
+        # get_sheet_thread.signal.connect(self.get_sheet_response)
+        # if on_finished:
+        #     get_sheet_thread.finished.connect(on_finished)
+        # self._track_thread(get_sheet_thread)
+
+        # get_sheet_thread.start()
 
     def save_sheet_response(self, response: dict, status_code: int):
         if status_code == 200:
@@ -158,22 +190,16 @@ class SheetsInventory(Inventory):
             file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self, on_loaded: callable = None):
-        chain = ThreadChain()
+        chain = RunnableChain()
 
-        get_categories_thread = GetSheetCategoriesThread()
-        get_all_sheets_thread = GetAllSheetsThread()
+        get_categories_worker = GetSheetCategoriesWorker()
+        get_all_sheets_worker = GetAllSheetsWorker()
 
-        chain.add(get_categories_thread, self.get_categories_response)
-        chain.add(get_all_sheets_thread, self.get_all_sheets_response)
-
-        self._track_thread(get_categories_thread)
-        self._track_thread(get_all_sheets_thread)
+        chain.add(get_categories_worker, self.get_categories_response)
+        chain.add(get_all_sheets_worker, self.get_all_sheets_response)
 
         if on_loaded:
             chain.finished.connect(on_loaded)
-
-        self.threads.append(get_categories_thread)
-        self.threads.append(get_all_sheets_thread)
 
         chain.start()
 

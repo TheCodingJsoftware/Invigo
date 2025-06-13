@@ -44,7 +44,6 @@ from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.threads.sheets_inventory.add_sheet import AddSheetThread
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow

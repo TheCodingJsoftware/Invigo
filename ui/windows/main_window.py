@@ -132,7 +132,6 @@ from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
 from utils.threads.set_order_number_thread import SetOrderNumberThread
-from utils.threads.sheets_inventory.get_sheet import GetSheetThread
 from utils.threads.update_job_setting import UpdateJobSetting
 from utils.threads.update_quote_settings import UpdateQuoteSettings
 from utils.threads.upload_job_thread import UploadJobThread
@@ -1040,8 +1039,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sheets_inventory.sort_by_thickness()
         self.sheets_inventory_tab_widget.restore_last_selected_tab()
         self.sheets_inventory_tab_widget.update_stock_costs()
-        self.should_update_sheets_in_inventory_tab = False
         self.sheets_inventory_tab_widget.unblock_table_signals()
+        self.should_update_sheets_in_inventory_tab = False
 
     # * \/ SLOTS & SIGNALS \/
     def tool_box_menu_changed(self):
@@ -2952,11 +2951,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.threads.append(get_workspace_entry_thread)
                 get_workspace_entry_thread.start()
             elif "sheets_inventory/get_sheet" in responses[0]:
-                get_sheet_thread = GetSheetThread(responses[0].split("/")[-1])
-                self.threads.append(get_sheet_thread)
-                get_sheet_thread.signal.connect(self.get_sheet_response)
-                get_sheet_thread.finished.connect(get_sheet_thread.deleteLater)
-                get_sheet_thread.start()
+                self.sheets_inventory.get_sheet(
+                    responses[0].split("/")[-1], self.get_sheet_response
+                )
+                # get_sheet_thread = GetSheetThread(responses[0].split("/")[-1])
+                # self.threads.append(get_sheet_thread)
+                # get_sheet_thread.signal.connect(self.get_sheet_response)
+                # get_sheet_thread.finished.connect(get_sheet_thread.deleteLater)
+                # get_sheet_thread.start()
             elif "sheets_inventory/all_sheets" in responses[0]:
                 self.sheets_inventory.load_data(
                     on_loaded=self.update_sheets_inventory_tab
@@ -3005,7 +3007,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def get_sheet_response(self, sheet_data: dict, status_code: int):
         if status_code == 200:
             self.should_update_sheets_in_inventory_tab = True
+            self.sheets_inventory_tab_widget.block_table_signals()
             self.sheets_inventory_tab_widget.update_sheet(sheet_data)
+            self.sheets_inventory_tab_widget.unblock_table_signals()
         else:
             self.status_button.setText(f"Error: {sheet_data}", "red")
 

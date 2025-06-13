@@ -1,17 +1,19 @@
 import msgspec
 import requests
-from PyQt6.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QObject, QRunnable, pyqtSignal
 
 from utils.inventory.sheet import Sheet
 from utils.ip_utils import get_server_ip_address, get_server_port
 
 
-class RemoveSheetsThread(QThread):
-    # Emits (list of results, status_code, list of original sheets)
-    signal = pyqtSignal(object, int, object)
+class RemoveSheetsSignals(QObject):
+    signal = pyqtSignal(object, int, object)  # results, status_code, original sheets
 
+
+class RemoveSheetsWorker(QRunnable):
     def __init__(self, sheets: list[Sheet]):
         super().__init__()
+        self.signals = RemoveSheetsSignals()
         self.SERVER_IP = get_server_ip_address()
         self.SERVER_PORT = get_server_port()
         self.sheets = sheets
@@ -35,11 +37,14 @@ class RemoveSheetsThread(QThread):
                             if isinstance(result, bool):
                                 results.append({"deleted": result, "id": sheet_id})
                             else:
-                                results.append({"error": "Invalid data format", "id": sheet_id})
+                                results.append(
+                                    {"error": "Invalid data format", "id": sheet_id}
+                                )
                                 status_code = 500
-
                         except msgspec.DecodeError:
-                            results.append({"error": "Failed to decode response", "id": sheet_id})
+                            results.append(
+                                {"error": "Failed to decode response", "id": sheet_id}
+                            )
                             status_code = 500
 
                     except requests.exceptions.Timeout:
@@ -49,12 +54,15 @@ class RemoveSheetsThread(QThread):
                         results.append({"error": "Connection error", "id": sheet_id})
                         status_code = 503
                     except requests.exceptions.HTTPError as e:
-                        results.append({"error": f"HTTP Error: {str(e)}", "id": sheet_id})
+                        results.append(
+                            {"error": f"HTTP Error: {str(e)}", "id": sheet_id}
+                        )
                         status_code = response.status_code
                     except requests.exceptions.RequestException as e:
-                        results.append({"error": f"Request failed: {str(e)}", "id": sheet_id})
+                        results.append(
+                            {"error": f"Request failed: {str(e)}", "id": sheet_id}
+                        )
                         status_code = 500
 
         finally:
-            self.signal.emit(results, status_code, self.sheets)
-            self.finished.emit()
+            self.signals.signal.emit(results, status_code, self.sheets)
