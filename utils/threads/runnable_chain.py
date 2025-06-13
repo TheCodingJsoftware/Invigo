@@ -1,4 +1,6 @@
-from PyQt6.QtCore import QObject, QRunnable, QThreadPool, pyqtSignal
+from PyQt6.QtCore import QObject, QThreadPool, pyqtSignal
+
+from utils.threads.base_worker import BaseWorker
 
 
 class RunnableChain(QObject):
@@ -6,10 +8,10 @@ class RunnableChain(QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.steps: list[tuple[QRunnable, callable]] = []
+        self.steps: list[tuple[BaseWorker, callable]] = []
         self.current_index = 0
 
-    def add(self, worker: QRunnable, callback: callable):
+    def add(self, worker: BaseWorker, callback: callable):
         self.steps.append((worker, callback))
         return self
 
@@ -22,12 +24,21 @@ class RunnableChain(QObject):
             return
 
         worker, callback = self.steps[self.current_index]
+        self.current_index += 1
 
-        # Assume each worker has `.signals.signal`
-        def wrapper(*args):
-            callback(*args, self._run_next)
+        # Connect to BaseWorker's success signal
+        def wrapper(result):
+            callback(result, self._run_next)
 
-        worker.signals.signal.connect(wrapper)
+        worker.signals.success.connect(wrapper)
+
+        # Optional: Log or handle errors without stopping the chain
+        def error_handler(err, code):
+            print(
+                f"[RunnableChain] Step {self.current_index - 1} failed: {err} (status {code})"
+            )
+            self._run_next()
+
+        worker.signals.error.connect(error_handler)
 
         QThreadPool.globalInstance().start(worker)
-        self.current_index += 1

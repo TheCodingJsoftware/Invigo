@@ -3004,13 +3004,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.status_button.setText(f"Error: {entries_data}", "red")
 
-    def get_sheet_response(self, sheet_data: dict, status_code: int):
-        if status_code == 200:
+    def get_sheet_response(self, sheet_data: dict):
+        try:
             self.should_update_sheets_in_inventory_tab = True
             self.sheets_inventory_tab_widget.block_table_signals()
             self.sheets_inventory_tab_widget.update_sheet(sheet_data)
             self.sheets_inventory_tab_widget.unblock_table_signals()
-        else:
+        except Exception:
             self.status_button.setText(f"Error: {sheet_data}", "red")
 
     def update_sheets_inventory_tab(self):

@@ -1,32 +1,36 @@
+# remove_sheets_worker.py
 import msgspec
 import requests
-from PyQt6.QtCore import QObject, QRunnable, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSignal
 
 from utils.inventory.sheet import Sheet
-from utils.ip_utils import get_server_ip_address, get_server_port
+from utils.threads.base_worker import BaseWorker
 
 
 class RemoveSheetsSignals(QObject):
-    signal = pyqtSignal(object, int, object)  # results, status_code, original sheets
+    success = pyqtSignal(object, int, object)  # (results, status_code, original sheets)
+    finished = pyqtSignal()
 
 
-class RemoveSheetsWorker(QRunnable):
+class RemoveSheetsWorker(BaseWorker):
     def __init__(self, sheets: list[Sheet]):
-        super().__init__()
-        self.signals = RemoveSheetsSignals()
-        self.SERVER_IP = get_server_ip_address()
-        self.SERVER_PORT = get_server_port()
+        super().__init__(name="RemoveSheetsWorker")
         self.sheets = sheets
+        self.signals = RemoveSheetsSignals()  # Override default signal set
 
     def run(self):
-        results: list[dict[str, str | int]] = []
+        import time
+
+        start = time.perf_counter()
+        results: list[dict[str, str | int | bool]] = []
         status_code = 200
 
         try:
             with requests.Session() as session:
                 for sheet in self.sheets:
                     sheet_id = sheet.id
-                    url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/sheets_inventory/delete_sheet/{sheet_id}"
+                    url = f"{self.DOMAIN}/sheets_inventory/delete_sheet/{sheet_id}"
+                    self.logger.info(f"Attempting to delete sheet ID {sheet_id}")
 
                     try:
                         response = session.get(url, timeout=10)
@@ -37,10 +41,14 @@ class RemoveSheetsWorker(QRunnable):
                             if isinstance(result, bool):
                                 results.append({"deleted": result, "id": sheet_id})
                             else:
+                                self.logger.warning(
+                                    f"Invalid format deleting sheet {sheet_id}"
+                                )
                                 results.append(
                                     {"error": "Invalid data format", "id": sheet_id}
                                 )
                                 status_code = 500
+
                         except msgspec.DecodeError:
                             results.append(
                                 {"error": "Failed to decode response", "id": sheet_id}
@@ -64,5 +72,14 @@ class RemoveSheetsWorker(QRunnable):
                         )
                         status_code = 500
 
+        except Exception as e:
+            self.logger.exception("Unexpected error in RemoveSheetsWorker")
+            results.append({"error": f"Unhandled error: {str(e)}"})
+            status_code = 500
+
         finally:
-            self.signals.signal.emit(results, status_code, self.sheets)
+            self.signals.success.emit(results, status_code, self.sheets)
+            self.signals.finished.emit()
+            self.logger.info(
+                f"Finished deleting {len(self.sheets)} sheets in {time.perf_counter() - start:.2f}s"
+            )

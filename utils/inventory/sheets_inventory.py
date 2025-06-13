@@ -52,9 +52,9 @@ class SheetsInventory(Inventory):
 
     def add_sheet(self, new_sheet: Sheet, on_finished: callable = None):
         worker = AddSheetWorker(new_sheet)
-        worker.signals.signal.connect(self.add_sheet_thread_finished)
+        worker.signals.success.connect(self.add_sheet_thread_finished)
         if on_finished:
-            worker.signals.signal.connect(on_finished)
+            worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
         # add_sheet_thread = AddSheetThread(new_sheet)
         # self.threads.append(add_sheet_thread)
@@ -69,9 +69,9 @@ class SheetsInventory(Inventory):
 
     def remove_sheets(self, sheets: list[Sheet], on_finished: callable = None):
         worker = RemoveSheetsWorker(sheets)
-        worker.signals.signal.connect(self.sheets_removed_responsed)
+        worker.signals.success.connect(self.sheets_removed_responsed)
         if on_finished:
-            worker.signals.signal.connect(on_finished)
+            worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
         # remove_sheet_thread = RemoveSheetsThread(sheets)
         # self.threads.append(remove_sheet_thread)
@@ -83,9 +83,9 @@ class SheetsInventory(Inventory):
 
     def remove_sheet(self, sheet: Sheet, on_finished: callable = None):
         worker = RemoveSheetsWorker([sheet])
-        worker.signals.signal.connect(self.sheets_removed_responsed)
+        worker.signals.success.connect(self.sheets_removed_responsed)
         if on_finished:
-            worker.signals.signal.connect(on_finished)
+            worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
         # remove_sheet_thread = RemoveSheetsThread([sheet])
         # self.threads.append(remove_sheet_thread)
@@ -106,7 +106,7 @@ class SheetsInventory(Inventory):
 
     def save_sheet(self, sheet: Sheet):
         worker = UpdateSheetWorker(sheet)
-        worker.signals.signal.connect(self.save_sheet_response)
+        worker.signals.success.connect(self.save_sheet_response)
         QThreadPool.globalInstance().start(worker)
         # update_sheet_thread = UpdateSheetThread(sheet)
         # self.threads.append(update_sheet_thread)
@@ -118,7 +118,7 @@ class SheetsInventory(Inventory):
 
     def get_sheet(self, sheet_id: int | str, on_finished: callable = None):
         worker = GetSheetWorker(sheet_id)
-        worker.signals.signal.connect(on_finished)
+        worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
         # get_sheet_thread = GetSheetThread(sheet_id)
         # self.threads.append(get_sheet_thread)
@@ -129,9 +129,8 @@ class SheetsInventory(Inventory):
 
         # get_sheet_thread.start()
 
-    def save_sheet_response(self, response: dict, status_code: int):
-        if status_code == 200:
-            self.save_local_copy()
+    def save_sheet_response(self, response: dict):
+        self.save_local_copy()
 
     def update_sheet_data(self, sheet_id: int, data: dict) -> Sheet | None:
         for sheet in self.sheets:
@@ -203,20 +202,19 @@ class SheetsInventory(Inventory):
 
         chain.start()
 
-    def get_categories_response(self, response: list, status_code: int, next_step):
-        if status_code == 200:
+    def get_categories_response(self, response: list, next_step):
+        try:
             self.categories.from_list(response)
-        else:
+        except Exception:
             self.categories.clear()
         next_step()
 
-    def get_all_sheets_response(self, response: dict, status_code: int, next_step):
-        if status_code == 200:
-            self.sheets.clear()
-            for sheet_data in response:
-                sheet = Sheet(sheet_data, self)
-                self.sheets.append(sheet)
-            self.save_local_copy()
+    def get_all_sheets_response(self, response: dict, next_step):
+        self.sheets.clear()
+        for sheet_data in response:
+            sheet = Sheet(sheet_data, self)
+            self.sheets.append(sheet)
+        self.save_local_copy()
         next_step()
 
     def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:
