@@ -14,7 +14,15 @@ from typing import Any, Optional, Union
 import qtawesome as qta
 import requests
 from natsort import natsorted, ns
-from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer, pyqtSignal
+from PyQt6.QtCore import (
+    QEventLoop,
+    QPoint,
+    Qt,
+    QThread,
+    QThreadPool,
+    QTimer,
+    pyqtSignal,
+)
 from PyQt6.QtGui import (
     QAction,
     QColor,
@@ -2939,17 +2947,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             elif responses[0] == "reload_saved_jobs":
                 self.load_jobs_thread()
             elif "workspace/get_entry" in responses[0] and tab_name == "workspace_tab":
-                get_workspace_entry_thread = GetWorkspaceEntryThread(
+                get_workspace_entry_worker = GetWorkspaceEntryWorker(
                     responses[0].split("/")[-1]
                 )
-                get_workspace_entry_thread.signal.connect(
+                get_workspace_entry_worker.signals.success.connect(
                     self.get_workspace_entry_response
                 )
-                get_workspace_entry_thread.finished.connect(
-                    get_workspace_entry_thread.deleteLater
-                )
-                self.threads.append(get_workspace_entry_thread)
-                get_workspace_entry_thread.start()
+                QThreadPool.globalInstance().start(get_workspace_entry_worker)
+                # get_workspace_entry_thread = GetWorkspaceEntryThread(
+                #     responses[0].split("/")[-1]
+                # )
+                # get_workspace_entry_thread.signal.connect(
+                #     self.get_workspace_entry_response
+                # )
+                # get_workspace_entry_thread.finished.connect(
+                #     get_workspace_entry_thread.deleteLater
+                # )
+                # self.threads.append(get_workspace_entry_thread)
+                # get_workspace_entry_thread.start()
             elif "sheets_inventory/get_sheet" in responses[0]:
                 self.sheets_inventory.get_sheet(
                     responses[0].split("/")[-1], self.get_sheet_response
@@ -2967,17 +2982,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for response in responses:
                     job_id = int(response.split("/")[-2])
                     entry_name = response.split("/")[-1]
-                    get_workspace_entry_by_name_thread = (
-                        GetWorkspaceEntriesByNameThread(job_id, entry_name)
+                    get_workspace_entry_by_name_worker = (
+                        GetWorkspaceEntriesByNameWorker(job_id, entry_name)
                     )
-                    self.threads.append(get_workspace_entry_by_name_thread)
-                    get_workspace_entry_by_name_thread.signal.connect(
+                    get_workspace_entry_by_name_worker.signals.success.connect(
                         self.get_workspace_entries_response
                     )
-                    get_workspace_entry_by_name_thread.finished.connect(
-                        get_workspace_entry_by_name_thread.deleteLater
+                    QThreadPool.globalInstance().start(
+                        get_workspace_entry_by_name_worker
                     )
-                    get_workspace_entry_by_name_thread.start()
+                    # self.threads.append(get_workspace_entry_by_name_worker)
+                    # get_workspace_entry_by_name_worker.signal.connect(
+                    #     self.get_workspace_entries_response
+                    # )
+                    # get_workspace_entry_by_name_worker.finished.connect(
+                    #     get_workspace_entry_by_name_worker.deleteLater
+                    # )
+                    # get_workspace_entry_by_name_worker.start()
             else:
                 self.download_files(responses)
             self.status_button.setText("Synched", "lime")
