@@ -5,7 +5,7 @@ from functools import partial
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
 import msgspec
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QThread, QThreadPool, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon, QPixmap
 from PyQt6.QtWidgets import (
     QComboBox,
@@ -48,22 +48,22 @@ from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
-from utils.threads.workspace.get_all_jobs_from_workspace_thread import (
-    GetAllJobsFromWorkspaceThread,
+from utils.workers.workspace.download_file import WorkspaceDownloadWorker
+from utils.workers.workspace.get_all_workspace_jobs import (
+    GetAllWorkspaceJobsWorker,
 )
-from utils.threads.workspace.get_all_recut_parts_from_workspace_thread import (
-    GetRecutPartsFromWorkspace,
+from utils.workers.workspace.get_recut_parts_from_workspace import (
+    GetRecutPartsFromWorkspaceWorker,
 )
-from utils.threads.workspace.load_job_from_workspace_thread import (
-    LoadJobFromWorkspaceThread,
+from utils.workers.workspace.load_job_from_workspace import (
+    LoadJobFromWorkspaceWorker,
 )
-from utils.threads.workspace.update_workspace_entries_thread import (
-    UpdateWorkspaceEntriesThread,
+from utils.workers.workspace.update_workspace_entries import (
+    UpdateWorkspaceEntriesWorker,
 )
-from utils.threads.workspace.update_workspace_entry_thread import (
-    UpdateWorkspaceEntryThread,
+from utils.workers.workspace.update_workspace_entry import (
+    UpdateWorkspaceEntryWorker,
 )
-from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 from utils.workspace.workspace import Workspace
@@ -99,13 +99,13 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.get_workspace_job = None
 
         self.recut_parts_table_items: dict[
-            WorkspaceLaserCutPartGroup, dict[str, Union[QTableWidgetItem]]
+            WorkspaceLaserCutPartGroup, dict[str, QTableWidgetItem]
         ] = {}
         self.recoat_parts_table_items: dict[
-            WorkspaceLaserCutPartGroup, dict[str, Union[QTableWidgetItem]]
+            WorkspaceLaserCutPartGroup, dict[str, QTableWidgetItem]
         ] = {}
         self.parts_table_items: dict[
-            WorkspaceLaserCutPartGroup, dict[str, Union[QTableWidgetItem]]
+            WorkspaceLaserCutPartGroup, dict[str, QTableWidgetItem]
         ] = {}
 
         self.recut_parts_table_rows: dict[int, WorkspaceLaserCutPartGroup] = {}
@@ -596,18 +596,16 @@ class WorkspaceWidget(QWidget, Ui_Form):
 
     def load_workspace_job_thread(self, job: Job, job_id: int, item: QTreeWidgetItem):
         # if not self.get_workspace_job:
-        get_workspace_job = LoadJobFromWorkspaceThread(
+        get_workspace_job = LoadJobFromWorkspaceWorker(
             job, item, job_id, self.laser_cut_inventory, self.components_inventory
         )
-        get_workspace_job.signal.connect(self.load_workspace_job_response)
-        get_workspace_job.finished.connect(get_workspace_job.deleteLater)
-        self.threads.append(get_workspace_job)
-        get_workspace_job.start()
-        get_workspace_job.wait()
+        get_workspace_job.signals.success.connect(self.load_workspace_job_response)
+        QThreadPool.globalInstance().start(get_workspace_job)
 
     def load_workspace_job_response(
-        self, job: Job, item: QTreeWidgetItem, response: dict, status_code: int
+        self, response: tuple[Job, QTreeWidgetItem, dict, int]
     ):
+        job, item, response, status_code = response
         if status_code == 200:
             if self.parent.pushButton_view_parts.isChecked():
                 if not (
@@ -727,37 +725,32 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self,
         entries: list[Job | Assembly | LaserCutPart | Component],
     ):
-        update_workspace_entries_thread = UpdateWorkspaceEntriesThread(entries)
-        self.threads.append(update_workspace_entries_thread)
-        update_workspace_entries_thread.signal.connect(self.update_entries_response)
-        update_workspace_entries_thread.finished.connect(
-            update_workspace_entries_thread.deleteLater
+        update_workspace_entries_worker = UpdateWorkspaceEntriesWorker(entries)
+        update_workspace_entries_worker.signals.success.connect(
+            self.update_entries_response
         )
-        update_workspace_entries_thread.start()
+        QThreadPool.globalInstance().start(update_workspace_entries_worker)
 
     # TODO: HANDLE
-    def update_entries_response(self, response: dict, status_code: int):
-        if status_code == 200:
-            for job_id, part_names in response["job_name_map"].items():
-                for part_name in part_names:
-                    (
+    def update_entries_response(self, response: dict):
+        for job_id, part_names in response["job_name_map"].items():
+            for part_name in part_names:
+                (
+                    workspace_laser_cut_part_group,
+                    workspace_laser_cut_part_group_item,
+                ) = self.get_workspace_laser_cut_part_group_item_by_name(part_name)
+                if (
+                    workspace_laser_cut_part_group
+                    and workspace_laser_cut_part_group_item
+                ):
+                    self.update_part_tree_widget_item(
                         workspace_laser_cut_part_group,
                         workspace_laser_cut_part_group_item,
-                    ) = self.get_workspace_laser_cut_part_group_item_by_name(part_name)
-                    if (
-                        workspace_laser_cut_part_group
-                        and workspace_laser_cut_part_group_item
-                    ):
-                        self.update_part_tree_widget_item(
-                            workspace_laser_cut_part_group,
-                            workspace_laser_cut_part_group_item,
-                        )
-            print(f"Success: {response}")
-            # self.load_parts_table()
-            # self.update_tree_entry()
-            # self.load_parts_tree()
-        else:
-            print(f"Error: {response}")
+                    )
+        print(f"Success: {response}")
+        # self.load_parts_table()
+        # self.update_tree_entry()
+        # self.load_parts_tree()
 
     # def update_entry(
     #     self, entry_id: int, entry: Job | Assembly | LaserCutPart | Component
@@ -867,10 +860,9 @@ class WorkspaceWidget(QWidget, Ui_Form):
         item: Union[WorkspaceLaserCutPartGroup, WorkspaceAssemblyGroup],
         file_path: str,
     ):
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
-        self.download_file_thread.wait()
+        download_worker = WorkspaceDownloadWorker([file_path], True)
+        download_worker.signals.success.connect(self.file_downloaded)
+        QThreadPool.globalInstance().start(download_worker)
         if file_path.lower().endswith(".pdf"):
             if isinstance(item, WorkspaceLaserCutPartGroup):
                 self.open_pdf(
@@ -1098,13 +1090,18 @@ class WorkspaceWidget(QWidget, Ui_Form):
             self.files_to_download = files_dialog.get_selected_items()
             self.download_directory = files_dialog.get_download_directory()
             if self.files_to_download and self.download_directory:
-                self.download_thread = WorkspaceDownloadFile(
-                    self.files_to_download,
-                    False,
-                    download_directory=self.download_directory,
+                download_worker = WorkspaceDownloadWorker(
+                    self.files_to_download, False, self.download_directory
                 )
-                self.download_thread.signal.connect(self.download_thread_response)
-                self.download_thread.start()
+                download_worker.signals.success.connect(self.download_thread_response)
+                QThreadPool.globalInstance().start(download_worker)
+                # self.download_thread = WorkspaceDownloadFile(
+                #     self.files_to_download,
+                #     False,
+                #     download_directory=self.download_directory,
+                # )
+                # self.download_thread.signal.connect(self.download_thread_response)
+                # self.download_thread.start()
             else:
                 msg = QMessageBox(self)
                 msg.setIcon(QMessageBox.Icon.Critical)
@@ -1576,25 +1573,35 @@ class WorkspaceWidget(QWidget, Ui_Form):
                         self.clear_layout(item.layout())
 
     def get_all_recut_parts_thread(self):
-        get_all_recut_parts = GetRecutPartsFromWorkspace()
-        get_all_recut_parts.signal.connect(self.get_all_recut_parts_response)
-        get_all_recut_parts.finished.connect(
-            get_all_recut_parts.deleteLater
-        )  # Auto cleanup
-        self.threads.append(get_all_recut_parts)
-        get_all_recut_parts.start()
+        get_recut_parts_worker = GetRecutPartsFromWorkspaceWorker()
+        get_recut_parts_worker.signals.success.connect(
+            self.get_all_recut_parts_response
+        )
+        QThreadPool.globalInstance().start(get_recut_parts_worker)
+        # get_all_recut_parts = GetRecutPartsFromWorkspace()
+        # get_all_recut_parts.signal.connect(self.get_all_recut_parts_response)
+        # get_all_recut_parts.finished.connect(
+        #     get_all_recut_parts.deleteLater
+        # )  # Auto cleanup
+        # self.threads.append(get_all_recut_parts)
+        # get_all_recut_parts.start()
 
     def get_all_recut_parts_response(self, data: list[dict]):
         self.load_recut_or_recoat_parts_table(data)
 
     def get_all_workspace_jobs_thread(self):
-        get_all_workspace_jobs = GetAllJobsFromWorkspaceThread()
-        get_all_workspace_jobs.signal.connect(self.get_all_workspace_jobs_response)
-        get_all_workspace_jobs.finished.connect(
-            get_all_workspace_jobs.deleteLater
-        )  # Auto cleanup
-        self.threads.append(get_all_workspace_jobs)
-        get_all_workspace_jobs.start()
+        get_all_workspace_jobs_worker = GetAllWorkspaceJobsWorker()
+        get_all_workspace_jobs_worker.signals.success.connect(
+            self.get_all_workspace_jobs_response
+        )
+        QThreadPool.globalInstance().start(get_all_workspace_jobs_worker)
+        # get_all_workspace_jobs = GetAllJobsFromWorkspaceThread()
+        # get_all_workspace_jobs.signal.connect(self.get_all_workspace_jobs_response)
+        # get_all_workspace_jobs.finished.connect(
+        #     get_all_workspace_jobs.deleteLater
+        # )  # Auto cleanup
+        # self.threads.append(get_all_workspace_jobs)
+        # get_all_workspace_jobs.start()
 
     def jobs_loaded(self, jobs: list[dict]):
         if self.parent.pushButton_view_parts.isChecked():
@@ -1602,19 +1609,18 @@ class WorkspaceWidget(QWidget, Ui_Form):
         elif self.parent.pushButton_view_assemblies.isChecked():
             self.load_assembly_tree(jobs)
 
-    def get_all_workspace_jobs_response(self, response: dict, status_code: int):
-        if status_code == 200:
-            # self.workspace.load_data()
-            # self.workspace.jobs.clear()
-            # for job_data in response["jobs"]:
-            # self.workspace.add_job(Job(job_data, self.job_manager))
-            # self.workspace.save()
-            # return response["jobs"]
-            self.loadedAllJobs.emit(response["jobs"])
-        else:
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Error loading jobs")
-            msg.setText(f"{status_code} {response}")
-            msg.exec()
-            self.loadedAllJobs.emit([])
+    def get_all_workspace_jobs_response(self, response: dict):
+        # self.workspace.load_data()
+        # self.workspace.jobs.clear()
+        # for job_data in response["jobs"]:
+        # self.workspace.add_job(Job(job_data, self.job_manager))
+        # self.workspace.save()
+        # return response["jobs"]
+        self.loadedAllJobs.emit(response["jobs"])
+        # else:
+        #     msg = QMessageBox(self)
+        #     msg.setIcon(QMessageBox.Icon.Critical)
+        #     msg.setWindowTitle("Error loading jobs")
+        #     msg.setText(f"{status_code} {response}")
+        #     msg.exec()
+        #     self.loadedAllJobs.emit([])

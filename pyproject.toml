@@ -93,6 +93,7 @@ dependencies = [
     "tabula-py",
     "tabulate",
     "tornado",
+    "types-requests>=2.32.4.20250611",
     "typing_extensions",
     "tzdata",
     "ujson",
@@ -100,5 +101,5 @@ dependencies = [
     "watchdog",
     "websocket-client",
     "Werkzeug",
-    "XlsxWriter"
+    "XlsxWriter",
 ]

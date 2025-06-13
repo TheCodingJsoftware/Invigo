@@ -1,37 +1,30 @@
-# update_sheet_worker.py
+# get_all_sheets_worker.py
 import msgspec
 import requests
 
-from utils.inventory.sheet import Sheet
-from utils.threads.base_worker import BaseWorker
+from utils.workers.base_worker import BaseWorker
 
 
-class UpdateSheetWorker(BaseWorker):
-    def __init__(self, sheet: Sheet):
-        super().__init__(name="UpdateSheetWorker")
-        self.sheet = sheet
-        self.sheet_id = sheet.id
-        self.url = f"{self.DOMAIN}/sheets_inventory/update_sheet/{self.sheet_id}"
+class GetAllSheetsWorker(BaseWorker):
+    def __init__(self):
+        super().__init__(name="GetAllSheetsWorker")
+        self.url = f"{self.DOMAIN}/sheets_inventory/get_all"
 
     def do_work(self):
-        self.logger.info(f"Sending update for sheet {self.sheet_id} to {self.url}")
-        data = self.sheet.to_dict()
-
+        self.logger.info(f"Requesting all sheets from {self.url}")
         with requests.Session() as session:
-            response = session.post(self.url, json=data, timeout=10)
+            response = session.get(self.url, timeout=10)
             response.raise_for_status()
 
             try:
-                job_data = msgspec.json.decode(response.content)
+                all_sheets = msgspec.json.decode(response.content)
             except msgspec.DecodeError:
                 raise ValueError("Failed to decode server response")
 
-            job_data["sheet_data"] = {
-                "id": self.sheet_id,
-                "data": data,
-            }
+            if not isinstance(all_sheets, list):
+                raise ValueError("Invalid data format received")
 
-            return job_data
+            return all_sheets
 
     def handle_exception(self, e):
         if isinstance(e, requests.exceptions.Timeout):

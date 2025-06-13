@@ -4,7 +4,7 @@ import requests
 from PyQt6.QtCore import QObject, pyqtSignal
 
 from utils.inventory.sheet import Sheet
-from utils.threads.base_worker import BaseWorker
+from utils.workers.base_worker import BaseWorker
 
 
 class RemoveSheetsSignals(QObject):
@@ -18,7 +18,7 @@ class RemoveSheetsWorker(BaseWorker):
         self.sheets = sheets
         self.signals = RemoveSheetsSignals()  # Override default signal set
 
-    def run(self):
+    def run(self) -> None:
         import time
 
         start = time.perf_counter()
@@ -65,7 +65,7 @@ class RemoveSheetsWorker(BaseWorker):
                         results.append(
                             {"error": f"HTTP Error: {str(e)}", "id": sheet_id}
                         )
-                        status_code = response.status_code
+                        status_code = 500
                     except requests.exceptions.RequestException as e:
                         results.append(
                             {"error": f"Request failed: {str(e)}", "id": sheet_id}

@@ -6,7 +6,7 @@ from datetime import datetime
 from functools import partial
 from typing import Optional, Union
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QThreadPool
 from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
@@ -47,8 +47,8 @@ from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
-from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.threads.workspace.workspace_upload_file_thread import WorkspaceUploadThread
+from utils.workers.workspace.download_file import WorkspaceDownloadWorker
+from utils.workers.workspace.upload_file import WorkspaceUploadWorker
 from utils.workspace.assembly import Assembly
 
 
@@ -64,9 +64,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
             Component, dict[str, QTableWidgetItem | int]
         ] = {}
 
-        self.upload_images_thread: UploadThread = None
-        self.upload_files_thread: WorkspaceUploadThread = None
-        self.download_file_thread: WorkspaceDownloadFile = None
+        self.upload_images_thread: UploadThread | None = None
+        self.upload_files_thread: WorkspaceUploadWorker | None = None
+        self.download_file_thread: WorkspaceDownloadWorker | None = None
 
         self.settings_file = Settings()
         self.tables_font = QFont()
@@ -286,10 +286,12 @@ class AssemblyQuotingWidget(AssemblyWidget):
         files_layout.addWidget(file_button)
 
     def assembly_file_clicked(self, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
-        self.download_file_thread.wait()
+        self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
+        self.download_file_thread.signals.success.connect(self.file_downloaded)
+        QThreadPool.globalInstance().start(self.download_file_thread)
+        # self.download_file_thread.signal.connect(self.file_downloaded)
+        # self.download_file_thread.start()
+        # self.download_file_thread.wait()
         if file_path.lower().endswith(".pdf"):
             self.open_pdf(self.assembly_get_all_file_types(".pdf"), file_path)
 
@@ -1118,10 +1120,11 @@ class AssemblyQuotingWidget(AssemblyWidget):
         return list(files)
 
     def laser_cut_part_file_clicked(self, laser_cut_part: LaserCutPart, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
-        self.download_file_thread.wait()
+        self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
+        self.download_file_thread.signals.success.connect(self.file_downloaded)
+        QThreadPool.globalInstance().start(self.download_file_thread)
+        # self.download_file_thread.start()
+        # self.download_file_thread.wait()
         if file_path.lower().endswith(".pdf"):
             self.open_pdf(
                 self.laser_cut_part_get_all_file_types(laser_cut_part, ".pdf"),
@@ -1470,8 +1473,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.changes_made()
 
     def upload_files(self, files: list[str]):
-        self.upload_files_thread = WorkspaceUploadThread(files)
-        self.upload_files_thread.start()
+        self.upload_files_thread = WorkspaceUploadWorker(files)
+        QThreadPool.globalInstance().start(self.upload_files_thread)
+        # self.upload_files_thread.start()
 
     def upload_images(self, files: list[str]):
         self.upload_images_thread = UploadThread(files)

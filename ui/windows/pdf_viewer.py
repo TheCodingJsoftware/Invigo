@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox, QPushButton
 
 from ui.icons import Icons
 from ui.windows.pdf_viewer_UI import Ui_MainWindow
-from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.workers.workspace.download_file import WorkspaceDownloadWorker
 
 
 class PDFViewer(QMainWindow, Ui_MainWindow):

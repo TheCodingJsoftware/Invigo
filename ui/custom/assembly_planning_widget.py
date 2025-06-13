@@ -49,8 +49,8 @@ from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
-from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.threads.workspace.workspace_upload_file_thread import WorkspaceUploadThread
+from utils.workers.workspace.download_file import WorkspaceDownloadWorker
+from utils.workers.workspace.upload_file import WorkspaceUploadWorker
 from utils.workspace.assembly import Assembly
 
 
@@ -68,8 +68,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         ] = {}
 
         self.upload_images_thread: UploadThread = None
-        self.upload_files_thread: WorkspaceUploadThread = None
-        self.download_file_thread: WorkspaceDownloadFile = None
+        self.upload_files_thread: WorkspaceUploadWorker = None
+        self.download_file_thread: WorkspaceDownloadWorker = None
 
         self.settings_file = Settings()
         self.tables_font = QFont()
@@ -329,7 +329,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         try:
             self.paint_widget.setVisible(
                 self.assembly.flowtag.contains(
-                    ["paint", "gloss" "powder", "coating", "liquid"]
+                    ["paint", "glosspowder", "coating", "liquid"]
                 )
             )
         except AttributeError:  # There is no flow tag selected

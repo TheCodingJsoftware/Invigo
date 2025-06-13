@@ -4,7 +4,7 @@ import requests
 from PyQt6.QtCore import QObject, pyqtSignal
 
 from utils.inventory.sheet import Sheet
-from utils.threads.base_worker import BaseWorker
+from utils.workers.base_worker import BaseWorker
 
 
 class AddSheetSignals(QObject):
@@ -43,7 +43,7 @@ class AddSheetWorker(BaseWorker):
 
             return response_data
 
-    def run(self):
+    def run(self) -> None:
         import time
 
         start = time.perf_counter()

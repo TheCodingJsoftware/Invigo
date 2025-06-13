@@ -24,7 +24,7 @@ class BaseWorker(QRunnable):
 
         self.logger.debug(f"{name} initialized with domain: {self.DOMAIN}")
 
-    def run(self):
+    def run(self) -> None:
         start = time.perf_counter()
         try:
             self.logger.info("Worker started.")
@@ -32,7 +32,7 @@ class BaseWorker(QRunnable):
             self.signals.success.emit(result)
         except Exception as e:
             self.logger.exception("Worker error:")
-            self.signals.error.emit(e)
+            self.handle_exception(e)
         finally:
             self.signals.finished.emit()
             self.logger.info(f"Worker finished in {time.perf_counter() - start:.2f}s")

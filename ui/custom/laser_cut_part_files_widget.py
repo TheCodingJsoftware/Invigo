@@ -10,7 +10,7 @@ from ui.custom.file_button import FileButton
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.workers.workspace.download_file import WorkspaceDownloadWorker
 from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 

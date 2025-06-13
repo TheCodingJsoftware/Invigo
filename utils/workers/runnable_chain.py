@@ -1,17 +1,19 @@
+from typing import Callable
+
 from PyQt6.QtCore import QObject, QThreadPool, pyqtSignal
 
-from utils.threads.base_worker import BaseWorker
+from utils.workers.base_worker import BaseWorker
 
 
 class RunnableChain(QObject):
     finished = pyqtSignal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.steps: list[tuple[BaseWorker, callable]] = []
+        self.steps: list[tuple[BaseWorker, Callable]] = []
         self.current_index = 0
 
-    def add(self, worker: BaseWorker, callback: callable):
+    def add(self, worker: BaseWorker, callback: Callable):
         self.steps.append((worker, callback))
         return self
 

@@ -1,36 +1,41 @@
-# get_sheet_categories_worker.py
 import msgspec
 import requests
 
-from utils.threads.base_worker import BaseWorker
+from utils.workers.base_worker import BaseWorker
 
 
-class GetSheetCategoriesWorker(BaseWorker):
-    def __init__(self):
-        super().__init__(name="GetSheetCategoriesWorker")
-        self.url = f"{self.DOMAIN}/sheets_inventory/get_categories"
+class GetRecutPartsFromWorkspaceWorker(BaseWorker):
+    def __init__(self, job_id: int | None = None):
+        super().__init__(name="GetRecutPartsFromWorkspaceWorker")
+        self.job_id = job_id
+        if job_id is not None:
+            self.url = f"{self.DOMAIN}/workspace/get_recut_parts_from_job/{job_id}"
+        else:
+            self.url = f"{self.DOMAIN}/workspace/get_all_recut_parts"
 
     def do_work(self):
-        self.logger.info(f"Requesting sheet categories from {self.url}")
+        self.logger.info(f"Requesting recut parts from: {self.url}")
         with requests.Session() as session:
             response = session.get(self.url, timeout=10)
             response.raise_for_status()
 
             try:
-                categories = msgspec.json.decode(response.content)
+                job_data = msgspec.json.decode(response.content)
             except msgspec.DecodeError:
                 raise ValueError("Failed to decode server response")
 
-            if not isinstance(categories, list):
-                raise ValueError("Invalid format received")
+            if not isinstance(job_data, (list, dict)):
+                raise ValueError("Invalid data format received")
 
-            return categories
+            return job_data
 
     def handle_exception(self, e):
         if isinstance(e, requests.exceptions.Timeout):
-            self.signals.error.emit({"error": "Request timed out"}, 408)
+            self.signals.error.emit({"error": f"Request timed out: {str(e)}"}, 408)
         elif isinstance(e, requests.exceptions.ConnectionError):
-            self.signals.error.emit({"error": "Could not connect to the server"}, 503)
+            self.signals.error.emit(
+                {"error": f"Could not connect to the server: {str(e)}"}, 503
+            )
         elif isinstance(e, requests.exceptions.HTTPError):
             self.signals.error.emit(
                 {"error": f"HTTP Error: {str(e)}"}, e.response.status_code

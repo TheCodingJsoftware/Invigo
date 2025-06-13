@@ -116,8 +116,6 @@ from utils.threads.check_for_updates_thread import CheckForUpdatesThread
 from utils.threads.connect_thread import ConnectThread
 from utils.threads.delete_job_thread import DeleteJobThread
 from utils.threads.delete_quote_thread import DeleteQuoteThread
-from utils.threads.download_images_thread import DownloadImagesThread
-from utils.threads.download_job_thread import DownloadJobThread
 from utils.threads.download_quote_thread import DownloadQuoteThread
 from utils.threads.download_thread import DownloadThread
 from utils.threads.exchange_rate import ExchangeRate
@@ -127,7 +125,6 @@ from utils.threads.get_jobs_thread import GetJobsThread
 from utils.threads.get_order_number_thread import GetOrderNumberThread
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
 from utils.threads.get_saved_quotes_thread import GetSavedQuotesThread
-from utils.threads.job_loader_thread import JobLoaderThread
 from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
@@ -138,11 +135,14 @@ from utils.threads.upload_job_thread import UploadJobThread
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.threads.upload_workorder_thread import UploadWorkorderThread
-from utils.threads.workspace.add_job_to_workspace_thread import AddJobToWorkspaceThread
-from utils.threads.workspace.get_entries_by_name_thread import (
-    GetWorkspaceEntriesByNameThread,
+from utils.workers.download_images import DownloadImagesWorker
+from utils.workers.jobs.download_job import DownloadJobWorker
+from utils.workers.jobs.job_loader_controller import JobLoaderController
+from utils.workers.workspace.add_job import AddJobWorker
+from utils.workers.workspace.get_entries_by_name import (
+    GetWorkspaceEntriesByNameWorker,
 )
-from utils.threads.workspace.get_workspace_entry_thread import GetWorkspaceEntryThread
+from utils.workers.workspace.get_workspace_entry import GetWorkspaceEntryWorker
 from utils.workspace.generate_printout import WorkorderPrintout, WorkspaceJobPrintout
 from utils.workspace.job import Job, JobColor, JobStatus
 from utils.workspace.job_manager import JobManager

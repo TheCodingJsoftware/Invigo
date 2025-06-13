@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Callable, Union
 
 import msgspec
 from natsort import natsorted
@@ -8,13 +8,13 @@ from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
 from utils.inventory.sheet import Sheet
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.threads.runnable_chain import RunnableChain
-from utils.threads.sheets_inventory.add_sheet import AddSheetWorker
-from utils.threads.sheets_inventory.get_all_sheets import GetAllSheetsWorker
-from utils.threads.sheets_inventory.get_categories import GetSheetCategoriesWorker
-from utils.threads.sheets_inventory.get_sheet import GetSheetWorker
-from utils.threads.sheets_inventory.remove_sheets import RemoveSheetsWorker
-from utils.threads.sheets_inventory.update_sheet_thread import (
+from utils.workers.runnable_chain import RunnableChain
+from utils.workers.sheets_inventory.add_sheet import AddSheetWorker
+from utils.workers.sheets_inventory.get_all_sheets import GetAllSheetsWorker
+from utils.workers.sheets_inventory.get_categories import GetSheetCategoriesWorker
+from utils.workers.sheets_inventory.get_sheet import GetSheetWorker
+from utils.workers.sheets_inventory.remove_sheets import RemoveSheetsWorker
+from utils.workers.sheets_inventory.update_sheet_thread import (
     UpdateSheetWorker,
 )
 
@@ -28,9 +28,9 @@ class SheetsInventory(Inventory):
 
     def get_all_sheets_material(self, sheets: list[Sheet] | None = None) -> list[str]:
         if sheets:
-            materials: dict[str] = {sheet.material for sheet in sheets}
+            materials: set[str] = {sheet.material for sheet in sheets}
         else:
-            materials: dict[str] = {sheet.material for sheet in self.sheets}
+            materials: set[str] = {sheet.material for sheet in self.sheets}
         return list(materials)
 
     def get_sheets_by_category(self, category: str | Category) -> list[Sheet]:
@@ -38,7 +38,7 @@ class SheetsInventory(Inventory):
             category = self.get_category(category)
         return [sheet for sheet in self.sheets if category in sheet.categories]
 
-    def add_sheet(self, new_sheet: Sheet, on_finished: callable = None):
+    def add_sheet(self, new_sheet: Sheet, on_finished: Callable | None = None):
         worker = AddSheetWorker(new_sheet)
         worker.signals.success.connect(self.add_sheet_thread_finished)
         if on_finished:
@@ -50,14 +50,14 @@ class SheetsInventory(Inventory):
             self.sheets.append(sheet)
             # self.save_local_copy()
 
-    def remove_sheets(self, sheets: list[Sheet], on_finished: callable = None):
+    def remove_sheets(self, sheets: list[Sheet], on_finished: Callable | None = None):
         worker = RemoveSheetsWorker(sheets)
         worker.signals.success.connect(self.sheets_removed_responsed)
         if on_finished:
             worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
 
-    def remove_sheet(self, sheet: Sheet, on_finished: callable = None):
+    def remove_sheet(self, sheet: Sheet, on_finished: Callable | None = None):
         worker = RemoveSheetsWorker([sheet])
         worker.signals.success.connect(self.sheets_removed_responsed)
         if on_finished:
@@ -77,7 +77,7 @@ class SheetsInventory(Inventory):
         worker.signals.success.connect(self.save_sheet_response)
         QThreadPool.globalInstance().start(worker)
 
-    def get_sheet(self, sheet_id: int | str, on_finished: callable = None):
+    def get_sheet(self, sheet_id: int | str, on_finished: Callable | None = None):
         worker = GetSheetWorker(sheet_id)
         worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
@@ -133,15 +133,17 @@ class SheetsInventory(Inventory):
 
     def sort_by_material(self) -> list[Sheet]:
         self.sheets = natsorted(self.sheets, key=lambda sheet: sheet.material)
+        return self.sheets
 
     def sort_by_thickness(self) -> list[Sheet]:
         self.sheets = natsorted(self.sheets, key=lambda sheet: sheet.thickness)
+        return self.sheets
 
     def save_local_copy(self):
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
             file.write(msgspec.json.encode(self.to_dict()))
 
-    def load_data(self, on_loaded: callable = None):
+    def load_data(self, on_loaded: Callable | None = None):
         chain = RunnableChain()
 
         get_categories_worker = GetSheetCategoriesWorker()
