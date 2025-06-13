@@ -26,18 +26,6 @@ class SheetsInventory(Inventory):
         self.sheet_settings = sheet_settings
         self.threads: list[QThread] = []
 
-    def _track_thread(self, thread: QThread):
-        self.threads.append(thread)
-
-        def cleanup():
-            try:
-                self.threads.remove(thread)
-            except ValueError:
-                pass
-
-        thread.finished.connect(cleanup)
-        thread.finished.connect(thread.deleteLater)
-
     def get_all_sheets_material(self, sheets: list[Sheet] | None = None) -> list[str]:
         if sheets:
             materials: dict[str] = {sheet.material for sheet in sheets}
@@ -56,11 +44,6 @@ class SheetsInventory(Inventory):
         if on_finished:
             worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
-        # add_sheet_thread = AddSheetThread(new_sheet)
-        # self.threads.append(add_sheet_thread)
-        # add_sheet_thread.signal.connect(self.add_sheet_thread_finished)
-        # self._track_thread(add_sheet_thread)
-        # add_sheet_thread.start()
 
     def add_sheet_thread_finished(self, response: dict, status_code: int, sheet: Sheet):
         if status_code == 200:
@@ -73,13 +56,6 @@ class SheetsInventory(Inventory):
         if on_finished:
             worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
-        # remove_sheet_thread = RemoveSheetsThread(sheets)
-        # self.threads.append(remove_sheet_thread)
-        # remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
-        # if on_finished:
-        #     remove_sheet_thread.finished.connect(on_finished)
-        # self._track_thread(remove_sheet_thread)
-        # remove_sheet_thread.start()
 
     def remove_sheet(self, sheet: Sheet, on_finished: callable = None):
         worker = RemoveSheetsWorker([sheet])
@@ -87,14 +63,6 @@ class SheetsInventory(Inventory):
         if on_finished:
             worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
-        # remove_sheet_thread = RemoveSheetsThread([sheet])
-        # self.threads.append(remove_sheet_thread)
-        # remove_sheet_thread.signal.connect(self.sheets_removed_responsed)
-        # if on_finished:
-        #     remove_sheet_thread.finished.connect(on_finished)
-        # self._track_thread(remove_sheet_thread)
-
-        # remove_sheet_thread.start()
 
     def sheets_removed_responsed(
         self, response: dict, status_code: int, sheets: list[Sheet]
@@ -108,26 +76,11 @@ class SheetsInventory(Inventory):
         worker = UpdateSheetWorker(sheet)
         worker.signals.success.connect(self.save_sheet_response)
         QThreadPool.globalInstance().start(worker)
-        # update_sheet_thread = UpdateSheetThread(sheet)
-        # self.threads.append(update_sheet_thread)
-
-        # update_sheet_thread.signal.connect(self.save_sheet_response)
-        # self._track_thread(update_sheet_thread)
-
-        # update_sheet_thread.start()
 
     def get_sheet(self, sheet_id: int | str, on_finished: callable = None):
         worker = GetSheetWorker(sheet_id)
         worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
-        # get_sheet_thread = GetSheetThread(sheet_id)
-        # self.threads.append(get_sheet_thread)
-        # get_sheet_thread.signal.connect(self.get_sheet_response)
-        # if on_finished:
-        #     get_sheet_thread.finished.connect(on_finished)
-        # self._track_thread(get_sheet_thread)
-
-        # get_sheet_thread.start()
 
     def save_sheet_response(self, response: dict):
         self.save_local_copy()
