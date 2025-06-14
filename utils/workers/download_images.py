@@ -11,7 +11,7 @@ class DownloadImagesWorker(BaseWorker):
         self.files_to_download = files_to_download
         self.file_url = f"{self.DOMAIN}/images/"
 
-    def run(self):
+    def do_work(self):
         try:
             with requests.Session() as session:
                 for file_to_download in self.files_to_download:
@@ -25,10 +25,10 @@ class DownloadImagesWorker(BaseWorker):
                             file.write(response.content)
 
                     except requests.RequestException as e:
-                        self.signals.error.emit(f"{e} - {file_to_download}")
+                        self.signals.error.emit(f"{e} - {file_to_download}", 500)
                         return  # Exit early on failure
 
-            self.signals.success.emit("Successfully downloaded")
+            return "Successfully downloaded"
 
         except Exception as e:
             self.signals.error.emit(str(e), 200)

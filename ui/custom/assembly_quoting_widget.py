@@ -1673,7 +1673,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.changes_made()
 
     def sync_changes(self):
-        self.parent.parent.sync_changes()
+        self.parent._parent_widget.sync_changes()
 
     def update_tables(self):
         self.load_components_table()

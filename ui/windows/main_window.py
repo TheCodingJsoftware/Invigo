@@ -203,8 +203,8 @@ def _play_boot_sound():
 logging.basicConfig(
     filename="logs/app.log",
     filemode="w",
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
+    format="%(asctime)s [%(levelname)s] (Process: %(process)d | Thread: %(threadName)s) [%(filename)s:%(lineno)d - %(funcName)s] - %(message)s",
+    datefmt="%B %d, %A %I:%M:%S %p",
     level=logging.INFO,
 )
 
@@ -3017,13 +3017,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.status_button.setText(f"Error: {entry_data}", "red")
 
-    def get_workspace_entries_response(
-        self, entries_data: list[dict], status_code: int
-    ):
-        if status_code == 200:
-            self.workspace_tab_widget.update_entries(entries_data)
-        else:
-            self.status_button.setText(f"Error: {entries_data}", "red")
+    def get_workspace_entries_response(self, entries_data: list[dict]):
+        self.workspace_tab_widget.update_entries(entries_data)
 
     def get_sheet_response(self, sheet_data: dict):
         try:
@@ -4045,11 +4040,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def load_job_thread(self, folder_name: str):
         self.status_button.setText(f"Loading {folder_name} data...", "yellow")
-        job_loader_thread = JobLoaderThread(self.job_manager, folder_name)
+        job_loader_thread = JobLoaderController(self.job_manager, folder_name)
+        job_loader_thread.finished.connect(self.load_job_response)
         self.threads.append(job_loader_thread)
-        job_loader_thread.signal.connect(self.load_job_response)
         job_loader_thread.start()
-        job_loader_thread.wait()
+        # job_loader_thread.signal.connect(self.load_job_response)
+        # job_loader_thread.start()
+        # job_loader_thread.wait()
 
     def load_job_response(self, job: Job | None):
         if job:
@@ -4059,6 +4056,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             elif self.tab_text(self.stackedWidget.currentIndex()) == "job_quoter_tab":
                 self.job_quote_widget.load_job(job)
         else:
+            print(f"Failed to load job: {job}")
             self.status_button.setText(
                 "Failed to load job: load_job_thread.JobLoaderThread: Job is None",
                 "red",

@@ -10,20 +10,33 @@ class DownloadJobWorker(BaseWorker):
         self.folder_name = folder_name
         self.url = f"{self.DOMAIN}/download_job/{self.folder_name}"
 
-    def run(self):
-        try:
-            with requests.Session() as session:
-                response = session.get(self.url, timeout=10)
-                response.raise_for_status()
+    def do_work(self):
+        with requests.Session() as session:
+            response = session.get(self.url, timeout=10)
+            response.raise_for_status()
 
+            try:
                 response_data = msgspec.json.decode(response.content)
-                self.signals.success.emit(response_data, self.folder_name)
+            except msgspec.DecodeError:
+                raise ValueError("Failed to decode server response")
 
-        except requests.HTTPError as http_err:
+            if not isinstance(response_data, dict):
+                raise ValueError("Invalid data format received")
+
+            return (response_data, self.folder_name)
+
+    def handle_exception(self, e):
+        if isinstance(e, requests.exceptions.Timeout):
+            self.signals.error.emit({"error": "Request timed out"}, 408)
+        elif isinstance(e, requests.exceptions.ConnectionError):
+            self.signals.error.emit({"error": "Could not connect to the server"}, 503)
+        elif isinstance(e, requests.exceptions.HTTPError):
             self.signals.error.emit(
-                f"HTTP error occurred: {http_err}", self.folder_name
+                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
             )
-        except requests.RequestException as err:
-            self.signals.error.emit(f"An error occurred: {err}", self.folder_name)
-        except msgspec.DecodeError:
-            self.signals.error.emit("Failed to parse JSON response", self.folder_name)
+        elif isinstance(e, requests.exceptions.RequestException):
+            self.signals.error.emit({"error": f"Request failed: {str(e)}"}, 500)
+        elif isinstance(e, ValueError):
+            self.signals.error.emit({"error": str(e)}, 500)
+        else:
+            super().handle_exception(e)

@@ -42,7 +42,7 @@ class AssemblyWidget(QWidget, Ui_Form):
         self.components_inventory = self.assembly.job.components_inventory
         self.laser_cut_inventory = self.assembly.job.laser_cut_inventory
         self.price_calculator = self.parent.price_calculator
-        self.job_tab: JobTab = self.parent.parent
+        self.job_tab: JobTab = self.parent._parent_widget
 
         self.assembly_widget.setStyleSheet(
             f"""
@@ -52,7 +52,7 @@ border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
 border-top-right-radius: 0px;
 border-top-left-radius: 0px;
-background-color: {theme_var('surface')};
+background-color: {theme_var("surface")};
 }}"""
             % {"base_color": self.assembly.color}
         )
@@ -93,31 +93,31 @@ background-color: {theme_var('surface')};
         button.setStyleSheet(
             f"""
             QPushButton#assembly_button_drop_menu {{
-                border: 1px solid {theme_var('surface')};
-                background-color: {theme_var('surface')};
-                border-radius: {theme_var('border-radius')};
+                border: 1px solid {theme_var("surface")};
+                background-color: {theme_var("surface")};
+                border-radius: {theme_var("border-radius")};
                 text-align: left;
             }}
             /* CLOSED */
             QPushButton:!checked#assembly_button_drop_menu {{
-                color: {theme_var('on-surface')};
-                border: 1px solid {theme_var('outline')};
+                color: {theme_var("on-surface")};
+                border: 1px solid {theme_var("outline")};
             }}
 
             QPushButton:!checked:hover#assembly_button_drop_menu {{
-                background-color: {theme_var('outline-variant')};
+                background-color: {theme_var("outline-variant")};
             }}
             QPushButton:!checked:pressed#assembly_button_drop_menu{{
-                color: {theme_var('on-surface')};
-                background-color: {theme_var('surface')};
+                color: {theme_var("on-surface")};
+                background-color: {theme_var("surface")};
             }}
             /* OPENED */
             QPushButton:checked#assembly_button_drop_menu {{
                 color: {font_color};
                 border-color: {base_color};
                 background-color: {base_color};
-                border-top-left-radius: {theme_var('border-radius')};
-                border-top-right-radius: {theme_var('border-radius')};
+                border-top-left-radius: {theme_var("border-radius")};
+                border-top-right-radius: {theme_var("border-radius")};
                 border-bottom-left-radius: 0px;
                 border-bottom-right-radius: 0px;
             }}
@@ -138,7 +138,7 @@ background-color: {theme_var('surface')};
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            background-color: {theme_var('background')};
+            background-color: {theme_var("background")};
             }}"""
         )
 

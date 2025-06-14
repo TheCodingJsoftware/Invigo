@@ -44,11 +44,11 @@ class JobWidget(QWidget, Ui_Form):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.parent: JobTab = parent
+        self._parent_widget: JobTab = parent
         self.job = job
         self.price_calculator = self.job.price_calculator
-        self.job_preferences = self.parent.job_preferences
-        self.main_window = self.parent.parent
+        self.job_preferences = self._parent_widget.job_preferences
+        self.main_window = self._parent_widget._parent_widget
         self.sheet_settings = self.main_window.sheet_settings
         self.paint_inventory = self.main_window.paint_inventory
         self.main_window_tab_widget = self.main_window.stackedWidget
@@ -179,24 +179,28 @@ class JobWidget(QWidget, Ui_Form):
 
         self.doubleSpinBox_order_number.setValue(self.job.order_number)
         self.doubleSpinBox_order_number.wheelEvent = (
-            lambda event: self.parent.wheelEvent(event)
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_order_number.valueChanged.connect(self.job_settings_changed)
 
         self.doubleSpinBox_po_number.setValue(self.job.PO_number)
-        self.doubleSpinBox_po_number.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
+        self.doubleSpinBox_po_number.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_po_number.valueChanged.connect(self.job_settings_changed)
 
         def get_latest_order_number():
-            self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
+            self.doubleSpinBox_order_number.setValue(
+                self._parent_widget._parent_widget.order_number
+            )
             self.job_settings_changed()
 
         self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
 
         self.comboBox_type.setCurrentIndex(self.job.status.value - 1)
-        self.comboBox_type.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.comboBox_type.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+            event
+        )
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
 
         try:
@@ -212,7 +216,9 @@ class JobWidget(QWidget, Ui_Form):
             )
 
         self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_start.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.dateEdit_start.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+            event
+        )
 
         try:
             self.dateEdit_end.setDateTime(
@@ -230,7 +236,9 @@ class JobWidget(QWidget, Ui_Form):
             f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})"
         )
         self.dateEdit_end.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_end.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.dateEdit_end.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+            event
+        )
         self.textEdit_ship_to.setText(self.job.ship_to)
         self.textEdit_ship_to.textChanged.connect(self.job_settings_changed)
 
@@ -249,8 +257,8 @@ class JobWidget(QWidget, Ui_Form):
         self.assemblies_toolbox = AssemblyMultiToolBox(self)
         self.assemblies_layout.addWidget(self.assemblies_toolbox)
 
-        self.comboBox_laser_cutting.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
+        self.comboBox_laser_cutting.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
         )
 
         self.doubleSpinBox_cost_for_laser.setValue(self.price_calculator.cost_for_laser)
@@ -258,39 +266,41 @@ class JobWidget(QWidget, Ui_Form):
             self.cost_for_laser_changed
         )
         self.doubleSpinBox_cost_for_laser.wheelEvent = (
-            lambda event: self.parent.wheelEvent(event)
+            lambda event: self._parent_widget.wheelEvent(event)
         )
 
-        self.comboBox_materials.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.comboBox_materials.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
+        )
         self.comboBox_materials.addItems(self.sheet_settings.get_materials())
         self.comboBox_materials.currentTextChanged.connect(
             partial(self.update_nest_sheets, "MATERIAL")
         )
 
-        self.comboBox_thicknesses.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
+        self.comboBox_thicknesses.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.comboBox_thicknesses.addItems(self.sheet_settings.get_thicknesses())
         self.comboBox_thicknesses.currentTextChanged.connect(
             partial(self.update_nest_sheets, "THICKNESS")
         )
 
-        self.doubleSpinBox_length.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
+        self.doubleSpinBox_length.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_length.valueChanged.connect(
             partial(self.update_nest_sheets, "LENGTH")
         )
 
-        self.doubleSpinBox_width.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
+        self.doubleSpinBox_width.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_width.valueChanged.connect(
             partial(self.update_nest_sheets, "WIDTH")
         )
 
         self.doubleSpinBox_items_overhead.wheelEvent = (
-            lambda event: self.parent.wheelEvent(event)
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_items_overhead.setValue(
             self.price_calculator.item_overhead * 100
@@ -314,7 +324,7 @@ class JobWidget(QWidget, Ui_Form):
         )
 
         self.doubleSpinBox_items_profit_margin.wheelEvent = (
-            lambda event: self.parent.wheelEvent(event)
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_items_profit_margin.setValue(
             self.price_calculator.item_profit_margin * 100
@@ -329,7 +339,7 @@ class JobWidget(QWidget, Ui_Form):
         self.pushButton_item_to_sheet.clicked.connect(self.match_item_to_sheet_toggled)
 
         self.doubleSpinBox_sheets_overhead.wheelEvent = (
-            lambda event: self.parent.wheelEvent(event)
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_sheets_overhead.setValue(
             self.price_calculator.sheet_overhead * 100
@@ -339,7 +349,7 @@ class JobWidget(QWidget, Ui_Form):
         )
 
         self.doubleSpinBox_sheets_profit_margin.wheelEvent = (
-            lambda event: self.parent.wheelEvent(event)
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.doubleSpinBox_sheets_profit_margin.setValue(
             self.price_calculator.sheet_profit_margin * 100
@@ -354,12 +364,16 @@ class JobWidget(QWidget, Ui_Form):
         self.pushButton_open_nest_editor.setIcon(Icons.flowtag_data_icon)
 
         self.processes_widget.setVisible(
-            self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex())
+            self._parent_widget._parent_widget.tab_text(
+                self._parent_widget._parent_widget.stackedWidget.currentIndex()
+            )
             == "job_planner_tab"
         )
 
         if (
-            self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex())
+            self._parent_widget._parent_widget.tab_text(
+                self._parent_widget._parent_widget.stackedWidget.currentIndex()
+            )
             == "job_planner_tab"
         ):
             self.splitter.setSizes([0, 1])
@@ -369,7 +383,9 @@ class JobWidget(QWidget, Ui_Form):
         self.splitter.setStretchFactor(1, 2)
 
         self.label_total_cost_for_parts.setHidden(
-            self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex())
+            self._parent_widget._parent_widget.tab_text(
+                self._parent_widget._parent_widget.stackedWidget.currentIndex()
+            )
             == "job_planner_tab"
         )
         self.label_total_cost_for_parts.setText(
@@ -377,7 +393,9 @@ class JobWidget(QWidget, Ui_Form):
         )
 
         self.label_total_cost_for_sheets.setHidden(
-            self.parent.parent.tab_text(self.parent.parent.stackedWidget.currentIndex())
+            self._parent_widget._parent_widget.tab_text(
+                self._parent_widget._parent_widget.stackedWidget.currentIndex()
+            )
             == "job_planner_tab"
         )
         self.label_total_cost_for_sheets.setText(
@@ -397,31 +415,31 @@ class JobWidget(QWidget, Ui_Form):
         button.setStyleSheet(
             f"""
 QPushButton#assembly_button_drop_menu {{
-    border: 1px solid {theme_var('surface')};
-    background-color: {theme_var('surface')};
-    border-radius: {theme_var('border-radius')};
-    color: {theme_var('on-surface')};
+    border: 1px solid {theme_var("surface")};
+    background-color: {theme_var("surface")};
+    border-radius: {theme_var("border-radius")};
+    color: {theme_var("on-surface")};
     text-align: left;
 }}
 /* CLOSED */
 QPushButton:!checked#assembly_button_drop_menu {{
-    color: {theme_var('on-surface')};
-    border: 1px solid {theme_var('outline')};
+    color: {theme_var("on-surface")};
+    border: 1px solid {theme_var("outline")};
 }}
 
 QPushButton:!checked:hover#assembly_button_drop_menu {{
-    background-color: {theme_var('outline-variant')};
+    background-color: {theme_var("outline-variant")};
 }}
 QPushButton:!checked:pressed#assembly_button_drop_menu {{
-    background-color: {theme_var('surface')};
+    background-color: {theme_var("surface")};
 }}
 /* OPENED */
 QPushButton:checked#assembly_button_drop_menu {{
     color: %(inverted_color)s;
     border-color: %(base_color)s;
     background-color: %(base_color)s;
-    border-top-left-radius: {theme_var('border-radius')};
-    border-top-right-radius: {theme_var('border-radius')};
+    border-top-left-radius: {theme_var("border-radius")};
+    border-top-right-radius: {theme_var("border-radius")};
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }}
@@ -449,7 +467,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            background-color: {theme_var('background')};
+            background-color: {theme_var("background")};
             }}"""
             % {"base_color": base_color}
         )
@@ -478,7 +496,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             assembliy_widget.workspace_settings_changed()
 
     def get_assemblies_dialog(self) -> Optional[list[Assembly]]:
-        dialog = AddAssemblyDialog(self.parent.get_active_jobs(), self)
+        dialog = AddAssemblyDialog(self._parent_widget.get_active_jobs(), self)
         if dialog.exec():
             return dialog.get_selected_assemblies()
         return None
@@ -706,7 +724,9 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
 
     def open_nest_editor(self):
         nests_copy = deepcopy(self.job.nests)
-        nest_editor_dialog = NestEditorDialog(nests_copy, self.parent.parent)
+        nest_editor_dialog = NestEditorDialog(
+            nests_copy, self._parent_widget._parent_widget
+        )
         if nest_editor_dialog.exec():
             self.job.nests = nest_editor_dialog.nests
             self.load_nests()
@@ -862,7 +882,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             AttributeError
         ):  # Happens when reloading when no flowtags set.
             self.flowtag_timeline.load_tag_timelines()
-        self.parent.job_changed(self.job)
+        self._parent_widget.job_changed(self.job)
         self.update_nest_parts_assemblies()
         self.update_prices()
 

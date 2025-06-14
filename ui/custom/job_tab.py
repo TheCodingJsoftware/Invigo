@@ -20,7 +20,7 @@ class PopoutWidget(QWidget):
         self, tab_data: dict[str, str], layout_to_popout: QVBoxLayout, parent=None
     ):
         super().__init__(parent)
-        self.parent: MainWindow = parent
+        self._parent_widget: MainWindow = parent
         self.tab_data = tab_data
 
         self.tab_name = self.tab_data["object_name"]
@@ -52,14 +52,14 @@ class JobTab(QWidget):
 
     def __init__(self, tab_data: dict[str, str], parent):
         super().__init__(parent)
-        self.parent: MainWindow = parent
+        self._parent_widget: MainWindow = parent
         self.tab_data = tab_data
 
         self.tab_name = self.tab_data["object_name"]
         self.tab_icon = self.tab_data["icon"]
 
-        self.job_manager = self.parent.job_manager
-        self.job_preferences = self.parent.job_preferences
+        self.job_manager = self._parent_widget.job_manager
+        self.job_preferences = self._parent_widget.job_preferences
 
         self.job_widgets: list[JobWidget] = []
         self.current_job: Job = None
@@ -100,7 +100,7 @@ class JobTab(QWidget):
             job = Job({}, self.job_manager)
             job.name = f"Enter Job Name{len(self.job_widgets)}"
             job.status = self.default_job_status
-            job.order_number = self.parent.order_number
+            job.order_number = self._parent_widget.order_number
         else:
             job = new_job
 
@@ -184,7 +184,7 @@ class JobTab(QWidget):
             msg = QMessageBox(
                 QMessageBox.Icon.Information,
                 "Unsaved changes",
-                f"There are unsaved changes in {self.parent.last_selected_menu_tab}, {self.current_job.name}.",
+                f"There are unsaved changes in {self._parent_widget.last_selected_menu_tab}, {self.current_job.name}.",
             )
             msg.exec()
         self.current_job = self.get_active_job()
@@ -256,7 +256,9 @@ class JobTab(QWidget):
             self.job_tab.setTabsClosable(True)
 
     def popout(self):
-        self.popout_widget = PopoutWidget(self.tab_data, self.layout(), self.parent)
+        self.popout_widget = PopoutWidget(
+            self.tab_data, self.layout(), self._parent_widget
+        )
         self.popout_widget.show()
         self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
         self.pushButton_popout.clicked.disconnect()
@@ -274,7 +276,7 @@ class JobTab(QWidget):
         self.current_job.unsaved_changes = False
         self.saveJob.emit(self.current_job)
         self.update_job_save_status(self.current_job)
-        self.parent.open_job(
+        self._parent_widget.open_job(
             f"saved_jobs/{self.current_job.status.name.lower()}/{self.current_job.name}"
         )
 
@@ -287,22 +289,34 @@ class JobTab(QWidget):
         UNSAVED_JOB_STYLE = f"background-color: {theme_var('primary-yellow')}; color: {theme_var('on-primary-yellow')}; padding: 5px; border-radius: 5px;"
 
         if (
-            self.parent.tab_text(self.parent.stackedWidget.currentIndex())
+            self._parent_widget.tab_text(
+                self._parent_widget.stackedWidget.currentIndex()
+            )
             == "job_planner_tab"
         ):
             if job.unsaved_changes:
-                self.parent.label_job_save_status.setText("You have unsaved changes")
-                self.parent.label_job_save_status.setStyleSheet(UNSAVED_JOB_STYLE)
+                self._parent_widget.label_job_save_status.setText(
+                    "You have unsaved changes"
+                )
+                self._parent_widget.label_job_save_status.setStyleSheet(
+                    UNSAVED_JOB_STYLE
+                )
             else:
-                self.parent.label_job_save_status.setText("Job is saved")
-                self.parent.label_job_save_status.setStyleSheet(SAVED_JOB_STYLE)
+                self._parent_widget.label_job_save_status.setText("Job is saved")
+                self._parent_widget.label_job_save_status.setStyleSheet(SAVED_JOB_STYLE)
         else:
             if job.unsaved_changes:
-                self.parent.label_job_save_status_2.setText("You have unsaved changes")
-                self.parent.label_job_save_status_2.setStyleSheet(UNSAVED_JOB_STYLE)
+                self._parent_widget.label_job_save_status_2.setText(
+                    "You have unsaved changes"
+                )
+                self._parent_widget.label_job_save_status_2.setStyleSheet(
+                    UNSAVED_JOB_STYLE
+                )
             else:
-                self.parent.label_job_save_status_2.setText("Job is saved")
-                self.parent.label_job_save_status_2.setStyleSheet(SAVED_JOB_STYLE)
+                self._parent_widget.label_job_save_status_2.setText("Job is saved")
+                self._parent_widget.label_job_save_status_2.setStyleSheet(
+                    SAVED_JOB_STYLE
+                )
 
     def update_tables(self):
         for job_widget in self.job_widgets:

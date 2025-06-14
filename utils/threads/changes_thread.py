@@ -21,7 +21,7 @@ class ChangesThread(QThread):
         while True:
             try:
 
-                def handle_file_data(ws, message):
+                def handle_file_data(ws, message) -> None:
                     data: dict[str, list[str] | str] = msgspec.json.decode(message)
                     if data.get("action") == "download":
                         self.signal.emit(data.get("files"))

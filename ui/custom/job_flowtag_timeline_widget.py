@@ -126,7 +126,7 @@ class JobFlowtagTimelineWidget(QWidget):
         self.changes_made()
 
     def changes_made(self):
-        self.parent.parent.job_changed(self.parent.job)
+        self.parent._parent_widget.job_changed(self.parent.job)
         self.parent.update_nest_parts_assemblies()
         self.parent.update_prices()
 

@@ -5,11 +5,16 @@ from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QPixmap
-from PyQt6.QtWidgets import (QComboBox, QMenu, QMessageBox, QPushButton,
-                             QTreeWidgetItem, QWidget)
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QTreeWidgetItem,
+    QWidget,
+)
 
-from ui.custom.machine_cut_time_double_spin_box import \
-    MachineCutTimeDoubleSpinBox
+from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.widgets.nest_widget_UI import Ui_Form
 from utils.inventory.category import Category
@@ -33,11 +38,13 @@ class NestWidget(QWidget, Ui_Form):
         self.toolbox_button: QPushButton = None
         self.nest = nest
         self.sheet = self.nest.sheet
-        self.sheets_inventory = self.parent.parent.job_manager.sheets_inventory
-        self.sheet_settings = self.parent.parent.job_manager.sheet_settings
+        self.sheets_inventory = self.parent._parent_widget.job_manager.sheets_inventory
+        self.sheet_settings = self.parent._parent_widget.job_manager.sheet_settings
         self.price_calculator = self.parent.price_calculator
         self.job_preferences = self.parent.job_preferences
-        self.laser_cut_inventory = self.parent.parent.job_manager.laser_cut_inventory
+        self.laser_cut_inventory = (
+            self.parent._parent_widget.job_manager.laser_cut_inventory
+        )
 
         self.part_to_assembly: dict[str, Assembly] = {}
         self.assembly_dict: dict[str, Assembly] = {}
@@ -218,7 +225,7 @@ class NestWidget(QWidget, Ui_Form):
                         if laser_cut_part.name == nest_laser_cut_part.name:
                             laser_cut_part.material = self.sheet.material
                             laser_cut_part.gauge = self.sheet.thickness
-        self.parent.parent.update_tables()
+        self.parent._parent_widget.update_tables()
         self.parent.changes_made()
         self.update_nest_cost()
 
@@ -277,7 +284,7 @@ class NestWidget(QWidget, Ui_Form):
                     "width": add_sheet_dialog.get_width(),
                     "thickness": add_sheet_dialog.get_thickness(),
                     "material": add_sheet_dialog.get_material(),
-                    "latest_change_quantity": f'{os.getlogin().title()} - Sheet was added via quote generator at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}',
+                    "latest_change_quantity": f"{os.getlogin().title()} - Sheet was added via quote generator at {str(datetime.now().strftime('%B %d %A %Y %I:%M:%S %p'))}",
                 },
                 self.sheets_inventory,
             )
@@ -559,7 +566,7 @@ class NestWidget(QWidget, Ui_Form):
                 self.parent.changes_made()
 
     def sync_changes(self):
-        self.parent.parent.sync_changes()
+        self.parent._parent_widget.sync_changes()
 
     def changes_made(self):
         self.parent.changes_made()
