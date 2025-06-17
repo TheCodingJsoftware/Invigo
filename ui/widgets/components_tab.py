@@ -526,7 +526,7 @@ class ComponentsTab(QWidget, Ui_Form):
         self.table_components_widgets[component]["shelf_number"].setText(
             component.shelf_number
         )
-        self.table_components_widgets[component]["notes"].setText(component.notes)
+        self.table_components_widgets[component]["notes"].setPlainText(component.notes)
         self.table_components_widgets[component]["modified_date"].setText(
             component.latest_change_quantity
         )

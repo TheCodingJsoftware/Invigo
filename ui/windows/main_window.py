@@ -1072,6 +1072,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.should_update_sheets_in_inventory_tab = False
 
     def load_components_inventory_tab(self):
+        # We load these because components tab is depended on them, they might be loaded ahead of time or they might not be
         self.load_job_planning_tab()
         self.load_job_quoting_tab()
         current_tab = self.tab_text(self.stackedWidget.currentIndex())
@@ -1086,11 +1087,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def update_components_inventory_tab(self):
         if not self.should_update_components_in_inventory_tab:
             return
-        self.components_tab_widget.block_table_signals()
-        self.components_tab_widget.load_categories()
-        self.components_tab_widget.sort_components()
-        self.components_tab_widget.unblock_table_signals()
-        self.should_update_components_in_inventory_tab = False
+        if self.tab_text(self.stackedWidget.currentIndex()) == "components_tab":
+            self.components_tab_widget.block_table_signals()
+            self.components_tab_widget.load_categories()
+            self.components_tab_widget.sort_components()
+            self.components_tab_widget.unblock_table_signals()
+            self.should_update_components_in_inventory_tab = False
 
     # * \/ SLOTS & SIGNALS \/
     def tool_box_menu_changed(self):
@@ -2998,7 +3000,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QThreadPool.globalInstance().start(get_workspace_entry_worker)
             elif "sheets_inventory/get_sheet" in responses[0]:
                 self.sheets_inventory.get_sheet(
-                    responses[0].split("/")[-1], self.get_sheet_response
+                    responses[0].split("/")[-1], on_finished=self.get_sheet_response
                 )
             elif "sheets_inventory/get_all" in responses[0]:
                 self.should_update_sheets_in_inventory_tab = True
@@ -3007,7 +3009,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
             elif "components_inventory/get_component" in responses[0]:
                 self.components_inventory.get_component(
-                    responses[0].split("/")[-1], self.get_component_response
+                    responses[0].split("/")[-1], on_finished=self.get_component_response
                 )
             elif "components_inventory/get_all" in responses[0]:
                 self.components_inventory.load_data(
@@ -3062,8 +3064,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.components_tab_widget.block_table_signals()
             self.components_tab_widget.update_component(component_data)
             self.components_tab_widget.unblock_table_signals()
-        except Exception:
-            self.status_button.setText(f"Error: {component_data}", "red")
+        except Exception as e:
+            self.status_button.setText(f"Error: {e}", "red")
+            print(component_data)
+            print(e)
 
     def data_received(self, data):
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
