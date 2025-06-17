@@ -295,7 +295,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.structural_steel_inventory = StructuralSteelInventory(
             self.structural_steel_settings, self.workspace_settings
         )
+        self.is_components_inventory_ui_loaded = False
         self.components_inventory = ComponentsInventory()
+        self.components_inventory.load_data(
+            on_loaded=self.load_components_inventory_tab
+        )
         self.paint_inventory = PaintInventory(self.components_inventory)
         self.laser_cut_inventory = LaserCutInventory(
             self.paint_inventory, self.workspace_settings
@@ -327,13 +331,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.workspace_tab_widget_last_selected_tab = ""
 
-        self.should_update_components_tab = False
+        self.should_update_components_in_inventory_tab = False
         self.should_update_laser_cut_inventory_tab = False
         self.should_update_sheets_in_inventory_tab = False
         self.should_update_sheet_settings_tab = False
         self.should_update_quote_generator_tab = False
-        self.should_update_job_planner_tab = False
-        self.should_update_job_quoter_tab = False
+        self.has_loaded_job_planner_tab = False
+        self.has_loaded_job_quoter_tab = False
         self.should_update_workspace_tab = False
 
         self.category: Category = None
@@ -508,7 +512,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.splitter_4.setStretchFactor(0, 1)
         self.splitter_4.setStretchFactor(1, 0)
 
-        self.components_inventory.load_data()
+        # self.components_inventory.load_data()
         # self.sheets_inventory.load_data()
         self.laser_cut_inventory.load_data()
         self.sheet_settings.load_data()
@@ -590,27 +594,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.quote_generator_tab_widget.save_quote_as.connect(self.save_quote_as)
         self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
-        self.clear_layout(self.job_planner_layout)
-        self.job_planner_widget = JobTab(
-            self.stack_tab_buttons_data["Job Planner"], self
-        )
-        self.job_planner_widget.default_job_status = JobStatus.PLANNING
-        self.job_planner_widget.saveJob.connect(self.save_job)
-        self.job_planner_widget.reloadJob.connect(self.reload_job)
-        self.job_planner_widget.add_job()
-        self.job_planner_layout.addWidget(self.job_planner_widget)
+        # self.clear_layout(self.components_layout)
+        # self.components_tab_widget = ComponentsTab(self)
+        # self.components_layout.addWidget(self.components_tab_widget)
 
-        self.clear_layout(self.quote_generator_layout)
-        self.job_quote_widget = JobTab(self.stack_tab_buttons_data["Job Quoter"], self)
-        self.job_quote_widget.default_job_status = JobStatus.QUOTING
-        self.job_quote_widget.saveJob.connect(self.save_job)
-        self.job_quote_widget.reloadJob.connect(self.reload_job)
-        self.job_quote_widget.add_job()
-        self.quote_generator_layout.addWidget(self.job_quote_widget)
-
-        self.clear_layout(self.components_layout)
-        self.components_tab_widget = ComponentsTab(self)
-        self.components_layout.addWidget(self.components_tab_widget)
+        self.load_job_planning_tab()
+        self.load_job_quoting_tab()
 
         self.clear_layout(self.laser_cut_layout)
         self.laser_cut_tab_widget = LaserCutTab(self)
@@ -1029,26 +1018,79 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionExit.setIcon(Icons.quit_icon)
         # self.actionExit.setIcon(QIcon("icons/tab_close.png"))
 
+    def load_job_planning_tab(self):
+        if self.has_loaded_job_planner_tab:
+            return
+
+        self.clear_layout(self.job_planner_layout)
+        self.job_planner_widget = JobTab(
+            self.stack_tab_buttons_data["Job Planner"], self
+        )
+        self.job_planner_widget.default_job_status = JobStatus.PLANNING
+        self.job_planner_widget.saveJob.connect(self.save_job)
+        self.job_planner_widget.reloadJob.connect(self.reload_job)
+        self.job_planner_widget.add_job()
+        self.job_planner_layout.addWidget(self.job_planner_widget)
+        self.has_loaded_job_planner_tab = True
+
+    def load_job_quoting_tab(self):
+        if self.has_loaded_job_quoter_tab:
+            return
+
+        self.clear_layout(self.quote_generator_layout)
+        self.job_quote_widget = JobTab(self.stack_tab_buttons_data["Job Quoter"], self)
+        self.job_quote_widget.default_job_status = JobStatus.QUOTING
+        self.job_quote_widget.saveJob.connect(self.save_job)
+        self.job_quote_widget.reloadJob.connect(self.reload_job)
+        self.job_quote_widget.add_job()
+        self.quote_generator_layout.addWidget(self.job_quote_widget)
+        self.has_loaded_job_quoter_tab = True
+
     def load_sheets_inventory_tab(self):
         current_tab = self.tab_text(self.stackedWidget.currentIndex())
         self.clear_layout(self.sheets_inventory_layout)
         self.sheets_inventory_tab_widget = SheetsInInventoryTab(self)
         self.sheets_inventory_layout.addWidget(self.sheets_inventory_tab_widget)
         if current_tab == "sheets_in_inventory_tab":
-            self.update_sheets_inventory_inventory_tab()
+            self.update_sheets_inventory_tab()
         self.is_sheets_inventory_ui_loaded = True
         self.should_update_sheets_in_inventory_tab = False
 
-    def update_sheets_inventory_inventory_tab(self):
+    def update_sheets_inventory_tab(self):
         if not self.should_update_sheets_in_inventory_tab:
             return
-        self.sheets_inventory_tab_widget.block_table_signals()
-        self.sheets_inventory_tab_widget.load_categories()
-        self.sheets_inventory.sort_by_thickness()
-        self.sheets_inventory_tab_widget.restore_last_selected_tab()
-        self.sheets_inventory_tab_widget.update_stock_costs()
-        self.sheets_inventory_tab_widget.unblock_table_signals()
-        self.should_update_sheets_in_inventory_tab = False
+        if (
+            self.tab_text(self.stackedWidget.currentIndex())
+            == "sheets_in_inventory_tab"
+        ):
+            self.sheets_inventory_tab_widget.block_table_signals()
+            self.sheets_inventory_tab_widget.load_categories()
+            self.sheets_inventory.sort_by_thickness()
+            self.sheets_inventory_tab_widget.restore_last_selected_tab()
+            self.sheets_inventory_tab_widget.update_stock_costs()
+            self.sheets_inventory_tab_widget.unblock_table_signals()
+            self.should_update_sheets_in_inventory_tab = False
+
+    def load_components_inventory_tab(self):
+        self.load_job_planning_tab()
+        self.load_job_quoting_tab()
+        current_tab = self.tab_text(self.stackedWidget.currentIndex())
+        self.clear_layout(self.components_layout)
+        self.components_tab_widget = ComponentsTab(self)
+        self.components_layout.addWidget(self.components_tab_widget)
+        if current_tab == "components_tab":
+            self.update_components_inventory_tab()
+        self.is_components_inventory_ui_loaded = True
+        self.should_update_components_in_inventory_tab = False
+
+    def update_components_inventory_tab(self):
+        if not self.should_update_components_in_inventory_tab:
+            return
+        self.components_tab_widget.block_table_signals()
+        self.components_tab_widget.load_categories()
+        self.components_tab_widget.sort_components()
+        self.components_tab_widget.unblock_table_signals()
+        self.should_update_components_in_inventory_tab = False
 
     # * \/ SLOTS & SIGNALS \/
     def tool_box_menu_changed(self):
@@ -1075,18 +1117,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         current_tab = self.tab_text(self.stackedWidget.currentIndex())
 
-        if current_tab == "components_tab":
+        if current_tab == "components_tab" and self.is_components_inventory_ui_loaded:
             self.menuSort.setEnabled(True)
-            if self.should_update_components_tab:
-                self.components_tab_widget.load_categories()
-                self.should_update_components_tab = False
-            self.components_tab_widget.restore_last_selected_tab()
+            self.update_components_inventory_tab()
         elif (
             current_tab == "sheets_in_inventory_tab"
             and self.is_sheets_inventory_ui_loaded
         ):
             self.menuSort.setEnabled(True)
-            self.update_sheets_inventory_inventory_tab()
+            self.update_sheets_inventory_tab()
         elif current_tab == "laser_cut_inventory_tab":
             self.menuSort.setEnabled(True)
             if self.should_update_laser_cut_inventory_tab:
@@ -1609,7 +1648,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.status_button.setText(f"Saved {job.name}", "lime")
         self.upload_files(
             [
-                f"{self.components_inventory.filename}.json",
+                # f"{self.components_inventory.filename}.json",
                 f"{self.laser_cut_inventory.filename}.json",
             ],
         )
@@ -1713,8 +1752,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     send_to_workspace_dialog.should_update_components(),
                 )
 
-            self.components_inventory.save()
-            self.upload_files([f"{self.components_inventory.filename}.json"])
+            # self.components_inventory.save_local_copy()
+            # self.upload_files([f"{self.components_inventory.filename}.json"])
 
     def add_job_to_workspace(
         self,
@@ -1813,13 +1852,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 ):
                     assembly.timer.start_timer()
 
-            self.workspace.save()
-            self.components_inventory.save()
+            # self.workspace.save()
+            # self.components_inventory.save_local_copy()
             self.laser_cut_inventory.save()
             self.upload_files(
                 [
-                    f"{self.workspace.filename}.json",
-                    f"{self.components_inventory.filename}.json",
+                    # f"{self.workspace.filename}.json",
+                    # f"{self.components_inventory.filename}.json",
                     f"{self.laser_cut_inventory.filename}.json",
                 ]
             )
@@ -2660,12 +2699,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.status_button.setText(f"Synching {tab_name}", "lime")
 
-        if tab_name == "components_tab":
-            self.upload_files(
-                [
-                    f"{self.components_inventory.filename}.json",
-                ],
-            )
+        # if tab_name == "components_tab":
+        #     self.upload_files(
+        #         [
+        #             f"{self.components_inventory.filename}.json",
+        #         ],
+        #     )
         if tab_name in [
             "laser_cut_inventory_tab",
             "quote_generator_tab",
@@ -2855,6 +2894,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def subtract_component_quantity_from_job(self, job: Job):
         for assembly in job.get_all_assemblies():
+            components_to_save = []
             for component_from_job in assembly.components:
                 if not (
                     component_from_inventory
@@ -2867,7 +2907,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     component_from_job.quantity * assembly.quantity
                 )
                 component_from_inventory.latest_change_quantity = f"{os.getlogin().title()} removed {component_from_job.quantity * assembly.quantity} quantity from sending {job.name} to workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-        self.components_inventory.save()
+                components_to_save.append(component_from_inventory)
+            self.components_inventory.save_components(components_to_save)
+        # self.components_inventory.save_local_copy()
 
     def generate_single_sheet_report(self, sheet: Sheet, old_quantity: int):
         notes = sheet.notes
@@ -2954,29 +2996,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.get_workspace_entry_response
                 )
                 QThreadPool.globalInstance().start(get_workspace_entry_worker)
-                # get_workspace_entry_thread = GetWorkspaceEntryThread(
-                #     responses[0].split("/")[-1]
-                # )
-                # get_workspace_entry_thread.signal.connect(
-                #     self.get_workspace_entry_response
-                # )
-                # get_workspace_entry_thread.finished.connect(
-                #     get_workspace_entry_thread.deleteLater
-                # )
-                # self.threads.append(get_workspace_entry_thread)
-                # get_workspace_entry_thread.start()
             elif "sheets_inventory/get_sheet" in responses[0]:
                 self.sheets_inventory.get_sheet(
                     responses[0].split("/")[-1], self.get_sheet_response
                 )
-                # get_sheet_thread = GetSheetThread(responses[0].split("/")[-1])
-                # self.threads.append(get_sheet_thread)
-                # get_sheet_thread.signal.connect(self.get_sheet_response)
-                # get_sheet_thread.finished.connect(get_sheet_thread.deleteLater)
-                # get_sheet_thread.start()
-            elif "sheets_inventory/all_sheets" in responses[0]:
+            elif "sheets_inventory/get_all" in responses[0]:
+                self.should_update_sheets_in_inventory_tab = True
                 self.sheets_inventory.load_data(
                     on_loaded=self.update_sheets_inventory_tab
+                )
+            elif "components_inventory/get_component" in responses[0]:
+                self.components_inventory.get_component(
+                    responses[0].split("/")[-1], self.get_component_response
+                )
+            elif "components_inventory/get_all" in responses[0]:
+                self.components_inventory.load_data(
+                    on_loaded=self.update_components_inventory_tab
                 )
             elif "workspace/get_entries_by_name" in responses[0]:
                 for response in responses:
@@ -2991,14 +3026,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     QThreadPool.globalInstance().start(
                         get_workspace_entry_by_name_worker
                     )
-                    # self.threads.append(get_workspace_entry_by_name_worker)
-                    # get_workspace_entry_by_name_worker.signal.connect(
-                    #     self.get_workspace_entries_response
-                    # )
-                    # get_workspace_entry_by_name_worker.finished.connect(
-                    #     get_workspace_entry_by_name_worker.deleteLater
-                    # )
-                    # get_workspace_entry_by_name_worker.start()
             else:
                 self.download_files(responses)
             self.status_button.setText("Synched", "lime")
@@ -3029,13 +3056,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except Exception:
             self.status_button.setText(f"Error: {sheet_data}", "red")
 
-    def update_sheets_inventory_tab(self):
-        self.should_update_sheets_in_inventory_tab = True
-        if (
-            self.tab_text(self.stackedWidget.currentIndex())
-            == "sheets_in_inventory_tab"
-        ):
-            self.update_sheets_inventory_inventory_tab()
+    def get_component_response(self, component_data: dict):
+        try:
+            self.should_update_components_in_inventory_tab = True
+            self.components_tab_widget.block_table_signals()
+            self.components_tab_widget.update_component(component_data)
+            self.components_tab_widget.unblock_table_signals()
+        except Exception:
+            self.status_button.setText(f"Error: {component_data}", "red")
 
     def data_received(self, data):
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
@@ -3125,12 +3153,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 with contextlib.suppress(AttributeError):
                     self.workspace_tab_widget.workspace_settings_changed()
 
-            if (
-                f"{self.components_inventory.filename}.json"
-                in response["successful_files"]
-            ):
-                self.components_inventory.load_data()
-                self.should_update_components_tab = True
+            # if (
+            #     f"{self.components_inventory.filename}.json"
+            #     in response["successful_files"]
+            # ):
+            #     self.components_inventory.load_data()
+            #     self.should_update_components_tab = True
 
             # if f"{self.sheets_inventory.filename}.json" in response["successful_files"]:
             #     self.sheets_inventory.load_data()
@@ -3217,8 +3245,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 f"{self.workspace_settings.filename}.json",
                 f"{self.laser_cut_inventory.filename}.json",
                 # f"{self.sheets_inventory.filename}.json",
-                f"{self.components_inventory.filename}.json",
-                f"{self.workspace.filename}.json",
+                # f"{self.components_inventory.filename}.json",
+                # f"{self.workspace.filename}.json",
             ]
         )
 
@@ -3973,7 +4001,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.status_button.setText(f"Uploading {job.name}", "yellow")
         self.job_planner_widget.update_job_save_status(job)
         upload_batch.start()
-        upload_batch.wait()
 
     def upload_job_response(self, response: str):
         if response == "Job sent successfully":

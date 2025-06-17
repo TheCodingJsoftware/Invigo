@@ -2,6 +2,7 @@ import contextlib
 import os
 from datetime import datetime, timedelta
 from functools import partial
+from typing import Literal
 
 from natsort import natsorted
 from PyQt6.QtCore import (
@@ -380,26 +381,26 @@ class AssemblyMultiToolBox(QWidget):
         drop_down_toggle_button.setCheckable(True)
         drop_down_toggle_button.setStyleSheet(
             f"""QPushButton:checked#drop_down_button {{
-                    color: {theme_var('on-surface')};
-                    background-color: {theme_var('surface')};
-                    border: 1px solid {theme_var('outline')};
+                    color: {theme_var("on-surface")};
+                    background-color: {theme_var("surface")};
+                    border: 1px solid {theme_var("outline")};
                     border-radius: 0px;
-                    border-top-left-radius: {theme_var('border-radius')};
-                    border-bottom-left-radius: {theme_var('border-radius')};
+                    border-top-left-radius: {theme_var("border-radius")};
+                    border-bottom-left-radius: {theme_var("border-radius")};
                 }}
                 QPushButton:checked:hover#drop_down_button {{
-                    background-color: {theme_var('outline-variant')};
+                    background-color: {theme_var("outline-variant")};
                 }}
 
                 QPushButton:checked:pressed#drop_down_button {{
-                    background-color: {theme_var('surface')};
+                    background-color: {theme_var("surface")};
                 }}
                 QPushButton:!checked#drop_down_button {{
                     color: {font_color};
                     background-color: {base_color};
                     border: 1px solid {base_color};
                     border-radius: 0px;
-                    border-top-left-radius: {theme_var('border-radius')};
+                    border-top-left-radius: {theme_var("border-radius")};
                 }}
 
                 QPushButton:!checked:hover#drop_down_button {{
@@ -491,7 +492,7 @@ class AssemblyMultiToolBox(QWidget):
             border-bottom-right-radius: 10px;
             border-top-right-radius: 0px;
             border-top-left-radius: 0px;
-            background-color: {theme_var('surface')};
+            background-color: {theme_var("surface")};
         }}"""
         )
         self.buttons.append(drop_down_toggle_button)
@@ -543,21 +544,21 @@ class AssemblyMultiToolBox(QWidget):
             input_box.setStyleSheet(
                 f"""QLineEdit#input_box_multitoolbox{{
                         border-radius: 0px;
-                        border: 1px solid {theme_var('outline')};
-                        border-right-color: {theme_var('surface')};
-                        border-left-color: {theme_var('surface')};
+                        border: 1px solid {theme_var("outline")};
+                        border-right-color: {theme_var("surface")};
+                        border-left-color: {theme_var("surface")};
                         margin-left: -1px;
                         margin-right: -1px;
-                        background-color: {theme_var('surface')};
-                        color: {theme_var('on-surface')}
+                        background-color: {theme_var("surface")};
+                        color: {theme_var("on-surface")}
                     }}
                     QLineEdit:hover#input_box_multitoolbox{{
-                        background-color: {theme_var('outline-variant')};
-                        color: {theme_var('on-surface')}
+                        background-color: {theme_var("outline-variant")};
+                        color: {theme_var("on-surface")}
                     }}
                     QLineEdit:focus#input_box_multitoolbox{{
-                        background-color: {theme_var('outline-variant')};
-                        color: {theme_var('on-surface')}
+                        background-color: {theme_var("outline-variant")};
+                        color: {theme_var("on-surface")}
                     }}"""
             )
             delete_button.setStyleSheet(
@@ -619,21 +620,21 @@ class AssemblyMultiToolBox(QWidget):
         self.input_boxes[-1].setStyleSheet(
             f"""QLineEdit#input_box_multitoolbox{{
                         border-radius: 0px;
-                        border: 1px solid {theme_var('outline')};
-                        border-right-color: {theme_var('surface')};
-                        border-left-color: {theme_var('surface')};
+                        border: 1px solid {theme_var("outline")};
+                        border-right-color: {theme_var("surface")};
+                        border-left-color: {theme_var("surface")};
                         margin-left: -1px;
                         margin-right: -1px;
-                        background-color: {theme_var('surface')};
-                        color: {theme_var('on-surface')}
+                        background-color: {theme_var("surface")};
+                        color: {theme_var("on-surface")}
                     }}
                     QLineEdit:hover#input_box_multitoolbox{{
-                        background-color: {theme_var('outline-variant')};
-                        color: {theme_var('on-surface')}
+                        background-color: {theme_var("outline-variant")};
+                        color: {theme_var("on-surface")}
                     }}
                     QLineEdit:focus#input_box_multitoolbox{{
-                        background-color: {theme_var('outline-variant')};
-                        color: {theme_var('on-surface')}
+                        background-color: {theme_var("outline-variant")};
+                        color: {theme_var("on-surface")}
                     }}"""
         )
         self.delete_buttons[-1].setStyleSheet(
@@ -729,30 +730,30 @@ class MultiToolBox(QWidget):
         button.setObjectName("multi_tool_box_button")
         button.setStyleSheet(
             f"""QPushButton#multi_tool_box_button {{
-                    border: 1px solid {theme_var('surface')};
-                    background-color: {theme_var('surface')};
-                    border-radius: {theme_var('border-radius')};
+                    border: 1px solid {theme_var("surface")};
+                    background-color: {theme_var("surface")};
+                    border-radius: {theme_var("border-radius")};
                     text-align: left;
                 }}
                 /* CLOSED */
                 QPushButton:checked#multi_tool_box_button {{
-                    color: {theme_var('on-surface')};
-                    border: 1px solid {theme_var('outline')};
+                    color: {theme_var("on-surface")};
+                    border: 1px solid {theme_var("outline")};
                 }}
 
                 QPushButton:checked:hover#multi_tool_box_button {{
-                    background-color: {theme_var('outline-variant')};
+                    background-color: {theme_var("outline-variant")};
                 }}
                 QPushButton:checked:pressed#multi_tool_box_button {{
-                    background-color: {theme_var('surface')};
+                    background-color: {theme_var("surface")};
                 }}
                 /* OPENED */
                 QPushButton:!checked#multi_tool_box_button {{
                     color: {font_color};
                     border-color: {base_color};
                     background-color: {base_color};
-                    border-top-left-radius: {theme_var('border-radius')};
-                    border-top-right-radius: {theme_var('border-radius')};
+                    border-top-left-radius: {theme_var("border-radius")};
+                    border-top-right-radius: {theme_var("border-radius")};
                     border-bottom-left-radius: 0px;
                     border-bottom-right-radius: 0px;
                 }}
@@ -784,7 +785,7 @@ class MultiToolBox(QWidget):
             f"""
             QWidget#nest_widget{{
                 border: 1px solid {base_color};
-                background-color: {theme_var('surface')};
+                background-color: {theme_var("surface")};
             }}
             QPushButton#load_job{{
                 color: {font_color};
@@ -1502,8 +1503,8 @@ class RichTextPushButton(QPushButton):
         self._border_color = color
         self.update_stylesheet()
 
-    def setText(self, text: str, color: str):
-        if color == "lime":
+    def setText(self, text: str, color: Literal["lime", "yellow", "red", "green"]):
+        if color == "lime" or color == "green":
             text_color = QColor(theme_var("on-primary-green"))
             background_color = QColor(theme_var("primary-green"))
             border_color = QColor(theme_var("on-primary-green"))
@@ -1532,7 +1533,7 @@ class RichTextPushButton(QPushButton):
         self.border_animation.setEndValue(border_color)
         self.border_animation.start()
 
-        self.__lbl.setText(f'{text} - {datetime.now().strftime("%r")}')
+        self.__lbl.setText(f"{text} - {datetime.now().strftime('%r')}")
         self.__timer.start(3000)
 
     def make_transparent(self):

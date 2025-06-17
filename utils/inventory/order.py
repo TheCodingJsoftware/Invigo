@@ -6,7 +6,7 @@ class Order:
         self.notes: str = ""
         self.load_data(data)
 
-    def load_data(self, data: dict[str, str | float]):
+    def load_data(self, data: dict):
         self.expected_arrival_time = data.get("expected_arrival_time", "")
         self.quantity = data.get("order_pending_quantity", 0.0)
         self.order_pending_date = data.get("order_pending_date", "")
@@ -15,9 +15,9 @@ class Order:
     def __str__(self) -> str:
         return f"Order is pending since: {self.order_pending_date}\nQuantity ordered: {self.quantity}\nExpected to arrive at: {self.expected_arrival_time}\nNotes:\n{self.notes}"
 
-    def __eq__(self, other: "Order") -> bool:
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Order):
-            return False
+            return NotImplemented
         return (
             self.expected_arrival_time == other.expected_arrival_time
             and self.quantity == other.quantity

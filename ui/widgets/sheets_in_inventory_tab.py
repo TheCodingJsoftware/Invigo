@@ -88,7 +88,7 @@ class OrderWidget(QWidget):
 
     def __init__(self, sheet: Sheet, parent: "SheetsInInventoryTab"):
         super().__init__(parent)
-        self.parent: "SheetsInInventoryTab" = parent
+        self._parent_widget: "SheetsInInventoryTab" = parent
         self.sheet = sheet
 
         self.h_layout = QHBoxLayout()
@@ -131,7 +131,9 @@ class OrderWidget(QWidget):
             arrival_date.setStyleSheet(
                 "QDateEdit{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;} QDateEdit:hover{border-color: #3bba6d; }"
             )
-            arrival_date.wheelEvent = lambda event: self.parent.wheelEvent(event)
+            arrival_date.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+                event
+            )
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
@@ -142,11 +144,12 @@ class OrderWidget(QWidget):
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
             self.orders_layout.addLayout(v_layout)
-        self.parent.category_tables[self.parent.category].setColumnWidth(
-            7, 400
-        )  # Widgets don't like being resized with columns
-        self.parent.update_sheet_row_color(
-            self.parent.category_tables[self.parent.category], self.sheet
+        self._parent_widget.category_tables[
+            self._parent_widget.category
+        ].setColumnWidth(7, 400)  # Widgets don't like being resized with columns
+        self._parent_widget.update_sheet_row_color(
+            self._parent_widget.category_tables[self._parent_widget.category],
+            self.sheet,
         )
 
     def create_order(self):
@@ -164,8 +167,8 @@ class OrderWidget(QWidget):
                 }
             )
             self.sheet.add_order(new_order)
-            self.parent.sheets_inventory.save_local_copy()
-            self.parent.sync_changes()
+            self._parent_widget.sheets_inventory.save_local_copy()
+            self._parent_widget.sync_changes()
             self.load_ui()
 
     def order_button_pressed(
@@ -204,10 +207,10 @@ class OrderWidget(QWidget):
                 order_status_button.setChecked(True)
                 self.orderClosed.emit()
                 return
-            self.parent.sheets_inventory.save_local_copy()
-            self.parent.sync_changes()
-            self.parent.sort_sheets()
-            self.parent.select_last_selected_item()
+            self._parent_widget.sheets_inventory.save_local_copy()
+            self._parent_widget.sync_changes()
+            self._parent_widget.sort_sheets()
+            self._parent_widget.select_last_selected_item()
             self.load_ui()
         else:  # Close order pressed
             order_status_button.setChecked(True)
@@ -215,8 +218,8 @@ class OrderWidget(QWidget):
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
-        self.parent.sheets_inventory.save_local_copy()
-        self.parent.sync_changes()
+        self._parent_widget.sheets_inventory.save_local_copy()
+        self._parent_widget.sync_changes()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
@@ -710,7 +713,7 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         sheet.width = self.table_sheets_widgets[sheet]["width"].value()
         self.sheets_inventory.save_sheet(sheet)
         self.sheets_inventory.save_local_copy()
-        self.sync_changes()
+        # self.sync_changes()
         self.category_tables[self.category].blockSignals(True)
         self.table_sheets_widgets[sheet]["quantity"].setText(f"{sheet.quantity:,.2f}")
         self.table_sheets_widgets[sheet]["modified_date"].setText(
@@ -842,7 +845,7 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         )
         return selected_sheets
 
-    def get_selected_sheet(self) -> Sheet:
+    def get_selected_sheet(self) -> Sheet | None:
         selected_row = self.get_selected_row()
         for sheet, table_items in self.table_sheets_widgets.items():
             if table_items["row"] == selected_row:

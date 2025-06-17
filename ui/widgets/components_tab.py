@@ -179,8 +179,9 @@ class OrderWidget(QWidget):
                 }
             )
             self.component.add_order(new_order)
-            self.parent.components_inventory.save()
-            self.parent.sync_changes()
+            self.parent.components_inventory.save_component(self.component)
+            # self.parent.components_inventory.save_local_copy()
+            # self.parent.sync_changes()
             self.load_ui()
 
     def order_button_pressed(
@@ -218,8 +219,9 @@ class OrderWidget(QWidget):
                 order_status_button.setChecked(True)
                 self.orderClosed.emit()
                 return
-            self.parent.components_inventory.save()
-            self.parent.sync_changes()
+            # self.parent.components_inventory.save_local_copy()
+            self.parent.components_inventory.save_component(self.component)
+            # self.parent.sync_changes()
             self.parent.sort_components()
             self.parent.select_last_selected_item()
             self.load_ui()
@@ -229,8 +231,9 @@ class OrderWidget(QWidget):
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
-        self.parent.components_inventory.save()
-        self.parent.sync_changes()
+        # self.parent.components_inventory.save_local_copy()
+        self.parent.components_inventory.save_component(self.component)
+        # self.parent.sync_changes()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
@@ -282,7 +285,7 @@ class ComponentsTab(QWidget, Ui_Form):
 
         self.tab_widget = ComponentsTabWidget(self)
 
-        self.category: Category = None
+        self.category: Category | None = None
         self.finished_loading: bool = False
         self.category_tables: dict[Category, ComponentsTableWidget] = {}
         self.table_components_widgets: dict[
@@ -292,7 +295,8 @@ class ComponentsTab(QWidget, Ui_Form):
                 QTableWidgetItem
                 | PriorityComboBox
                 | ExchangeRateComboBox
-                | NotesPlainTextEdit,
+                | NotesPlainTextEdit
+                | OrderWidget,
             ],
         ] = {}
         self.po_buttons: list[POPushButton] = []
@@ -365,8 +369,8 @@ class ComponentsTab(QWidget, Ui_Form):
             self.tab_widget.addTab(table, new_category.name)
             table.rowChanged.connect(self.table_changed)
             table.cellPressed.connect(self.table_selected_changed)
-            self.components_inventory.save()
-            self.sync_changes()
+            self.components_inventory.save_local_copy()
+            # self.sync_changes()
             self.update_category_total_stock_costs()
             self.load_categories()
             self.restore_last_selected_tab()
@@ -388,8 +392,8 @@ class ComponentsTab(QWidget, Ui_Form):
             self.tab_widget.removeTab(tab_index_to_remove)
             self.clear_layout(self.category_tables[category])
             del self.category_tables[category]
-            self.components_inventory.save()
-            self.sync_changes()
+            self.components_inventory.save_local_copy()
+            # self.sync_changes()
             self.update_category_total_stock_costs()
             self.load_categories()
             self.restore_last_selected_tab()
@@ -421,16 +425,16 @@ class ComponentsTab(QWidget, Ui_Form):
                 )
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.update_category_total_stock_costs()
                 self.load_categories()
                 self.restore_last_selected_tab()
             elif action == "RENAME":
                 self.category.rename(input_text)
                 self.tab_widget.setTabText(self.tab_widget.currentIndex(), input_text)
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.update_category_total_stock_costs()
                 self.load_categories()
                 self.restore_last_selected_tab()
@@ -439,8 +443,8 @@ class ComponentsTab(QWidget, Ui_Form):
                 del self.category_tables[self.category]
                 self.components_inventory.delete_category(self.category)
                 self.tab_widget.removeTab(self.tab_widget.currentIndex())
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.update_category_total_stock_costs()
                 self.load_categories()
                 self.restore_last_selected_tab()
@@ -481,6 +485,282 @@ class ComponentsTab(QWidget, Ui_Form):
         self.tab_widget.addCategory.connect(self.add_category)
         self.tab_widget.removeCategory.connect(self.remove_category)
 
+    def update_component(self, component_data: dict):
+        if update_component := self.components_inventory.update_component_data(
+            component_data["id"], component_data
+        ):
+            with contextlib.suppress(
+                KeyError
+            ):  # This happens when the updated component is not currently loaded. The UI will be updated when they switch tabs as the data for the component is updated.
+                self.update_component_table(
+                    self.category_tables[self.category], update_component
+                )
+        else:  # Meaning the component just got added
+            # I don't think this will ever run.
+            component = Component(component_data, self.components_inventory)
+            self.components_inventory.add_component(component)
+            self.add_component_to_table(
+                self.category_tables[self.category],
+                self.category_tables[self.category].rowCount(),
+                component,
+            )
+
+    def update_component_table(
+        self, current_table: ComponentsTableWidget, component: Component
+    ):
+        self.table_components_widgets[component]["part_name"].setText(
+            component.part_name
+        )
+        self.table_components_widgets[component]["part_number"].setText(
+            component.part_number
+        )
+        self.table_components_widgets[component]["unit_quantity"].setText(
+            f"{component.get_category_quantity(self.category):,.2f}"
+        )
+        self.table_components_widgets[component]["quantity"].setText(
+            f"{component.quantity:,.2f}"
+        )
+        self.table_components_widgets[component]["price"].setText(
+            f"${component.price:,.2f}"
+        )
+        self.table_components_widgets[component]["shelf_number"].setText(
+            component.shelf_number
+        )
+        self.table_components_widgets[component]["notes"].setText(component.notes)
+        self.table_components_widgets[component]["modified_date"].setText(
+            component.latest_change_quantity
+        )
+        self.table_components_widgets[component]["priority"].setCurrentIndex(
+            component.priority
+        )
+        self.table_components_widgets[component]["exchange_rate"].setCurrentText(
+            "USD" if component.use_exchange_rate else "CAD"
+        )
+        self.table_components_widgets[component]["order_widget"].load_ui()
+        self.update_components_costs()
+        self.update_component_row_color(current_table, component)
+
+    def add_component_to_table(
+        self, current_table: ComponentsTableWidget, row_index: int, component: Component
+    ):
+        self.table_components_widgets.update({component: {}})
+        self.table_components_widgets[component].update({"row": row_index})
+
+        col_index: int = 0
+
+        current_table.insertRow(row_index)
+        current_table.setRowHeight(row_index, 60)
+
+        # PART NAME
+        table_item_part_name = QTableWidgetItem(component.part_name)
+        table_item_part_name.setFont(self.tables_font)
+        image_path = f"{component.image_path}"  # Adjust path if needed
+
+        tooltip_html = f"""
+        <b>{component.part_name}</b><br>
+        {component.part_number}<br>
+        <img src="{image_path}" width="150"><br>
+        <p>Component is present in:<br>{component.print_categories()}</p>
+        """
+
+        table_item_part_name.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        table_item_part_name.setToolTip(tooltip_html)
+        current_table.setItem(row_index, col_index, table_item_part_name)
+        self.table_components_widgets[component].update(
+            {"part_name": table_item_part_name}
+        )
+
+        col_index += 1
+
+        # PART NUMBER
+        table_item_part_number = QTableWidgetItem(component.part_number)
+        table_item_part_number.setFont(self.tables_font)
+        table_item_part_number.setToolTip(tooltip_html)
+        table_item_part_number.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        current_table.setItem(row_index, col_index, table_item_part_number)
+        self.table_components_widgets[component].update(
+            {"part_number": table_item_part_number}
+        )
+
+        col_index += 1
+
+        # CATEGORY QUANTITY
+        table_item_category_quantity = QTableWidgetItem(
+            f"{component.get_category_quantity(self.category):,.2f}"
+        )
+        table_item_category_quantity.setFont(self.tables_font)
+        table_item_category_quantity.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        table_item_category_quantity.setToolTip(
+            f"Unit quantities:\n{component.print_category_quantities()}"
+        )
+        current_table.setItem(row_index, col_index, table_item_category_quantity)
+        self.table_components_widgets[component].update(
+            {"unit_quantity": table_item_category_quantity}
+        )
+
+        col_index += 1
+
+        # ITEM QUANTITY
+        table_item_quantity = QTableWidgetItem(f"{component.quantity:,.2f}")
+        table_item_quantity.setFont(self.tables_font)
+        if not component.latest_change_quantity:
+            component.latest_change_quantity = "Nothing recorded"
+        table_item_quantity.setToolTip(component.latest_change_quantity)
+        table_item_quantity.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        current_table.setItem(row_index, col_index, table_item_quantity)
+        self.table_components_widgets[component].update(
+            {"quantity": table_item_quantity}
+        )
+
+        col_index += 1
+
+        # PRICE
+        converted_price: float = (
+            component.price * self.get_exchange_rate()
+            if component.use_exchange_rate
+            else component.price / self.get_exchange_rate()
+        )
+
+        table_item_price = QTableWidgetItem(
+            f"${component.price:,.2f} {'USD' if component.use_exchange_rate else 'CAD'}"
+        )
+        table_item_price.setFont(self.tables_font)
+        table_item_price.setToolTip(
+            f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}\n{component.latest_change_price}"
+        )
+        table_item_price.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        current_table.setItem(
+            row_index,
+            col_index,
+            table_item_price,
+        )
+        self.table_components_widgets[component].update({"price": table_item_price})
+
+        col_index += 1
+
+        # EXCHANGE RATE
+        combo_exchange_rate = ExchangeRateComboBox(
+            parent=self,
+            selected_item="USD" if component.use_exchange_rate else "CAD",
+        )
+        combo_exchange_rate.currentIndexChanged.connect(
+            partial(self.table_changed, row_index)
+        )
+        combo_exchange_rate.setStyleSheet("border-radius: 0px;")
+        # layout.addWidget(combo_exchange_rate)
+        current_table.setCellWidget(row_index, col_index, combo_exchange_rate)
+        self.table_components_widgets[component].update(
+            {"use_exchange_rate": combo_exchange_rate}
+        )
+
+        col_index += 1
+
+        # TOTAL COST
+        table_item_total_cost_in_stock = QTableWidgetItem(
+            f"${component.get_total_cost_in_stock():,.2f} {combo_exchange_rate.currentText()}"
+        )
+        table_item_total_cost_in_stock.setFont(self.tables_font)
+        table_item_total_cost_in_stock.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        current_table.setItem(
+            row_index,
+            col_index,
+            table_item_total_cost_in_stock,
+        )
+        self.table_components_widgets[component].update(
+            {"total_cost_in_stock": table_item_total_cost_in_stock}
+        )
+
+        col_index += 1
+
+        # TOTAL UNIT COST
+        table_item_total_unit_cost = QTableWidgetItem(
+            f"${component.get_total_unit_cost(self.category):,.2f} {combo_exchange_rate.currentText()}"
+        )
+        table_item_total_unit_cost.setFont(self.tables_font)
+        table_item_total_unit_cost.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        current_table.setItem(
+            row_index,
+            col_index,
+            table_item_total_unit_cost,
+        )
+        self.table_components_widgets[component].update(
+            {"total_unit_cost": table_item_total_unit_cost}
+        )
+
+        col_index += 1
+
+        # PRIORITY
+        combo_priority = PriorityComboBox(self, component.priority)
+        combo_priority.setStyleSheet("border-radius: 0px;")
+        if combo_priority.currentText() == "Medium":
+            combo_priority.setStyleSheet(
+                f"""QComboBox{{background-color: {theme_var("medium-priority")}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var("primary-yellow")}}}"""
+            )
+        elif combo_priority.currentText() == "High":
+            combo_priority.setStyleSheet(
+                f"""QComboBox{{background-color: {theme_var("high-priority")}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var("primary-red")}}}"""
+            )
+        combo_priority.currentIndexChanged.connect(
+            partial(self.table_changed, row_index)
+        )
+        current_table.setCellWidget(row_index, col_index, combo_priority)
+        self.table_components_widgets[component].update({"priority": combo_priority})
+
+        col_index += 1
+
+        # SHELF NUMBER
+        table_item_shelf_number = QTableWidgetItem(component.shelf_number)
+        table_item_shelf_number.setFont(self.tables_font)
+        table_item_shelf_number.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        current_table.setItem(row_index, col_index, table_item_shelf_number)
+        self.table_components_widgets[component].update(
+            {"shelf_number": table_item_shelf_number}
+        )
+
+        col_index += 1
+
+        # NOTES
+        text_notes = NotesPlainTextEdit(self, component.notes, "")
+        text_notes.textChanged.connect(partial(self.table_changed, row_index))
+        current_table.setCellWidget(row_index, col_index, text_notes)
+        self.table_components_widgets[component].update({"notes": text_notes})
+
+        col_index += 1
+
+        # PURCHASE ORDER
+        btn_po = POPushButton(self)
+        btn_po.setMenu(self.po_menu)
+        btn_po.setStyleSheet("border-radius: 0px;")
+        current_table.setCellWidget(row_index, col_index, btn_po)
+        self.po_buttons.append(btn_po)
+
+        col_index += 1
+
+        # ORDER WIDGET
+        order_widget = OrderWidget(component, self)
+        order_widget.orderOpened.connect(self.block_table_signals)
+        order_widget.orderClosed.connect(self.unblock_table_signals)
+        current_table.setCellWidget(row_index, col_index, order_widget)
+        self.table_components_widgets[component].update({"order_widget": order_widget})
+
+        self.update_component_row_color(current_table, component)
+
     def load_table(self):
         self.category = self.components_inventory.get_category(
             self.tab_widget.tabText(self.tab_widget.currentIndex())
@@ -491,232 +771,14 @@ class ComponentsTab(QWidget, Ui_Form):
         current_table.clearContents()
         current_table.setRowCount(0)
         self.table_components_widgets.clear()
-        po_menu = QMenu(self)
+        self.po_menu = QMenu(self)
         for po in get_all_po():
-            po_menu.addAction(po, partial(self.open_po, po))
+            self.po_menu.addAction(po, partial(self.open_po, po))
         row_index = 0
         for component in self.components_inventory.components:
             if self.category not in component.categories:
                 continue
-
-            self.table_components_widgets.update({component: {}})
-            self.table_components_widgets[component].update({"row": row_index})
-
-            col_index: int = 0
-
-            current_table.insertRow(row_index)
-            current_table.setRowHeight(row_index, 60)
-
-            # PART NAME
-            table_item_part_name = QTableWidgetItem(component.part_name)
-            table_item_part_name.setFont(self.tables_font)
-            image_path = f"{component.image_path}"  # Adjust path if needed
-
-            tooltip_html = f"""
-            <b>{component.part_name}</b><br>
-            {component.part_number}<br>
-            <img src="{image_path}" width="150"><br>
-            <p>Component is present in:<br>{component.print_categories()}</p>
-            """
-
-            table_item_part_name.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            table_item_part_name.setToolTip(tooltip_html)
-            current_table.setItem(row_index, col_index, table_item_part_name)
-            self.table_components_widgets[component].update(
-                {"part_name": table_item_part_name}
-            )
-
-            col_index += 1
-
-            # PART NUMBER
-            table_item_part_number = QTableWidgetItem(component.part_number)
-            table_item_part_number.setFont(self.tables_font)
-            table_item_part_number.setToolTip(tooltip_html)
-            table_item_part_number.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            current_table.setItem(row_index, col_index, table_item_part_number)
-            self.table_components_widgets[component].update(
-                {"part_number": table_item_part_number}
-            )
-
-            col_index += 1
-
-            # CATEGORY QUANTITY
-            table_item_category_quantity = QTableWidgetItem(
-                f"{component.get_category_quantity(self.category):,.2f}"
-            )
-            table_item_category_quantity.setFont(self.tables_font)
-            table_item_category_quantity.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            table_item_category_quantity.setToolTip(
-                f"Unit quantities:\n{component.print_category_quantities()}"
-            )
-            current_table.setItem(row_index, col_index, table_item_category_quantity)
-            self.table_components_widgets[component].update(
-                {"unit_quantity": table_item_category_quantity}
-            )
-
-            col_index += 1
-
-            # ITEM QUANTITY
-            table_item_quantity = QTableWidgetItem(f"{component.quantity:,.2f}")
-            table_item_quantity.setFont(self.tables_font)
-            if not component.latest_change_quantity:
-                component.latest_change_quantity = "Nothing recorded"
-            table_item_quantity.setToolTip(component.latest_change_quantity)
-            table_item_quantity.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            current_table.setItem(row_index, col_index, table_item_quantity)
-            self.table_components_widgets[component].update(
-                {"quantity": table_item_quantity}
-            )
-
-            col_index += 1
-
-            # PRICE
-            converted_price: float = (
-                component.price * self.get_exchange_rate()
-                if component.use_exchange_rate
-                else component.price / self.get_exchange_rate()
-            )
-
-            table_item_price = QTableWidgetItem(
-                f'${component.price:,.2f} {"USD" if component.use_exchange_rate else "CAD"}'
-            )
-            table_item_price.setFont(self.tables_font)
-            table_item_price.setToolTip(
-                f'${converted_price:,.2f} {"CAD" if component.use_exchange_rate else "USD"}\n{component.latest_change_price}'
-            )
-            table_item_price.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            current_table.setItem(
-                row_index,
-                col_index,
-                table_item_price,
-            )
-            self.table_components_widgets[component].update({"price": table_item_price})
-
-            col_index += 1
-
-            # EXCHANGE RATE
-            combo_exchange_rate = ExchangeRateComboBox(
-                parent=self,
-                selected_item="USD" if component.use_exchange_rate else "CAD",
-            )
-            combo_exchange_rate.currentIndexChanged.connect(
-                partial(self.table_changed, row_index)
-            )
-            combo_exchange_rate.setStyleSheet("border-radius: 0px;")
-            # layout.addWidget(combo_exchange_rate)
-            current_table.setCellWidget(row_index, col_index, combo_exchange_rate)
-            self.table_components_widgets[component].update(
-                {"use_exchange_rate": combo_exchange_rate}
-            )
-
-            col_index += 1
-
-            # TOTAL COST
-            table_item_total_cost_in_stock = QTableWidgetItem(
-                f"${component.get_total_cost_in_stock():,.2f} {combo_exchange_rate.currentText()}"
-            )
-            table_item_total_cost_in_stock.setFont(self.tables_font)
-            table_item_total_cost_in_stock.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            current_table.setItem(
-                row_index,
-                col_index,
-                table_item_total_cost_in_stock,
-            )
-            self.table_components_widgets[component].update(
-                {"total_cost_in_stock": table_item_total_cost_in_stock}
-            )
-
-            col_index += 1
-
-            # TOTAL UNIT COST
-            table_item_total_unit_cost = QTableWidgetItem(
-                f"${component.get_total_unit_cost(self.category):,.2f} {combo_exchange_rate.currentText()}"
-            )
-            table_item_total_unit_cost.setFont(self.tables_font)
-            table_item_total_unit_cost.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            current_table.setItem(
-                row_index,
-                col_index,
-                table_item_total_unit_cost,
-            )
-            self.table_components_widgets[component].update(
-                {"total_unit_cost": table_item_total_unit_cost}
-            )
-
-            col_index += 1
-
-            # PRIORITY
-            combo_priority = PriorityComboBox(self, component.priority)
-            combo_priority.setStyleSheet("border-radius: 0px;")
-            if combo_priority.currentText() == "Medium":
-                combo_priority.setStyleSheet(
-                    f"""QComboBox{{background-color: {theme_var('medium-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-yellow')}}}"""
-                )
-            elif combo_priority.currentText() == "High":
-                combo_priority.setStyleSheet(
-                    f"""QComboBox{{background-color: {theme_var('high-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-red')}}}"""
-                )
-            combo_priority.currentIndexChanged.connect(
-                partial(self.table_changed, row_index)
-            )
-            current_table.setCellWidget(row_index, col_index, combo_priority)
-            self.table_components_widgets[component].update(
-                {"priority": combo_priority}
-            )
-
-            col_index += 1
-
-            # SHELF NUMBER
-            table_item_shelf_number = QTableWidgetItem(component.shelf_number)
-            table_item_shelf_number.setFont(self.tables_font)
-            table_item_shelf_number.setTextAlignment(
-                Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-            )
-            current_table.setItem(row_index, col_index, table_item_shelf_number)
-            self.table_components_widgets[component].update(
-                {"shelf_number": table_item_shelf_number}
-            )
-
-            col_index += 1
-
-            # NOTES
-            text_notes = NotesPlainTextEdit(self, component.notes, "")
-            text_notes.textChanged.connect(partial(self.table_changed, row_index))
-            current_table.setCellWidget(row_index, col_index, text_notes)
-            self.table_components_widgets[component].update({"notes": text_notes})
-
-            col_index += 1
-
-            # PURCHASE ORDER
-            btn_po = POPushButton(self)
-            btn_po.setMenu(po_menu)
-            btn_po.setStyleSheet("border-radius: 0px;")
-            current_table.setCellWidget(row_index, col_index, btn_po)
-            self.po_buttons.append(btn_po)
-
-            col_index += 1
-
-            # ORDER WIDGET
-            order_widget = OrderWidget(component, self)
-            order_widget.orderOpened.connect(self.block_table_signals)
-            order_widget.orderClosed.connect(self.unblock_table_signals)
-            current_table.setCellWidget(row_index, col_index, order_widget)
-
-            self.update_component_row_color(current_table, component)
+            self.add_component_to_table(current_table, row_index, component)
 
             row_index += 1
 
@@ -848,13 +910,13 @@ class ComponentsTab(QWidget, Ui_Form):
             == "Medium"
         ):
             self.table_components_widgets[component]["priority"].setStyleSheet(
-                f"""QComboBox{{background-color: {theme_var('medium-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-yellow')}}}"""
+                f"""QComboBox{{background-color: {theme_var("medium-priority")}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var("primary-yellow")}}}"""
             )
         elif (
             self.table_components_widgets[component]["priority"].currentText() == "High"
         ):
             self.table_components_widgets[component]["priority"].setStyleSheet(
-                f"""QComboBox{{background-color: {theme_var('high-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-red')}}}"""
+                f"""QComboBox{{background-color: {theme_var("high-priority")}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var("primary-red")}}}"""
             )
         else:
             self.table_components_widgets[component]["priority"].setStyleSheet(
@@ -867,8 +929,9 @@ class ComponentsTab(QWidget, Ui_Form):
         component.notes = self.table_components_widgets[component][
             "notes"
         ].toPlainText()
-        self.components_inventory.save()
-        self.sync_changes()
+        # self.components_inventory.save_local_copy()
+        # self.sync_changes()
+        self.components_inventory.save_component(component)
         self.category_tables[self.category].blockSignals(True)
         self.table_components_widgets[component]["unit_quantity"].setText(
             f"{component.get_category_quantity(self.category):,.2f}"
@@ -920,8 +983,9 @@ class ComponentsTab(QWidget, Ui_Form):
             )
             if new_part_name and ok:
                 selected_component.part_name = new_part_name
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_component(selected_component)
+                # self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.sort_components()
 
         def rename_part_number():
@@ -936,8 +1000,9 @@ class ComponentsTab(QWidget, Ui_Form):
             )
             if new_part_number_name and ok:
                 selected_component.part_number = new_part_number_name
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_component(selected_component)
+                # self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.sort_components()
 
         def edit_quantity_per_unit():
@@ -955,8 +1020,9 @@ class ComponentsTab(QWidget, Ui_Form):
                 selected_component.set_category_quantity(
                     self.category, new_unit_quantity
                 )
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_component(selected_component)
+                # self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.sort_components()
 
         def edit_quantity_in_stock():
@@ -986,8 +1052,9 @@ class ComponentsTab(QWidget, Ui_Form):
                     msg.setDefaultButton(QMessageBox.StandardButton.Ok)
                     msg.exec()
                     return
-                selected_component.quantity = new_quantity_in_stock
-                self.components_inventory.save()
+                self.components_inventory.save_component(selected_component)
+                # selected_component.quantity = new_quantity_in_stock
+                # self.components_inventory.save_local_copy()
                 self.sync_changes()
                 self.sort_components()
 
@@ -1023,7 +1090,7 @@ class ComponentsTab(QWidget, Ui_Form):
             if existing_components:
                 message = f"The following components will be ignored since they already exist in {new_category.name}:\n"
                 for i, existing_part in enumerate(existing_components):
-                    message += f"  {i+1}. {existing_part.name}\n"
+                    message += f"  {i + 1}. {existing_part.name}\n"
                 msg = QMessageBox(self)
                 msg.setWindowTitle("Exists")
                 msg.setText(message)
@@ -1033,12 +1100,15 @@ class ComponentsTab(QWidget, Ui_Form):
                 response = msg.exec()
                 if response == QMessageBox.StandardButton.Cancel:
                     return
+            components_to_save = []
             for component in selected_components:
                 if component in existing_components:
                     continue
+                components_to_save.append(component)
                 component.move_to_category(self.category, new_category)
-            self.components_inventory.save()
-            self.sync_changes()
+            self.components_inventory.save_components(components_to_save)
+            # self.components_inventory.save_local_copy()
+            # self.sync_changes()
             self.sort_components()
 
         categories = QMenu(menu)
@@ -1062,7 +1132,7 @@ class ComponentsTab(QWidget, Ui_Form):
             if existing_components:
                 message = f"The following laser cut parts will be ignored since they already exist in {new_category.name}:\n"
                 for i, existing_part in enumerate(existing_components):
-                    message += f"  {i+1}. {existing_part.name}\n"
+                    message += f"  {i + 1}. {existing_part.name}\n"
                 msg = QMessageBox(self)
                 msg.setWindowTitle("Exists")
                 msg.setText(message)
@@ -1072,10 +1142,13 @@ class ComponentsTab(QWidget, Ui_Form):
                 response = msg.exec()
                 if response == QMessageBox.StandardButton.Cancel:
                     return
+            components_to_save = []
             for component in selected_components:
                 if component in existing_components:
                     continue
+                components_to_save.append(component)
                 component.add_to_category(new_category)
+            self.components_inventory.save_components(components_to_save)
             self.category_tables[self.category].blockSignals(True)
             self.table_components_widgets[component]["unit_quantity"].setToolTip(
                 f"Unit quantities:\n{component.print_category_quantities()}"
@@ -1087,8 +1160,8 @@ class ComponentsTab(QWidget, Ui_Form):
                 f"{component.part_number}\n\nComponent is present in:\n{component.print_categories()}"
             )
             self.category_tables[self.category].blockSignals(False)
-            self.components_inventory.save()
-            self.sync_changes()
+            # self.components_inventory.save_local_copy()
+            # self.sync_changes()
 
         categories = QMenu(menu)
         categories.setTitle("Add to")
@@ -1111,8 +1184,9 @@ class ComponentsTab(QWidget, Ui_Form):
                     self.components_inventory.remove_component(component)
                 else:
                     component.remove_from_category(self.category)
-            self.components_inventory.save()
-            self.sync_changes()
+            self.components_inventory.save_components(selected_components)
+            # self.components_inventory.save_local_copy()
+            # self.sync_changes()
             self.load_table()
 
         action = QAction(f"Remove from {self.category.name}", self)
@@ -1122,10 +1196,11 @@ class ComponentsTab(QWidget, Ui_Form):
         def delete_selected_parts():
             if not (selected_components := self.get_selected_components()):
                 return
-            for component in selected_components:
-                self.components_inventory.remove_component(component)
-            self.components_inventory.save()
-            self.sync_changes()
+            # for component in selected_components:
+            #     self.components_inventory.remove_component(component)
+            self.components_inventory.remove_components(selected_components)
+            # self.components_inventory.save_local_copy()
+            # self.sync_changes()
             self.load_table()
 
         action = QAction("Delete from inventory", self)
@@ -1224,8 +1299,8 @@ class ComponentsTab(QWidget, Ui_Form):
                 self.components_inventory,
             )
             self.components_inventory.add_component(new_component)
-            self.components_inventory.save()
-            self.sync_changes()
+            # self.components_inventory.save_local_copy()
+            # self.sync_changes()
             self.load_table()
 
     def update_components_costs(self):
@@ -1239,17 +1314,17 @@ class ComponentsTab(QWidget, Ui_Form):
                 else component.price / self.get_exchange_rate()
             )
             table_item["price"].setText(
-                f'${component.price:,.2f} {"USD" if component.use_exchange_rate else "CAD"}'
+                f"${component.price:,.2f} {'USD' if component.use_exchange_rate else 'CAD'}"
             )
             table_item["price"].setToolTip(
-                f'${converted_price:,.2f} {"CAD" if component.use_exchange_rate else "USD"}\n{component.latest_change_price}'
+                f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}\n{component.latest_change_price}"
             )
             table_item["total_cost_in_stock"].setText(
-                f'${component.get_total_cost_in_stock():,.2f} {"USD" if component.use_exchange_rate else "CAD"}'
+                f"${component.get_total_cost_in_stock():,.2f} {'USD' if component.use_exchange_rate else 'CAD'}"
             )
             total_cost_in_stock += component.get_total_cost_in_stock()
             table_item["total_unit_cost"].setText(
-                f'${component.get_total_unit_cost(self.category):,.2f} {"USD" if component.use_exchange_rate else "CAD"}'
+                f"${component.get_total_unit_cost(self.category):,.2f} {'USD' if component.use_exchange_rate else 'CAD'}"
             )
             total_unit_cost += component.get_total_unit_cost(self.category)
         self.category_tables[self.category].blockSignals(False)
@@ -1324,8 +1399,9 @@ class ComponentsTab(QWidget, Ui_Form):
                         set_custom_limit_dialog.get_yellow_limit()
                     )
                     self.update_component_row_color(current_table, component)
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_components(components)
+                # self.components_inventory.save_local_copy()
+                # self.sync_changes()
 
     def change_quantities(self, add_or_remove: str):
         selected_components = self.get_selected_components()
@@ -1354,10 +1430,11 @@ class ComponentsTab(QWidget, Ui_Form):
                 self.category_tables[self.category].blockSignals(False)
                 history_file.add_new_to_category(
                     date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-                    description=f'{"Added" if add_or_remove == "ADD" else "Removed"} a multiple of {multiplier} {"quantity" if multiplier == 1 else "quantities"} from each item in {self.category.name}',
+                    description=f"{'Added' if add_or_remove == 'ADD' else 'Removed'} a multiple of {multiplier} {'quantity' if multiplier == 1 else 'quantities'} from each item in {self.category.name}",
                 )
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_components(selected_components)
+                # self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.update_components_costs()
                 self.select_last_selected_item()
             elif option == "Item":
@@ -1380,8 +1457,9 @@ class ComponentsTab(QWidget, Ui_Form):
                         component.latest_change_quantity
                     )
                 self.category_tables[self.category].blockSignals(False)
-                self.components_inventory.save()
-                self.sync_changes()
+                self.components_inventory.save_components(selected_components)
+                # self.components_inventory.save_local_copy()
+                # self.sync_changes()
                 self.sort_components()
                 self.select_last_selected_item()
 
@@ -1493,7 +1571,7 @@ class ComponentsTab(QWidget, Ui_Form):
         )
         return selected_components
 
-    def get_selected_component(self) -> Component:
+    def get_selected_component(self) -> Component | None:
         selected_row = self.get_selected_row()
         for component, table_items in self.table_components_widgets.items():
             if table_items["row"] == selected_row:

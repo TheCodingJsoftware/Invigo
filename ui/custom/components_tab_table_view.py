@@ -138,7 +138,7 @@ class OrderWidget(QWidget):
                 }
             )
             self.component.add_order(new_order)
-            self.components_tab.components_inventory.save()
+            self.components_tab.components_inventory.save_local_copy()
             self.components_tab.sync_changes()
             self.load_ui()
 
@@ -177,7 +177,7 @@ class OrderWidget(QWidget):
                 order_status_button.setChecked(True)
                 self.orderClosed.emit()
                 return
-            self.components_tab.components_inventory.save()
+            self.components_tab.components_inventory.save_local_copy()
             self.components_tab.sync_changes()
             self.components_tab.sort_components()
             self.components_tab.select_last_selected_item()
@@ -188,7 +188,7 @@ class OrderWidget(QWidget):
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
-        self.components_tab.components_inventory.save()
+        self.components_tab.components_inventory.save_local_copy()
         self.components_tab.sync_changes()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
@@ -393,7 +393,7 @@ class ComponentsTableModel(QAbstractTableModel):
             elif column == ComponentsTableColumns.QUANTITY_IN_STOCK.value:
                 return f"{component.quantity:,.2f}"
             elif column == ComponentsTableColumns.ITEM_PRICE.value:
-                return f'${component.price:,.2f} {"USD" if component.use_exchange_rate else "CAD"}'
+                return f"${component.price:,.2f} {'USD' if component.use_exchange_rate else 'CAD'}"
             elif column == ComponentsTableColumns.USD_CAD.value:
                 return "USD" if component.use_exchange_rate else "CAD"
             elif column == ComponentsTableColumns.TOTAL_COST_IN_STOCK.value:
@@ -429,7 +429,7 @@ class ComponentsTableModel(QAbstractTableModel):
                     if component.use_exchange_rate
                     else component.price / self.get_exchange_rate()
                 )
-                return f'${converted_price:,.2f} {"CAD" if component.use_exchange_rate else "USD"}\n{component.latest_change_price}'
+                return f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}\n{component.latest_change_price}"
             elif index.column() == ComponentsTableColumns.QUANTITY_PER_UNIT.value:
                 return f"Unit quantities:\n{component.print_category_quantities()}"
 
@@ -518,7 +518,7 @@ class ComponentsTableModel(QAbstractTableModel):
             elif column == ComponentsTableColumns.NOTES.value:
                 component.notes = value
             print(f"{component.name}")
-            self.components_inventory.save()
+            self.components_inventory.save_local_copy()
             self.dataChanged.emit(index, index)
             return True
 
@@ -538,13 +538,13 @@ class ComponentsTableModel(QAbstractTableModel):
             converted_price = component.price * self.get_exchange_rate()
         else:
             converted_price = component.price / self.get_exchange_rate()
-        tooltip_text = f'${converted_price:,.2f} {"CAD" if component.use_exchange_rate else "USD"}\n{component.latest_change_price}'
+        tooltip_text = f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}\n{component.latest_change_price}"
         row = self.components_inventory.components.index(component)
         index = self.index(row, ComponentsTableColumns.ITEM_PRICE.value)
         self.setData(index, tooltip_text, Qt.ItemDataRole.ToolTipRole)
         self.setData(
             index,
-            f'${component.price:,.2f} {"USD" if component.use_exchange_rate else "CAD"}',
+            f"${component.price:,.2f} {'USD' if component.use_exchange_rate else 'CAD'}",
             Qt.ItemDataRole.DisplayRole,
         )
 

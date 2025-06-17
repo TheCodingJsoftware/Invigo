@@ -747,7 +747,6 @@ class WorkspaceWidget(QWidget, Ui_Form):
                         workspace_laser_cut_part_group,
                         workspace_laser_cut_part_group_item,
                     )
-        print(f"Success: {response}")
         # self.load_parts_table()
         # self.update_tree_entry()
         # self.load_parts_tree()

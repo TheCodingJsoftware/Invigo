@@ -308,16 +308,18 @@ class NestWidget(QWidget, Ui_Form):
                 laser_cut_part.gauge = new_sheet.thickness
                 laser_cut_part.material = new_sheet.material
             self.updateLaserCutPartSettings.emit(self)
-            self.sheets_inventory.add_sheet(new_sheet)
+            self.sheets_inventory.add_sheet(
+                new_sheet, on_finished=self.update_sheet_status
+            )
             self.sheets_inventory.save_local_copy()
-            self.sync_changes()
+            # self.sync_changes()
             self.changes_made()
             # self.nests_tool_box.setItemText(self.nest_items[nest]["tab_index"], nest.get_name())
             # self.update_laser_cut_parts_price()
             # self.update_scrap_percentage()
             # self.update_sheet_price()
             # self.load_nest_summary()
-            self.update_sheet_status()
+            # self.update_sheet_status()
 
     def update_cutting_time(self):
         self.label_nest_cut_time.setText(self.nest.get_total_cutting_time())

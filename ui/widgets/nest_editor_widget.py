@@ -6,13 +6,21 @@ from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import (QComboBox, QMenu, QMessageBox, QPushButton,
-                             QTableWidget, QTableWidgetItem, QWidget)
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QTableWidget,
+    QTableWidgetItem,
+    QWidget,
+)
 
-from ui.custom.nest_editor_table_widget import (NestEditorPartsTableColumns,
-                                                NestEditorPartsTableWidget)
-from ui.custom_widgets import (ClickableRichTextLabel, MachineCutTimeSpinBox,
-                               RecutButton)
+from ui.custom.nest_editor_table_widget import (
+    NestEditorPartsTableColumns,
+    NestEditorPartsTableWidget,
+)
+from ui.custom_widgets import ClickableRichTextLabel, MachineCutTimeSpinBox, RecutButton
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.dialogs.recut_dialog import RecutDialog
@@ -566,7 +574,7 @@ class NestEditorWidget(QWidget, Ui_Form):
                     "width": add_sheet_dialog.get_width(),
                     "thickness": add_sheet_dialog.get_thickness(),
                     "material": add_sheet_dialog.get_material(),
-                    "latest_change_quantity": f'{os.getlogin().title()} - Sheet was added via nest editor at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}',
+                    "latest_change_quantity": f"{os.getlogin().title()} - Sheet was added via nest editor at {str(datetime.now().strftime('%B %d %A %Y %I:%M:%S %p'))}",
                 },
                 self.sheets_inventory,
             )
@@ -589,10 +597,12 @@ class NestEditorWidget(QWidget, Ui_Form):
             for laser_cut_part in self.nest.laser_cut_parts:
                 laser_cut_part.gauge = new_sheet.thickness
                 laser_cut_part.material = new_sheet.material
-            self.sheets_inventory.add_sheet(new_sheet)
+            self.sheets_inventory.add_sheet(
+                new_sheet, on_finished=self.update_sheet_status
+            )
             self.sheets_inventory.save_local_copy()
-            self.sync_changes()
-            self.update_sheet_status()
+            # self.sync_changes()
+            # self.update_sheet_status()
 
     def load_context_menu(self) -> QMenu:
         menu = QMenu("Options", self)
@@ -666,31 +676,31 @@ class NestEditorWidget(QWidget, Ui_Form):
         button.setStyleSheet(
             f"""
 QPushButton#assembly_button_drop_menu {{
-    border: 1px solid {theme_var('surface')};
-    background-color: {theme_var('surface')};
-    border-radius: {theme_var('border-radius')};
-    color: {theme_var('on-surface')};
+    border: 1px solid {theme_var("surface")};
+    background-color: {theme_var("surface")};
+    border-radius: {theme_var("border-radius")};
+    color: {theme_var("on-surface")};
     text-align: left;
 }}
 /* CLOSED */
 QPushButton:!checked#assembly_button_drop_menu {{
-    color: {theme_var('on-surface')};
-    border: 1px solid {theme_var('outline')};
+    color: {theme_var("on-surface")};
+    border: 1px solid {theme_var("outline")};
 }}
 
 QPushButton:!checked:hover#assembly_button_drop_menu {{
-    background-color: {theme_var('outline-variant')};
+    background-color: {theme_var("outline-variant")};
 }}
 QPushButton:!checked:pressed#assembly_button_drop_menu {{
-    background-color: {theme_var('surface')};
+    background-color: {theme_var("surface")};
 }}
 /* OPENED */
 QPushButton:checked#assembly_button_drop_menu {{
     color: %(inverted_color)s;
     border-color: %(base_color)s;
     background-color: %(base_color)s;
-    border-top-left-radius: {theme_var('border-radius')};
-    border-top-right-radius: {theme_var('border-radius')};
+    border-top-left-radius: {theme_var("border-radius")};
+    border-top-right-radius: {theme_var("border-radius")};
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }}
@@ -718,7 +728,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            background-color: {theme_var('background')};
+            background-color: {theme_var("background")};
             }}"""
             % {"base_color": base_color}
         )

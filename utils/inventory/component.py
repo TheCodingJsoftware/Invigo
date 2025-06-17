@@ -1,5 +1,5 @@
 import copy
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
@@ -28,8 +28,6 @@ class Component(InventoryItem):
         self.red_quantity_limit: float = 0.0
         self.yellow_quantity_limit: float = 0.0
         self.orders: list[Order] = []
-
-        # NOTE Non serializable variables
         self.id = -1
 
         self.load_data(data)
@@ -74,6 +72,7 @@ class Component(InventoryItem):
         if isinstance(category, str):
             category = self.components_inventory.get_category(category)
         self.category_quantities[category] = quantity
+        return quantity
 
     def print_category_quantities(self) -> str:
         return "".join(
@@ -81,29 +80,28 @@ class Component(InventoryItem):
             for i, category in enumerate(self.categories)
         )
 
-    def load_data(self, data: dict[str, Union[str, int, float, bool]]):
+    def load_data(self, data: dict):
+        self.id = data.get("id", -1)
         self.part_number = data.get("part_number", "")
         self.name = self.part_number
-        self.quantity: float = data.get("quantity", 0.0)
+        self.quantity = data.get("quantity", 0.0)
         self.category_quantities.clear()
         for category_name, unit_quantity in data.get("category_quantities", {}).items():
             category = self.components_inventory.get_category(category_name)
             self.category_quantities.update({category: unit_quantity})
-        self.part_name: str = data.get("part_name", "")
-        self.price: float = data.get("price", 0.0)
-        self.use_exchange_rate: bool = data.get("use_exchange_rate", False)
-        self.priority: int = data.get("priority", 0)
-        self.shelf_number: str = data.get("shelf_number", "")
-        self.notes: str = data.get("notes", "")
-        self.image_path: str = data.get("image_path", "")
-        self.latest_change_quantity: str = data.get(
+        self.part_name = data.get("part_name", "")
+        self.price = data.get("price", 0.0)
+        self.use_exchange_rate = data.get("use_exchange_rate", False)
+        self.priority = data.get("priority", 0)
+        self.shelf_number = data.get("shelf_number", "")
+        self.notes = data.get("notes", "")
+        self.image_path = data.get("image_path", "")
+        self.latest_change_quantity = data.get(
             "latest_change_quantity", "Nothing recorded"
         )
-        self.latest_change_price: str = data.get(
-            "latest_change_price", "Nothing recorded"
-        )
-        self.red_quantity_limit: float = data.get("red_quantity_limit", 10.0)
-        self.yellow_quantity_limit: float = data.get("yellow_quantity_limit", 20.0)
+        self.latest_change_price = data.get("latest_change_price", "Nothing recorded")
+        self.red_quantity_limit = data.get("red_quantity_limit", 10.0)
+        self.yellow_quantity_limit = data.get("yellow_quantity_limit", 20.0)
 
         self.orders.clear()
         for order_data in data.get("orders", []):
@@ -119,8 +117,9 @@ class Component(InventoryItem):
     def get_copy(self) -> "Component":
         return copy.deepcopy(self)
 
-    def to_dict(self) -> dict[str, dict]:
+    def to_dict(self) -> dict:
         return {
+            "id": self.id,
             "name": self.name,
             "part_number": self.part_number,
             "part_name": self.part_name,

@@ -32,6 +32,7 @@ class LaserCutPart(InventoryItem):
             self.laser_cut_inventory.workspace_settings
         )
 
+        self.id = -1
         self.quantity: int = 0
         self.red_quantity_limit: int = 10
         self.yellow_quantity_limit: int = 20
@@ -67,40 +68,37 @@ class LaserCutPart(InventoryItem):
         self.recoat_count: int = 0
 
         self.uses_primer: bool = False
-        self.primer_name: str = None
-        self.primer_item: Primer = None
+        self.primer_name: str = ""
+        self.primer_item: Primer | None = None
         self.primer_overspray: float = 66.67
         self.cost_for_primer: float = 0.0
 
         self.uses_paint: bool = False
-        self.paint_name: str = None
-        self.paint_item: Paint = None
+        self.paint_name: str = ""
+        self.paint_item: Paint | None = None
         self.paint_overspray: float = 66.67
         self.cost_for_paint: float = 0.0
 
         self.uses_powder: bool = False
-        self.powder_name: str = None
-        self.powder_item: Powder = None
+        self.powder_name: str = ""
+        self.powder_item: Powder | None = None
         self.powder_transfer_efficiency: float = 66.67
         self.cost_for_powder_coating: float = 0.0
 
-        self.flowtag: Flowtag = None
+        self.flowtag: Flowtag | None = None
         self.current_flow_tag_index: int = 0
         self.current_flow_tag_status_index: int = 0
         self.bending_files: list[str] = []
         self.welding_files: list[str] = []
         self.cnc_milling_files: list[str] = []
-        self.timer: FlowtagTimer = None
-        self.flowtag_data: FlowtagData = None
+        self.timer: FlowtagTimer | None = None
+        self.flowtag_data: FlowtagData | None = None
 
         # NOTE Only for Quote Generator and load_nest.py
         self.recut_count_notes: int = 0
-        self.nest: Nest = None
-        self.quantity_on_sheet: int = None
+        self.nest: Nest | None = None
+        self.quantity_on_sheet: int = 0
         self.matched_to_sheet_cost_price: float = 0.0
-
-        # NOTE Non serializable variables
-        self.id = -1
 
         self.load_data(data)
 
@@ -224,6 +222,7 @@ class LaserCutPart(InventoryItem):
         if isinstance(category, str):
             category = self.laser_cut_inventory.get_category(category)
         self.category_quantities[category] = quantity
+        return quantity
 
     def print_category_quantities(self) -> str:
         return "".join(
@@ -231,7 +230,7 @@ class LaserCutPart(InventoryItem):
             for i, category in enumerate(self.categories)
         )
 
-    def load_data(self, data: dict[str, Union[str, int, float, bool]]):
+    def load_data(self, data: dict):
         self.name = data.get("name", "")
         self.quantity = data.get(
             "quantity", 0
@@ -291,9 +290,7 @@ class LaserCutPart(InventoryItem):
         self.recoat = data.get("recoat", False)
         self.recoat_count = data.get("recoat_count", 0)
 
-        self.flowtag = Flowtag(
-            data.get("flow_tag", {}), self.workspace_settings
-        )
+        self.flowtag = Flowtag(data.get("flow_tag", {}), self.workspace_settings)
         self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
         self.current_flow_tag_status_index = data.get(
             "current_flow_tag_status_index", 0
@@ -326,7 +323,7 @@ class LaserCutPart(InventoryItem):
             if category.name in categories:
                 self.categories.append(category)
 
-    def load_part_data(self, data: dict[str, Union[str, int, float, bool]]):
+    def load_part_data(self, data: dict):
         """Only updates part information from nest files."""
         self.machine_time = data.get("machine_time", 0.0)
         self.weight = data.get("weight", 0.0)
@@ -342,12 +339,12 @@ class LaserCutPart(InventoryItem):
         self.sheet_dim = data.get("sheet_dim", "")
         self.part_dim = data.get("part_dim", "")
         self.geofile_name = data.get("geofile_name", "")
-        self.quantity_on_sheet = data.get("quantity_on_sheet")
+        self.quantity_on_sheet = data.get("quantity_on_sheet", 0)
 
     def get_copy(self) -> "LaserCutPart":
         return copy.deepcopy(self)
 
-    def to_dict(self) -> dict[str, dict]:
+    def to_dict(self) -> dict:
         return {
             "name": self.name,
             "part_number": self.part_number,

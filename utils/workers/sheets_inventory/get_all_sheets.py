@@ -1,4 +1,3 @@
-# get_all_sheets_worker.py
 import msgspec
 import requests
 

@@ -1,4 +1,3 @@
-# get_sheet_categories_worker.py
 import msgspec
 import requests
 

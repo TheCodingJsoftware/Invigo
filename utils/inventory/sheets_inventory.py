@@ -1,4 +1,4 @@
-from typing import Callable, Union
+from typing import Callable
 
 import msgspec
 from natsort import natsorted
@@ -14,8 +14,8 @@ from utils.workers.sheets_inventory.get_all_sheets import GetAllSheetsWorker
 from utils.workers.sheets_inventory.get_categories import GetSheetCategoriesWorker
 from utils.workers.sheets_inventory.get_sheet import GetSheetWorker
 from utils.workers.sheets_inventory.remove_sheets import RemoveSheetsWorker
-from utils.workers.sheets_inventory.update_sheet_thread import (
-    UpdateSheetWorker,
+from utils.workers.sheets_inventory.update_sheets import (
+    UpdateSheetsWorker,
 )
 
 
@@ -27,10 +27,11 @@ class SheetsInventory(Inventory):
         self.threads: list[QThread] = []
 
     def get_all_sheets_material(self, sheets: list[Sheet] | None = None) -> list[str]:
+        materials: set[str] = set()
         if sheets:
-            materials: set[str] = {sheet.material for sheet in sheets}
+            materials = {sheet.material for sheet in sheets}
         else:
-            materials: set[str] = {sheet.material for sheet in self.sheets}
+            materials = {sheet.material for sheet in self.sheets}
         return list(materials)
 
     def get_sheets_by_category(self, category: str | Category) -> list[Sheet]:
@@ -40,15 +41,16 @@ class SheetsInventory(Inventory):
 
     def add_sheet(self, new_sheet: Sheet, on_finished: Callable | None = None):
         worker = AddSheetWorker(new_sheet)
-        worker.signals.success.connect(self.add_sheet_thread_finished)
+        worker.signals.success.connect(self.add_sheet_thread_response)
         if on_finished:
-            worker.signals.success.connect(on_finished)
+            worker.signals.finished.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
 
-    def add_sheet_thread_finished(self, response: dict, status_code: int, sheet: Sheet):
-        if status_code == 200:
-            self.sheets.append(sheet)
-            # self.save_local_copy()
+    def add_sheet_thread_response(self, response: tuple[dict, Sheet]):
+        data, sheet = response
+        sheet.id = data["id"]
+        self.sheets.append(sheet)
+        # self.save_local_copy()
 
     def remove_sheets(self, sheets: list[Sheet], on_finished: Callable | None = None):
         worker = RemoveSheetsWorker(sheets)
@@ -58,32 +60,26 @@ class SheetsInventory(Inventory):
         QThreadPool.globalInstance().start(worker)
 
     def remove_sheet(self, sheet: Sheet, on_finished: Callable | None = None):
-        worker = RemoveSheetsWorker([sheet])
-        worker.signals.success.connect(self.sheets_removed_responsed)
-        if on_finished:
-            worker.signals.success.connect(on_finished)
-        QThreadPool.globalInstance().start(worker)
+        self.remove_sheets([sheet], on_finished)
 
-    def sheets_removed_responsed(
-        self, response: dict, status_code: int, sheets: list[Sheet]
-    ):
-        if status_code == 200:
-            for sheet in sheets:
-                self.sheets.remove(sheet)
+    def sheets_removed_responsed(self, response: tuple[dict, list[Sheet]]):
+        data, sheets = response
+        for sheet in sheets:
+            self.sheets.remove(sheet)
             # self.save_local_copy()
 
     def save_sheet(self, sheet: Sheet):
-        worker = UpdateSheetWorker(sheet)
-        worker.signals.success.connect(self.save_sheet_response)
+        self.save_sheets([sheet])
+
+    def save_sheets(self, sheets: list[Sheet]):
+        worker = UpdateSheetsWorker(sheets)
+        worker.signals.success.connect(self.save_local_copy)
         QThreadPool.globalInstance().start(worker)
 
     def get_sheet(self, sheet_id: int | str, on_finished: Callable | None = None):
         worker = GetSheetWorker(sheet_id)
         worker.signals.success.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
-
-    def save_sheet_response(self, response: dict):
-        self.save_local_copy()
 
     def update_sheet_data(self, sheet_id: int, data: dict) -> Sheet | None:
         for sheet in self.sheets:
@@ -97,16 +93,18 @@ class SheetsInventory(Inventory):
     ) -> Category:
         new_category = Category(new_category_name)
         super().add_category(new_category)
-        for sheet in self.get_sheets_by_category(category_to_duplicate):
+        sheets_to_duplicate = self.get_sheets_by_category(category_to_duplicate)
+        for sheet in sheets_to_duplicate:
             sheet.add_to_category(new_category)
-            self.save_sheet(sheet)
+        self.save_sheets(sheets_to_duplicate)
         return new_category
 
     def delete_category(self, category: str | Category) -> Category:
         deleted_category = super().delete_category(category)
-        for sheet in self.get_sheets_by_category(deleted_category):
+        sheets_to_remove = self.get_sheets_by_category(deleted_category)
+        for sheet in sheets_to_remove:
             sheet.remove_from_category(deleted_category)
-            self.save_sheet(sheet)
+        self.save_sheets(sheets_to_remove)
         return deleted_category
 
     def get_sheet_cost(self, sheet: Sheet) -> float:
@@ -172,7 +170,7 @@ class SheetsInventory(Inventory):
         self.save_local_copy()
         next_step()
 
-    def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:
+    def to_dict(self) -> dict:
         return {
             "categories": self.categories.to_dict(),
             "sheets": [sheet.to_dict() for sheet in self.sheets],

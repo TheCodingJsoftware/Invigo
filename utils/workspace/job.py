@@ -269,12 +269,15 @@ class Job:
 
         self.laser_cut_inventory.save()
 
+        components_to_save = []
         for component in self.get_all_components():
             if inventory_component := self.components_inventory.get_component_by_name(
                 component.name
             ):
                 inventory_component.image_path = component.image_path
-        self.components_inventory.save()
+                components_to_save.append(inventory_component)
+        # self.components_inventory.save_local_copy()
+        self.components_inventory.save_components(components_to_save)
 
     def is_valid(self) -> tuple[bool, str]:
         for assembly in self.get_all_assemblies():
