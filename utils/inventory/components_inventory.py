@@ -136,7 +136,6 @@ class ComponentsInventory(Inventory):
         for component in self.components:
             if component.id == component_id:
                 component.load_data(data)
-                self.save_component(component)
                 return component
         return None
 
