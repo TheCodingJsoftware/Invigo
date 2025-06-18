@@ -2999,18 +2999,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
                 QThreadPool.globalInstance().start(get_workspace_entry_worker)
             elif "sheets_inventory/get_sheet" in responses[0]:
-                self.sheets_inventory.get_sheet(
-                    responses[0].split("/")[-1], on_finished=self.get_sheet_response
-                )
+                for response in responses:
+                    self.sheets_inventory.get_sheet(
+                        response.split("/")[-1], on_finished=self.get_sheet_response
+                    )
             elif "sheets_inventory/get_all" in responses[0]:
                 self.should_update_sheets_in_inventory_tab = True
                 self.sheets_inventory.load_data(
                     on_loaded=self.update_sheets_inventory_tab
                 )
             elif "components_inventory/get_component" in responses[0]:
-                self.components_inventory.get_component(
-                    responses[0].split("/")[-1], on_finished=self.get_component_response
-                )
+                for response in responses:
+                    self.components_inventory.get_component(
+                        response.split("/")[-1], on_finished=self.get_component_response
+                    )
             elif "components_inventory/get_all" in responses[0]:
                 self.components_inventory.load_data(
                     on_loaded=self.update_components_inventory_tab

@@ -520,6 +520,9 @@ class ComponentsTab(QWidget, Ui_Form):
         self.table_components_widgets[component]["quantity"].setText(
             f"{component.quantity:,.2f}"
         )
+        self.table_components_widgets[component]["quantity"].setToolTip(
+            component.latest_change_quantity
+        )
         self.table_components_widgets[component]["price"].setText(
             f"${component.price:,.2f}"
         )
@@ -531,24 +534,34 @@ class ComponentsTab(QWidget, Ui_Form):
         self.table_components_widgets[component]["notes"].setPlainText(component.notes)
         self.table_components_widgets[component]["notes"].blockSignals(False)
 
-        self.table_components_widgets[component]["modified_date"].setText(
-            component.latest_change_quantity
-        )
-
         self.table_components_widgets[component]["priority"].blockSignals(True)
         self.table_components_widgets[component]["priority"].setCurrentIndex(
             component.priority
         )
+        if (
+            self.table_components_widgets[component]["priority"].currentText()
+            == "Medium"
+        ):
+            self.table_components_widgets[component]["priority"].setStyleSheet(
+                f"""QComboBox{{background-color: {theme_var("medium-priority")}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var("primary-yellow")}}}"""
+            )
+        elif (
+            self.table_components_widgets[component]["priority"].currentText() == "High"
+        ):
+            self.table_components_widgets[component]["priority"].setStyleSheet(
+                f"""QComboBox{{background-color: {theme_var("high-priority")}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var("primary-red")}}}"""
+            )
         self.table_components_widgets[component]["priority"].blockSignals(True)
 
-        self.table_components_widgets[component]["exchange_rate"].blockSignals(True)
-        self.table_components_widgets[component]["exchange_rate"].setCurrentText(
+        self.table_components_widgets[component]["use_exchange_rate"].blockSignals(True)
+        self.table_components_widgets[component]["use_exchange_rate"].setCurrentText(
             "USD" if component.use_exchange_rate else "CAD"
         )
-        self.table_components_widgets[component]["exchange_rate"].blockSignals(True)
+        self.table_components_widgets[component]["use_exchange_rate"].blockSignals(True)
 
         self.table_components_widgets[component]["order_widget"].load_ui()
         self.update_components_costs()
+        self.update_category_total_stock_costs()
         self.update_component_row_color(current_table, component)
 
     def add_component_to_table(
