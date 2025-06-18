@@ -526,16 +526,27 @@ class ComponentsTab(QWidget, Ui_Form):
         self.table_components_widgets[component]["shelf_number"].setText(
             component.shelf_number
         )
+
+        self.table_components_widgets[component]["notes"].blockSignals(True)
         self.table_components_widgets[component]["notes"].setPlainText(component.notes)
+        self.table_components_widgets[component]["notes"].blockSignals(False)
+
         self.table_components_widgets[component]["modified_date"].setText(
             component.latest_change_quantity
         )
+
+        self.table_components_widgets[component]["priority"].blockSignals(True)
         self.table_components_widgets[component]["priority"].setCurrentIndex(
             component.priority
         )
+        self.table_components_widgets[component]["priority"].blockSignals(True)
+
+        self.table_components_widgets[component]["exchange_rate"].blockSignals(True)
         self.table_components_widgets[component]["exchange_rate"].setCurrentText(
             "USD" if component.use_exchange_rate else "CAD"
         )
+        self.table_components_widgets[component]["exchange_rate"].blockSignals(True)
+
         self.table_components_widgets[component]["order_widget"].load_ui()
         self.update_components_costs()
         self.update_component_row_color(current_table, component)
