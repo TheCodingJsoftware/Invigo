@@ -2,7 +2,7 @@ import contextlib
 import os
 from datetime import datetime
 from functools import partial
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 import sympy
 from natsort import natsorted
@@ -273,7 +273,7 @@ class PaintSettingsWidget(QWidget):
         )
 
         self.parent.resizeColumnsToContents()
-        self.laser_cut_part.laser_cut_inventory.save()
+        self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
         self.parent.parent.parent.sync_changes()
 
 
@@ -350,7 +350,7 @@ class PaintWidget(QWidget):
         )
 
         self.parent.resizeColumnsToContents()
-        self.laser_cut_part.laser_cut_inventory.save()
+        self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
         self.parent.parent.parent.sync_changes()
 
 
@@ -382,8 +382,10 @@ class LaserCutTab(QWidget, Ui_Form):
         self.setupUi(self)
 
         self.parent: MainWindow = parent
-        self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
-        self.paint_inventory = self.laser_cut_inventory.paint_inventory
+        self.laser_cut_parts_inventory: LaserCutInventory = (
+            self.parent.laser_cut_parts_inventory
+        )
+        self.paint_inventory = self.laser_cut_parts_inventory.paint_inventory
         self.sheet_settings: SheetSettings = self.parent.sheet_settings
 
         self.settings_file = Settings()
@@ -394,7 +396,8 @@ class LaserCutTab(QWidget, Ui_Form):
         self.finished_loading: bool = False
         self.category_tables: dict[Category, LaserCutPartsTableWidget] = {}
         self.table_laser_cut_parts_widgets: dict[
-            LaserCutPart, dict[str, QTableWidgetItem]
+            LaserCutPart,
+            dict[str, QTableWidgetItem | PaintWidget | PaintSettingsWidget],
         ] = {}
         self.laser_cut_parts_filter: dict[str, list[FilterButton]] = {}
 
@@ -472,7 +475,7 @@ class LaserCutTab(QWidget, Ui_Form):
 
         self.lineEdit_search_parts_in_inventory.returnPressed.connect(self.load_table)
         autofill_search_options = natsorted(
-            self.laser_cut_inventory.get_all_part_names()
+            self.laser_cut_parts_inventory.get_all_part_names()
         )
         completer = QCompleter(autofill_search_options, self)
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
@@ -497,14 +500,14 @@ class LaserCutTab(QWidget, Ui_Form):
             return
         if new_category_name and ok:
             new_category = Category(new_category_name)
-            self.laser_cut_inventory.add_category(new_category)
+            self.laser_cut_parts_inventory.add_category(new_category)
             table = LaserCutPartsTableWidget(self.tab_widget)
             self.category_tables.update({new_category: table})
             self.tab_widget.addTab(table, new_category.name)
             table.rowChanged.connect(self.table_changed)
             table.cellPressed.connect(self.table_selected_changed)
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+            # self.laser_cut_parts_inventory.save_local_copy()
+            # self.sync_changes()
             self.load_categories()
             self.restore_last_selected_tab()
 
@@ -513,7 +516,10 @@ class LaserCutTab(QWidget, Ui_Form):
             self,
             "Remove Category",
             "Select a category to remove",
-            [category.name for category in self.laser_cut_inventory.get_categories()],
+            [
+                category.name
+                for category in self.laser_cut_parts_inventory.get_categories()
+            ],
             self.tab_widget.currentIndex(),
             False,
         )
@@ -525,15 +531,17 @@ class LaserCutTab(QWidget, Ui_Form):
             msg.exec()
             return
         if category_to_remove and ok:
-            category = self.laser_cut_inventory.delete_category(category_to_remove)
+            category = self.laser_cut_parts_inventory.delete_category(
+                category_to_remove
+            )
             tab_index_to_remove = self.tab_widget.get_tab_order().index(
                 category_to_remove
             )
             self.tab_widget.removeTab(tab_index_to_remove)
             self.clear_layout(self.category_tables[category])
             del self.category_tables[category]
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+            # self.laser_cut_parts_inventory.save_local_copy()
+            # self.sync_changes()
             self.load_categories()
             self.restore_last_selected_tab()
 
@@ -545,7 +553,7 @@ class LaserCutTab(QWidget, Ui_Form):
             f"Delete, duplicate, or rename: {self.category.name}.",
             self.category.name,
             self.category,
-            self.laser_cut_inventory,
+            self.laser_cut_parts_inventory,
             self,
         )
         if edit_dialog.exec():
@@ -555,10 +563,10 @@ class LaserCutTab(QWidget, Ui_Form):
                 new_name = input_text
                 if new_name == self.category.name:
                     new_name += " - Copy"
-                new_category = self.laser_cut_inventory.duplicate_category(
+                new_category = self.laser_cut_parts_inventory.duplicate_category(
                     self.category, new_name
                 )
-                self.laser_cut_inventory.add_category(new_category)
+                self.laser_cut_parts_inventory.add_category(new_category)
                 table = LaserCutPartsTableWidget(self.tab_widget)
                 self.category_tables.update({new_category: table})
                 self.tab_widget.insertTab(
@@ -566,24 +574,26 @@ class LaserCutTab(QWidget, Ui_Form):
                 )
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
-                self.laser_cut_inventory.save()
-                self.sync_changes()
+                # self.laser_cut_parts_inventory.save_local_copy()
+                # self.sync_changes()
                 self.load_categories()
                 self.restore_last_selected_tab()
             elif action == "RENAME":
-                self.category.rename(input_text)
+                self.laser_cut_parts_inventory.rename_category(
+                    self.category, input_text
+                )
                 self.tab_widget.setTabText(self.tab_widget.currentIndex(), input_text)
-                self.laser_cut_inventory.save()
-                self.sync_changes()
+                # self.laser_cut_parts_inventory.save_local_copy()
+                # self.sync_changes()
                 self.load_categories()
                 self.restore_last_selected_tab()
             elif action == "DELETE":
                 self.clear_layout(self.category_tables[self.category])
                 del self.category_tables[self.category]
-                self.laser_cut_inventory.delete_category(self.category)
+                self.laser_cut_parts_inventory.delete_category(self.category)
                 self.tab_widget.removeTab(self.tab_widget.currentIndex())
-                self.laser_cut_inventory.save()
-                self.sync_changes()
+                # self.laser_cut_parts_inventory.save_local_copy()
+                # self.sync_changes()
                 self.load_categories()
                 self.restore_last_selected_tab()
 
@@ -592,7 +602,8 @@ class LaserCutTab(QWidget, Ui_Form):
         self.tab_widget.clear()
         self.category_tables.clear()
         all_categories = [
-            category.name for category in self.laser_cut_inventory.get_categories()
+            category.name
+            for category in self.laser_cut_parts_inventory.get_categories()
         ]
         try:
             tab_order: list[str] = self.settings_file.get_value("category_tabs_order")[
@@ -607,7 +618,7 @@ class LaserCutTab(QWidget, Ui_Form):
                 tab_order.append(category)
 
         for tab in tab_order:
-            if category := self.laser_cut_inventory.get_category(tab):
+            if category := self.laser_cut_parts_inventory.get_category(tab):
                 table = LaserCutPartsTableWidget(self.tab_widget)
                 self.category_tables.update({category: table})
                 self.tab_widget.addTab(table, category.name)
@@ -625,8 +636,222 @@ class LaserCutTab(QWidget, Ui_Form):
         # NOTE I know, just testing
         # self.update_category_total_stock_costs()
 
+    def update_laser_cut_part(self, laser_cut_part_data: dict):
+        if (
+            update_laser_cut_part
+            := self.laser_cut_parts_inventory.update_laser_cut_part_data(
+                laser_cut_part_data["id"], laser_cut_part_data
+            )
+        ):
+            with contextlib.suppress(
+                KeyError
+            ):  # This happens when the updated laser_cut_part is not currently loaded. The UI will be updated when they switch tabs as the data for the laser_cut_part is updated.
+                self.update_laser_cut_part_table(
+                    self.category_tables[self.category], update_laser_cut_part
+                )
+        else:  # Meaning the laser_cut_part just got added
+            # I don't think this will ever run.
+            laser_cut_part = LaserCutPart(
+                laser_cut_part_data, self.laser_cut_parts_inventory
+            )
+            self.laser_cut_parts_inventory.add_laser_cut_part(laser_cut_part)
+            self.add_laser_cut_part_to_table(
+                self.category_tables[self.category],
+                self.category_tables[self.category].rowCount(),
+                laser_cut_part,
+            )
+
+    def update_laser_cut_part_table(
+        self, current_table: LaserCutPartsTableWidget, laser_cut_part: LaserCutPart
+    ):
+        self.table_laser_cut_parts_widgets[laser_cut_part]["name"].setText(
+            laser_cut_part.name
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part]["price"].setText(
+            f"${laser_cut_part.price:,.2f}"
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setText(
+            f"{laser_cut_part.get_category_quantity(self.category):,.2f}"
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(
+            f"Unit quantities:\n{laser_cut_part.print_category_quantities()}"
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].setText(
+            f"{laser_cut_part.quantity:,.2f}"
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part]["total_cost"].setText(
+            f"${(laser_cut_part.price * laser_cut_part.quantity):,.2f}"
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part]["shelf_number"].setText(
+            laser_cut_part.shelf_number
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(
+            laser_cut_part.modified_date
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part][
+            "paint_widget"
+        ].update_paint()
+
+        self.table_laser_cut_parts_widgets[laser_cut_part][
+            "paint_settings_widget"
+        ].update_paint_settings()
+        self.update_all_laser_cut_parts_costs()
+        self.update_category_total_stock_costs()
+        self.update_laser_cut_part_row_color(current_table, laser_cut_part)
+
+    def add_laser_cut_part_to_table(
+        self,
+        current_table: LaserCutPartsTableWidget,
+        row_index: int,
+        laser_cut_part: LaserCutPart,
+    ):
+        current_table.insertRow(row_index)
+        current_table.setRowHeight(row_index, 80)
+
+        self.table_laser_cut_parts_widgets.update({laser_cut_part: {}})
+        self.table_laser_cut_parts_widgets[laser_cut_part].update({"row": row_index})
+
+        table_item_name = QTableWidgetItem(laser_cut_part.name)
+        table_item_name.setFont(self.tables_font)
+        image_path = f"images/{laser_cut_part.image_index}"
+        tooltip_html = f"""
+        <b>{laser_cut_part.geofile_name}</b><br>
+        <img src="{image_path}" width="150"><br>
+        <p>Laser cut part is present in:<br>{laser_cut_part.print_categories()}</p>
+        """
+
+        table_item_name.setToolTip(tooltip_html)
+        current_table.setItem(
+            row_index, current_table.part_name_column, table_item_name
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"name": table_item_name}
+        )
+
+        # PRICE
+        table_item_price = QTableWidgetItem(f"${laser_cut_part.price:,.2f}")
+        table_item_price.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        table_item_price.setFont(self.tables_font)
+        current_table.setItem(row_index, current_table.price_column, table_item_price)
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"price": table_item_price}
+        )
+
+        # CATEGORY QUANTITY
+        table_item_category_quantity = QTableWidgetItem(
+            f"{laser_cut_part.get_category_quantity(self.category):,.2f}"
+        )
+        table_item_category_quantity.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        table_item_category_quantity.setFont(self.tables_font)
+        table_item_category_quantity.setToolTip(
+            f"Unit quantities:\n{laser_cut_part.print_category_quantities()}"
+        )
+        current_table.setItem(
+            row_index,
+            current_table.unit_quantity_column,
+            table_item_category_quantity,
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"unit_quantity": table_item_category_quantity}
+        )
+
+        # QUANTITY
+        table_item_quantity = QTableWidgetItem(f"{laser_cut_part.quantity:,.2f}")
+        table_item_quantity.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        table_item_quantity.setFont(self.tables_font)
+        current_table.setItem(
+            row_index, current_table.quantity_column, table_item_quantity
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"quantity": table_item_quantity}
+        )
+
+        # TOTAL COST
+        table_item_total_cost = QTableWidgetItem(
+            f"${(laser_cut_part.price * laser_cut_part.quantity):,.2f}"
+        )
+        table_item_total_cost.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        table_item_total_cost.setFont(self.tables_font)
+        current_table.setItem(
+            row_index,
+            current_table.total_cost_in_stock_column,
+            table_item_total_cost,
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"total_cost": table_item_total_cost}
+        )
+
+        # PAINT SETTINGS
+        paint_settings_widget = PaintSettingsWidget(laser_cut_part, current_table)
+        current_table.setCellWidget(
+            row_index,
+            current_table.paint_settings_column,
+            paint_settings_widget,
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"paint_settings_widget": paint_settings_widget}
+        )
+        # PAINT
+        paint_widget = PaintWidget(laser_cut_part, paint_settings_widget, current_table)
+        current_table.setCellWidget(
+            row_index,
+            current_table.paint_column,
+            paint_widget,
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"paint_widget": paint_widget}
+        )
+        # SHELF NUMBER
+        table_item_shelf_number = QTableWidgetItem(laser_cut_part.shelf_number)
+        table_item_shelf_number.setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
+        )
+        table_item_shelf_number.setFont(self.tables_font)
+        current_table.setItem(
+            row_index,
+            current_table.shelf_number_column,
+            table_item_shelf_number,
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"shelf_number": table_item_shelf_number}
+        )
+
+        # MODFIED DATE
+        table_item_modified_date = QTableWidgetItem(laser_cut_part.modified_date)
+        table_item_modified_date.setFont(self.tables_font)
+        current_table.setItem(
+            row_index,
+            current_table.modified_date_column,
+            table_item_modified_date,
+        )
+        self.table_laser_cut_parts_widgets[laser_cut_part].update(
+            {"modified_date": table_item_modified_date}
+        )
+
+        if self.category.name != "Recut":
+            if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
+                self.set_table_row_color(
+                    current_table,
+                    row_index,
+                    f"{theme_var('table-red-quantity')}",
+                )
+            elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
+                self.set_table_row_color(
+                    current_table,
+                    row_index,
+                    f"{theme_var('table-yellow-quantity')}",
+                )
+
     def load_table(self):
-        self.category: Category = self.laser_cut_inventory.get_category(
+        self.category: Category = self.laser_cut_parts_inventory.get_category(
             self.tab_widget.tabText(self.tab_widget.currentIndex())
         )
         current_table = self.category_tables[self.category]
@@ -635,8 +860,10 @@ class LaserCutTab(QWidget, Ui_Form):
         current_table.setRowCount(0)
         self.table_laser_cut_parts_widgets.clear()
         row_index = 0
-        grouped_laser_cut_parts = self.laser_cut_inventory.get_group_categories(
-            self.laser_cut_inventory.get_laser_cut_parts_by_category(self.category)
+        grouped_laser_cut_parts = self.laser_cut_parts_inventory.get_group_categories(
+            self.laser_cut_parts_inventory.get_laser_cut_parts_by_category(
+                self.category
+            )
         )
         for group, laser_cut_parts in grouped_laser_cut_parts.items():
             group_material = group.split(";")[0]
@@ -703,159 +930,9 @@ class LaserCutTab(QWidget, Ui_Form):
                     if laser_cut_part.gauge not in selected_thicknesses:
                         continue
 
-                current_table.insertRow(row_index)
-                current_table.setRowHeight(row_index, 80)
-
-                self.table_laser_cut_parts_widgets.update({laser_cut_part: {}})
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"row": row_index}
+                self.add_laser_cut_part_to_table(
+                    current_table, row_index, laser_cut_part
                 )
-
-                table_item_name = QTableWidgetItem(laser_cut_part.name)
-                table_item_name.setFont(self.tables_font)
-                image_path = f"images/{laser_cut_part.image_index}"
-                tooltip_html = f"""
-                <b>{laser_cut_part.geofile_name}</b><br>
-                <img src="{image_path}" width="150"><br>
-                <p>Laser cut part is present in:<br>{laser_cut_part.print_categories()}</p>
-                """
-
-                table_item_name.setToolTip(tooltip_html)
-                current_table.setItem(
-                    row_index, current_table.part_name_column, table_item_name
-                )
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"name": table_item_name}
-                )
-
-                # PRICE
-                table_item_price = QTableWidgetItem(f"${laser_cut_part.price:,.2f}")
-                table_item_price.setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                table_item_price.setFont(self.tables_font)
-                current_table.setItem(
-                    row_index, current_table.price_column, table_item_price
-                )
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"price": table_item_price}
-                )
-
-                # CATEGORY QUANTITY
-                table_item_category_quantity = QTableWidgetItem(
-                    f"{laser_cut_part.get_category_quantity(self.category):,.2f}"
-                )
-                table_item_category_quantity.setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                table_item_category_quantity.setFont(self.tables_font)
-                table_item_category_quantity.setToolTip(
-                    f"Unit quantities:\n{laser_cut_part.print_category_quantities()}"
-                )
-                current_table.setItem(
-                    row_index,
-                    current_table.unit_quantity_column,
-                    table_item_category_quantity,
-                )
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"unit_quantity": table_item_category_quantity}
-                )
-
-                # QUANTITY
-                table_item_quantity = QTableWidgetItem(
-                    f"{laser_cut_part.quantity:,.2f}"
-                )
-                table_item_quantity.setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                table_item_quantity.setFont(self.tables_font)
-                current_table.setItem(
-                    row_index, current_table.quantity_column, table_item_quantity
-                )
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"quantity": table_item_quantity}
-                )
-
-                # TOTAL COST
-                table_item_total_cost = QTableWidgetItem(
-                    f"${(laser_cut_part.price*laser_cut_part.quantity):,.2f}"
-                )
-                table_item_total_cost.setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                table_item_total_cost.setFont(self.tables_font)
-                current_table.setItem(
-                    row_index,
-                    current_table.total_cost_in_stock_column,
-                    table_item_total_cost,
-                )
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"total_cost": table_item_total_cost}
-                )
-
-                # PAINT SETTINGS
-                paint_settings_widget = PaintSettingsWidget(
-                    laser_cut_part, current_table
-                )
-                current_table.setCellWidget(
-                    row_index,
-                    current_table.paint_settings_column,
-                    paint_settings_widget,
-                )
-                # PAINT
-                paint_widget = PaintWidget(
-                    laser_cut_part, paint_settings_widget, current_table
-                )
-                current_table.setCellWidget(
-                    row_index,
-                    current_table.paint_column,
-                    paint_widget,
-                )
-
-                # SHELF NUMBER
-                table_item_shelf_number = QTableWidgetItem(laser_cut_part.shelf_number)
-                table_item_shelf_number.setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
-                table_item_shelf_number.setFont(self.tables_font)
-                current_table.setItem(
-                    row_index,
-                    current_table.shelf_number_column,
-                    table_item_shelf_number,
-                )
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"shelf_number": table_item_shelf_number}
-                )
-
-                # MODFIED DATE
-                table_item_modified_date = QTableWidgetItem(
-                    laser_cut_part.modified_date
-                )
-                table_item_modified_date.setFont(self.tables_font)
-                current_table.setItem(
-                    row_index,
-                    current_table.modified_date_column,
-                    table_item_modified_date,
-                )
-                self.table_laser_cut_parts_widgets[laser_cut_part].update(
-                    {"modified_date": table_item_modified_date}
-                )
-
-                if self.category.name != "Recut":
-                    if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
-                        self.set_table_row_color(
-                            current_table,
-                            row_index,
-                            f"{theme_var('table-red-quantity')}",
-                        )
-                    elif (
-                        laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit
-                    ):
-                        self.set_table_row_color(
-                            current_table,
-                            row_index,
-                            f"{theme_var('table-yellow-quantity')}",
-                        )
                 row_index += 1
 
         current_table.blockSignals(False)
@@ -874,6 +951,12 @@ class LaserCutTab(QWidget, Ui_Form):
         self.restore_scroll_position()
 
         self.load_context_menu()
+
+    def block_table_signals(self):
+        self.category_tables[self.category].blockSignals(True)
+
+    def unblock_table_signals(self):
+        self.category_tables[self.category].blockSignals(False)
 
     def load_context_menu(self):
         current_table = self.category_tables[self.category]
@@ -913,7 +996,7 @@ class LaserCutTab(QWidget, Ui_Form):
             if existing_laser_cut_parts:
                 message = f"The following laser cut parts will be ignored since they already exist in {new_category.name}:\n"
                 for i, existing_part in enumerate(existing_laser_cut_parts):
-                    message += f"  {i+1}. {existing_part.name}\n"
+                    message += f"  {i + 1}. {existing_part.name}\n"
                 msg = QMessageBox(self)
                 msg.setWindowTitle("Exists")
                 msg.setText(message)
@@ -923,9 +1006,11 @@ class LaserCutTab(QWidget, Ui_Form):
                 response = msg.exec()
                 if response == QMessageBox.StandardButton.Cancel:
                     return
+            laser_cut_parts_to_save = []
             for laser_cut_part in selected_laser_cut_parts:
                 if laser_cut_part in existing_laser_cut_parts:
                     continue
+                laser_cut_parts_to_save.append(laser_cut_part)
                 laser_cut_part.move_to_category(self.category, new_category)
                 self.category_tables[self.category].blockSignals(True)
                 self.table_laser_cut_parts_widgets[laser_cut_part][
@@ -937,13 +1022,14 @@ class LaserCutTab(QWidget, Ui_Form):
                     f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}"
                 )
                 self.category_tables[self.category].blockSignals(False)
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+            self.laser_cut_parts_inventory.save_laser_cut_parts(laser_cut_parts_to_save)
+            # self.laser_cut_parts_inventory.save_local_copy()
+            # self.sync_changes()
             self.sort_laser_cut_parts()
 
         categories = QMenu(menu)
         categories.setTitle("Move to")
-        for _, category in enumerate(self.laser_cut_inventory.get_categories()):
+        for _, category in enumerate(self.laser_cut_parts_inventory.get_categories()):
             if category.name == "Recut":
                 continue
             action = QAction(category.name, self)
@@ -964,7 +1050,7 @@ class LaserCutTab(QWidget, Ui_Form):
             if existing_laser_cut_parts:
                 message = f"The following laser cut parts will be ignored since they already exist in {new_category.name}:\n"
                 for i, existing_part in enumerate(existing_laser_cut_parts):
-                    message += f"  {i+1}. {existing_part.name}\n"
+                    message += f"  {i + 1}. {existing_part.name}\n"
                 msg = QMessageBox(self)
                 msg.setWindowTitle("Exists")
                 msg.setText(message)
@@ -974,10 +1060,12 @@ class LaserCutTab(QWidget, Ui_Form):
                 response = msg.exec()
                 if response == QMessageBox.StandardButton.Cancel:
                     return
+            laser_cut_parts_to_save = []
             for laser_cut_part in selected_laser_cut_parts:
                 if laser_cut_part in existing_laser_cut_parts:
                     continue
                 laser_cut_part.add_to_category(new_category)
+                laser_cut_parts_to_save.append(laser_cut_part)
                 self.category_tables[self.category].blockSignals(True)
                 self.table_laser_cut_parts_widgets[laser_cut_part][
                     "unit_quantity"
@@ -988,12 +1076,13 @@ class LaserCutTab(QWidget, Ui_Form):
                     f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}"
                 )
                 self.category_tables[self.category].blockSignals(False)
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+            self.laser_cut_parts_inventory.save_laser_cut_parts(laser_cut_parts_to_save)
+            # self.laser_cut_parts_inventory.save_local_copy()
+            # self.sync_changes()
 
         categories = QMenu(menu)
         categories.setTitle("Add to")
-        for _, category in enumerate(self.laser_cut_inventory.get_categories()):
+        for _, category in enumerate(self.laser_cut_parts_inventory.get_categories()):
             if category.name == "Recut":
                 continue
             action = QAction(category.name, self)
@@ -1013,11 +1102,15 @@ class LaserCutTab(QWidget, Ui_Form):
                 laser_cut_part.remove_from_category(self.category)
                 if len(laser_cut_part.categories) == 0:
                     if self.category.name == "Recut":
-                        self.laser_cut_inventory.remove_recut_part(laser_cut_part)
+                        self.laser_cut_parts_inventory.remove_recut_part(laser_cut_part)
                     else:
-                        self.laser_cut_inventory.remove_laser_cut_part(laser_cut_part)
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+                        self.laser_cut_parts_inventory.remove_laser_cut_part(
+                            laser_cut_part
+                        )
+            self.laser_cut_parts_inventory.save_laser_cut_parts(
+                selected_laser_cut_parts
+            )
+            # self.sync_changes()
             self.load_table()
 
         action = QAction(f"Remove from {self.category.name}", self)
@@ -1029,12 +1122,14 @@ class LaserCutTab(QWidget, Ui_Form):
                 return
             if self.category.name == "Recut":
                 for laser_cut_part in selected_laser_cut_parts:
-                    self.laser_cut_inventory.remove_recut_part(laser_cut_part)
+                    self.laser_cut_parts_inventory.remove_recut_part(laser_cut_part)
             else:
                 for laser_cut_part in selected_laser_cut_parts:
-                    self.laser_cut_inventory.remove_laser_cut_part(laser_cut_part)
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+                    self.laser_cut_parts_inventory.remove_laser_cut_part(laser_cut_part)
+            self.laser_cut_parts_inventory.save_laser_cut_parts(
+                selected_laser_cut_parts
+            )
+            # self.sync_changes()
             self.sort_laser_cut_parts()
 
         action = QAction("Delete from inventory", self)
@@ -1045,8 +1140,10 @@ class LaserCutTab(QWidget, Ui_Form):
             if selected_laser_cut_parts := self.get_selected_laser_cut_parts():
                 for laser_cut_part in selected_laser_cut_parts:
                     laser_cut_part.quantity = 0
-                self.laser_cut_inventory.save()
-                self.sync_changes()
+                self.laser_cut_parts_inventory.save_laser_cut_parts(
+                    selected_laser_cut_parts
+                )
+                # self.sync_changes()
                 self.sort_laser_cut_parts()
 
         action = QAction("Set to zero quantity", self)
@@ -1100,7 +1197,7 @@ class LaserCutTab(QWidget, Ui_Form):
                 assembly.add_laser_cut_part(
                     LaserCutPart(
                         laser_cut_part.to_dict(),
-                        self.laser_cut_inventory,
+                        self.laser_cut_parts_inventory,
                     )
                 )
             job.changes_made()
@@ -1160,8 +1257,8 @@ class LaserCutTab(QWidget, Ui_Form):
         ]["shelf_number"].text()
         if old_quantity != laser_cut_part.quantity:
             laser_cut_part.modified_date = f"{os.getlogin().title()} - Manually set to {laser_cut_part.quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-        self.laser_cut_inventory.save()
-        self.sync_changes()
+        self.laser_cut_parts_inventory.save_laser_cut_part(laser_cut_part)
+        # self.sync_changes()
         self.category_tables[self.category].blockSignals(True)
         self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setText(
             f"{laser_cut_part.get_category_quantity(self.category):,.2f}"
@@ -1180,7 +1277,7 @@ class LaserCutTab(QWidget, Ui_Form):
         self.update_laser_cut_prices()
 
     def update_all_laser_cut_parts_costs(self):
-        for laser_cut_part in self.laser_cut_inventory.laser_cut_parts:
+        for laser_cut_part in self.laser_cut_parts_inventory.laser_cut_parts:
             price_per_pound: float = self.sheet_settings.get_price_per_pound(
                 laser_cut_part.material
             )
@@ -1191,25 +1288,28 @@ class LaserCutTab(QWidget, Ui_Form):
                 (laser_cut_part.machine_time * (cost_for_laser / 60))
                 + (laser_cut_part.weight * price_per_pound)
             )
-        self.laser_cut_inventory.save()
-        self.sync_changes()
+        self.laser_cut_parts_inventory.save_laser_cut_parts(
+            self.laser_cut_parts_inventory.laser_cut_parts
+        )
+        # self.laser_cut_parts_inventory.save_local_copy()
+        # self.sync_changes()
 
     def update_laser_cut_prices(self):
         self.category_tables[self.category].blockSignals(True)
         for laser_cut_part, table_items in self.table_laser_cut_parts_widgets.items():
             table_items["price"].setText(f"${laser_cut_part.price:,.2f}")
             table_items["total_cost"].setText(
-                f"${laser_cut_part.price*laser_cut_part.quantity:,.2f}"
+                f"${laser_cut_part.price * laser_cut_part.quantity:,.2f}"
             )
         self.category_tables[self.category].blockSignals(False)
 
     def update_category_total_stock_costs(self):
         summary: dict[str, float] = {
-            category.name: self.laser_cut_inventory.get_category_parts_total_stock_cost(
+            category.name: self.laser_cut_parts_inventory.get_category_parts_total_stock_cost(
                 category
             )
-            for category in self.laser_cut_inventory.get_categories()
-        } | {"Recut": self.laser_cut_inventory.get_recut_parts_total_stock_cost()}
+            for category in self.laser_cut_parts_inventory.get_categories()
+        } | {"Recut": self.laser_cut_parts_inventory.get_recut_parts_total_stock_cost()}
         summary = dict(natsorted(summary.items()))
 
         self.clear_layout(self.gridLayout_laser_cut_parts_summary)
@@ -1241,30 +1341,12 @@ class LaserCutTab(QWidget, Ui_Form):
                     laser_cut_part.yellow_quantity_limit = (
                         set_custom_limit_dialog.get_yellow_limit()
                     )
-                    if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
-                        self.set_table_row_color(
-                            current_table,
-                            self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            f"{theme_var('table-red-quantity')}",
-                        )
-                    elif (
-                        laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit
-                    ):
-                        self.set_table_row_color(
-                            current_table,
-                            self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            f"{theme_var('table-yellow-quantity')}",
-                        )
-                    else:
-                        self.set_table_row_color(
-                            current_table,
-                            self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            theme_var("surface-container-low"),
-                        )
-                self.laser_cut_inventory.save()
-                self.sync_changes()
+                    self.update_laser_cut_part_row_color(current_table, laser_cut_part)
+                self.laser_cut_parts_inventory.save_laser_cut_parts(laser_cut_parts)
+                # self.laser_cut_parts_inventory.save_local_copy()
+                # self.sync_changes()
 
-    def change_quantities(self, add_or_remove: str):
+    def change_quantities(self, add_or_remove: Literal["ADD", "REMOVE"]):
         selected_laser_cut_parts = self.get_selected_laser_cut_parts()
         dialog = ItemsChangeQuantityDialog(
             self.category.name, add_or_remove, selected_laser_cut_parts, self
@@ -1274,6 +1356,7 @@ class LaserCutTab(QWidget, Ui_Form):
             option = dialog.get_option()
             if option == "Category":
                 self.category_tables[self.category].blockSignals(True)
+                laser_cut_parts_to_update = []
                 for (
                     laser_cut_part,
                     tables_item,
@@ -1290,11 +1373,15 @@ class LaserCutTab(QWidget, Ui_Form):
                             multiplier
                             * laser_cut_part.get_category_quantity(self.category)
                         )
+                    laser_cut_parts_to_update.append(laser_cut_part)
                     tables_item["quantity"].setText(str(laser_cut_part.quantity))
                     tables_item["quantity"].setToolTip(laser_cut_part.modified_date)
                 self.category_tables[self.category].blockSignals(False)
-                self.laser_cut_inventory.save()
-                self.sync_changes()
+                # self.laser_cut_parts_inventory.save_local_copy()
+                self.laser_cut_parts_inventory.save_laser_cut_parts(
+                    laser_cut_parts_to_update
+                )
+                # self.sync_changes()
                 self.update_all_laser_cut_parts_costs()
                 self.select_last_selected_item()
             elif option == "Item":
@@ -1305,8 +1392,11 @@ class LaserCutTab(QWidget, Ui_Form):
                     elif add_or_remove == "REMOVE":
                         laser_cut_part.modified_date = f"{os.getlogin().title()} Used: Selected Item - remove quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity - multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                         laser_cut_part.quantity -= multiplier
-                self.laser_cut_inventory.save()
-                self.sync_changes()
+                self.laser_cut_parts_inventory.save_laser_cut_parts(
+                    selected_laser_cut_parts
+                )
+                # self.laser_cut_parts_inventory.save_local_copy()
+                # self.sync_changes()
                 self.sort_laser_cut_parts()
                 self.select_last_selected_item()
 
@@ -1315,9 +1405,9 @@ class LaserCutTab(QWidget, Ui_Form):
             return
         item_dialog = EditLaserCutPart(laser_cut_part, self)
         if item_dialog.exec():
-            self.update_laser_cut_part(item_dialog, laser_cut_part)
+            self.ui_update_laser_cut_part(item_dialog, laser_cut_part)
 
-    def update_laser_cut_part(
+    def ui_update_laser_cut_part(
         self, item_dialog: EditLaserCutPart, laser_cut_part: LaserCutPart
     ):
         new_name = item_dialog.lineEdit_name.text()
@@ -1338,8 +1428,9 @@ class LaserCutTab(QWidget, Ui_Form):
         new_laser_cut_part_data["categories"] = categories  # * to preserve the pointers
         laser_cut_part.name = new_name
         laser_cut_part.load_data(new_laser_cut_part_data)
-        self.laser_cut_inventory.save()
-        self.sync_changes()
+        self.laser_cut_parts_inventory.save_laser_cut_part(laser_cut_part)
+        # self.laser_cut_parts_inventory.save_local_copy()
+        # self.sync_changes()
         self.sort_laser_cut_parts()
 
     def select_last_selected_item(self):
@@ -1424,6 +1515,28 @@ class LaserCutTab(QWidget, Ui_Form):
                 f.write(html)
             self.parent.open_print_selected_parts()
 
+    def update_laser_cut_part_row_color(
+        self, current_table, laser_cut_part: LaserCutPart
+    ):
+        if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
+            self.set_table_row_color(
+                current_table,
+                self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
+                f"{theme_var('table-red-quantity')}",
+            )
+        elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
+            self.set_table_row_color(
+                current_table,
+                self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
+                f"{theme_var('table-yellow-quantity')}",
+            )
+        else:
+            self.set_table_row_color(
+                current_table,
+                self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
+                theme_var("surface-container-low"),
+            )
+
     def set_table_row_color(
         self, table: LaserCutPartsTableWidget, row_index: int, color: str
     ):
@@ -1435,7 +1548,7 @@ class LaserCutTab(QWidget, Ui_Form):
             item.setBackground(QColor(color))
 
     def sort_laser_cut_parts(self):
-        self.laser_cut_inventory.sort_by_quantity()
+        self.laser_cut_parts_inventory.sort_by_quantity()
         self.load_table()
 
     def save_current_tab(self):

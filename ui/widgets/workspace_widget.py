@@ -662,7 +662,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
             # for laser_cut_part in laser_cut_part_group.laser_cut_parts:
             #     self.update_entry(laser_cut_part.id, laser_cut_part)
             # self.workspace.save()
-            self.sync_changes()
+            # self.sync_changes()
         else:
             dialog = RecutDialog(
                 f"Recut: {laser_cut_part_group.base_part.name}",
@@ -681,16 +681,17 @@ class WorkspaceWidget(QWidget, Ui_Form):
                     )
                     new_part.modified_date = f"Added from Workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     self.laser_cut_inventory.add_recut_part(new_part)
-                    self.laser_cut_inventory.save()
+                    # self.laser_cut_inventory.save_local_copy()
                     self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
                     laser_cut_parts_to_update.append(
                         laser_cut_part_group.laser_cut_parts[i]
                     )
+                self.laser_cut_inventory.save_laser_cut_parts(laser_cut_parts_to_update)
                 self.update_entries(laser_cut_parts_to_update)
                 # self.load_parts_table()
                 # self.load_parts_tree()
                 # self.workspace.save()
-                self.sync_changes()
+                # self.sync_changes()
 
     # TODO: How to handle callback such that it loads what is being loaded by the thread?
     def recoat_pressed(self, laser_cut_part_group: WorkspaceLaserCutPartGroup):
@@ -715,11 +716,12 @@ class WorkspaceWidget(QWidget, Ui_Form):
                     laser_cut_parts_to_update.append(
                         laser_cut_part_group.laser_cut_parts[i]
                     )
+                # self.laser_cut_inventory.save_laser_cut_parts(laser_cut_parts_to_update)
                 self.update_entries(laser_cut_parts_to_update)
                 # self.load_parts_table()
                 # self.load_parts_tree()
                 # self.workspace.save()
-                self.sync_changes()
+                # self.sync_changes()
 
     def update_entries(
         self,
@@ -731,7 +733,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         )
         QThreadPool.globalInstance().start(update_workspace_entries_worker)
 
-    # TODO: HANDLE
+    # TODO: HANDLE Assemblies
     def update_entries_response(self, response: dict):
         for job_id, part_names in response["job_name_map"].items():
             for part_name in part_names:
@@ -1075,8 +1077,8 @@ class WorkspaceWidget(QWidget, Ui_Form):
             # self.load_parts_table()
             # self.load_parts_tree()
             # self.workspace.save()
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+            # self.laser_cut_inventory.save_local_copy()
+            # self.sync_changes()
 
     def download_files(self):
         files: set[str] = set()
@@ -1145,6 +1147,22 @@ class WorkspaceWidget(QWidget, Ui_Form):
         for parent_tree_item in self.parts_parent_tree_items.values():
             for child in parent_tree_item["children"]:
                 if child["group"].base_part.name == name:
+                    return child["group"], child["item"]
+        return None
+
+    def get_workspace_assembly_group_item_by_name(
+        self,
+        name: str,
+    ) -> (
+        tuple[
+            WorkspaceAssemblyGroup,
+            QTreeWidgetItem,
+        ]
+        | None
+    ):
+        for parent_tree_item in self.assemblies_parent_tree_items.values():
+            for child in parent_tree_item["children"]:
+                if child["group"].base_assembly.name == name:
                     return child["group"], child["item"]
         return None
 
@@ -1513,8 +1531,8 @@ class WorkspaceWidget(QWidget, Ui_Form):
         elif isinstance(part_group_or_assembly, WorkspaceAssemblyGroup):
             self.update_entries(part_group_or_assembly.assemblies)
         # self.workspace.save()
-        self.laser_cut_inventory.save()
-        self.sync_changes()
+        # self.laser_cut_inventory.save_local_copy()
+        # self.sync_changes()
 
     def check_if_assemblies_are_ready_to_start_timer(self):
         assemblies_to_update = []

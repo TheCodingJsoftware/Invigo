@@ -2,7 +2,7 @@ from typing import Callable
 
 import msgspec
 from natsort import natsorted
-from PyQt6.QtCore import QThread, QThreadPool
+from PyQt6.QtCore import QThreadPool
 
 from utils.inventory.category import Category
 from utils.inventory.component import Component

@@ -449,6 +449,9 @@ class NestWidget(QWidget, Ui_Form):
                     )
                     existing_laser_cut_part.gauge = selected_nest_laser_cut_part.gauge
                     existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {selected_nest_laser_cut_part.quantity} quantities from {self.nest.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                    self.laser_cut_inventory.save_laser_cut_part(
+                        existing_laser_cut_part
+                    )
                 else:
                     if not (
                         category := self.laser_cut_inventory.get_category(
@@ -458,12 +461,12 @@ class NestWidget(QWidget, Ui_Form):
                         category = Category("Uncategorized")
                         self.laser_cut_inventory.add_category(category)
                     selected_nest_laser_cut_part.add_to_category(category)
-                    selected_nest_laser_cut_part.modified_date = f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                    selected_nest_laser_cut_part.modified_date = f"{os.getlogin().title()} - Part added from {self.nest.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     self.laser_cut_inventory.add_laser_cut_part(
                         selected_nest_laser_cut_part
                     )
-            self.laser_cut_inventory.save()
-            self.sync_changes()
+            # self.laser_cut_inventory.save_local_copy()
+            # self.sync_changes()
 
     def parts_assembly_changed(self, assembly_name: str):
         if assembly_name == "None":

@@ -55,7 +55,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         self.pushButton_nest_name.setText(self.nest.get_name())
         self.sheet_settings = self.parent.parent.sheet_settings
         self.sheets_inventory = self.parent.parent.sheets_inventory
-        self.laser_cut_inventory = self.parent.parent.laser_cut_inventory
+        self.laser_cut_inventory = self.parent.parent.laser_cut_parts_inventory
 
         self.settings_file = Settings()
         self.tables_font = QFont()
@@ -534,14 +534,14 @@ class NestEditorWidget(QWidget, Ui_Form):
         selected_rows: set[int] = {
             selection.row() for selection in self.parts_table.selectedItems()
         }
+        laser_cut_parts_to_update = []
         for laser_cut_part, table_item_data in self.parts_table_items.items():
             if table_item_data["row"] in selected_rows:
                 self.parent.parent.add_laser_cut_part_to_inventory(
                     laser_cut_part, self.nest.get_name()
                 )
-        else:
-            self.laser_cut_inventory.save()
-            self.parent.parent.sync_changes()
+                laser_cut_parts_to_update.append(laser_cut_part)
+        self.laser_cut_inventory.save_laser_cut_parts(laser_cut_parts_to_update)
 
     def update_sheet_status(self):
         if self.sheets_inventory.exists(self.nest.sheet):
@@ -600,7 +600,7 @@ class NestEditorWidget(QWidget, Ui_Form):
             self.sheets_inventory.add_sheet(
                 new_sheet, on_finished=self.update_sheet_status
             )
-            self.sheets_inventory.save_local_copy()
+            # self.sheets_inventory.save_local_copy()
             # self.sync_changes()
             # self.update_sheet_status()
 

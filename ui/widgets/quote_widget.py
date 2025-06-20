@@ -9,16 +9,33 @@ from typing import TYPE_CHECKING
 from natsort import natsorted
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
-                             QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel,
-                             QMenu, QMessageBox, QPushButton, QTableWidgetItem,
-                             QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.components_quoting_table_widget import (
-    ComponentsQuotingTableWidget, ComponentsTableColumns)
-from ui.custom_widgets import (ClickableLabel, CustomTableWidget,
-                               MachineCutTimeSpinBox, MultiToolBox,
-                               RecutButton)
+    ComponentsQuotingTableWidget,
+    ComponentsTableColumns,
+)
+from ui.custom_widgets import (
+    ClickableLabel,
+    CustomTableWidget,
+    MachineCutTimeSpinBox,
+    MultiToolBox,
+    RecutButton,
+)
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
@@ -1798,7 +1815,7 @@ class QuoteWidget(QWidget, Ui_Form):
         self.parent.parent.add_laser_cut_part_to_inventory(
             laser_cut_part_to_add, self.quote.name
         )
-        self.laser_cut_inventory.save()
+        self.laser_cut_inventory.save_local_copy()
         self.sync_changes()
 
     def get_total_cost_for_laser_cut_parts(self) -> float:
@@ -2279,10 +2296,10 @@ class QuoteWidget(QWidget, Ui_Form):
                 or self.checkBox_components_use_overhead_2.isChecked()
             ):
                 table_item_data["price"].setText(
-                    f"${calculate_overhead(round(unit_price, 2)*quantity, profit_margin / 100, overhead / 100):,.2f}"
+                    f"${calculate_overhead(round(unit_price, 2) * quantity, profit_margin / 100, overhead / 100):,.2f}"
                 )
             else:
-                table_item_data["price"].setText(f"${unit_price*quantity:,.2f}")
+                table_item_data["price"].setText(f"${unit_price * quantity:,.2f}")
             table_item_data["unit_price"].setText(f"${unit_price:,.2f}")
         self.components_table_widget.blockSignals(False)
         self.label_total_item_cost_2.setText(
@@ -2402,7 +2419,7 @@ class QuoteWidget(QWidget, Ui_Form):
                     "width": add_sheet_dialog.get_width(),
                     "thickness": add_sheet_dialog.get_thickness(),
                     "material": add_sheet_dialog.get_material(),
-                    "latest_change_quantity": f'{os.getlogin().title()} - Sheet was added via quote generator at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}',
+                    "latest_change_quantity": f"{os.getlogin().title()} - Sheet was added via quote generator at {str(datetime.now().strftime('%B %d %A %Y %I:%M:%S %p'))}",
                 },
                 self.sheets_inventory,
             )

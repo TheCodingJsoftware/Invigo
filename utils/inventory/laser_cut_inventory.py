@@ -1,14 +1,34 @@
 import os
 from datetime import datetime
-from typing import Union
+from typing import Callable, Union
 
 import msgspec
 from natsort import natsorted
+from PyQt6.QtCore import QThreadPool
 
 from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint_inventory import PaintInventory
+from utils.workers.laser_cut_parts_inventory.add_laser_cut_part import (
+    AddLaserCutPartWorker,
+)
+from utils.workers.laser_cut_parts_inventory.get_all_laser_cut_parts import (
+    GetAllLaserCutPartsWorker,
+)
+from utils.workers.laser_cut_parts_inventory.get_categories import (
+    GetLaserCutPartsCategoriesWorker,
+)
+from utils.workers.laser_cut_parts_inventory.get_laser_cut_part import (
+    GetLaserCutPartWorker,
+)
+from utils.workers.laser_cut_parts_inventory.remove_laser_cut_parts import (
+    RemoveLaserCutPartsWorker,
+)
+from utils.workers.laser_cut_parts_inventory.update_laser_cut_parts import (
+    UpdateLaserCutPartsWorker,
+)
+from utils.workers.runnable_chain import RunnableChain
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
@@ -22,7 +42,6 @@ class LaserCutInventory(Inventory):
 
         self.laser_cut_parts: list[LaserCutPart] = []
         self.recut_parts: list[LaserCutPart] = []
-        self.load_data()
 
     def get_all_part_names(self) -> list[str]:
         return [laser_cut_part.name for laser_cut_part in self.laser_cut_parts]
@@ -109,6 +128,7 @@ class LaserCutInventory(Inventory):
                 laser_cut_part_to_add.powder_transfer_efficiency
             )
             existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            self.save_laser_cut_part(existing_laser_cut_part)
         else:
             if not (category := self.get_category("Uncategorized")):
                 category = Category("Uncategorized")
@@ -134,17 +154,79 @@ class LaserCutInventory(Inventory):
             laser_cut_part_to_update.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.add_laser_cut_part(laser_cut_part_to_update)
 
-    def add_laser_cut_part(self, laser_cut_part: LaserCutPart):
+    # ! TODO IMPLEMENT THIS
+    def add_recut_part(self, laser_cut_part: LaserCutPart):
+        raise NotImplementedError
+
+    # ! TODO IMPLEMENT THIS
+    def remove_recut_part(self, laser_cut_part: LaserCutPart):
+        raise NotImplementedError
+
+    def add_laser_cut_part(
+        self, laser_cut_part: LaserCutPart, on_finished: Callable | None = None
+    ):
+        worker = AddLaserCutPartWorker(laser_cut_part)
+        worker.signals.success.connect(self.add_laser_cut_part_response)
+        if on_finished:
+            worker.signals.finished.connect(on_finished)
+        QThreadPool.globalInstance().start(worker)
+
+    def add_laser_cut_part_response(self, response: tuple[dict, LaserCutPart]):
+        data, laser_cut_part = response
+        laser_cut_part.id = data["id"]
         self.laser_cut_parts.append(laser_cut_part)
 
-    def remove_laser_cut_part(self, laser_cut_part: LaserCutPart):
-        self.laser_cut_parts.remove(laser_cut_part)
+    def remove_laser_cut_parts(
+        self, laser_cut_parts: list[LaserCutPart], on_finished: Callable | None = None
+    ):
+        worker = RemoveLaserCutPartsWorker(laser_cut_parts)
+        worker.signals.success.connect(self.remove_laser_cut_parts_response)
+        QThreadPool.globalInstance().start(worker)
 
-    def add_recut_part(self, laser_cut_part: LaserCutPart):
-        self.recut_parts.append(laser_cut_part)
+    def remove_laser_cut_part(
+        self, laser_cut_part: LaserCutPart, on_finished: Callable | None = None
+    ):
+        self.remove_laser_cut_parts([laser_cut_part], on_finished)
 
-    def remove_recut_part(self, laser_cut_part: LaserCutPart):
-        self.recut_parts.remove(laser_cut_part)
+    def remove_laser_cut_parts_response(
+        self, response: tuple[list, list[LaserCutPart]]
+    ):
+        data, laser_cut_parts = response
+        for laser_cut_part in laser_cut_parts:
+            self.laser_cut_parts.remove(laser_cut_part)
+        # self.save_local_copy()
+
+    def save_laser_cut_part(self, laser_cut_part: LaserCutPart):
+        self.save_laser_cut_parts([laser_cut_part])
+
+    def save_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart]):
+        worker = UpdateLaserCutPartsWorker(laser_cut_parts)
+        worker.signals.success.connect(self.save_local_copy)
+        QThreadPool.globalInstance().start(worker)
+
+    def get_laser_cut_part(
+        self, laser_cut_part_id: int | str, on_finished: Callable | None = None
+    ):
+        worker = GetLaserCutPartWorker(laser_cut_part_id)
+        worker.signals.success.connect(on_finished)
+        QThreadPool.globalInstance().start(worker)
+
+    def update_laser_cut_part_data(
+        self,
+        laser_cut_part_id: int,
+        data: dict,
+    ) -> LaserCutPart | None:
+        for laser_cut_part in self.laser_cut_parts:
+            if laser_cut_part.id == laser_cut_part_id:
+                laser_cut_part.load_data(data)
+                return laser_cut_part
+        return None
+
+    # def add_recut_part(self, laser_cut_part: LaserCutPart):
+    #     self.recut_parts.append(laser_cut_part)
+
+    # def remove_recut_part(self, laser_cut_part: LaserCutPart):
+    #     self.recut_parts.remove(laser_cut_part)
 
     def duplicate_category(
         self, category_to_duplicate: Category, new_category_name: str
@@ -155,13 +237,34 @@ class LaserCutInventory(Inventory):
             category_to_duplicate
         ):
             laser_cut_part.add_to_category(new_category)
+        self.save_laser_cut_parts(self.get_laser_cut_parts_by_category(new_category))
         return new_category
 
     def delete_category(self, category: str | Category) -> Category:
         deleted_category = super().delete_category(category)
         for laser_cut_part in self.get_laser_cut_parts_by_category(deleted_category):
             laser_cut_part.remove_from_category(deleted_category)
+        self.save_laser_cut_parts(
+            self.get_laser_cut_parts_by_category(deleted_category)
+        )
         return deleted_category
+
+    def rename_category(self, original: str | Category, new_name: str) -> Category:
+        if isinstance(original, str):
+            original = self.get_category(original)
+
+        original_laser_cut_parts = self.get_laser_cut_parts_by_category(original)
+
+        for laser_cut_part in original_laser_cut_parts:
+            laser_cut_part.remove_from_category(original)
+
+        original.rename(new_name)
+
+        for laser_cut_part in self.get_laser_cut_parts_by_category(original):
+            laser_cut_part.add_to_category(original)
+
+        self.save_laser_cut_parts(self.get_laser_cut_parts_by_category(original))
+        return original
 
     def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart:
         return next(
@@ -191,41 +294,70 @@ class LaserCutInventory(Inventory):
             self.recut_parts, key=lambda recut_part: recut_part.quantity
         )
 
-    def save(self):
+    def save_local_copy(self):
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
             file.write(msgspec.json.encode(self.to_dict()))
 
-    def load_data(self):
-        try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-                data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
-            self.categories.from_list(data["categories"])
-            self.laser_cut_parts.clear()
-            self.recut_parts.clear()
-            for laser_cut_part_data in data["laser_cut_parts"]:
-                try:
-                    laser_cut_part = LaserCutPart(laser_cut_part_data, self)
-                except AttributeError:  # Old inventory format
-                    laser_cut_part = LaserCutPart(
-                        data["laser_cut_parts"][laser_cut_part_data], self
-                    )
-                    laser_cut_part.name = laser_cut_part_data
-                self.add_laser_cut_part(laser_cut_part)
+    def load_data(self, on_loaded: Callable | None = None):
+        chain = RunnableChain()
 
-            for recut_part_data in data["recut_parts"]:
-                try:
-                    recut_part = LaserCutPart(recut_part_data, self)
-                except AttributeError:  # Old inventory format
-                    recut_part = LaserCutPart(
-                        data["recut_parts"][recut_part_data], self
-                    )
-                    recut_part.name = recut_part_data
-                self.add_recut_part(recut_part)
-        except KeyError:  # Inventory was just created
-            return
-        except msgspec.DecodeError:  # Inventory file got cleared
-            self._reset_file()
-            self.load_data()
+        get_categories_worker = GetLaserCutPartsCategoriesWorker()
+        get_all_laser_cut_parts_worker = GetAllLaserCutPartsWorker()
+
+        chain.add(get_categories_worker, self.get_categories_response)
+        chain.add(get_all_laser_cut_parts_worker, self.get_all_laser_cut_parts_response)
+
+        if on_loaded:
+            chain.finished.connect(on_loaded)
+
+        chain.start()
+
+    def get_categories_response(self, response: list, next_step: Callable):
+        try:
+            self.categories.from_list(response)
+        except Exception:
+            self.categories.clear()
+        next_step()
+
+    def get_all_laser_cut_parts_response(self, response: dict, next_step: Callable):
+        self.laser_cut_parts.clear()
+        for component_data in response:
+            component = LaserCutPart(component_data, self)
+            self.laser_cut_parts.append(component)
+        self.save_local_copy()
+        next_step()
+
+    # def load_data(self):
+    #     try:
+    #         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
+    #             data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
+    #         self.categories.from_list(data["categories"])
+    #         self.laser_cut_parts.clear()
+    #         self.recut_parts.clear()
+    #         for laser_cut_part_data in data["laser_cut_parts"]:
+    #             try:
+    #                 laser_cut_part = LaserCutPart(laser_cut_part_data, self)
+    #             except AttributeError:  # Old inventory format
+    #                 laser_cut_part = LaserCutPart(
+    #                     data["laser_cut_parts"][laser_cut_part_data], self
+    #                 )
+    #                 laser_cut_part.name = laser_cut_part_data
+    #             self.add_laser_cut_part(laser_cut_part)
+
+    #         for recut_part_data in data["recut_parts"]:
+    #             try:
+    #                 recut_part = LaserCutPart(recut_part_data, self)
+    #             except AttributeError:  # Old inventory format
+    #                 recut_part = LaserCutPart(
+    #                     data["recut_parts"][recut_part_data], self
+    #                 )
+    #                 recut_part.name = recut_part_data
+    #             self.add_recut_part(recut_part)
+    #     except KeyError:  # Inventory was just created
+    #         return
+    #     except msgspec.DecodeError:  # Inventory file got cleared
+    #         self._reset_file()
+    #         self.load_data()
 
     def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:
         return {

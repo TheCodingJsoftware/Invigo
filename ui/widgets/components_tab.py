@@ -551,6 +551,8 @@ class ComponentsTab(QWidget, Ui_Form):
             self.table_components_widgets[component]["priority"].setStyleSheet(
                 f"""QComboBox{{background-color: {theme_var("high-priority")}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var("primary-red")}}}"""
             )
+        else:
+            pass
         self.table_components_widgets[component]["priority"].blockSignals(True)
 
         self.table_components_widgets[component]["use_exchange_rate"].blockSignals(True)

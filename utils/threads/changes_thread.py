@@ -1,4 +1,5 @@
 import contextlib
+import os
 
 import msgspec
 import websocket
@@ -15,7 +16,8 @@ class ChangesThread(QThread):
         self.parent = parent
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
-        self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws"
+        self.client_name = os.getlogin()
+        self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws?client_name={self.client_name}"
 
     def run(self):
         while True:

@@ -1174,6 +1174,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
             new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.add_recut_part(new_recut_part)
+            self.laser_cut_inventory.save_laser_cut_part(existing_recut_part)
         elif (
             existing_laser_cut_part
             := self.laser_cut_inventory.get_laser_cut_part_by_name(
@@ -1196,6 +1197,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 laser_cut_part_to_add.paint_overspray
             )
             existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            self.laser_cut_inventory.save_laser_cut_part(existing_laser_cut_part)
         else:
             if not (category := self.laser_cut_inventory.get_category("Uncategorized")):
                 category = Category("Uncategorized")
@@ -1203,8 +1205,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
             laser_cut_part_to_add.add_to_category(category)
             laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.add_laser_cut_part(laser_cut_part_to_add)
-        self.laser_cut_inventory.save()
-        self.sync_changes()
+        # self.laser_cut_inventory.save_local_copy()
+        # self.sync_changes()
 
     def get_selected_laser_cut_part(self) -> LaserCutPart:
         if selected_laser_cut_parts := self.get_selected_laser_cut_parts():

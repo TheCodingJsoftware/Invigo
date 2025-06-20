@@ -301,15 +301,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             on_loaded=self.load_components_inventory_tab
         )
         self.paint_inventory = PaintInventory(self.components_inventory)
-        self.laser_cut_inventory = LaserCutInventory(
+        self.laser_cut_parts_inventory = LaserCutInventory(
             self.paint_inventory, self.workspace_settings
+        )
+        self.laser_cut_parts_inventory.load_data(
+            on_loaded=self.load_laser_cut_inventory_tab
         )
         self.job_manager = JobManager(
             self.sheet_settings,
             self.sheets_inventory,
             self.workspace_settings,
             self.components_inventory,
-            self.laser_cut_inventory,
+            self.laser_cut_parts_inventory,
             self.paint_inventory,
             self.structural_steel_inventory,
             self,
@@ -428,9 +431,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def connect_client(self):
         self.connect_thread = ConnectThread(__version__)
-        self.connect_thread.start()
         self.connect_thread.finished.connect(self.check_trusted_user)
-        self.connect_thread.wait()
+        self.connect_thread.start()
 
     def setup_tab_buttons(self):
         self.menu_tab_manager = ButtonManagerWidget(self)
@@ -514,7 +516,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # self.components_inventory.load_data()
         # self.sheets_inventory.load_data()
-        self.laser_cut_inventory.load_data()
+        # self.laser_cut_parts_inventory.load_data()
         self.sheet_settings.load_data()
         self.structural_steel_settings.load_data()
         self.workspace_settings.load_data()
@@ -579,20 +581,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.set_current_tab("workspace_tab")
 
-        self.clear_layout(self.omnigen_layout)
-        self.quote_generator_tab_widget = QuoteGeneratorTab(self)
-        self.quote_generator_tab_widget.add_quote(
-            Quote(
-                "Quote0",
-                None,
-                self.components_inventory,
-                self.laser_cut_inventory,
-                self.sheet_settings,
-            )
-        )
-        self.quote_generator_tab_widget.save_quote.connect(self.save_quote)
-        self.quote_generator_tab_widget.save_quote_as.connect(self.save_quote_as)
-        self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
+        # self.clear_layout(self.omnigen_layout)
+        # self.quote_generator_tab_widget = QuoteGeneratorTab(self)
+        # self.quote_generator_tab_widget.add_quote(
+        #     Quote(
+        #         "Quote0",
+        #         None,
+        #         self.components_inventory,
+        #         self.laser_cut_parts_inventory,
+        #         self.sheet_settings,
+        #     )
+        # )
+        # self.quote_generator_tab_widget.save_quote.connect(self.save_quote)
+        # self.quote_generator_tab_widget.save_quote_as.connect(self.save_quote_as)
+        # self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
         # self.clear_layout(self.components_layout)
         # self.components_tab_widget = ComponentsTab(self)
@@ -601,9 +603,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_job_planning_tab()
         self.load_job_quoting_tab()
 
-        self.clear_layout(self.laser_cut_layout)
-        self.laser_cut_tab_widget = LaserCutTab(self)
-        self.laser_cut_layout.addWidget(self.laser_cut_tab_widget)
+        # self.clear_layout(self.laser_cut_layout)
+        # self.laser_cut_parts_tab_widget = LaserCutTab(self)
+        # self.laser_cut_layout.addWidget(self.laser_cut_parts_tab_widget)
 
         self.clear_layout(self.sheet_settings_layout)
         self.sheet_settings_tab_widget = SheetSettingsTab(self)
@@ -672,6 +674,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.cutoff_widget_2.setHidden(True)
 
+        print("Here 1")
         # QUOTE GENERATOR
         self.cutoff_widget = MultiToolBox(self)
         self.verticalLayout_cutoff.addWidget(self.cutoff_widget)
@@ -681,6 +684,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.cutoff_widget.addItem(cutoff_items, "Cutoff Sheets")
         self.cutoff_widget.close_all()
+
+        print("Here 2")
 
         # NEST RELATED
         self.pushButton_generate_quote.clicked.connect(self.generate_printout)
@@ -1075,11 +1080,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # We load these because components tab is depended on them, they might be loaded ahead of time or they might not be
         self.load_job_planning_tab()
         self.load_job_quoting_tab()
-        current_tab = self.tab_text(self.stackedWidget.currentIndex())
         self.clear_layout(self.components_layout)
         self.components_tab_widget = ComponentsTab(self)
         self.components_layout.addWidget(self.components_tab_widget)
-        if current_tab == "components_tab":
+        if self.tab_text(self.stackedWidget.currentIndex()) == "components_tab":
             self.update_components_inventory_tab()
         self.is_components_inventory_ui_loaded = True
         self.should_update_components_in_inventory_tab = False
@@ -1093,6 +1097,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.components_tab_widget.sort_components()
             self.components_tab_widget.unblock_table_signals()
             self.should_update_components_in_inventory_tab = False
+
+    def load_laser_cut_inventory_tab(self):
+        self.load_job_planning_tab()
+        self.load_job_quoting_tab()
+        self.clear_layout(self.laser_cut_layout)
+        self.laser_cut_parts_tab_widget = LaserCutTab(self)
+        self.laser_cut_layout.addWidget(self.laser_cut_parts_tab_widget)
+        if self.tab_text(self.stackedWidget.currentIndex()) == "laser_cut_tab":
+            self.update_laser_cut_inventory_tab()
+        self.is_laser_cut_inventory_ui_loaded = True
+        self.should_update_laser_cut_inventory_tab = False
+
+    def update_laser_cut_inventory_tab(self):
+        if not self.should_update_laser_cut_inventory_tab:
+            return
+        if self.tab_text(self.stackedWidget.currentIndex()) == "laser_cut_tab":
+            self.laser_cut_parts_tab_widget.block_table_signals()
+            self.laser_cut_parts_tab_widget.load_categories()
+            self.laser_cut_parts_tab_widget.sort_laser_cut_parts()
+            self.laser_cut_parts_tab_widget.unblock_table_signals()
+            self.should_update_laser_cut_inventory_tab = False
 
     # * \/ SLOTS & SIGNALS \/
     def tool_box_menu_changed(self):
@@ -1130,10 +1155,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.update_sheets_inventory_tab()
         elif current_tab == "laser_cut_inventory_tab":
             self.menuSort.setEnabled(True)
-            if self.should_update_laser_cut_inventory_tab:
-                self.laser_cut_tab_widget.load_categories()
-                self.should_update_laser_cut_inventory_tab = False
-            self.laser_cut_tab_widget.restore_last_selected_tab()
+            self.update_laser_cut_inventory_tab()
         elif current_tab == "sheet_settings_tab":
             self.sheet_settings_tab_widget.load_tabs()
         elif current_tab == "structural_steel_settings_tab":
@@ -1180,7 +1202,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.tab_text(self.stackedWidget.currentIndex())
                 == "laser_cut_inventory_tab"
             ):
-                self.laser_cut_tab_widget.sort_laser_cut_parts()
+                self.laser_cut_parts_tab_widget.sort_laser_cut_parts()
                 self.status_button.setText("Sorted Laser Cut Parts", "lime")
 
     def action_group(self, group_name: str, actions: list[QAction]):
@@ -1651,7 +1673,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.upload_files(
             [
                 # f"{self.components_inventory.filename}.json",
-                f"{self.laser_cut_inventory.filename}.json",
+                f"{self.laser_cut_parts_inventory.filename}.json",
             ],
         )
 
@@ -1856,14 +1878,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # self.workspace.save()
             # self.components_inventory.save_local_copy()
-            self.laser_cut_inventory.save()
-            self.upload_files(
-                [
-                    # f"{self.workspace.filename}.json",
-                    # f"{self.components_inventory.filename}.json",
-                    f"{self.laser_cut_inventory.filename}.json",
-                ]
-            )
+            # self.laser_cut_parts_inventory.save_local_copy()
+            # self.upload_files(
+            #     [
+            #         # f"{self.workspace.filename}.json",
+            #         # f"{self.components_inventory.filename}.json",
+            #         # f"{self.laser_cut_parts_inventory.filename}.json",
+            #     ]
+            # )
             self.workspace_tab_widget.load_tags()
             self.workspace_tab_widget.set_current_tab(
                 self.workspace_tab_widget_last_selected_tab
@@ -2448,7 +2470,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.client_data.signal.connect(self.handle_client_data)
         self.client_data.finished.connect(self.on_trusted_user_checked)
         self.client_data.start()
-        self.client_data.wait()
 
     def handle_client_data(self, data: dict[str, bool], error):
         if error:
@@ -2707,18 +2728,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #             f"{self.components_inventory.filename}.json",
         #         ],
         #     )
-        if tab_name in [
-            "laser_cut_inventory_tab",
-            "quote_generator_tab",
-            "job_quoter_tab",
-            "job_planner_tab",
-            "nest_editor",
-        ]:
-            self.upload_files(
-                [
-                    f"{self.laser_cut_inventory.filename}.json",
-                ],
-            )
+        # if tab_name in [
+        #     "laser_cut_inventory_tab",
+        #     "quote_generator_tab",
+        #     "job_quoter_tab",
+        #     "job_planner_tab",
+        #     "nest_editor",
+        # ]:
+        #     self.upload_files(
+        #         [
+        #             f"{self.laser_cut_parts_inventory.filename}.json",
+        #         ],
+        #     )
         # if tab_name in [
         #     "sheets_in_inventory_tab",
         #     "quote_generator_tab",
@@ -2752,7 +2773,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if tab_name == "workspace_tab":
             self.upload_files(
                 [
-                    f"{self.laser_cut_inventory.filename}.json",  # Because of add/remove quantity flow tags
+                    f"{self.laser_cut_parts_inventory.filename}.json",  # Because of add/remove quantity flow tags
                     # f"{self.workspace.filename}.json",
                 ],
             )
@@ -2806,22 +2827,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if laser_cut_part_to_add.recut:
             new_recut_part = LaserCutPart(
                 laser_cut_part_to_add.to_dict(),
-                self.laser_cut_inventory,
+                self.laser_cut_parts_inventory,
             )
             new_recut_part.add_to_category(
-                self.laser_cut_inventory.get_category("Recut")
+                self.laser_cut_parts_inventory.get_category("Recut")
             )
-            if existing_recut_part := self.laser_cut_inventory.get_recut_part_by_name(
-                laser_cut_part_to_add.name
+            if (
+                existing_recut_part
+                := self.laser_cut_parts_inventory.get_recut_part_by_name(
+                    laser_cut_part_to_add.name
+                )
             ):
                 existing_recut_part.recut_count += 1
                 new_recut_part.recut_count = existing_recut_part.recut_count
                 new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
             new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            self.laser_cut_inventory.add_recut_part(new_recut_part)
+            self.laser_cut_parts_inventory.add_recut_part(new_recut_part)
         elif (
             existing_laser_cut_part
-            := self.laser_cut_inventory.get_laser_cut_part_by_name(
+            := self.laser_cut_parts_inventory.get_laser_cut_part_by_name(
                 laser_cut_part_to_add.name
             )
         ):
@@ -2842,20 +2866,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
             existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
         else:
-            if not (category := self.laser_cut_inventory.get_category("Uncategorized")):
+            if not (
+                category := self.laser_cut_parts_inventory.get_category("Uncategorized")
+            ):
                 category = Category("Uncategorized")
-                self.laser_cut_inventory.add_category(category)
+                self.laser_cut_parts_inventory.add_category(category)
             laser_cut_part_to_add.add_to_category(category)
             # laser_cut_part_to_add.quantity = 1
             laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            self.laser_cut_inventory.add_laser_cut_part(laser_cut_part_to_add)
+            self.laser_cut_parts_inventory.add_laser_cut_part(laser_cut_part_to_add)
 
     def add_quantities_to_laser_cut_inventory_from_quote(self, quote: Quote):
         quote.group_laser_cut_parts()
         for laser_cut_part in quote.grouped_laser_cut_parts:
             self.add_laser_cut_part_to_inventory(laser_cut_part, quote.name)
-        self.laser_cut_inventory.save()
-        self.sync_changes()
+        # self.laser_cut_parts_inventory.save_local_copy()
+        self.laser_cut_parts_inventory.save_laser_cut_parts(
+            quote.grouped_laser_cut_parts
+        )
+        # self.sync_changes()
 
     def remove_sheet_quantities_from_quote(self, quote: Quote):
         for nest in quote.nests:
@@ -3017,6 +3046,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.components_inventory.load_data(
                     on_loaded=self.update_components_inventory_tab
                 )
+            elif "laser_cut_parts_inventory/get_laser_cut_part" in responses[0]:
+                for response in responses:
+                    self.laser_cut_parts_inventory.get_laser_cut_part(
+                        response.split("/")[-1],
+                        on_finished=self.get_laser_cut_part_response,
+                    )
+            elif "laser_cut_parts_inventory/get_all" in responses[0]:
+                self.laser_cut_parts_inventory.load_data(
+                    on_loaded=self.update_laser_cut_inventory_tab
+                )
             elif "workspace/get_entries_by_name" in responses[0]:
                 for response in responses:
                     job_id = int(response.split("/")[-2])
@@ -3068,7 +3107,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.components_tab_widget.unblock_table_signals()
         except Exception as e:
             self.status_button.setText(f"Error: {e}", "red")
-            print(component_data)
+            print(e)
+
+    def get_laser_cut_part_response(self, laser_cut_part_data):
+        try:
+            self.should_update_laser_cut_parts_in_inventory_tab = True
+            self.laser_cut_parts_tab_widget.block_table_signals()
+            self.laser_cut_parts_tab_widget.ui_update_laser_cut_part(
+                laser_cut_part_data
+            )
+            self.laser_cut_parts_tab_widget.unblock_table_signals()
+        except Exception as e:
+            self.status_button.setText(f"Error: {e}", "red")
             print(e)
 
     def data_received(self, data):
@@ -3129,7 +3179,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.threads.append(download_thread)
         download_thread.signal.connect(self.download_thread_response)
         download_thread.start()
-        download_thread.wait()
 
     def download_thread_response(self, response: dict, files_uploaded: list[str]):
         # print("download_thread_response", response, files_uploaded)
@@ -3170,12 +3219,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             #     self.sheets_inventory.load_data()
             # self.should_update_sheets_in_inventory_tab = True
 
-            if (
-                f"{self.laser_cut_inventory.filename}.json"
-                in response["successful_files"]
-            ):
-                self.laser_cut_inventory.load_data()
-                self.should_update_laser_cut_inventory_tab = True
+            # if (
+            #     f"{self.laser_cut_inventory.filename}.json"
+            #     in response["successful_files"]
+            # ):
+            #     self.laser_cut_inventory.load_data()
+            #     self.should_update_laser_cut_inventory_tab = True
 
             if f"{self.workspace.filename}.json" in response["successful_files"]:
                 # self.workspace.load_data()
@@ -3185,15 +3234,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.paint_inventory.load_data()
 
             # Update relevant tabs
-            if (
-                self.tab_text(self.stackedWidget.currentIndex())
-                == "laser_cut_inventory_tab"
-                or self.should_update_laser_cut_inventory_tab
-            ):
-                self.laser_cut_tab_widget.load_categories()
-                self.laser_cut_inventory.sort_by_quantity()
-                self.laser_cut_tab_widget.restore_last_selected_tab()
-                self.should_update_laser_cut_inventory_tab = False
+            # if (
+            #     self.tab_text(self.stackedWidget.currentIndex())
+            #     == "laser_cut_inventory_tab"
+            #     or self.should_update_laser_cut_inventory_tab
+            # ):
+            #     self.laser_cut_tab_widget.load_categories()
+            #     self.laser_cut_inventory.sort_by_quantity()
+            #     self.laser_cut_tab_widget.restore_last_selected_tab()
+            #     self.should_update_laser_cut_inventory_tab = False
             # elif (
             #     self.tab_text(self.stackedWidget.currentIndex())
             #     == "sheets_in_inventory_tab"
@@ -3203,15 +3252,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             #     self.sheets_inventory.sort_by_thickness()
             #     self.sheets_inventory_tab_widget.restore_last_selected_tab()
             #     self.should_update_sheets_in_inventory_tab = False
-            elif (
-                self.tab_text(self.stackedWidget.currentIndex()) == "components_tab"
-                or self.should_update_components_tab
-            ):
-                self.components_tab_widget.load_categories()
-                self.components_tab_widget.sort_component_inventory()
-                self.components_tab_widget.restore_last_selected_tab()
-                self.should_update_components_tab = False
-            elif (
+            # elif (
+            #     self.tab_text(self.stackedWidget.currentIndex()) == "components_tab"
+            #     or self.should_update_components_tab
+            # ):
+            #     self.components_tab_widget.load_categories()
+            #     self.components_tab_widget.sort_component_inventory()
+            #     self.components_tab_widget.restore_last_selected_tab()
+            #     self.should_update_components_tab = False
+            if (
                 self.tab_text(self.stackedWidget.currentIndex())
                 == "quote_generator_tab"
             ):
@@ -3245,11 +3294,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.download_files(
             [
                 f"{self.sheet_settings.filename}.json",
-                f"{self.structural_steel_inventory.filename}.json",
                 f"{self.structural_steel_settings.filename}.json",
-                f"{self.paint_inventory.filename}.json",
                 f"{self.workspace_settings.filename}.json",
-                f"{self.laser_cut_inventory.filename}.json",
+                f"{self.structural_steel_inventory.filename}.json",
+                f"{self.paint_inventory.filename}.json",
+                # f"{self.laser_cut_inventory.filename}.json",
                 # f"{self.sheets_inventory.filename}.json",
                 # f"{self.components_inventory.filename}.json",
                 # f"{self.workspace.filename}.json",
@@ -3264,13 +3313,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self,
             nests,
             self.components_inventory,
-            self.laser_cut_inventory,
+            self.laser_cut_parts_inventory,
             self.sheet_settings,
         )
         self.threads.append(load_nest_thread)
         load_nest_thread.signal.connect(self.load_nests_for_job_response)
         load_nest_thread.start()
-        load_nest_thread.wait()
 
     # TODO: Update existing LCP's with the ones in the nest
     def load_nests_for_job_response(self, nests: Union[list[Nest], str]):
@@ -3372,7 +3420,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self,
             nests,
             self.components_inventory,
-            self.laser_cut_inventory,
+            self.laser_cut_parts_inventory,
             self.sheet_settings,
         )
         self.threads.append(load_nest_thread)
@@ -3446,7 +3494,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 part_name = laser_cut_part.name
                 if part_name not in part_dict:
                     new_part = LaserCutPart(
-                        laser_cut_part.to_dict(), self.laser_cut_inventory
+                        laser_cut_part.to_dict(), self.laser_cut_parts_inventory
                     )
                     new_part.quantity = (
                         laser_cut_part.quantity_on_sheet * nest.sheet_count
@@ -3648,8 +3696,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                         * nest.sheet_count,
                                     )
                                     break
-                    self.laser_cut_inventory.save()
-                    self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
+                    # self.laser_cut_parts_inventory.save_local_copy()
+                    # self.upload_files(
+                    #     [f"{self.laser_cut_parts_inventory.filename}.json"]
+                    # )
                     msg = QMessageBox(
                         QMessageBox.Icon.Information,
                         "Updated",
@@ -3687,14 +3737,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if not self.show_nested_parts_in_workspace_dialog(
                     nested_parts_in_workspace
                 ):
-                    self.laser_cut_inventory.save()
-                    self.workspace.save()
-                    self.upload_files(
-                        [
-                            f"{self.workspace.filename}.json",
-                            f"{self.laser_cut_inventory.filename}.json",
-                        ],
-                    )
+                    # self.laser_cut_parts_inventory.save_local_copy()
+                    # self.workspace.save()
+                    # self.upload_files(
+                    #     [
+                    #         f"{self.workspace.filename}.json",
+                    #         f"{self.laser_cut_parts_inventory.filename}.json",
+                    #     ],
+                    # )
                     msg = QMessageBox(
                         QMessageBox.Icon.Information,
                         "Aborted",
@@ -3709,18 +3759,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     all_workspace_laser_part_groups,
                     generate_workorder_dialog.should_add_remaining_parts(),
                 )
-                self.laser_cut_inventory.save()
-                self.workspace.save()
-                self.upload_files(
-                    [
-                        f"{self.workspace.filename}.json",
-                        f"{self.laser_cut_inventory.filename}.json",
-                    ],
-                )
+                # self.laser_cut_parts_inventory.save_local_copy()
+                # self.workspace.save()
+                # self.upload_files(
+                #     [
+                #         f"{self.workspace.filename}.json",
+                #         f"{self.laser_cut_parts_inventory.filename}.json",
+                #     ],
+                # )
 
             if generate_workorder_dialog.should_generate_printout():
                 folder_name = datetime.now().strftime("%Y%m%d%H%M%S%f")
-                workorder = Workorder({}, self.sheet_settings, self.laser_cut_inventory)
+                workorder = Workorder(
+                    {}, self.sheet_settings, self.laser_cut_parts_inventory
+                )
                 workorder.nests = nests
 
                 printout = WorkorderPrintout(
@@ -3824,9 +3876,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def handle_nest_laser_cut_part_over_flow(
         self, nest_laser_cut_part: LaserCutPart, workorder_remaining_quantity: int
     ):
-        new_part = LaserCutPart(nest_laser_cut_part.to_dict(), self.laser_cut_inventory)
+        new_part = LaserCutPart(
+            nest_laser_cut_part.to_dict(), self.laser_cut_parts_inventory
+        )
         new_part.quantity = workorder_remaining_quantity
-        self.laser_cut_inventory.add_or_update_laser_cut_part(
+        self.laser_cut_parts_inventory.add_or_update_laser_cut_part(
             new_part, "workorder nest overflow"
         )
 
@@ -3838,7 +3892,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self,
             nests,
             self.components_inventory,
-            self.laser_cut_inventory,
+            self.laser_cut_parts_inventory,
             self.sheet_settings,
         )
         self.threads.append(load_nest_thread)
@@ -4208,7 +4262,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 quote_name,
                 data,
                 self.components_inventory,
-                self.laser_cut_inventory,
+                self.laser_cut_parts_inventory,
                 self.sheet_settings,
             )
 

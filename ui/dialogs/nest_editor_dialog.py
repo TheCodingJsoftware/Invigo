@@ -36,7 +36,7 @@ class NestEditorDialog(QDialog, Ui_Form):
 
         self.nests = natsorted(nests, key=lambda nest: nest.name)
         self.sheet_settings = self.parent.sheet_settings
-        self.laser_cut_inventory = self.parent.laser_cut_inventory
+        self.laser_cut_inventory = self.parent.laser_cut_parts_inventory
         self.deep_copy_nests = deepcopy(self.nests)
         self.nest_widgets: dict[Nest, NestEditorWidget] = {}
 
