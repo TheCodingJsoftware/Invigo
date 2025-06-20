@@ -634,6 +634,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Tool Box
         self.stackedWidget.currentChanged.connect(self.tool_box_menu_changed)
 
+        print("Here 1")
         # Load Nests
         self.saved_quotes_tool_box = MultiToolBox(self)
         self.saved_quotes_tool_box_opened_menus: dict[int, bool] = {
@@ -648,6 +649,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.pushButton_refresh_saved_nests.setIcon(Icons.refresh_icon)
 
+        print("Here 2")
         self.previous_quotes_tool_box = MultiToolBox(self)
         self.previous_quotes_tool_box_opened_menus: dict[int, bool] = {
             0: False,
@@ -660,7 +662,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.pushButton_refresh_previous_nests.setIcon(Icons.refresh_icon)
 
-        print("Here 1")
         # WORKSPACE
         self.treeWidget_cutoff_sheets.doubleClicked.connect(
             self.tree_widget_cutoff_sheet_double_clicked
@@ -675,7 +676,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.cutoff_widget_2.setHidden(True)
 
-        print("Here 2")
         # QUOTE GENERATOR
         self.cutoff_widget = MultiToolBox(self)
         self.verticalLayout_cutoff.addWidget(self.cutoff_widget)
