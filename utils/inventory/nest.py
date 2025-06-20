@@ -15,6 +15,7 @@ class Nest:
         sheet_settings: SheetSettings,
         laser_cut_inventory: LaserCutInventory,
     ):
+        self.id: int = -1
         self.name: str = ""
         self.cutting_method: str = "CO2"
         self.notes: str = ""
@@ -92,6 +93,7 @@ class Nest:
         return summary
 
     def load_data(self, data: dict[str, float | int | str | dict[str, float | str]]):
+        self.id = data.get("id", -1)
         self.name = data.get("name", "")
         self.cutting_method = data.get("cutting_method", "CO2")
         self.notes = data.get("notes", "")
@@ -130,6 +132,7 @@ class Nest:
 
     def to_dict(self) -> dict[str, Union[float, int, str]]:
         return {
+            "id": self.id,
             "name": self.name,
             "cutting_method": self.cutting_method,
             "sheet_count": self.sheet_count,

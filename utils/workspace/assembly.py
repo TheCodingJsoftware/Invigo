@@ -1,5 +1,5 @@
 import copy
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 from ui.theme import theme_var
 from utils.inventory.angle_bar import AngleBar
@@ -30,6 +30,7 @@ class Assembly:
     def __init__(self, assembly_data: dict[str, object], job):
         self.job: Job = job
 
+        self.id = -1
         self.name = ""
         self.color = ""
         self.paint_inventory = self.job.job_manager.paint_inventory
@@ -37,7 +38,16 @@ class Assembly:
         self.assembly_files: list[str] = []
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
-        self.structural_steel_items: list[Pipe | RectangularBar | AngleBar | FlatBar | RoundBar | RectangularTube | RoundTube | DOMRoundTube] = []
+        self.structural_steel_items: list[
+            Pipe
+            | RectangularBar
+            | AngleBar
+            | FlatBar
+            | RoundBar
+            | RectangularTube
+            | RoundTube
+            | DOMRoundTube
+        ] = []
         self.sub_assemblies: list[Assembly] = []
         self.not_part_of_process = False
 
@@ -73,7 +83,6 @@ class Assembly:
         self.flowtag_data: FlowtagData = None
 
         # NOTE Non serializable variables
-        self.id = -1
         self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
 
         self.load_data(assembly_data)
@@ -147,11 +156,12 @@ class Assembly:
 
     def remove_sub_assembly(self, assembly) -> "Assembly":
         self.sub_assemblies.remove(assembly)
+        return assembly
 
     def get_sub_assemblies(self) -> list["Assembly"]:
         return self.sub_assemblies
 
-    def get_sub_assembly(self, assembly_name: str) -> "Assembly":
+    def get_sub_assembly(self, assembly_name: str) -> "Assembly | None":
         return next(
             (
                 sub_assembly
@@ -192,8 +202,9 @@ class Assembly:
             total_time += sub_assembly.get_expected_time_to_complete()
         return total_time * self.quantity
 
-    def load_settings(self, data: dict[str, Union[float, bool, str, dict]]):
+    def load_settings(self, data):
         assembly_data = data.get("assembly_data", {})
+        self.id = assembly_data.get("id", -1)
         self.name = assembly_data.get("name", "Assembly")
         self.starting_date = assembly_data.get("starting_date", "")
         self.expected_time_to_complete = assembly_data.get(
@@ -244,7 +255,7 @@ class Assembly:
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = assembly_data.get("cost_for_powder_coating", 0.0)
 
-    def load_data(self, data: dict[str, Union[float, bool, str, dict]]):
+    def load_data(self, data):
         self.load_settings(data)
 
         self.laser_cut_parts.clear()
@@ -265,42 +276,66 @@ class Assembly:
         self.structural_steel_items.clear()
         structural_steel_components = data.get("structural_steel_components", [])
         for structural_steel_component_data in structural_steel_components:
-            if structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_BAR.value:
+            if (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.RECTANGULAR_BAR.value
+            ):
                 structural_steel_component = RectangularBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_BAR.value:
+            elif (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.ROUND_BAR.value
+            ):
                 structural_steel_component = RoundBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.FLAT_BAR.value:
+            elif (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.FLAT_BAR.value
+            ):
                 structural_steel_component = FlatBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ANGLE_BAR.value:
+            elif (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.ANGLE_BAR.value
+            ):
                 structural_steel_component = AngleBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_TUBE.value:
+            elif (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.RECTANGULAR_TUBE.value
+            ):
                 structural_steel_component = RectangularTube(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_TUBE.value:
+            elif (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.ROUND_TUBE.value
+            ):
                 structural_steel_component = RoundTube(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.DOM_ROUND_TUBE.value:
+            elif (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.DOM_ROUND_TUBE.value
+            ):
                 structural_steel_component = DOMRoundTube(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.PIPE.value:
+            elif (
+                structural_steel_component_data.get("profile_type")
+                == ProfilesTypes.PIPE.value
+            ):
                 structural_steel_component = Pipe(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
@@ -315,9 +350,10 @@ class Assembly:
             sub_assembly = Assembly(sub_assembly_data, self.job)
             self.sub_assemblies.append(sub_assembly)
 
-    def to_dict(self) -> dict[str, dict[str, Union[list[dict[str, object]], object]]]:
+    def to_dict(self):
         return {
             "assembly_data": {
+                "id": self.id,
                 "name": self.name,
                 "color": self.color,
                 "starting_date": self.starting_date,

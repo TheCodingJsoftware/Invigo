@@ -2801,24 +2801,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.exec()
 
     def add_job_to_workspace_thread(self, job: Job):
-        add_job_to_workspace_thread = AddJobToWorkspaceThread(job)
-        self.threads.append(add_job_to_workspace_thread)
-        add_job_to_workspace_thread.signal.connect(self.add_job_to_workspace_response)
-        add_job_to_workspace_thread.start()
+        add_job_to_workspace_thread = AddJobWorker(job)
+        add_job_to_workspace_thread.signals.success.connect(
+            self.add_job_to_workspace_response
+        )
+        QThreadPool.globalInstance().start(add_job_to_workspace_thread)
 
-    def add_job_to_workspace_response(self, response: dict, status_code: int):
-        if status_code == 200:
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("Job added")
-            msg.setText("Successfully added job to workspace")
-            msg.exec()
-        else:
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Job not added")
-            msg.setText(f"{response}")
-            msg.exec()
+    def add_job_to_workspace_response(self, response: dict):
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Job added")
+        msg.setText("Successfully added job to workspace")
+        msg.exec()
 
     def add_laser_cut_part_to_inventory(
         self, laser_cut_part_to_add: LaserCutPart, from_where: str
@@ -3112,9 +3106,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             self.should_update_laser_cut_parts_in_inventory_tab = True
             self.laser_cut_parts_tab_widget.block_table_signals()
-            self.laser_cut_parts_tab_widget.ui_update_laser_cut_part(
-                laser_cut_part_data
-            )
+            self.laser_cut_parts_tab_widget.update_laser_cut_part(laser_cut_part_data)
             self.laser_cut_parts_tab_widget.unblock_table_signals()
         except Exception as e:
             self.status_button.setText(f"Error: {e}", "red")

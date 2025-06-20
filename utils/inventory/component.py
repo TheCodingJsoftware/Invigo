@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 class Component(InventoryItem):
     def __init__(self, data: dict, components_inventory):
         super().__init__()
+        self.id = -1
         self.components_inventory: ComponentsInventory = components_inventory
         self.quantity: float = 0.0
         self.category_quantities: dict[Category, float] = {}
@@ -28,7 +29,6 @@ class Component(InventoryItem):
         self.red_quantity_limit: float = 0.0
         self.yellow_quantity_limit: float = 0.0
         self.orders: list[Order] = []
-        self.id = -1
 
         self.load_data(data)
 
