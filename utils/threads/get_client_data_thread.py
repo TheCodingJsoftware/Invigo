@@ -29,3 +29,4 @@ class IsClientTrustedThread(QThread):
             self.signal.emit(None, f"An error occurred: {err}")
         except ValueError:
             self.signal.emit(None, "Failed to parse JSON response")
+        self.finished.emit()

@@ -409,7 +409,7 @@ class LaserCutTab(QWidget, Ui_Form):
 
         self.load_ui()
         self.load_categories()
-        self.update_all_laser_cut_parts_costs()
+        # self.update_all_laser_cut_parts_costs()
         self.restore_last_selected_tab()
         self.finished_loading = True
 
@@ -695,7 +695,7 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
         ].update_paint_settings()
-        self.update_all_laser_cut_parts_costs()
+        # self.update_all_laser_cut_parts_costs()
         self.update_category_total_stock_costs()
         self.update_laser_cut_part_row_color(current_table, laser_cut_part)
 

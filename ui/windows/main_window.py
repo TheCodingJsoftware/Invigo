@@ -254,16 +254,12 @@ sys.excepthook = excepthook
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    trustedUserChecked = pyqtSignal(bool)
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.username = os.getlogin()
         self.trusted_user = False
         self.ignore_update = False
-
-        self.trustedUserChecked.connect(self.on_trusted_user_checked)
 
         self.setWindowTitle(f"Invigo - {__version__} - {self.username}")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
@@ -427,6 +423,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect_client()
 
     def on_trusted_user_checked(self):
+        print("on_trusted_user_checked")
         self.download_all_files()
 
     def connect_client(self):
@@ -517,6 +514,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.components_inventory.load_data()
         # self.sheets_inventory.load_data()
         # self.laser_cut_parts_inventory.load_data()
+
         self.sheet_settings.load_data()
         self.structural_steel_settings.load_data()
         self.workspace_settings.load_data()
@@ -626,6 +624,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.workspace_tab_widget_last_selected_tab = (
             self.workspace_tab_widget.tag_buttons[0].text()
         )
+
+        print("Here 2")
         with contextlib.suppress(AttributeError):  # There are no visible process tags
             self.workspace_tab_changed(self.workspace_tab_widget_last_selected_tab)
         self.workspace_tab_widget.tabChanged.connect(self.workspace_tab_changed)
@@ -634,7 +634,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Tool Box
         self.stackedWidget.currentChanged.connect(self.tool_box_menu_changed)
 
-        print("Here 1")
         # Load Nests
         self.saved_quotes_tool_box = MultiToolBox(self)
         self.saved_quotes_tool_box_opened_menus: dict[int, bool] = {
@@ -649,7 +648,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.pushButton_refresh_saved_nests.setIcon(Icons.refresh_icon)
 
-        print("Here 2")
         self.previous_quotes_tool_box = MultiToolBox(self)
         self.previous_quotes_tool_box_opened_menus: dict[int, bool] = {
             0: False,
@@ -2465,12 +2463,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 msg.exec()
 
     def check_trusted_user(self):
-        self.client_data = IsClientTrustedThread()
-        self.client_data.signal.connect(self.handle_client_data)
-        self.client_data.finished.connect(self.on_trusted_user_checked)
-        self.client_data.start()
+        print("check_trusted_user")
+        client_data = IsClientTrustedThread()
+        client_data.signal.connect(self.handle_client_data)
+        client_data.finished.connect(self.on_trusted_user_checked)
+        self.threads.append(client_data)
+        client_data.start()
 
     def handle_client_data(self, data: dict[str, bool], error):
+        print("handle_client_data")
         if error:
             self.status_button.setText(f"Error recieving client data: {error}", "red")
         else:
@@ -3173,6 +3174,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def download_thread_response(self, response: dict, files_uploaded: list[str]):
         # print("download_thread_response", response, files_uploaded)
+
         if not self.finished_downloading_all_files:
             self.download_all_files_finished()
         elif self.downloading_changes and response["status"] == "success":
@@ -3273,6 +3275,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.status_button.setText("Downloaded all files", "lime")
         self.centralwidget.setEnabled(True)
         self.downloading_changes = False
+
         self.start_changes_thread()
         self.start_exchange_rate_thread()
         self.start_check_for_updates_thread()
