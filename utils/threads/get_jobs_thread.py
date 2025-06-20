@@ -1,3 +1,5 @@
+import os
+
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -12,10 +14,11 @@ class GetJobsThread(QThread):
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/get_job_directories"
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
-            response = requests.get(self.url, timeout=10)
+            response = requests.get(self.url, headers=self.headers, timeout=10)
             data = response.json()
 
             if response.status_code == 200:

@@ -1,3 +1,5 @@
+import os
+
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -12,10 +14,11 @@ class SetOrderNumberThread(QThread):
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/set_order_number/{int(order_number)}"
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
-            response = requests.post(self.url, timeout=10)
+            response = requests.post(self.url, headers=self.headers, timeout=10)
 
             if response.status_code == 200:
                 self.signal.emit("success")

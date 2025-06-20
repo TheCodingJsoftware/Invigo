@@ -45,7 +45,9 @@ class UpdateWorkspaceEntryWorker(BaseWorker):
         self.logger.info(f"Updating entry {self.entry_id} of type {self.entry_type}")
 
         with requests.Session() as session:
-            response = session.post(self.url, json=data, timeout=10)
+            response = session.post(
+                self.url, json=data, headers=self.headers, timeout=10
+            )
             response.raise_for_status()
 
             job_data = msgspec.json.decode(response.content)

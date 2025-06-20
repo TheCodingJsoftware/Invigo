@@ -20,7 +20,7 @@ class RemoveComponentsWorker(BaseWorker):
                 self.logger.info(f"Attempting to delete component ID {component_id}")
 
                 try:
-                    response = session.get(url, timeout=10)
+                    response = session.get(url, headers=self.headers, timeout=10)
                     response.raise_for_status()
 
                     try:

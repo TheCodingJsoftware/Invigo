@@ -1,3 +1,5 @@
+import os
+
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -19,6 +21,7 @@ class UpdateJobSetting(QThread):
         self.upload_url = (
             f"http://{self.SERVER_IP}:{self.SERVER_PORT}/update_job_settings"
         )
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
@@ -27,7 +30,9 @@ class UpdateJobSetting(QThread):
                 "key": self.key_to_change,
                 "value": self.new_value,
             }
-            response = requests.post(self.upload_url, data=data, timeout=10)
+            response = requests.post(
+                self.upload_url, data=data, headers=self.headers, timeout=10
+            )
             self.signal.emit(response.json(), self.folder)
         except Exception as e:
             self.signal.emit(str(e), self.folder)

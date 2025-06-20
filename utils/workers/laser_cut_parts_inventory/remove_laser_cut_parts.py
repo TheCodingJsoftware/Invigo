@@ -22,7 +22,7 @@ class RemoveLaserCutPartsWorker(BaseWorker):
                 )
 
                 try:
-                    response = session.get(url, timeout=10)
+                    response = session.get(url, headers=self.headers, timeout=10)
                     response.raise_for_status()
 
                     try:

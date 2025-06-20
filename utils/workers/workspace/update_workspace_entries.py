@@ -54,7 +54,7 @@ class UpdateWorkspaceEntriesWorker(BaseWorker):
             response = session.post(
                 self.url,
                 data=msgspec.json.encode(batch_payload),
-                headers={"Content-Type": "application/json"},
+                headers=self.headers,
                 timeout=30,
             )
             response.raise_for_status()

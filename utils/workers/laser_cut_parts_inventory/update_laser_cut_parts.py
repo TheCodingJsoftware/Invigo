@@ -19,7 +19,9 @@ class UpdateLaserCutPartsWorker(BaseWorker):
         data = [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts]
 
         with requests.Session() as session:
-            response = session.post(self.url, json=data, timeout=10)
+            response = session.post(
+                self.url, json=data, headers=self.headers, timeout=10
+            )
             response.raise_for_status()
             try:
                 response_data = msgspec.json.decode(response.content)

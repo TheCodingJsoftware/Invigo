@@ -1,3 +1,4 @@
+import os
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -12,10 +13,11 @@ class GetOrderNumberThread(QThread):
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/get_order_number"
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
-            response = requests.get(self.url)
+            response = requests.get(self.url headers=self.headers, timeout=10)
             data = response.json()
             order_number = data.get("order_number")
 

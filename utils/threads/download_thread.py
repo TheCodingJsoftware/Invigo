@@ -1,3 +1,5 @@
+import os
+
 from PyQt6.QtCore import QThread, pyqtSignal
 from requests import Session
 
@@ -14,6 +16,7 @@ class DownloadThread(QThread):
         self.files_to_download = files_to_download
         self.session = Session()
         self.file_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/file/"
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         successful_downloads = []
@@ -22,7 +25,7 @@ class DownloadThread(QThread):
         for file_to_download in self.files_to_download:
             try:
                 response = self.session.get(
-                    self.file_url + file_to_download, timeout=10
+                    self.file_url + file_to_download, headers=self.headers, timeout=10
                 )
 
                 if response.status_code == 200:

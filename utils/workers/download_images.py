@@ -17,7 +17,7 @@ class DownloadImagesWorker(BaseWorker):
                 for file_to_download in self.files_to_download:
                     try:
                         url = self.file_url + file_to_download
-                        response = session.get(url, timeout=10)
+                        response = session.get(url, headers=self.headers, timeout=10)
                         response.raise_for_status()
 
                         os.makedirs(os.path.dirname(file_to_download), exist_ok=True)

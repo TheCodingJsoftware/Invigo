@@ -28,7 +28,9 @@ class WorkspaceDownloadWorker(BaseWorker):
             with requests.Session() as session:
                 for file_to_download in self.files_to_download:
                     response = session.get(
-                        f"{self.file_url}{file_to_download}", timeout=10
+                        f"{self.file_url}{file_to_download}",
+                        headers=self.headers,
+                        timeout=10,
                     )
                     file_name = os.path.basename(file_to_download)
                     file_ext = file_name.split(".")[-1].upper()

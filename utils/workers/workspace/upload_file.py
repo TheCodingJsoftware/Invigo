@@ -15,7 +15,9 @@ class WorkspaceUploadWorker(BaseWorker):
             try:
                 with open(file_path, "rb") as file:
                     files = {"file": (file_path, file.read())}
-                    response = requests.post(self.upload_url, files=files, timeout=10)
+                    response = requests.post(
+                        self.upload_url, files=files, headers=self.headers, timeout=10
+                    )
                     response.raise_for_status()
             except FileNotFoundError:
                 raise ValueError(f"File not found: {file_path}")

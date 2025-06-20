@@ -1,3 +1,5 @@
+import os
+
 import msgspec
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
@@ -17,6 +19,7 @@ class UploadJobThread(QThread):
         self.job = job
         self.html_file_contents = html_file_contents
         self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload_job"
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
@@ -33,7 +36,11 @@ class UploadJobThread(QThread):
                 )
             }
             response = requests.post(
-                self.upload_url, data=data, files=files, timeout=10
+                self.upload_url,
+                data=data,
+                files=files,
+                headers=self.headers,
+                timeout=10,
             )
             if response.status_code == 200:
                 self.signal.emit("Job sent successfully")

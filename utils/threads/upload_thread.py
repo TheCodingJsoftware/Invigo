@@ -1,3 +1,4 @@
+import os
 import time
 
 from PyQt6.QtCore import QThread, pyqtSignal
@@ -18,11 +19,12 @@ class UploadThread(QThread):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
-        self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload"
+        self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload"
         self.session = Session()
         self.files_to_upload = files_to_upload
         self.max_retries = max_retries
         self.delay_between_requests = delay_between_requests
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
@@ -42,7 +44,10 @@ class UploadThread(QThread):
                     for attempt in range(self.max_retries):
                         try:
                             response = self.session.post(
-                                self.upload_url, files=file, timeout=10
+                                self.url,
+                                files=file,
+                                headers=self.headers,
+                                timeout=10,
                             )
                             if response.status_code == 200:
                                 successful_uploads.append(file_to_upload)

@@ -660,6 +660,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.pushButton_refresh_previous_nests.setIcon(Icons.refresh_icon)
 
+        print("Here 1")
         # WORKSPACE
         self.treeWidget_cutoff_sheets.doubleClicked.connect(
             self.tree_widget_cutoff_sheet_double_clicked
@@ -674,7 +675,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.cutoff_widget_2.setHidden(True)
 
-        print("Here 1")
+        print("Here 2")
         # QUOTE GENERATOR
         self.cutoff_widget = MultiToolBox(self)
         self.verticalLayout_cutoff.addWidget(self.cutoff_widget)
@@ -684,8 +685,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
         self.cutoff_widget.addItem(cutoff_items, "Cutoff Sheets")
         self.cutoff_widget.close_all()
-
-        print("Here 2")
 
         # NEST RELATED
         self.pushButton_generate_quote.clicked.connect(self.generate_printout)

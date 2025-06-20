@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 
 from PyQt6.QtCore import QObject, QRunnable, pyqtSignal
@@ -21,6 +22,8 @@ class BaseWorker(QRunnable):
         self.SERVER_IP = get_server_ip_address()
         self.SERVER_PORT = get_server_port()
         self.DOMAIN = f"http://{self.SERVER_IP}:{self.SERVER_PORT}"
+
+        self.headers = {"X-Client-Name": os.getlogin()}
 
         self.logger.debug(f"{name} initialized with domain: {self.DOMAIN}")
 

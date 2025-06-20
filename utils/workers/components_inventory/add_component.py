@@ -16,7 +16,9 @@ class AddComponentWorker(BaseWorker):
         data = self.component.to_dict()
 
         with requests.Session() as session:
-            response = session.post(self.url, json=data, timeout=10)
+            response = session.post(
+                self.url, json=data, headers=self.headers, timeout=10
+            )
             response.raise_for_status()
 
             try:

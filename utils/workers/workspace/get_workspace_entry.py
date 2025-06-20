@@ -13,7 +13,7 @@ class GetWorkspaceEntryWorker(BaseWorker):
     def do_work(self):
         self.logger.info(f"Requesting entry with ID {self.entry_id} from {self.url}")
         with requests.Session() as session:
-            response = session.get(self.url, timeout=10)
+            response = session.get(self.url, headers=self.headers, timeout=10)
             response.raise_for_status()
 
             try:

@@ -16,7 +16,9 @@ class AddJobWorker(BaseWorker):
         job_data = msgspec.json.encode(self.job.to_dict())
 
         with requests.Session() as session:
-            response = session.post(self.url, data=job_data, timeout=10)
+            response = session.post(
+                self.url, data=job_data, headers=self.headers, timeout=10
+            )
             response.raise_for_status()
 
             try:

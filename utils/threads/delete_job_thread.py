@@ -1,3 +1,5 @@
+import os
+
 import msgspec
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
@@ -16,10 +18,11 @@ class DeleteJobThread(QThread):
         self.url = (
             f"http://{self.SERVER_IP}:{self.SERVER_PORT}/delete_job/{self.folder_name}"
         )
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
-            response = requests.post(self.url, timeout=10)
+            response = requests.post(self.url, headers=self.headers, timeout=10)
             response_data = msgspec.json.decode(response.content)
             self.signal.emit(response_data, self.folder_name)
         except requests.HTTPError as http_err:

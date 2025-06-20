@@ -21,7 +21,7 @@ class GetWorkspaceEntriesByNameWorker(BaseWorker):
             f"Requesting entries for job {self.job_id} with name '{self.entry_name}' from {self.url}"
         )
         with requests.Session() as session:
-            response = session.get(self.url, timeout=10)
+            response = session.get(self.url, headers=self.headers, timeout=10)
             response.raise_for_status()
 
             try:

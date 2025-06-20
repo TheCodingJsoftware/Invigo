@@ -12,7 +12,7 @@ class DownloadJobWorker(BaseWorker):
 
     def do_work(self):
         with requests.Session() as session:
-            response = session.get(self.url, timeout=10)
+            response = session.get(self.url, headers=self.headers, timeout=10)
             response.raise_for_status()
 
             try:
