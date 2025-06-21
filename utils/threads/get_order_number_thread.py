@@ -18,9 +18,10 @@ class GetOrderNumberThread(QThread):
 
     def run(self):
         try:
-            response = requests.get(self.url, headers=self.headers, timeout=10)
-            data = response.json()
-            order_number = data.get("order_number")
+            with requests.Session() as session:
+                response = session.get(self.url, headers=self.headers, timeout=10)
+                data = response.json()
+                order_number = data.get("order_number")
 
             if response.status_code == 200:
                 # Process the received response

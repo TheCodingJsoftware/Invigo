@@ -18,11 +18,11 @@ class IsClientTrustedThread(QThread):
 
     def run(self):
         try:
-            response = requests.get(self.url, headers=self.headers, timeout=10)
-            response.raise_for_status()
-            response_data = response.json()
-            self.signal.emit(response_data, None)
-
+            with requests.Session() as session:
+                response = session.get(self.url, headers=self.headers, timeout=10)
+                response.raise_for_status()
+                response_data = response.json()
+                self.signal.emit(response_data, None)
         except requests.HTTPError as http_err:
             self.signal.emit(None, f"HTTP error occurred: {http_err}")
         except requests.RequestException as err:

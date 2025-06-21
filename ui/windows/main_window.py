@@ -9,7 +9,7 @@ import time
 import webbrowser
 from datetime import datetime
 from functools import partial
-from typing import Any, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 import qtawesome as qta
 import requests
@@ -143,9 +143,13 @@ from utils.threads.upload_job_thread import UploadJobThread
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.threads.upload_workorder_thread import UploadWorkorderThread
+from utils.workers.auth.connect import ConnectWorker
+from utils.workers.auth.is_client_trusted import IsClientTrustedWorker
 from utils.workers.download_images import DownloadImagesWorker
 from utils.workers.jobs.download_job import DownloadJobWorker
 from utils.workers.jobs.job_loader_controller import JobLoaderController
+from utils.workers.runnable_chain import RunnableChain
+from utils.workers.utils.get_order_number import GetOrderNumberWorker
 from utils.workers.workspace.add_job import AddJobWorker
 from utils.workers.workspace.get_entries_by_name import (
     GetWorkspaceEntriesByNameWorker,
@@ -280,41 +284,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         check_po_directories()
 
         self.settings_file = Settings()
-        self.sheet_settings = SheetSettings()
-        self.structural_steel_settings = StructuralSteelSettings()
-        self.workspace_settings = WorkspaceSettings()
-        self.job_preferences = JobPreferences()
-
-        self.is_sheets_inventory_ui_loaded = False
-        self.sheets_inventory = SheetsInventory(self.sheet_settings)
-        self.sheets_inventory.load_data(on_loaded=self.load_sheets_inventory_tab)
-        self.structural_steel_inventory = StructuralSteelInventory(
-            self.structural_steel_settings, self.workspace_settings
-        )
-        self.is_components_inventory_ui_loaded = False
-        self.components_inventory = ComponentsInventory()
-        self.components_inventory.load_data(
-            on_loaded=self.load_components_inventory_tab
-        )
-        self.paint_inventory = PaintInventory(self.components_inventory)
-        self.laser_cut_parts_inventory = LaserCutInventory(
-            self.paint_inventory, self.workspace_settings
-        )
-        self.laser_cut_parts_inventory.load_data(
-            on_loaded=self.load_laser_cut_inventory_tab
-        )
-        self.job_manager = JobManager(
-            self.sheet_settings,
-            self.sheets_inventory,
-            self.workspace_settings,
-            self.components_inventory,
-            self.laser_cut_parts_inventory,
-            self.paint_inventory,
-            self.structural_steel_inventory,
-            self,
-        )
-        self.workspace = Workspace(self.workspace_settings, self.job_manager)
-
         # VARIABLES
         self.components_tab_widget_last_selected_tab_index = (
             0  # * Used inside components_tab.py
@@ -338,6 +307,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.has_loaded_job_planner_tab = False
         self.has_loaded_job_quoter_tab = False
         self.should_update_workspace_tab = False
+
+        self.is_sheets_inventory_ui_loaded = False
+        self.is_components_inventory_ui_loaded = False
+        self.is_laser_cut_parts_inventory_ui_loaded = False
 
         self.category: Category = None
         self.categories: list[Category] = []
@@ -419,17 +392,77 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.scroll_position_manager = ScrollPositionManager()
         self.saved_jobs: dict[str, dict[str, str]] = {}
 
-        self.get_order_number_thread()
-        self.connect_client()
+        self.start_intilization_chain()
 
-    def on_trusted_user_checked(self):
-        print("on_trusted_user_checked")
+    def start_intilization_chain(self):
+        self._initialize_chain = RunnableChain(self)
+
+        connect_worker = ConnectWorker(__version__)
+        is_client_trusted_worker = IsClientTrustedWorker()
+        get_order_number_worker = GetOrderNumberWorker()
+
+        self._initialize_chain.add(connect_worker, self.user_connected)
+        self._initialize_chain.add(is_client_trusted_worker, self.handle_client_data)
+        self._initialize_chain.add(
+            get_order_number_worker, self.get_order_number_response
+        )
+
+        self._initialize_chain.finished.connect(self.load_inventories)
+
+        self._initialize_chain.start()
+
+    def user_connected(self, response, next_step: Callable):
+        self.status_button.setText(response.get("message", "User data updated"), "lime")
+        next_step()
+
+    def handle_client_data(self, response: dict[str, bool], next_step: Callable):
+        self.trusted_user = response.get("is_trusted", False)
+        self.status_button.setText(
+            "User is trusted" if self.trusted_user else "User is not trusted", "lime"
+        )
+        next_step()
+
+    def get_order_number_response(self, response: dict[str, int], next_step: Callable):
+        self.order_number = response.get("order_number", 0)
+        self.status_button.setText(f"Order number: {self.order_number}", "lime")
+        next_step()
+
+    def load_inventories(self):
+        self.sheet_settings = SheetSettings()
+        self.structural_steel_settings = StructuralSteelSettings()
+        self.workspace_settings = WorkspaceSettings()
+        self.job_preferences = JobPreferences()
+
+        self.sheets_inventory = SheetsInventory(self.sheet_settings)
+        self.sheets_inventory.load_data(on_loaded=self.load_sheets_inventory_tab)
+        self.structural_steel_inventory = StructuralSteelInventory(
+            self.structural_steel_settings, self.workspace_settings
+        )
+        self.components_inventory = ComponentsInventory()
+        self.components_inventory.load_data(
+            on_loaded=self.load_components_inventory_tab
+        )
+        self.paint_inventory = PaintInventory(self.components_inventory)
+
+        self.laser_cut_parts_inventory = LaserCutInventory(
+            self.paint_inventory, self.workspace_settings
+        )
+        self.laser_cut_parts_inventory.load_data(
+            on_loaded=self.load_laser_cut_inventory_tab
+        )
+        self.job_manager = JobManager(
+            self.sheet_settings,
+            self.sheets_inventory,
+            self.workspace_settings,
+            self.components_inventory,
+            self.laser_cut_parts_inventory,
+            self.paint_inventory,
+            self.structural_steel_inventory,
+            self,
+        )
+        self.workspace = Workspace(self.workspace_settings, self.job_manager)
+
         self.download_all_files()
-
-    def connect_client(self):
-        self.connect_thread = ConnectThread(__version__)
-        self.connect_thread.finished.connect(self.check_trusted_user)
-        self.connect_thread.start()
 
     def setup_tab_buttons(self):
         self.menu_tab_manager = ButtonManagerWidget(self)
@@ -564,13 +597,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.settings_file.get_value("tab_visibility")[tab] = False
             self.settings_file.save_data()
 
-        # tabs_order: list[str] = self.settings_file.get_value(setting_name="tabs_order")
-
-        # for tab_name in tabs_order:
-        # index = self.get_tab_from_name(tab_name)
-        # if index != -1:
-        # self.tabWidget.tabBar().moveTab(index, tabs_order.index(tab_name))
-
         if self.trusted_user:
             try:
                 self.set_current_tab(self.last_selected_menu_tab)
@@ -579,31 +605,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.set_current_tab("workspace_tab")
 
-        # self.clear_layout(self.omnigen_layout)
-        # self.quote_generator_tab_widget = QuoteGeneratorTab(self)
-        # self.quote_generator_tab_widget.add_quote(
-        #     Quote(
-        #         "Quote0",
-        #         None,
-        #         self.components_inventory,
-        #         self.laser_cut_parts_inventory,
-        #         self.sheet_settings,
-        #     )
-        # )
-        # self.quote_generator_tab_widget.save_quote.connect(self.save_quote)
-        # self.quote_generator_tab_widget.save_quote_as.connect(self.save_quote_as)
-        # self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
-
-        # self.clear_layout(self.components_layout)
-        # self.components_tab_widget = ComponentsTab(self)
-        # self.components_layout.addWidget(self.components_tab_widget)
-
         self.load_job_planning_tab()
         self.load_job_quoting_tab()
-
-        # self.clear_layout(self.laser_cut_layout)
-        # self.laser_cut_parts_tab_widget = LaserCutTab(self)
-        # self.laser_cut_layout.addWidget(self.laser_cut_parts_tab_widget)
 
         self.clear_layout(self.sheet_settings_layout)
         self.sheet_settings_tab_widget = SheetSettingsTab(self)
@@ -1103,7 +1106,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.laser_cut_layout.addWidget(self.laser_cut_parts_tab_widget)
         if self.tab_text(self.stackedWidget.currentIndex()) == "laser_cut_tab":
             self.update_laser_cut_inventory_tab()
-        self.is_laser_cut_inventory_ui_loaded = True
+        self.is_laser_cut_parts_inventory_ui_loaded = True
         self.should_update_laser_cut_inventory_tab = False
 
     def update_laser_cut_inventory_tab(self):
@@ -1150,7 +1153,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ):
             self.menuSort.setEnabled(True)
             self.update_sheets_inventory_tab()
-        elif current_tab == "laser_cut_inventory_tab":
+        elif (
+            current_tab == "laser_cut_inventory_tab"
+            and self.is_laser_cut_parts_inventory_ui_loaded
+        ):
             self.menuSort.setEnabled(True)
             self.update_laser_cut_inventory_tab()
         elif current_tab == "sheet_settings_tab":
@@ -2462,21 +2468,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 msg.setText(f"{e}")
                 msg.exec()
 
-    def check_trusted_user(self):
-        print("check_trusted_user")
-        client_data = IsClientTrustedThread()
-        client_data.signal.connect(self.handle_client_data)
-        client_data.finished.connect(self.on_trusted_user_checked)
-        self.threads.append(client_data)
-        client_data.start()
-
-    def handle_client_data(self, data: dict[str, bool], error):
-        print("handle_client_data")
-        if error:
-            self.status_button.setText(f"Error recieving client data: {error}", "red")
-        else:
-            self.trusted_user = data.get("is_trusted", False)
-
     # * /\ CHECKERS /\
 
     # * \/ Purchase Order \/
@@ -3168,12 +3159,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def download_files(self, files_to_download: list[str]):
         download_thread = DownloadThread(files_to_download)
-        self.threads.append(download_thread)
         download_thread.signal.connect(self.download_thread_response)
+        self.threads.append(download_thread)
         download_thread.start()
 
     def download_thread_response(self, response: dict, files_uploaded: list[str]):
-        # print("download_thread_response", response, files_uploaded)
+        print("download_thread_response", response)
 
         if not self.finished_downloading_all_files:
             self.download_all_files_finished()
@@ -3285,6 +3276,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.showMaximized()
 
     def download_all_files(self):
+        print("download_all_files")
         self.download_files(
             [
                 f"{self.sheet_settings.filename}.json",
@@ -3992,11 +3984,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         set_order_number_thread.start()
 
     def get_order_number_thread(self):
-        get_order_number_thread = GetOrderNumberThread()
-        get_order_number_thread.signal.connect(self.get_order_number_thread_response)
-        self.threads.append(get_order_number_thread)
-        get_order_number_thread.start()
-        get_order_number_thread.wait()
+        get_order_number_worker = GetOrderNumberWorker()
+        get_order_number_worker.signals.success.connect(
+            self.get_order_number_thread_response
+        )
+        QThreadPool.globalInstance().start(get_order_number_worker)
 
     def set_order_number_thread_response(self, response):
         if response != "success":
@@ -4006,9 +3998,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setText(f"Encountered error when setting order number.\n\n{response}")
             msg.exec()
 
-    def get_order_number_thread_response(self, order_number: int):
+    def get_order_number_thread_response(self, order_number: dict[str, int]):
+        print(order_number)
         try:
-            self.order_number = order_number
+            self.order_number = order_number.get("order_number", 0)
         except Exception as e:
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Critical)

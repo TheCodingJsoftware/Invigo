@@ -26,6 +26,7 @@ class GetLaserCutPartsCategoriesWorker(BaseWorker):
             return categories
 
     def handle_exception(self, e):
+        self.logger.error(f"Exception in worker: {e}")
         if isinstance(e, requests.exceptions.Timeout):
             self.signals.error.emit({"error": "Request timed out"}, 408)
         elif isinstance(e, requests.exceptions.ConnectionError):

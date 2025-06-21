@@ -299,18 +299,20 @@ class LaserCutInventory(Inventory):
             file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self, on_loaded: Callable | None = None):
-        chain = RunnableChain()
+        self.chain = RunnableChain()
 
         get_categories_worker = GetLaserCutPartsCategoriesWorker()
         get_all_laser_cut_parts_worker = GetAllLaserCutPartsWorker()
 
-        chain.add(get_categories_worker, self.get_categories_response)
-        chain.add(get_all_laser_cut_parts_worker, self.get_all_laser_cut_parts_response)
+        self.chain.add(get_categories_worker, self.get_categories_response)
+        self.chain.add(
+            get_all_laser_cut_parts_worker, self.get_all_laser_cut_parts_response
+        )
 
         if on_loaded:
-            chain.finished.connect(on_loaded)
+            self.chain.finished.connect(on_loaded)
 
-        chain.start()
+        self.chain.start()
 
     def get_categories_response(self, response: list, next_step: Callable):
         try:
@@ -326,38 +328,6 @@ class LaserCutInventory(Inventory):
             self.laser_cut_parts.append(component)
         self.save_local_copy()
         next_step()
-
-    # def load_data(self):
-    #     try:
-    #         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-    #             data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
-    #         self.categories.from_list(data["categories"])
-    #         self.laser_cut_parts.clear()
-    #         self.recut_parts.clear()
-    #         for laser_cut_part_data in data["laser_cut_parts"]:
-    #             try:
-    #                 laser_cut_part = LaserCutPart(laser_cut_part_data, self)
-    #             except AttributeError:  # Old inventory format
-    #                 laser_cut_part = LaserCutPart(
-    #                     data["laser_cut_parts"][laser_cut_part_data], self
-    #                 )
-    #                 laser_cut_part.name = laser_cut_part_data
-    #             self.add_laser_cut_part(laser_cut_part)
-
-    #         for recut_part_data in data["recut_parts"]:
-    #             try:
-    #                 recut_part = LaserCutPart(recut_part_data, self)
-    #             except AttributeError:  # Old inventory format
-    #                 recut_part = LaserCutPart(
-    #                     data["recut_parts"][recut_part_data], self
-    #                 )
-    #                 recut_part.name = recut_part_data
-    #             self.add_recut_part(recut_part)
-    #     except KeyError:  # Inventory was just created
-    #         return
-    #     except msgspec.DecodeError:  # Inventory file got cleared
-    #         self._reset_file()
-    #         self.load_data()
 
     def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:
         return {

@@ -195,18 +195,18 @@ class ComponentsInventory(Inventory):
             file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self, on_loaded: Callable | None = None):
-        chain = RunnableChain()
+        self.chain = RunnableChain()
 
         get_categories_worker = GetComponentsCategoriesWorker()
         get_all_components_worker = GetAllComponentsWorker()
 
-        chain.add(get_categories_worker, self.get_categories_response)
-        chain.add(get_all_components_worker, self.get_all_components_response)
+        self.chain.add(get_categories_worker, self.get_categories_response)
+        self.chain.add(get_all_components_worker, self.get_all_components_response)
 
         if on_loaded:
-            chain.finished.connect(on_loaded)
+            self.chain.finished.connect(on_loaded)
 
-        chain.start()
+        self.chain.start()
 
     def get_categories_response(self, response: list, next_step: Callable):
         try:

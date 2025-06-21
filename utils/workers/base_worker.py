@@ -1,5 +1,6 @@
 import logging
 import os
+import socket
 import time
 
 from PyQt6.QtCore import QObject, QRunnable, pyqtSignal
@@ -23,14 +24,19 @@ class BaseWorker(QRunnable):
         self.SERVER_PORT = get_server_port()
         self.DOMAIN = f"http://{self.SERVER_IP}:{self.SERVER_PORT}"
 
-        self.headers = {"X-Client-Name": os.getlogin()}
+        self.headers = {
+            "X-Client-Name": os.getlogin(),
+            "X-Client-Address": socket.gethostname(),
+        }
 
-        self.logger.debug(f"{name} initialized with domain: {self.DOMAIN}")
+        self.logger.info(
+            f"[{self.__class__.__name__}] initialized with domain: {self.DOMAIN}"
+        )
 
     def run(self) -> None:
         start = time.perf_counter()
         try:
-            self.logger.info("Worker started.")
+            self.logger.info(f"[{self.__class__.__name__}] started.")
             result = self.do_work()
             self.signals.success.emit(result)
         except Exception as e:
@@ -38,11 +44,13 @@ class BaseWorker(QRunnable):
             self.handle_exception(e)
         finally:
             self.signals.finished.emit()
-            self.logger.info(f"Worker finished in {time.perf_counter() - start:.2f}s")
+            self.logger.info(
+                f"[{self.__class__.__name__}] finished in {time.perf_counter() - start:.2f}s"
+            )
 
     def handle_exception(self, e):
         self.signals.error.emit({"error": str(e)}, 500)
-        self.logger.error(f"Exception in worker: {e}")
+        self.logger.error(f"[{self.__class__.__name__}] Exception in worker: {e}")
 
     def do_work(self):
         raise NotImplementedError("Subclasses must implement do_work()")
