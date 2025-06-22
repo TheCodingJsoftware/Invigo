@@ -7,9 +7,9 @@ from utils.workspace.tag import Tag
 
 
 class WorkspaceAssemblyGroup:
-    def __init__(self):
+    def __init__(self) -> None:
         self.assemblies: list[Assembly] = []
-        self.base_assembly: Assembly = None
+        self.base_assembly: Assembly | None = None
 
     def add_assembly(self, assembly: Assembly):
         if not self.base_assembly:
@@ -33,6 +33,11 @@ class WorkspaceAssemblyGroup:
     def get_ids(self) -> str:
         return ",".join(str(assembly.id) for assembly in self)
 
+    def update_all_entries(self, entries_data: list[dict]) -> "WorkspaceAssemblyGroup":
+        for entry_data in entries_data:
+            self.update_entry(entry_data)
+        return self
+
     def update_entry(self, entry_data: dict) -> Optional[Assembly]:
         raw_data = entry_data["data"]
         if isinstance(raw_data, dict):
@@ -50,7 +55,9 @@ class WorkspaceAssemblyGroup:
         return None
 
     def get_current_tag(self) -> Optional[Tag]:
-        return self.base_assembly.get_current_tag()
+        if self.base_assembly:
+            return self.base_assembly.get_current_tag()
+        return None
 
     def set_flow_tag_status_index(self, status_index: int):
         for assembly in self:

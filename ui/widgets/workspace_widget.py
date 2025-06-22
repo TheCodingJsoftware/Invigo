@@ -1171,19 +1171,26 @@ class WorkspaceWidget(QWidget, Ui_Form):
     def update_tree_entries(
         self, entries_data: list[dict[str, str | bytes | bytearray]]
     ):
-        part_name = str(entries_data[0]["name"])
         if not entries_data:
             return
-        workspace_laser_cut_part_group, workspace_laser_cut_part_group_item = (
-            self.get_workspace_laser_cut_part_group_item_by_name(part_name)
-        )
 
-        if workspace_laser_cut_part_group and workspace_laser_cut_part_group_item:
-            workspace_laser_cut_part_group.update_all_entries(entries_data)
-            self.update_part_tree_widget_item(
-                workspace_laser_cut_part_group,
-                workspace_laser_cut_part_group_item,
-            )
+        for entry_data in entries_data:
+            part_name = str(entry_data["name"])
+            part_type = str(entry_data["type"])
+
+            if part_type == "laser_cut_part":
+                if result := self.get_workspace_laser_cut_part_group_item_by_name(
+                    part_name
+                ):
+                    group, item = result
+                    group.update_entry(entry_data)
+                    self.update_part_tree_widget_item(group, item)
+
+            elif part_type == "assembly":
+                if result := self.get_workspace_assembly_group_item_by_name(part_name):
+                    group, item = result
+                    group.update_entry(entry_data)
+                    self.update_assembly_tree_widget_item(group, item)
 
     # ASSEMBLIES
     def add_assembly_group_to_tree(

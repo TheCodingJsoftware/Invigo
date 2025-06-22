@@ -114,3 +114,4 @@ upload_update.py
 *.eddx
 *.bat
 *.lock
+*.sql

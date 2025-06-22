@@ -131,7 +131,6 @@ from utils.threads.get_saved_quotes_thread import GetSavedQuotesThread
 from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
-from utils.threads.update_job_setting import UpdateJobSetting
 from utils.threads.update_quote_settings import UpdateQuoteSettings
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
