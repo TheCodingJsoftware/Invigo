@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class JobFlowtagTimelineWidget(QWidget):
     def __init__(self, flowtag_timeline: JobFlowtagTimeline, parent=None):
         super().__init__(parent)
-        self.parent: JobWidget = parent
+        self._parent_widget: JobWidget = parent
 
         self.flowtag_timeline = flowtag_timeline
         self.grid_layout = QGridLayout()
@@ -126,9 +126,9 @@ class JobFlowtagTimelineWidget(QWidget):
         self.changes_made()
 
     def changes_made(self):
-        self.parent._parent_widget.job_changed(self.parent.job)
-        self.parent.update_nest_parts_assemblies()
-        self.parent.update_prices()
+        self._parent_widget._parent_widget.job_changed(self._parent_widget.job)
+        self._parent_widget.update_nest_parts_assemblies()
+        self._parent_widget.update_prices()
 
     def clear_layout(self, layout: QGridLayout):
         with contextlib.suppress(AttributeError):

@@ -2,7 +2,7 @@ import os
 from functools import partial
 from typing import Literal, Optional, Union
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QThreadPool
 from PyQt6.QtWidgets import QHBoxLayout, QMessageBox, QScrollArea, QWidget
 
 from config.environments import Environment
@@ -85,10 +85,9 @@ class LaserCutPartFilesWidget(QWidget):
         files_layout.addWidget(file_button)
 
     def laser_cut_part_file_clicked(self, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
-        self.download_file_thread.wait()
+        self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
+        self.download_file_thread.signals.success.connect(self.file_downloaded)
+        QThreadPool.globalInstance().start(self.download_file_thread)
         if file_path.lower().endswith(".pdf"):
             if isinstance(self.item, WorkspaceLaserCutPartGroup):
                 self.open_pdf(

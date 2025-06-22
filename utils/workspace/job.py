@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Union
 
 from natsort import natsorted
 
+from ui.icons import Icons
 from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -24,6 +25,32 @@ class JobStatus(Enum):
     TEMPLATE = auto()
     WORKSPACE = auto()
     ARCHIVE = auto()
+
+
+class JobIcon(Enum):
+    PLANNING = JobStatus.PLANNING
+    QUOTING = JobStatus.QUOTING
+    QUOTED = JobStatus.QUOTED
+    QUOTE_CONFIRMED = JobStatus.QUOTE_CONFIRMED
+    TEMPLATE = JobStatus.TEMPLATE
+    WORKSPACE = JobStatus.WORKSPACE
+    ARCHIVE = JobStatus.ARCHIVE
+
+    @classmethod
+    def get_icon(cls, job_status: JobStatus):
+        icon_map = {
+            cls.PLANNING: Icons.job_planning_icon,
+            cls.QUOTING: Icons.job_quoting_icon,
+            cls.QUOTED: Icons.job_quoted_icon,
+            cls.QUOTE_CONFIRMED: Icons.job_quote_confirmed_icon,
+            cls.TEMPLATE: Icons.job_template_icon,
+            cls.WORKSPACE: Icons.job_workspace_icon,
+            cls.ARCHIVE: Icons.job_archive_icon,
+        }
+        for member in cls:
+            if member.value == job_status:
+                return icon_map.get(member)
+        return None
 
 
 class JobColor(Enum):
@@ -243,7 +270,8 @@ class Job:
                     laser_cut_part.name
                 )
             ):
-                laser_cut_parts_to_update.append(inventory_laser_cut_part)
+                inventory_laser_cut_part.image_index = laser_cut_part.image_index
+
                 inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
                 inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
                 inventory_laser_cut_part.cnc_milling_files = (
@@ -269,6 +297,7 @@ class Job:
                 inventory_laser_cut_part.powder_transfer_efficiency = (
                     laser_cut_part.powder_transfer_efficiency
                 )
+                laser_cut_parts_to_update.append(inventory_laser_cut_part)
 
         self.laser_cut_inventory.save_laser_cut_parts(laser_cut_parts_to_update)
 

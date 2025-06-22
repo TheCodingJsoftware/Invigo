@@ -29,10 +29,6 @@ class BaseWorker(QRunnable):
             "X-Client-Address": socket.gethostname(),
         }
 
-        self.logger.info(
-            f"[{self.__class__.__name__}] initialized with domain: {self.DOMAIN}"
-        )
-
     def run(self) -> None:
         start = time.perf_counter()
         try:

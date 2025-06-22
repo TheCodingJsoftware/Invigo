@@ -33,16 +33,16 @@ class AssemblyWidget(QWidget, Ui_Form):
     def __init__(self, assembly: Assembly, parent):
         super().__init__(parent)
         self.setupUi(self)
-        self.parent: Union["AssemblyWidget", JobWidget] = parent
+        self._parent_widget: Union["AssemblyWidget", JobWidget] = parent
 
         self.assembly = assembly
-        self.job_preferences: JobPreferences = self.parent.job_preferences
+        self.job_preferences: JobPreferences = self._parent_widget.job_preferences
         self.sheet_settings = self.assembly.job.sheet_settings
         self.workspace_settings = self.assembly.job.workspace_settings
         self.components_inventory = self.assembly.job.components_inventory
         self.laser_cut_inventory = self.assembly.job.laser_cut_inventory
-        self.price_calculator = self.parent.price_calculator
-        self.job_tab: JobTab = self.parent._parent_widget
+        self.price_calculator = self._parent_widget.price_calculator
+        self.job_tab: JobTab = self._parent_widget._parent_widget
 
         self.assembly_widget.setStyleSheet(
             f"""
@@ -73,8 +73,8 @@ background-color: {theme_var("surface")};
         self.apply_stylesheet_to_toggle_buttons(
             self.pushButton_sub_assemblies, self.sub_assemblies_widget
         )
-        self.doubleSpinBox_quantity.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
+        self.doubleSpinBox_quantity.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -175,13 +175,13 @@ background-color: {theme_var("surface")};
         return None
 
     def update_context_menu(self):
-        self.parent.update_context_menu()
+        self._parent_widget.update_context_menu()
 
     def changes_made(self):
         self.assembly.not_part_of_process = (
             self.checkBox_not_part_of_process.isChecked()
         )
-        self.parent.changes_made()
+        self._parent_widget.changes_made()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):

@@ -715,7 +715,7 @@ class MultiToolBox(QWidget):
         self.widget_visibility.clear()
         self.clear_layout(self.main_layout)
 
-    def addItem(self, widget: QWidget, title: str, base_color: str = None):
+    def addItem(self, widget: QWidget, title: str, base_color: str = None, icon=None):
         if not base_color:
             base_color = theme_var("primary")
 
@@ -737,7 +737,7 @@ class MultiToolBox(QWidget):
                 }}
                 /* CLOSED */
                 QPushButton:checked#multi_tool_box_button {{
-                    color: {theme_var("on-surface")};
+                    color: {base_color};
                     border: 1px solid {theme_var("outline")};
                 }}
 
@@ -770,6 +770,8 @@ class MultiToolBox(QWidget):
         button.setCursor(Qt.CursorShape.PointingHandCursor)
         button.setChecked(True)
         button.setCheckable(True)
+        if icon:
+            button.setIcon(icon)
         button.clicked.connect(partial(self.toggle_widget_visibility, widget))
 
         widget.setVisible(False)

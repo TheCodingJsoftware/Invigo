@@ -1,6 +1,17 @@
 import qtawesome as qta
 
 from ui.theme import theme_var
+from utils.colors import get_contrast_text_color
+
+
+def make_icon(name: str, theme: str):
+    return qta.icon(
+        name,
+        color_on=theme_var(theme),
+        color_on_active=theme_var(theme),
+        color_off=get_contrast_text_color(theme_var(theme)),
+        color_off_active=get_contrast_text_color(theme_var(theme)),
+    )
 
 
 class Icons:
@@ -57,518 +68,396 @@ class Icons:
     arrow_right_fill_icon = None
     recut_icon = None
     recoat_icon = None
+    job_planning_icon = None
+    job_quoting_icon = None
+    job_quoted_icon = None
+    job_quote_confirmed_icon = None
+    job_template_icon = None
+    job_workspace_icon = None
+    job_archive_icon = None
 
     @classmethod
     def load_icons(cls):
         cls.refresh_icon = qta.icon(
             "ph.arrows-clockwise",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.clear_icon = qta.icon(
             "ph.x",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.save_icon = qta.icon(
             "ri.save-2-fill",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.save_as_icon = qta.icon(
             "ri.save-3-fill",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.import_icon = qta.icon(
             "ri.file-download-fill",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.calendar_icon = qta.icon(
             "ph.calendar-check-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
-
         cls.workspace_icon = qta.icon(
-            "ph.users-three-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            "fa6s.network-wired",
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
 
         # QAction Icons
         cls.quit_icon = qta.icon(
             "ph.x-square-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.edit_user_icon = qta.icon(
             "ph.user-circle-gear-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.edit_icon = qta.icon(
             "ph.pencil-simple-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.font_icon = qta.icon(
             "ph.text-aa-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.edit_workspace_settings_icon = qta.icon(
             "ph.faders-horizontal-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.sort_icon = qta.icon(
             "ph.funnel-simple-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.add_file_icon = qta.icon(
             "ph.file-plus-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.remove_file_icon = qta.icon(
             "ph.file-x-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.open_folder_icon = qta.icon(
             "ph.folder-open-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.add_folder_icon = qta.icon(
             "ph.folder-simple-plus-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.remove_folder_icon = qta.icon(
             "ph.folder-simple-minus-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.generate_file_icon = qta.icon(
             "ph.file-dotted-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.website_icon = qta.icon(
             "ph.globe",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.open_window_icon = qta.icon(
             "ph.app-window-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.history_icon = qta.icon(
             "ph.clock-counter-clockwise",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.info_icon = qta.icon(
             "ph.info-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.question_icon = qta.icon(
             "ph.question-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.update_icon = qta.icon(
             "ph.clock-clockwise",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.maximized_icon = qta.icon(
             "ph.frame-corners-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.inventory_icon = qta.icon(
             "ph.package-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.sheet_settings_icon = qta.icon(
             "ri.list-settings-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.calculator_icon = qta.icon(
             "ph.calculator-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.job_planner_icon = qta.icon(
             "ph.calendar-blank-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.action_workspace_icon = qta.icon(
-            "ph.users-three-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            "fa6s.network-wired",
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.paint_icon = qta.icon(
             "ph.palette-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.paint_brush_icon = qta.icon(
             "ph.paint-brush-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.plus_icon = qta.icon(
             "ph.plus",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.plus_circle_icon = qta.icon(
             "ph.plus-circle-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
         cls.minus_icon = qta.icon(
             "ph.minus",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.dock_icon = qta.icon(
             "ph.arrows-out-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.redock_icon = qta.icon(
             "ph.arrows-in-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.delete_icon = qta.icon(
             "ph.trash-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary-red"),
-                    "color_active": theme_var("on-primary-red"),
-                    "color_selected": theme_var("on-primary-red"),
-                }
-            ],
+            color_on=theme_var("on-primary-red"),
+            color_on_active=theme_var("on-primary-red"),
+            color_off=theme_var("on-primary-red"),
+            color_off_active=theme_var("on-primary-red"),
         )
         cls.eye_icon = qta.icon(
             "ph.eye-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
 
         cls.copy_icon = qta.icon(
             "ph.copy-simple-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.filter_icon = qta.icon(
             "ph.funnel-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
         cls.sort_fill_icon = qta.icon(
             "ph.funnel-simple-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
         cls.date_range_icon = qta.icon(
             "ph.calendar-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
         cls.folder_icon = qta.icon(
             "ph.folder-fill",
-            options=[
-                {
-                    "color": theme_var("primary"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.sun_icon = qta.icon(
             "ph.sun-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.moon_icon = qta.icon(
             "ph.moon-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                    "color_selected": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.flowtag_data_icon = qta.icon(
             "ph.sliders-horizontal-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
         cls.printer_icon = qta.icon(
             "ph.printer-fill",
-            options=[
-                {
-                    "color": theme_var("on-surface"),
-                    "color_active": theme_var("primary"),
-                }
-            ],
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
         )
         cls.check_fill_icon = qta.icon(
             "ph.check-circle-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
         cls.arrow_right_fill_icon = qta.icon(
             "ph.arrow-fat-line-right-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
         cls.recut_icon = qta.icon(
             "ph.arrow-u-down-left-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
-
         cls.recoat_icon = qta.icon(
             "ph.arrow-u-down-left-fill",
-            options=[
-                {
-                    "color": theme_var("on-primary"),
-                    "color_active": theme_var("on-primary"),
-                }
-            ],
+            color_on=theme_var("on-primary"),
+            color_on_active=theme_var("on-primary"),
+            color_off=theme_var("on-primary"),
+            color_off_active=theme_var("on-primary"),
         )
+        cls.job_planning_icon = make_icon("fa6s.calendar", "job-planning")
+        cls.job_quoting_icon = make_icon("fa6s.file-invoice-dollar", "job-quoting")
+        cls.job_quoted_icon = make_icon("ph.check-fill", "job-quoted")
+        cls.job_quote_confirmed_icon = make_icon(
+            "ph.checks-fill", "job-quote-confirmed"
+        )
+        cls.job_template_icon = make_icon("fa6s.box-archive", "job-template")
+        cls.job_workspace_icon = make_icon("fa6s.network-wired", "job-workspace")
+        cls.job_archive_icon = make_icon("fa6s.box-archive", "job-archive")

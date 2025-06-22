@@ -13,14 +13,14 @@ class SavedPlanningJobItem(QWidget, Ui_Form):
     delete_job = pyqtSignal()
     job_type_changed = pyqtSignal()
 
-    def __init__(self, file_info: dict[str, str], parent: QWidget):
+    def __init__(self, job_data: dict[str, str], parent: QWidget):
         super().__init__(parent)
         self.setupUi(self)
 
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime(
+        modified_date = datetime.fromisoformat(job_data.get("updated_at")).strftime(
             "%A, %B %d, %Y, %I:%M:%S %p"
         )
-        job_type = file_info.get("type", 0)
+        job_type = job_data.get("job_data", {}).get("type", 1)
 
         self.pushButton_open_in_browser.setIcon(Icons.printer_icon)
         self.pushButton_delete.setIcon(Icons.delete_icon)

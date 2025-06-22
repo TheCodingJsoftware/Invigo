@@ -63,31 +63,31 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         button.setStyleSheet(
             f"""
             QPushButton#assembly_button_drop_menu {{
-                border: 1px solid {theme_var('surface')};
-                background-color: {theme_var('surface')};
-                border-radius: {theme_var('border-radius')};
+                border: 1px solid {theme_var("surface")};
+                background-color: {theme_var("surface")};
+                border-radius: {theme_var("border-radius")};
                 text-align: left;
             }}
             /* CLOSED */
             QPushButton:!checked#assembly_button_drop_menu {{
-                color: {theme_var('on-surface')};
-                border: 1px solid {theme_var('outline')};
+                color: {theme_var("on-surface")};
+                border: 1px solid {theme_var("outline")};
             }}
 
             QPushButton:!checked:hover#assembly_button_drop_menu {{
-                background-color: {theme_var('outline-variant')};
+                background-color: {theme_var("outline-variant")};
             }}
             QPushButton:!checked:pressed#assembly_button_drop_menu{{
-                color: {theme_var('on-surface')};
-                background-color: {theme_var('surface')};
+                color: {theme_var("on-surface")};
+                background-color: {theme_var("surface")};
             }}
             /* OPENED */
             QPushButton:checked#assembly_button_drop_menu {{
                 color: {font_color};
                 border-color: {base_color};
                 background-color: {base_color};
-                border-top-left-radius: {theme_var('border-radius')};
-                border-top-right-radius: {theme_var('border-radius')};
+                border-top-left-radius: {theme_var("border-radius")};
+                border-top-right-radius: {theme_var("border-radius")};
                 border-bottom-left-radius: 0px;
                 border-bottom-right-radius: 0px;
             }}
@@ -108,7 +108,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            background-color: {theme_var('background')};
+            background-color: {theme_var("background")};
             }}"""
         )
 
@@ -121,7 +121,10 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
             image = QPixmap(component.image_path)
             original_width = image.width()
             original_height = image.height()
-            new_width = int(original_width * (new_height / original_height))
+            try:
+                new_width = int(original_width * (new_height / original_height))
+            except ZeroDivisionError:
+                new_width = original_width
             pixmap = image.scaled(
                 new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
             )
@@ -144,7 +147,9 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         # )
         self.tableWidget_components.resizeColumnsToContents()
 
-    def add_structural_steel_item_to_table(self, structural_steel_item: StructuralProfile):
+    def add_structural_steel_item_to_table(
+        self, structural_steel_item: StructuralProfile
+    ):
         current_row = self.tableWidget_structural_steel_items.rowCount()
         new_height = 70
         self.tableWidget_structural_steel_items.insertRow(current_row)
@@ -168,8 +173,9 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         # )
         self.tableWidget_structural_steel_items.resizeColumnsToContents()
 
-
-    def add_laser_cut_part_to_table(self, laser_cut_part_group: WorkspaceLaserCutPartGroup):
+    def add_laser_cut_part_to_table(
+        self, laser_cut_part_group: WorkspaceLaserCutPartGroup
+    ):
         current_row = self.tableWidget_laser_cut_parts.rowCount()
         new_height = 70
         self.tableWidget_laser_cut_parts.insertRow(current_row)
@@ -197,7 +203,9 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.tableWidget_laser_cut_parts.setItem(
             current_row,
             2,
-            QTableWidgetItem(f"{laser_cut_part_group.base_part.gauge} {laser_cut_part_group.base_part.material}"),
+            QTableWidgetItem(
+                f"{laser_cut_part_group.base_part.gauge} {laser_cut_part_group.base_part.material}"
+            ),
         )
         # FILES
         self.tableWidget_laser_cut_parts.setItem(
@@ -207,7 +215,9 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.tableWidget_laser_cut_parts.setItem(
             current_row, 4, QTableWidgetItem(f"{laser_cut_part_group.get_quantity()}")
         )
-        self.tableWidget_laser_cut_parts.item(current_row, 4).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.tableWidget_laser_cut_parts.item(current_row, 4).setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter
+        )
         # QUANTITY IN STOCK
         if inventory_part := self.laser_cut_inventory.get_laser_cut_part_by_name(
             laser_cut_part_group.base_part.name
@@ -218,7 +228,9 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.tableWidget_laser_cut_parts.setItem(
             current_row, 5, QTableWidgetItem(f"{quantity_in_stock}")
         )
-        self.tableWidget_laser_cut_parts.item(current_row, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.tableWidget_laser_cut_parts.item(current_row, 5).setTextAlignment(
+            Qt.AlignmentFlag.AlignCenter
+        )
         # CURRENT FLOW TAG
         current_process = ""
         if laser_cut_part_group.base_part.recut:
@@ -228,13 +240,17 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         elif laser_cut_part_group.base_part.is_process_finished():
             current_process = "Part is Finished"
         else:
-            current_process = f"Part is currently in {laser_cut_part_group.get_current_tag().name}"
+            current_process = (
+                f"Part is currently in {laser_cut_part_group.get_current_tag().name}"
+            )
 
         # PROCESS TAG
         self.tableWidget_laser_cut_parts.setItem(
             current_row,
             6,
-            QTableWidgetItem(f"{laser_cut_part_group.base_part.flowtag.get_flow_string()}\n\n{current_process}"),
+            QTableWidgetItem(
+                f"{laser_cut_part_group.base_part.flowtag.get_flow_string()}\n\n{current_process}"
+            ),
         )
         # RECUT BUTTON
         self.tableWidget_laser_cut_parts.setItem(
@@ -247,7 +263,9 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
 
     def load_laser_cut_parts_table(self):
         self.tableWidget_laser_cut_parts.setRowCount(0)
-        grouped_laser_cut_parts = self.workspace.get_grouped_laser_cut_parts(self.assembly.laser_cut_parts)
+        grouped_laser_cut_parts = self.workspace.get_grouped_laser_cut_parts(
+            self.assembly.laser_cut_parts
+        )
         for laser_cut_part_group in grouped_laser_cut_parts:
             self.add_laser_cut_part_to_table(laser_cut_part_group)
         # self.tableWidget_laser_cut_parts.setFixedHeight(

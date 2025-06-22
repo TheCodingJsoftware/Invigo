@@ -1523,7 +1523,10 @@ class QuoteWidget(QWidget, Ui_Form):
                 original_width = image.width()
                 original_height = image.height()
                 new_height = 70
-                new_width = int(original_width * (new_height / original_height))
+                try:
+                    new_width = int(original_width * (new_height / original_height))
+                except ZeroDivisionError:
+                    new_width = original_width
                 pixmap = image.scaled(
                     new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
                 )

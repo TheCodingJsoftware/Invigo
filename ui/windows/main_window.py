@@ -121,42 +121,40 @@ from utils.threads.add_job_to_production_planner_thread import (
 )
 from utils.threads.changes_thread import ChangesThread
 from utils.threads.check_for_updates_thread import CheckForUpdatesThread
-from utils.threads.connect_thread import ConnectThread
-from utils.threads.delete_job_thread import DeleteJobThread
 from utils.threads.delete_quote_thread import DeleteQuoteThread
 from utils.threads.download_quote_thread import DownloadQuoteThread
 from utils.threads.download_thread import DownloadThread
 from utils.threads.exchange_rate import ExchangeRate
 from utils.threads.generate_quote_thread import GenerateQuoteThread
-from utils.threads.get_client_data_thread import IsClientTrustedThread
-from utils.threads.get_jobs_thread import GetJobsThread
-from utils.threads.get_order_number_thread import GetOrderNumberThread
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
 from utils.threads.get_saved_quotes_thread import GetSavedQuotesThread
 from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
-from utils.threads.set_order_number_thread import SetOrderNumberThread
 from utils.threads.update_job_setting import UpdateJobSetting
 from utils.threads.update_quote_settings import UpdateQuoteSettings
-from utils.threads.upload_job_thread import UploadJobThread
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.threads.upload_workorder_thread import UploadWorkorderThread
 from utils.workers.auth.connect import ConnectWorker
 from utils.workers.auth.is_client_trusted import IsClientTrustedWorker
 from utils.workers.download_images import DownloadImagesWorker
-from utils.workers.jobs.download_job import DownloadJobWorker
+from utils.workers.jobs.delete_job import DeleteJobWorker
+from utils.workers.jobs.get_all_jobs import GetAllJobsWorker
+from utils.workers.jobs.get_job import GetJobWorker
 from utils.workers.jobs.job_loader_controller import JobLoaderController
+from utils.workers.jobs.save_job import SaveJobWorker
+from utils.workers.jobs.update_job_setting import UpdateJobSettingWorker
 from utils.workers.runnable_chain import RunnableChain
 from utils.workers.utils.get_order_number import GetOrderNumberWorker
-from utils.workers.workspace.add_job import AddJobWorker
+from utils.workers.utils.set_order_number import SetOrderNumberWorker
+from utils.workers.workspace.add_job_to_workspace import AddJobToWorkspaceWorker
 from utils.workers.workspace.get_entries_by_name import (
     GetWorkspaceEntriesByNameWorker,
 )
 from utils.workers.workspace.get_workspace_entry import GetWorkspaceEntryWorker
 from utils.workspace.generate_printout import WorkorderPrintout, WorkspaceJobPrintout
-from utils.workspace.job import Job, JobColor, JobStatus
+from utils.workspace.job import Job, JobColor, JobIcon, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workorder import Workorder
@@ -383,7 +381,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "object_name": "job_quoter_tab",
             },
             "Workspace": {
-                "icon": "ph.users-three-fill",
+                "icon": "fa6s.network-wired",
                 "object_name": "workspace_tab",
             },
         }
@@ -481,14 +479,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     )
                     icon = qta.icon(
                         tab_data["icon"],
-                        options=[
-                            {
-                                "offset": (-0.1, 0.1),
-                                "scale_factor": 1.0,
-                                "color": theme_var("on-surface"),
-                                "color_active": theme_var("primary"),
-                            }
-                        ],
+                        color_on=theme_var("primary"),
+                        color_on_active=theme_var("primary"),
+                        color_off=theme_var("on-surface"),
+                        color_off_active=theme_var("on-surface"),
                     )
                     tab_button.setIcon(icon)
                     tab_button.clicked.connect(
@@ -724,9 +718,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_refresh_directories_3.setIcon(Icons.refresh_icon)
 
         # Jobs
-        self.pushButton_refresh_jobs.clicked.connect(self.load_jobs_thread)
+        self.pushButton_refresh_jobs.clicked.connect(self.load_jobs_worker)
         self.pushButton_refresh_jobs.setIcon(Icons.refresh_icon)
-        self.pushButton_refresh_jobs_2.clicked.connect(self.load_jobs_thread)
+        self.pushButton_refresh_jobs_2.clicked.connect(self.load_jobs_worker)
         self.pushButton_refresh_jobs_2.setIcon(Icons.refresh_icon)
 
         self.pushButton_save.clicked.connect(partial(self.save_quote, None))
@@ -1173,10 +1167,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif current_tab == "job_quoter_tab":
             self.load_tree_widget_cuttoff_drop_down(self.treeWidget_cutoff_sheets)
             self.refresh_nest_directories()
-            self.load_jobs_thread()
+            self.load_jobs_worker()
             self.job_quote_widget.update_tables()
         elif current_tab == "job_planner_tab":
-            self.load_jobs_thread()
+            self.load_jobs_worker()
             self.job_planner_widget.update_tables()
         elif current_tab == "workspace_tab":
             self.load_tree_widget_cuttoff_drop_down(self.treeWidget_cutoff_sheets_2)
@@ -1639,8 +1633,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def reload_job(self, job_widget: JobWidget):
         job = job_widget.job
-        folder_path = f"saved_jobs\\{job.status.name.lower()}\\{job.name}"
-        self.reload_job_thread(folder_path)
+        self.reload_job_worker(job.id)
 
     def save_job(self, job: Job | None):
         if not job:
@@ -1652,33 +1645,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg = QMessageBox(
                 QMessageBox.Icon.Critical,
                 "Critcal",
-                "Active job could not be found. Aborted.",
+                "Active job could not be found. Aborted.n\n\nHow did this happen?",
             )
             msg.exec()
             return
-        try:
-            job_plan_printout = WorkspaceJobPrintout(job)
-            html = job_plan_printout.generate()
-        except Exception as e:
-            html = f"There was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}"
-            msg = QMessageBox(
-                QMessageBox.Icon.Warning,
-                "Warning",
-                f"Job saved, but there was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e} {e.__traceback__}",
-            )
-            msg.exec()
-        self.upload_job_thread(
-            f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html
-        )
+        self.save_job_worker(job)
         job.unsaved_changes = False
         self.job_planner_widget.update_job_save_status(job)
         self.status_button.setText(f"Saved {job.name}", "lime")
-        self.upload_files(
-            [
-                # f"{self.components_inventory.filename}.json",
-                f"{self.laser_cut_parts_inventory.filename}.json",
-            ],
-        )
 
     def add_job_to_production_plan(
         self,
@@ -2165,7 +2139,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 packing_slips_layout.addWidget(quote_item)
         self.status_button.setText("Refreshed", "lime")
 
-    def load_planning_jobs(self, data: dict[str, dict[str, Any]]):
+    def load_planning_jobs(self, data: list[dict[str, dict[str, Any]]]):
         self.saved_planning_job_items_last_opened = (
             self.saved_jobs_multitoolbox.get_widget_visibility()
         )
@@ -2175,43 +2149,43 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.templates_jobs_multitoolbox.clear()
         self.saved_jobs_multitoolbox.clear()
-        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["type"]))
-        sorted_data = dict(
-            natsorted(data.items(), key=lambda x: x[1]["order_number"], reverse=True)
+        sorted_data = natsorted(
+            data, key=lambda x: (x["job_data"]["type"], -x["job_data"]["order_number"])
         )
-        for folder_path, file_info in sorted_data.items():
-            job_item = SavedPlanningJobItem(file_info, self)
-            job_item.load_job.connect(
-                partial(self.load_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.delete_job.connect(
-                partial(self.delete_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.open_webpage.connect(
-                partial(self.open_job, f"saved_jobs/{folder_path}")
-            )
+
+        for job_data in sorted_data:
+            job_item = SavedPlanningJobItem(job_data, self)
+            job_id = job_data.get("id", -1)
+            job_type = job_data.get("job_data", {}).get("type", 1)
+            job_name = job_data.get("name")
+            job_order_number = int(job_data.get("job_data", {}).get("order_number"))
+            job_item.load_job.connect(partial(self.load_job_worker, job_id))
+            job_item.delete_job.connect(partial(self.delete_job_worker, job_id))
+            job_item.open_webpage.connect(partial(self.open_job, job_id))
             job_item.pushButton_open_in_browser.setToolTip(
-                f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}"
+                f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/jobs/load_job/{job_id}"
             )
             job_item.job_type_changed.connect(
                 partial(
-                    self.change_job_thread,
-                    f"saved_jobs/{folder_path}",
+                    self.update_job_settings_worker,
+                    job_id,
                     "type",
                     job_item.comboBox_job_status,
                 )
             )
-            if file_info["type"] != JobStatus.TEMPLATE.value:
+            if job_type != JobStatus.TEMPLATE.value:
                 self.saved_jobs_multitoolbox.addItem(
                     job_item,
-                    f"{file_info.get('name')} #{int(file_info.get('order_number', 0))}",
-                    JobColor.get_color(JobStatus(file_info.get("type", 1))),
+                    f"{job_name} #{job_order_number}",
+                    JobColor.get_color(JobStatus(job_type)),
+                    icon=JobIcon.get_icon(JobStatus(job_type)),
                 )
-            elif file_info["type"] == JobStatus.TEMPLATE.value:
+            elif job_type == JobStatus.TEMPLATE.value:
                 self.templates_jobs_multitoolbox.addItem(
                     job_item,
-                    f"{file_info.get('name')} #{int(file_info.get('order_number', 0))}",
-                    JobColor.get_color(JobStatus(file_info.get("type", 1))),
+                    f"{job_name} #{job_order_number}",
+                    JobColor.get_color(JobStatus(job_type)),
+                    icon=JobIcon.get_icon(JobStatus(job_type)),
                 )
         self.saved_jobs_multitoolbox.close_all()
         self.templates_jobs_multitoolbox.close_all()
@@ -2222,7 +2196,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.templates_job_items_last_opened
         )
 
-    def load_quoting_jobs(self, data: dict[str, dict[str, Any]]):
+    def load_quoting_jobs(self, data: list[dict]):
         self.saved_planning_job_items_last_opened_2 = (
             self.saved_jobs_multitoolbox_2.get_widget_visibility()
         )
@@ -2232,43 +2206,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.templates_jobs_multitoolbox_2.clear()
         self.saved_jobs_multitoolbox_2.clear()
-        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["type"]))
-        sorted_data = dict(
-            natsorted(data.items(), key=lambda x: x[1]["order_number"], reverse=True)
+        sorted_data = natsorted(
+            data, key=lambda x: (x["job_data"]["type"], -x["job_data"]["order_number"])
         )
-        for folder_path, file_info in sorted_data.items():
-            job_item = SavedPlanningJobItem(file_info, self)
-            job_item.load_job.connect(
-                partial(self.load_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.delete_job.connect(
-                partial(self.delete_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.open_webpage.connect(
-                partial(self.open_job, f"saved_jobs/{folder_path}")
-            )
+        for job_data in sorted_data:
+            job_item = SavedPlanningJobItem(job_data, self)
+            job_id = job_data.get("id", -1)
+            job_type = job_data.get("job_data", {}).get("type", 1)
+            job_name = job_data.get("name")
+            job_order_number = int(job_data.get("job_data", {}).get("order_number"))
+            job_item.load_job.connect(partial(self.load_job_worker, job_id))
+            job_item.delete_job.connect(partial(self.delete_job_worker, job_id))
+            job_item.open_webpage.connect(partial(self.open_job, job_id))
             job_item.pushButton_open_in_browser.setToolTip(
-                f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}"
+                f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/jobs/load_job/{job_id}"
             )
             job_item.job_type_changed.connect(
                 partial(
-                    self.change_job_thread,
-                    f"saved_jobs/{folder_path}",
+                    self.update_job_settings_worker,
+                    job_id,
                     "type",
                     job_item.comboBox_job_status,
                 )
             )
-            if file_info["type"] != JobStatus.TEMPLATE.value:
+            if job_type != JobStatus.TEMPLATE.value:
                 self.saved_jobs_multitoolbox_2.addItem(
                     job_item,
-                    f"{file_info.get('name')} #{int(file_info.get('order_number', 0))}",
-                    JobColor.get_color(JobStatus(file_info.get("type", 1))),
+                    f"{job_name} #{job_order_number}",
+                    JobColor.get_color(JobStatus(job_type)),
+                    icon=JobIcon.get_icon(JobStatus(job_type)),
                 )
-            elif file_info["type"] == JobStatus.TEMPLATE.value:
+            elif job_type == JobStatus.TEMPLATE.value:
                 self.templates_jobs_multitoolbox_2.addItem(
                     job_item,
-                    f"{file_info.get('name')} #{int(file_info.get('order_number', 0))}",
-                    JobColor.get_color(JobStatus(file_info.get("type", 1))),
+                    f"{job_name} #{job_order_number}",
+                    JobColor.get_color(JobStatus(job_type)),
+                    icon=JobIcon.get_icon(JobStatus(job_type)),
                 )
         self.saved_jobs_multitoolbox_2.close_all()
         self.templates_jobs_multitoolbox_2.close_all()
@@ -2793,7 +2766,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.exec()
 
     def add_job_to_workspace_thread(self, job: Job):
-        add_job_to_workspace_thread = AddJobWorker(job)
+        add_job_to_workspace_thread = AddJobToWorkspaceWorker(job)
         add_job_to_workspace_thread.signals.success.connect(
             self.add_job_to_workspace_response
         )
@@ -3003,7 +2976,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if responses == "reload_saved_quotes":
                 self.load_saved_quoted_thread()
             elif responses[0] == "reload_saved_jobs":
-                self.load_jobs_thread()
+                self.load_jobs_worker()
+            elif "jobs/get_all" in responses[0]:
+                self.load_jobs_worker()
             elif "workspace/get_entry" in responses[0] and tab_name == "workspace_tab":
                 get_workspace_entry_worker = GetWorkspaceEntryWorker(
                     responses[0].split("/")[-1]
@@ -3056,9 +3031,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     )
             else:
                 self.download_files(responses)
-            self.status_button.setText("Synched", "lime")
+            self.status_button.setText(f"Synched: {responses[0]}", "lime")
+            logging.info(f"Synched: {responses}")
         else:
-            self.status_button.setText(f"Syncing Error: {responses}", "red")
+            logging.error(f"Syncing Error: {responses}")
+            self.status_button.setText(f"Syncing Error: {responses[0]}", "red")
 
     def get_workspace_entry_response(self, entry_data: dict, status_code: int):
         if status_code == 200:
@@ -3978,10 +3955,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_order_number_thread(self, order_number: float):
         self.order_number = order_number
-        set_order_number_thread = SetOrderNumberThread(order_number)
-        set_order_number_thread.signal.connect(self.set_order_number_thread_response)
-        self.threads.append(set_order_number_thread)
-        set_order_number_thread.start()
+        set_order_number_worker = SetOrderNumberWorker(order_number)
+        QThreadPool.globalInstance().start(set_order_number_worker)
 
     def get_order_number_thread(self):
         get_order_number_worker = GetOrderNumberWorker()
@@ -3989,14 +3964,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.get_order_number_thread_response
         )
         QThreadPool.globalInstance().start(get_order_number_worker)
-
-    def set_order_number_thread_response(self, response):
-        if response != "success":
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Order number error")
-            msg.setText(f"Encountered error when setting order number.\n\n{response}")
-            msg.exec()
 
     def get_order_number_thread_response(self, order_number: dict[str, int]):
         print(order_number)
@@ -4041,43 +4008,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setText(f"{response}")
             msg.exec()
 
-    def upload_job_thread(self, folder: str, job: Job, html_file_contents: str):
-        upload_batch = UploadJobThread(folder, job, html_file_contents)
-        upload_batch.signal.connect(self.upload_job_response)
-        self.threads.append(upload_batch)
+    def save_job_worker(self, job: Job):
+        upload_job_worker = SaveJobWorker(job)
+        upload_job_worker.signals.success.connect(self.save_job_response)
         self.status_button.setText(f"Uploading {job.name}", "yellow")
         self.job_planner_widget.update_job_save_status(job)
-        upload_batch.start()
+        QThreadPool.globalInstance().start(upload_job_worker)
 
-    def upload_job_response(self, response: str):
-        if response == "Job sent successfully":
-            self.status_button.setText("Job was sent successfully", "lime")
-            self.load_jobs_thread()
-        else:
-            self.status_button.setText("Job failed to send", "red")
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Upload error")
-            msg.setText(f"{response}")
-            msg.exec()
+    def save_job_response(self, response: str):
+        self.status_button.setText("Job was sent successfully", "lime")
+        self.load_jobs_worker()
 
-    def load_jobs_thread(self):
-        get_saved_quotes_thread = GetJobsThread()
-        self.threads.append(get_saved_quotes_thread)
-        get_saved_quotes_thread.signal.connect(self.load_jobs_response)
-        get_saved_quotes_thread.start()
+    def load_jobs_worker(self):
+        get_all_jobs_worker = GetAllJobsWorker()
+        get_all_jobs_worker.signals.success.connect(self.load_jobs_response)
+        QThreadPool.globalInstance().start(get_all_jobs_worker)
 
-    def load_jobs_response(self, data: dict):
+    def load_jobs_response(self, data: list[dict]):
         self.saved_jobs = data
-        if isinstance(data, dict):
-            self.status_button.setText("Fetched all jobs", "lime")
-            if self.tab_text(self.stackedWidget.currentIndex()) == "job_planner_tab":
-                self.load_planning_jobs(data)
-            elif self.tab_text(self.stackedWidget.currentIndex()) == "job_quoter_tab":
-                self.load_quoting_jobs(data)
-            # More will be added here such as quoting, workspace, archive...
-        else:
-            self.status_button.setText(f"Error: {data}'", "red")
+        self.status_button.setText("Fetched all jobs", "lime")
+        if self.tab_text(self.stackedWidget.currentIndex()) == "job_planner_tab":
+            self.load_planning_jobs(data)
+        elif self.tab_text(self.stackedWidget.currentIndex()) == "job_quoter_tab":
+            self.load_quoting_jobs(data)
+        # More will be added here such as quoting, workspace, archive...
 
     def load_saved_quoted_thread(self):
         get_saved_quotes_thread = GetSavedQuotesThread()
@@ -4091,13 +4045,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.status_button.setText(f"Error: {data}'", "red")
 
-    def reload_job_thread(self, folder_name: str):
-        self.status_button.setText(f"Loading {folder_name} data...", "yellow")
-        job_loader_thread = JobLoaderThread(self.job_manager, folder_name)
-        self.threads.append(job_loader_thread)
-        job_loader_thread.signal.connect(self.reload_job_response)
-        job_loader_thread.start()
-        job_loader_thread.wait()
+    def reload_job_worker(self, job_id: int):
+        self.status_button.setText(f"Reloading job (ID: {job_id}) data...", "yellow")
+        job_loader_controller = JobLoaderController(self.job_manager, job_id)
+        job_loader_controller.finished.connect(self.reload_job_response)
+        self.threads.append(job_loader_controller)
+        job_loader_controller.start()
 
     def reload_job_response(self, job: Job | None):
         if job:
@@ -4108,21 +4061,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.job_quote_widget.reload_job(job)
         else:
             self.status_button.setText(
-                "Failed to load job: reload_job_thread.JobLoaderThread: Job is None",
+                "Failed to load job: reload_job_worker.JobLoaderController: Job is None",
                 "red",
             )
 
-    def load_job_thread(self, folder_name: str):
-        self.status_button.setText(f"Loading {folder_name} data...", "yellow")
-        job_loader_thread = JobLoaderController(self.job_manager, folder_name)
+    def load_job_worker(self, job_id: int):
+        self.status_button.setText(f"Loading job (ID: {job_id}) data...", "yellow")
+        job_loader_thread = JobLoaderController(self.job_manager, job_id)
         job_loader_thread.finished.connect(self.load_job_response)
         self.threads.append(job_loader_thread)
         job_loader_thread.start()
-        # job_loader_thread.signal.connect(self.load_job_response)
-        # job_loader_thread.start()
-        # job_loader_thread.wait()
 
     def load_job_response(self, job: Job | None):
+        print(job)
         if job:
             self.status_button.setText(f"{job.name} loaded successfully!", "lime")
             if self.tab_text(self.stackedWidget.currentIndex()) == "job_planner_tab":
@@ -4132,85 +4083,51 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             print(f"Failed to load job: {job}")
             self.status_button.setText(
-                "Failed to load job: load_job_thread.JobLoaderThread: Job is None",
+                "Failed to load job: load_job_worker.JobLoaderController: Job is None",
                 "red",
             )
 
-    def download_job_data_thread(self, folder_name: str):
-        self.status_button.setText("Loading job data", "lime")
-        download_quote_thread = DownloadJobThread(folder_name)
-        self.threads.append(download_quote_thread)
-        download_quote_thread.signal.connect(self.download_job_data_response)
-        download_quote_thread.start()
-
-    def download_job_data_response(
-        self, data: dict[str, dict[str, Any]], folder_name: str
-    ):
-        if isinstance(data, dict):
-            job = Job(data, self.job_manager)
-
-            # required_images = [laser_cut_part.image_index for laser_cut_part in job.grouped_laser_cut_parts]
-            # required_images.extend(nest.image_path for nest in job.nests)
-
-            # self.download_required_images_thread(required_images)
-
-            job.downloaded_from_server = True
-            self.job_planner_widget.load_job(job)
-            self.status_button.setText(
-                f"Successfully fetched {folder_name} data",
-                "lime",
-            )
-        else:
-            self.status_button.setText(f"Error - {data}", "red")
-
-    def change_job_thread(
-        self, job_path: str, job_setting_key: str, setting: QComboBox
+    def update_job_settings_worker(
+        self, job_id: str, job_setting_key: str, setting: QComboBox
     ):
         setting.setEnabled(False)
-        update_job_thread = UpdateJobSetting(
-            job_path, job_setting_key, setting.currentIndex() + 1
+        update_job_settings_worker = UpdateJobSettingWorker(
+            job_id, job_setting_key, setting.currentIndex() + 1
         )
-        self.threads.append(update_job_thread)
-        update_job_thread.signal.connect(self.change_job_response)
-        update_job_thread.start()
+        update_job_settings_worker.signals.success.connect(
+            self.update_job_settings_response
+        )
+        QThreadPool.globalInstance().start(update_job_settings_worker)
 
-    def change_job_response(self, response: dict | str, folder_name: str):
-        if isinstance(response, dict):
-            self.status_button.setText(
-                f"Successfully updated {folder_name}",
-                "lime",
-            )
-        else:
-            self.status_button.setText(f"Error: {response} - {folder_name}", "red")
-        self.load_jobs_thread()
+    def update_job_settings_response(self, response: dict):
+        self.status_button.setText(
+            f"Successfully updated job (ID: {response}) settings",
+            "lime",
+        )
+        self.load_jobs_worker()
 
-    def delete_job_thread(self, folder_path: str):
-        job_name = folder_path.split("\\")[-1]
+    def delete_job_worker(self, job_id: int):
         are_you_sure = QMessageBox(
             QMessageBox.Icon.Question,
             "Are you sure?",
-            f"Are you sure you want to delete {job_name}?\n\nThis is permanent and cannot be undone.",
+            "Are you sure you want to delete this job?\n\nThis is permanent and cannot be undone.",
             QMessageBox.StandardButton.Yes
             | QMessageBox.StandardButton.No
             | QMessageBox.StandardButton.Cancel,
             self,
         )
         if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
-            self.status_button.setText(f"Deleting {folder_path}", "yellow")
-            delete_job_thread = DeleteJobThread(folder_path)
-            self.threads.append(delete_job_thread)
-            delete_job_thread.signal.connect(self.delete_job_response)
-            delete_job_thread.start()
+            self.status_button.setText(f"Deleting {job_id}", "yellow")
+            delete_job_worker = DeleteJobWorker(job_id)
+            delete_job_worker.signals.success.connect(self.delete_job_response)
+            QThreadPool.globalInstance().start(delete_job_worker)
 
-    def delete_job_response(self, response: dict | str, folder_name: str):
-        if isinstance(response, dict):
-            self.status_button.setText(
-                f"Successfully deleted {folder_name}",
-                "lime",
-            )
-            self.load_jobs_thread()
-        else:
-            self.status_button.setText(f"Error: {response}", "red")
+    def delete_job_response(self, response: dict):
+        self.status_button.setText(
+            "Successfully deleted!",
+            "lime",
+        )
+        self.load_jobs_worker()
 
     def change_quote_thread(
         self, quote_path: str, quote_setting_key: str, setting: QComboBox

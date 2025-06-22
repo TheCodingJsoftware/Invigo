@@ -4,7 +4,7 @@ import logging
 from PyQt6.QtCore import QObject, QThreadPool, pyqtSignal
 
 from utils.workers.download_images import DownloadImagesWorker
-from utils.workers.jobs.download_job import DownloadJobWorker
+from utils.workers.jobs.get_job import GetJobWorker
 from utils.workers.workspace.download_file import WorkspaceDownloadWorker
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
@@ -13,10 +13,10 @@ from utils.workspace.job_manager import JobManager
 class JobLoaderController(QObject):
     finished = pyqtSignal(object)  # Emit Job when done
 
-    def __init__(self, job_manager: JobManager, folder_name: str):
+    def __init__(self, job_manager: JobManager, job_id: int):
         super().__init__()
         self.logger = logging.getLogger("JobLoaderController")
-        self.folder_name = folder_name
+        self.job_id = job_id
         self.job_manager = job_manager
         self.job: Job | None = None
         self.thread_pool = QThreadPool.globalInstance()
@@ -25,7 +25,7 @@ class JobLoaderController(QObject):
         self.expected_tasks = {"job", "images", "files"}
         self.completed_tasks = set()
 
-        self.logger.info(f"Initialized for folder: {self.folder_name}")
+        self.logger.info(f"Initialized for job id: {self.job_id}")
 
     def start(self):
         self.logger.info("Starting job loading process")
@@ -33,16 +33,14 @@ class JobLoaderController(QObject):
 
     def download_job_data(self):
         self.logger.info("Downloading job data...")
-        worker = DownloadJobWorker(self.folder_name)
+        worker = GetJobWorker(self.job_id)
         worker.signals.success.connect(self.handle_job_data)
         worker.signals.error.connect(lambda *args: self.task_finished("job"))
         worker.signals.finished.connect(lambda: self.task_finished("job"))
         self.thread_pool.start(worker)
 
     def handle_job_data(self, response: tuple[dict, str]):
-        data, folder = response
-        self.logger.info(f"Job data received for folder: {folder}")
-        self.job = Job(data, self.job_manager)
+        self.job = Job(response, self.job_manager)
         self.job.downloaded_from_server = True
         images = self.get_all_images(self.job)
         self.logger.info(f"Found {len(images)} image(s) to download")

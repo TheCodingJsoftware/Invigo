@@ -367,7 +367,10 @@ class AssemblyQuotingWidget(AssemblyWidget):
             original_width = image.width()
             original_height = image.height()
             new_height = self.components_table.row_height
-            new_width = int(original_width * (new_height / original_height))
+            try:
+                new_width = int(original_width * (new_height / original_height))
+            except ZeroDivisionError:
+                new_width = original_width
             pixmap = image.scaled(
                 new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
             )
@@ -724,7 +727,10 @@ class AssemblyQuotingWidget(AssemblyWidget):
             original_width = image.width()
             original_height = image.height()
             new_height = self.laser_cut_parts_table.row_height
-            new_width = int(original_width * (new_height / original_height))
+            try:
+                new_width = int(original_width * (new_height / original_height))
+            except ZeroDivisionError:
+                new_width = original_width
             pixmap = image.scaled(
                 new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
             )
@@ -765,7 +771,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         materials_combobox = QComboBox(self)
         materials_combobox.setStyleSheet("border-radius: 0px;")
-        materials_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        materials_combobox.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+            event
+        )
         materials_combobox.addItems(self.sheet_settings.get_materials())
         materials_combobox.setCurrentText(laser_cut_part.material)
         materials_combobox.currentTextChanged.connect(
@@ -780,7 +788,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         thicknesses_combobox = QComboBox(self)
         thicknesses_combobox.setStyleSheet("border-radius: 0px;")
-        thicknesses_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        thicknesses_combobox.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+            event
+        )
         thicknesses_combobox.addItems(self.sheet_settings.get_thicknesses())
         thicknesses_combobox.setCurrentText(laser_cut_part.gauge)
         thicknesses_combobox.currentTextChanged.connect(
@@ -1517,7 +1527,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
             sub_assembly = new_sub_assembly
         sub_assembly.color = self.assembly.color
 
-        sub_assembly_widget = AssemblyQuotingWidget(sub_assembly, self.parent)
+        sub_assembly_widget = AssemblyQuotingWidget(sub_assembly, self._parent_widget)
         self.sub_assemblies_toolbox.addItem(
             sub_assembly_widget, sub_assembly.name, self.assembly.color
         )
@@ -1675,7 +1685,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.changes_made()
 
     def sync_changes(self):
-        self.parent._parent_widget.sync_changes()
+        self._parent_widget._parent_widget.sync_changes()
 
     def update_tables(self):
         self.load_components_table()

@@ -2,7 +2,7 @@ import os
 from functools import partial
 
 from natsort import natsorted
-from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtCore import Qt, QThreadPool, QUrl
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QPushButton
 
@@ -18,7 +18,7 @@ class PDFViewer(QMainWindow, Ui_MainWindow):
 
         self.files = pdf_files
         self.buttons: list[QPushButton] = []
-        self.download_file_thread: WorkspaceDownloadFile = None
+        self.download_file_thread: WorkspaceDownloadWorker = None
 
         self.webView = QWebEngineView(self)
         self.webView.settings().setAttribute(
@@ -87,9 +87,9 @@ class PDFViewer(QMainWindow, Ui_MainWindow):
 
     def load_pdf_file(self, file_path: str):
         self.current_pdf_file = file_path
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
+        self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
+        self.download_file_thread.signals.success.connect(self.file_downloaded)
+        QThreadPool.globalInstance().start(self.download_file_thread)
 
     def file_downloaded(self, file_ext: str, file_name: str, open_when_done: bool):
         if file_ext is None:

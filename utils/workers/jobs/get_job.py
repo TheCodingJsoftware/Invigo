@@ -4,11 +4,10 @@ import requests
 from utils.workers.base_worker import BaseWorker
 
 
-class DownloadJobWorker(BaseWorker):
-    def __init__(self, folder_name: str):
+class GetJobWorker(BaseWorker):
+    def __init__(self, job_id: int):
         super().__init__()
-        self.folder_name = folder_name
-        self.url = f"{self.DOMAIN}/download_job/{self.folder_name}"
+        self.url = f"{self.DOMAIN}/jobs/get_job/{job_id}"
 
     def do_work(self):
         with requests.Session() as session:
@@ -23,7 +22,7 @@ class DownloadJobWorker(BaseWorker):
             if not isinstance(response_data, dict):
                 raise ValueError("Invalid data format received")
 
-            return (response_data, self.folder_name)
+            return response_data
 
     def handle_exception(self, e):
         if isinstance(e, requests.exceptions.Timeout):

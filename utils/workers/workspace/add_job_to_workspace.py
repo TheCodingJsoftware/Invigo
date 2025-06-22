@@ -5,7 +5,7 @@ from utils.workers.base_worker import BaseWorker
 from utils.workspace.job import Job
 
 
-class AddJobWorker(BaseWorker):
+class AddJobToWorkspaceWorker(BaseWorker):
     def __init__(self, job: Job):
         super().__init__(name="AddJobToWorkspaceWorker")
         self.job = job

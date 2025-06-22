@@ -443,6 +443,8 @@ class WorkspaceWidget(QWidget, Ui_Form):
         # PART NAME
         # TODO: Consider flow tag
         # if group.base_part.recut or group.base_part.recoat or group.base_part.is_process_finished():
+        if not part_tree_widget_item:
+            return
         part_tree_widget_item.setDisabled(True)
         self.parts_tree_index.update({id(part_tree_widget_item): group})
         part_tree_widget_item.setText(

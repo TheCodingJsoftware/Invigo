@@ -21,14 +21,15 @@ class WorkspaceDownloadWorker(BaseWorker):
         self.download_directory = download_directory or os.path.join(
             Environment.DATA_PATH, "data", "workspace"
         )
-        self.file_url = f"{self.DOMAIN}/workspace/get_file/"
+        self.file_url = f"{self.DOMAIN}/workspace/get_file"
 
     def do_work(self):
         try:
             with requests.Session() as session:
                 for file_to_download in self.files_to_download:
+                    url = f"{self.file_url}/{file_to_download}"
                     response = session.get(
-                        f"{self.file_url}{file_to_download}",
+                        url,
                         headers=self.headers,
                         timeout=10,
                     )
@@ -42,24 +43,23 @@ class WorkspaceDownloadWorker(BaseWorker):
                         with open(save_path, "wb") as file:
                             file.write(response.content)
 
-                        self.signals.success.emit(
-                            file_ext, file_name, self.open_when_done
-                        )
                         self.logger.info(f"Downloaded: {file_name}")
 
                         if self.open_when_done:
-                            return  # Stop after the first download if we need to open it
+                            return (
+                                file_ext,
+                                file_name,
+                                self.open_when_done,
+                            )  # Used in PDF Viewer
                     else:
-                        self.signals.error.emit(None, response.text, False)
+                        self.signals.error.emit(response.text, response.status_code)
                         self.logger.error(
                             f"Failed to download {file_name}: {response.text}"
                         )
 
         except Exception as e:
-            self.signals.error.emit(None, str(e), False)
+            self.signals.error.emit(str(e), 500)
             self.logger.exception("Download error")
 
         if not self.open_when_done:
-            self.signals.success.emit(
-                "Successfully downloaded", "Successfully downloaded", False
-            )
+            return
