@@ -282,6 +282,14 @@ class PaintSettingsWidget(QWidget):
             )
         # self._parent_widget.parent.parent.sync_changes()
 
+    def update_widgets(self):
+        self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
+        self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
+        self.combobox_powder_coating_color.setCurrentText(
+            self.laser_cut_part.powder_name
+        )
+        self.update_paint_settings()
+
     def block_signals(self, block: bool):
         self.signals_blocked = block
         self.combobox_primer.blockSignals(block)
@@ -368,6 +376,12 @@ class PaintWidget(QWidget):
                 self.laser_cut_part
             )
         # self._parent_widget.parent.parent.sync_changes()
+
+    def update_widgets(self):
+        self.checkbox_primer.setChecked(self.laser_cut_part.uses_primer)
+        self.checkbox_paint.setChecked(self.laser_cut_part.uses_paint)
+        self.checkbox_powder.setChecked(self.laser_cut_part.uses_powder)
+        self.update_paint()
 
     def block_signals(self, block: bool):
         super().blockSignals(block)
@@ -717,7 +731,7 @@ class LaserCutTab(QWidget, Ui_Form):
         ].block_signals(True)
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_widget"
-        ].update_paint()
+        ].update_widgets()
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_widget"
         ].block_signals(False)
@@ -727,7 +741,7 @@ class LaserCutTab(QWidget, Ui_Form):
         ].blockSignals(True)
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
-        ].update_paint_settings()
+        ].update_widgets()
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
         ].blockSignals(False)
