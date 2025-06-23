@@ -1164,6 +1164,11 @@ class WorkspaceWidget(QWidget, Ui_Form):
         if not entries_data:
             return
 
+        entries_to_update = {
+            "laser_cut_part": {},
+            "assembly": {},
+        }
+
         for entry_data in entries_data:
             part_name = str(entry_data["name"])
             part_type = str(entry_data["type"])
@@ -1174,12 +1179,22 @@ class WorkspaceWidget(QWidget, Ui_Form):
                 ):
                     group, item = result
                     group.update_entry(entry_data)
-                    self.update_part_tree_widget_item(group, item)
+                    entries_to_update[part_type].update({part_name: (group, item)})
+                    # self.update_part_tree_widget_item(group, item)
             elif part_type == "assembly":
                 if result := self.get_workspace_assembly_group_item_by_name(part_name):
                     group, item = result
                     group.update_entry(entry_data)
+                    entries_to_update[part_type].update({part_name: (group, item)})
+                    # self.update_assembly_tree_widget_item(group, item)
+        for part_type, entries in entries_to_update.items():
+            for part_name, (group, item) in entries.items():
+                if part_type == "laser_cut_part":
+                    self.update_part_tree_widget_item(group, item)
+                elif part_type == "assembly":
                     self.update_assembly_tree_widget_item(group, item)
+                else:
+                    raise ValueError(f"Unknown part type: {part_type}")
 
     # ASSEMBLIES
     def add_assembly_group_to_tree(
