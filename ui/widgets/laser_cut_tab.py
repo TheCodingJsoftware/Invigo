@@ -276,8 +276,7 @@ class PaintSettingsWidget(QWidget):
         self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
         self.parent.parent.parent.sync_changes()
 
-    def blockSignals(self, block: bool):
-        super().blockSignals(block)
+    def block_signals(self, block: bool):
         self.combobox_primer.blockSignals(block)
         self.combobox_paint_color.blockSignals(block)
         self.combobox_powder_coating_color.blockSignals(block)
@@ -291,7 +290,7 @@ class PaintWidget(QWidget):
         parent: LaserCutPartsTableWidget,
     ):
         super().__init__(parent)
-        self.parent: LaserCutPartsTableWidget = parent
+        self._parent_widget: LaserCutPartsTableWidget = parent
 
         self.laser_cut_part = laser_cut_part
         self.paint_settings_widget = paint_settings_widget
@@ -331,7 +330,7 @@ class PaintWidget(QWidget):
             )
         )
 
-        self.parent.resizeColumnsToContents()
+        self._parent_widget.resizeColumnsToContents()
 
     def update_paint(self):
         self.laser_cut_part.uses_primer = self.checkbox_primer.isChecked()
@@ -355,11 +354,11 @@ class PaintWidget(QWidget):
             )
         )
 
-        self.parent.resizeColumnsToContents()
+        self._parent_widget.resizeColumnsToContents()
         self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
-        self.parent.parent.parent.sync_changes()
+        self._parent_widget.parent.parent.sync_changes()
 
-    def blockSignals(self, block: bool):
+    def block_signals(self, block: bool):
         super().blockSignals(block)
         self.checkbox_primer.blockSignals(block)
         self.checkbox_paint.blockSignals(block)
@@ -701,15 +700,15 @@ class LaserCutTab(QWidget, Ui_Form):
             laser_cut_part.modified_date
         )
 
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].blockSignals(
-            True
-        )
+        self.table_laser_cut_parts_widgets[laser_cut_part][
+            "paint_widget"
+        ].block_signals(True)
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_widget"
         ].update_paint()
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].blockSignals(
-            False
-        )
+        self.table_laser_cut_parts_widgets[laser_cut_part][
+            "paint_widget"
+        ].block_signals(False)
 
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
