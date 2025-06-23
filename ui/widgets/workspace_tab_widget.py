@@ -193,19 +193,19 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
 
     def filter_button_changed(self, states: dict[str, bool]):
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.reload_all_entries()
+        self.workspace_widget.update_parts_visibility()
         # self.workspace_widget.load_assembly_tree()
 
     def date_range_changed(self, dates: dict[QDate, QDate]):
         self.workspace_filter.date_range = dates
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.reload_all_entries()
+        self.workspace_widget.update_parts_visibility()
         # self.workspace_widget.load_assembly_tree()
 
     def date_range_toggled(self, checked: bool):
         self.workspace_filter.enable_date_range = checked
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.reload_all_entries()
+        self.workspace_widget.update_parts_visibility()
         # self.workspace_widget.load_assembly_tree()
 
     def load_sort_button(self):
@@ -229,7 +229,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
     def search_pressed(self):
         if not self.has_searched:
             # self.workspace_widget.load_parts_table()
-            self.workspace_widget.reload_all_entries()
+            self.workspace_widget.update_parts_visibility()
             # self.workspace_widget.load_assembly_tree()
             self.has_searched = True
 

@@ -1,5 +1,7 @@
 import contextlib
 import os
+import platform
+import subprocess
 from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Literal, Optional, Union
@@ -616,22 +618,26 @@ class WorkspaceWidget(QWidget, Ui_Form):
         job, item, response, status_code = response
         if status_code == 200:
             if self._parent_widget.pushButton_view_parts.isChecked():
-                if not (
-                    filtered_parts := self.workspace.get_filtered_laser_cut_parts(job)
-                ):
+                all_laser_cut_parts = job.get_all_laser_cut_parts()
+                if not all_laser_cut_parts:
                     return
+                # if not (
+                #     filtered_parts := self.workspace.get_filtered_laser_cut_parts(job)
+                # ):
+                #     return
 
                 parent_job_item = self.parts_parent_tree_items[
                     job.get_workspace_name()
                 ]["item"]
                 grouped_parts = self.workspace.get_grouped_laser_cut_parts(
-                    filtered_parts
+                    all_laser_cut_parts
                 )
                 self.parts_parent_tree_items[job.get_workspace_name()][
                     "children"
                 ].clear()
                 for laser_cut_part_group in grouped_parts:
                     self.add_part_group_to_tree(laser_cut_part_group, parent_job_item)
+                self.update_parts_visibility()
             elif self._parent_widget.pushButton_view_assemblies.isChecked():
                 if not (
                     filtered_assemblies := self.workspace.get_filtered_assemblies(job)
@@ -1094,7 +1100,10 @@ class WorkspaceWidget(QWidget, Ui_Form):
                 msg.exec()
 
     def download_thread_response(self, response: str):
-        os.startfile(self.download_directory)
+        if platform.system() == "Windows":
+            os.startfile(self.download_directory)
+        else:
+            subprocess.run(["xdg-open", self.download_directory])
 
     def parts_tree_get_selected_items(self) -> list[WorkspaceLaserCutPartGroup]:
         selected_items: list[WorkspaceLaserCutPartGroup] = []
@@ -1536,23 +1545,23 @@ class WorkspaceWidget(QWidget, Ui_Form):
                 assemblies_to_update.append(assembly)
         self.update_entries(assemblies_to_update)
 
-    def file_downloaded(
-        self, file_ext: Optional[str], file_name: str, open_when_done: bool
-    ):
-        if file_ext is None:
-            msg = QMessageBox(
-                QMessageBox.Icon.Critical,
-                "Error",
-                f"Failed to download file: {file_name}",
-                QMessageBox.StandardButton.Ok,
-                self,
-            )
-            msg.show()
-            return
-        if open_when_done:
-            if file_ext in {"PNG", "JPG", "JPEG"}:
-                local_path = f"data/workspace/{file_ext}/{file_name}"
-                self.open_image(local_path, file_name)
+    def file_downloaded(self, response: tuple[str, str, bool]):
+        if response:
+            file_ext, file_name, open_when_done = response
+            if file_ext is None:
+                msg = QMessageBox(
+                    QMessageBox.Icon.Critical,
+                    "Error",
+                    f"Failed to download file: {file_name}",
+                    QMessageBox.StandardButton.Ok,
+                    self,
+                )
+                msg.show()
+                return
+            if open_when_done:
+                if file_ext in {"PNG", "JPG", "JPEG"}:
+                    local_path = f"data/workspace/{file_ext}/{file_name}"
+                    self.open_image(local_path, file_name)
 
     def open_pdf(self, files, file_path: str):
         pdf_viewer = PDFViewer(files, file_path, self)
@@ -1599,9 +1608,10 @@ class WorkspaceWidget(QWidget, Ui_Form):
 
     def get_job_from_tree_item(self, tree_item: QTreeWidgetItem) -> Job | None:
         for job_name, job_data in self.parts_parent_tree_items.items():
+            job = job_data["job"]
             for children in job_data["children"]:
                 if children["item"] == tree_item:
-                    return job_data["job"]
+                    return job
         return None
 
     def reload_all_entries(self):
@@ -1610,6 +1620,16 @@ class WorkspaceWidget(QWidget, Ui_Form):
                 tree_widget_item = children["item"]
                 group = children["group"]
                 self.update_part_tree_widget_item(group, tree_widget_item)
+
+    def update_parts_visibility(self):
+        for job_name, job_data in self.parts_parent_tree_items.items():
+            job = job_data["job"]
+            for children in job_data["children"]:
+                part_tree_widget_item = children["item"]
+                group = children["group"]
+                part_tree_widget_item.setHidden(
+                    self.workspace.is_part_group_hidden(group, job)
+                )
 
     def get_all_workspace_jobs_thread(self):
         get_all_workspace_jobs_worker = GetAllWorkspaceJobsWorker()
