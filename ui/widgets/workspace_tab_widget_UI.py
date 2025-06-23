@@ -56,6 +56,30 @@ class Ui_Form(object):
         self.horizontalLayout_3.addWidget(self.pushButton_view_assemblies)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
+        self.pushButton_reload = QtWidgets.QPushButton(parent=Form)
+        self.pushButton_reload.setMaximumSize(QtCore.QSize(25, 25))
+        self.pushButton_reload.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.pushButton_reload.setStyleSheet("\n"
+"QPushButton#pushButton_reload:flat {\n"
+"    background-color: transparent;\n"
+"    border: 1px solid transparent;\n"
+"    border-radius: 12px;\n"
+"    padding: 5px 10px;\n"
+"    color: #EAE9FC;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_reload:flat:pressed {\n"
+"    background-color: #8dcdff;\n"
+"    color: #171717;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_reload:flat:hover {\n"
+"    background-color: rgba(76, 76, 76, 0.6);\n"
+"}")
+        self.pushButton_reload.setText("")
+        self.pushButton_reload.setFlat(True)
+        self.pushButton_reload.setObjectName("pushButton_reload")
+        self.horizontalLayout_3.addWidget(self.pushButton_reload)
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
         spacerItem2 = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         self.verticalLayout_2.addItem(spacerItem2)
@@ -136,5 +160,9 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.pushButton_view_parts.setText(_translate("Form", "View Parts"))
         self.pushButton_view_assemblies.setText(_translate("Form", "View Assemblies"))
+        self.pushButton_reload.setToolTip(_translate("Form", "Reload workspace\n"
+"\n"
+"Ctrl + R"))
+        self.pushButton_reload.setShortcut(_translate("Form", "Ctrl+R"))
         self.lineEdit_search.setToolTip(_translate("Form", "Use commas ( , ) to use multiple search queries."))
         self.lineEdit_search.setPlaceholderText(_translate("Form", "Search parts..."))

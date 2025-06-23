@@ -7,7 +7,7 @@ from utils.workspace.tag import Tag
 
 
 class WorkspaceLaserCutPartGroup:
-    def __init__(self):
+    def __init__(self) -> None:
         self.laser_cut_parts: list[LaserCutPart] = []
         self.base_part: LaserCutPart | None = None
 

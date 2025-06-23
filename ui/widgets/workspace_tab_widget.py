@@ -28,12 +28,12 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
     ):
         super().__init__(parent)
         self.setupUi(self)
-        self.parent: MainWindow = parent
+        self._parent_widget: MainWindow = parent
 
-        self.workspace = self.parent.workspace
-        self.workspace_settings = self.parent.workspace_settings
-        self.sheet_settings = self.parent.sheet_settings
-        self.paint_inventory = self.parent.paint_inventory
+        self.workspace = self._parent_widget.workspace
+        self.workspace_settings = self._parent_widget.workspace_settings
+        self.sheet_settings = self._parent_widget.sheet_settings
+        self.paint_inventory = self._parent_widget.paint_inventory
         self.settings_file = Settings()
 
         self.workspace_filter = self.workspace.workspace_filter
@@ -75,6 +75,8 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.lineEdit_search.textChanged.connect(self.search_typing)
 
         self.pushButton_clear_search.clicked.connect(self.clear_search)
+        self.pushButton_reload.clicked.connect(self.get_all_worksapce_jobs_thread)
+        self.pushButton_reload.setIcon(Icons.refresh_icon)
 
         self.workspace_widget = WorkspaceWidget(self)
         self.workspace_layout.addWidget(self.workspace_widget)
@@ -191,19 +193,19 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
 
     def filter_button_changed(self, states: dict[str, bool]):
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.get_all_workspace_jobs_thread()
+        self.workspace_widget.reload_all_entries()
         # self.workspace_widget.load_assembly_tree()
 
     def date_range_changed(self, dates: dict[QDate, QDate]):
         self.workspace_filter.date_range = dates
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.get_all_workspace_jobs_thread()
+        self.workspace_widget.reload_all_entries()
         # self.workspace_widget.load_assembly_tree()
 
     def date_range_toggled(self, checked: bool):
         self.workspace_filter.enable_date_range = checked
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.get_all_workspace_jobs_thread()
+        self.workspace_widget.reload_all_entries()
         # self.workspace_widget.load_assembly_tree()
 
     def load_sort_button(self):
@@ -227,7 +229,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
     def search_pressed(self):
         if not self.has_searched:
             # self.workspace_widget.load_parts_table()
-            self.workspace_widget.get_all_workspace_jobs_thread()
+            self.workspace_widget.reload_all_entries()
             # self.workspace_widget.load_assembly_tree()
             self.has_searched = True
 
@@ -244,7 +246,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.last_selected_tag = pressed_tag_button.text()
         self.workspace_filter.current_tag = pressed_tag_button.text()
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.get_all_workspace_jobs_thread()
+        self.workspace_widget.reload_all_entries()
         # self.workspace_widget.load_assembly_tree()
         self.tabChanged.emit(pressed_tag_button.text())
 
@@ -259,12 +261,15 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.last_selected_tag = tab_name
         self.workspace_filter.current_tag = tab_name
         # self.workspace_widget.load_parts_table()
-        self.workspace_widget.get_all_workspace_jobs_thread()
+        self.workspace_widget.reload_all_entries()
         # self.workspace_widget.load_assembly_tree()
         self.tabChanged.emit(tab_name)
 
+    def get_all_worksapce_jobs_thread(self):
+        self.workspace_widget.get_all_workspace_jobs_thread()
+
     def workspace_settings_changed(self):
-        self.workspace.load_data()
+        # self.workspace.load_data()
         self.set_current_tab(self.last_selected_tag)
 
     def update_entry(self, entry_data: dict):
@@ -277,7 +282,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.workspace_widget.get_all_recut_parts_thread()
 
     def sync_changes(self):
-        self.parent.sync_changes("workspace_tab")
+        self._parent_widget.sync_changes("workspace_tab")
 
     def clear_layout(self, layout: Union[QVBoxLayout, QWidget]):
         with contextlib.suppress(AttributeError):

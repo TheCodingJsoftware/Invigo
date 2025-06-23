@@ -213,111 +213,107 @@ class Workspace:
                     laser_cut_parts.append(laser_cut_part)
         return laser_cut_parts
 
+    def is_within_date_range(self, laser_cut_part: LaserCutPart, job: Job) -> bool:
+        if not (
+            self.workspace_filter.enable_date_range and self.workspace_filter.date_range
+        ):
+            return True
+
+        filter_start = (
+            self.workspace_filter.date_range[0].toPyDate()
+            if self.workspace_filter.date_range[0]
+            else None
+        )
+        filter_end = (
+            self.workspace_filter.date_range[1].toPyDate()
+            if self.workspace_filter.date_range[1]
+            else None
+        )
+
+        tag = laser_cut_part.get_current_tag()
+        if not tag:
+            return False
+
+        tag_data = job.flowtag_timeline.tags_data.get(tag)
+        if not tag_data:
+            return False
+
+        def parse_date(value: str):
+            try:
+                return datetime.strptime(value, "%Y-%m-%d %I:%M %p").date()
+            except ValueError:
+                return datetime.strptime(value, "%Y-%m-%d").date()
+
+        tag_start = parse_date(tag_data["starting_date"])
+        tag_end = parse_date(tag_data["ending_date"])
+
+        if filter_start and not filter_end:
+            return tag_start <= filter_start <= tag_end
+        elif filter_start and filter_end:
+            return not (tag_end < filter_start or tag_start > filter_end)
+        return True
+
+    def is_material_match(self, part: LaserCutPart) -> bool:
+        if not any(self.workspace_filter.material_filter.values()):
+            return True
+        return self.workspace_filter.material_filter.get(part.material, False)
+
+    def is_thickness_match(self, part: LaserCutPart) -> bool:
+        if not any(self.workspace_filter.thickness_filter.values()):
+            return True
+        return self.workspace_filter.thickness_filter.get(part.gauge, False)
+
+    def is_paint_match(self, part: LaserCutPart) -> bool:
+        if not any(self.workspace_filter.paint_filter.values()):
+            return True
+        return any(
+            self.workspace_filter.paint_filter.get(p, False)
+            for p in part.get_all_paints().split()
+        )
+
+    def is_text_search_match(self, part: LaserCutPart) -> bool:
+        text = self.workspace_filter.search_text.lower().strip()
+        if not text:
+            return True
+
+        queries = [q.strip() for q in text.split(",")]
+        name = part.name.lower()
+        material = f"{part.gauge} {part.material}".lower()
+        paints = part.get_all_paints().lower()
+
+        return any(q in name or q in material or q in paints for q in queries)
+
     def get_filtered_laser_cut_parts(self, job: Job) -> list[LaserCutPart]:
-        laser_cut_parts: list[LaserCutPart] = []
-        for laser_cut_part in job.get_all_laser_cut_parts():
-            # if laser_cut_part.is_process_finished():
-            #     continue
-            # if part_current_tag := laser_cut_part.get_current_tag():
-            #     if part_current_tag.name != self.workspace_filter.current_tag:
-            #         continue
+        parts: list[LaserCutPart] = []
 
+        for part in job.get_all_laser_cut_parts():
+            if not self.is_within_date_range(part, job):
+                continue
+            if not self.is_material_match(part):
+                continue
+            if not self.is_thickness_match(part):
+                continue
+            if not self.is_paint_match(part):
+                continue
+            if not self.is_text_search_match(part):
+                continue
+
+            parts.append(part)
+
+        return parts
+
+    def is_part_group_hidden(self, group: WorkspaceLaserCutPartGroup, job: Job) -> bool:
+        for part in group.laser_cut_parts:
             if (
-                self.workspace_filter.enable_date_range
-                and len(self.workspace_filter.date_range) > 0
+                self.is_within_date_range(part, job)
+                and self.is_material_match(part)
+                and self.is_thickness_match(part)
+                and self.is_paint_match(part)
+                and self.is_text_search_match(part)
             ):
-                filter_start_date = (
-                    self.workspace_filter.date_range[0].toPyDate()
-                    if self.workspace_filter.date_range[0]
-                    else None
-                )
-                filter_end_date = (
-                    self.workspace_filter.date_range[1].toPyDate()
-                    if self.workspace_filter.date_range[1]
-                    else None
-                )
+                return False  # At least one part is visible — group should be shown
 
-                tag_start_date_str = job.flowtag_timeline.tags_data[
-                    laser_cut_part.get_current_tag()
-                ]["starting_date"]
-                tag_end_date_str = job.flowtag_timeline.tags_data[
-                    laser_cut_part.get_current_tag()
-                ]["ending_date"]
-
-                try:
-                    tag_start_date = datetime.strptime(
-                        tag_start_date_str, "%Y-%m-%d %I:%M %p"
-                    ).date()
-                except ValueError:
-                    tag_start_date = datetime.strptime(
-                        tag_start_date_str, "%Y-%m-%d"
-                    ).date()
-
-                try:
-                    tag_end_date = datetime.strptime(
-                        tag_end_date_str, "%Y-%m-%d %I:%M %p"
-                    ).date()
-                except ValueError:
-                    tag_end_date = datetime.strptime(
-                        tag_end_date_str, "%Y-%m-%d"
-                    ).date()
-
-                if filter_start_date and not filter_end_date:
-                    if not (tag_start_date <= filter_start_date <= tag_end_date):
-                        continue
-                elif filter_start_date and filter_end_date:
-                    if (
-                        tag_end_date < filter_start_date
-                        or tag_start_date > filter_end_date
-                    ):
-                        continue
-
-            if any(self.workspace_filter.material_filter.values()):
-                if not self.workspace_filter.material_filter.get(
-                    laser_cut_part.material, False
-                ):
-                    continue
-
-            if any(self.workspace_filter.thickness_filter.values()):
-                if not self.workspace_filter.thickness_filter.get(
-                    laser_cut_part.gauge, False
-                ):
-                    continue
-
-            if any(self.workspace_filter.paint_filter.values()):
-                paints = laser_cut_part.get_all_paints()
-                if not any(
-                    self.workspace_filter.paint_filter.get(paint, False)
-                    for paint in paints.split()
-                ):
-                    continue
-
-            search_text = self.workspace_filter.search_text.lower()
-            search_queries = (
-                [query.strip() for query in search_text.split(",")]
-                if search_text
-                else []
-            )
-
-            if search_queries:
-                name_match = any(
-                    query in laser_cut_part.name.lower() for query in search_queries
-                )
-                material_match = any(
-                    query in f"{laser_cut_part.gauge} {laser_cut_part.material}".lower()
-                    for query in search_queries
-                )
-                paint_match = any(
-                    query in laser_cut_part.get_all_paints().lower()
-                    for query in search_queries
-                )
-
-                if not (name_match or material_match or paint_match):
-                    continue
-
-            laser_cut_parts.append(laser_cut_part)
-
-        return laser_cut_parts
+        return True  # All parts failed filters — group should be hidden
 
     def sort_grouped_laser_cut_parts(
         self, grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup]

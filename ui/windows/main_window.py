@@ -632,6 +632,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.workspace_tab_widget_last_selected_tab = (
             self.workspace_tab_widget.tag_buttons[0].text()
         )
+        self.workspace_tab_widget.get_all_worksapce_jobs_thread()
 
         print("Here 2")
         with contextlib.suppress(AttributeError):  # There are no visible process tags
@@ -1882,6 +1883,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             #     ]
             # )
             self.workspace_tab_widget.load_tags()
+            self.workspace_tab_widget.get_all_workspace_jobs_thread()
             self.workspace_tab_widget.set_current_tab(
                 self.workspace_tab_widget_last_selected_tab
             )

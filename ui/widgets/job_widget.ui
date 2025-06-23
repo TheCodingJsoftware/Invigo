@@ -317,6 +317,9 @@
               <height>25</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="toolTip">
              <string>Reload current job
 
@@ -415,8 +418,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>282</width>
-              <height>847</height>
+              <width>309</width>
+              <height>939</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1138,8 +1141,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1177</width>
-            <height>821</height>
+            <width>1154</width>
+            <height>773</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

@@ -135,6 +135,7 @@ class Ui_Form(object):
         self.pushButton_reload_job = QtWidgets.QPushButton(parent=self.job_settings_widget)
         self.pushButton_reload_job.setMinimumSize(QtCore.QSize(25, 25))
         self.pushButton_reload_job.setMaximumSize(QtCore.QSize(25, 25))
+        self.pushButton_reload_job.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_reload_job.setStyleSheet("\n"
 "QPushButton#pushButton_reload_job:flat {\n"
 "    background-color: transparent;\n"
@@ -181,7 +182,7 @@ class Ui_Form(object):
         self.scrollArea_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 282, 847))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 309, 939))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
@@ -474,7 +475,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1177, 821))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1154, 773))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)

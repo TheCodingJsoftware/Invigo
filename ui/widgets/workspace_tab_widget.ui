@@ -119,6 +119,52 @@
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_reload">
+       <property name="maximumSize">
+        <size>
+         <width>25</width>
+         <height>25</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Reload workspace
+
+Ctrl + R</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+QPushButton#pushButton_reload:flat {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 5px 10px;
+    color: #EAE9FC;
+}
+
+QPushButton#pushButton_reload:flat:pressed {
+    background-color: #8dcdff;
+    color: #171717;
+}
+
+QPushButton#pushButton_reload:flat:hover {
+    background-color: rgba(76, 76, 76, 0.6);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+R</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
