@@ -738,13 +738,13 @@ class LaserCutTab(QWidget, Ui_Form):
 
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
-        ].blockSignals(True)
+        ].block_signals(True)
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
         ].update_widgets()
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
-        ].blockSignals(False)
+        ].block_signals(False)
 
         # self.update_all_laser_cut_parts_costs()
         self.update_category_total_stock_costs()
