@@ -177,7 +177,8 @@ class LaserCutPartsTabWidget(CustomTabWidget):
 class PaintSettingsWidget(QWidget):
     def __init__(self, laser_cut_part: LaserCutPart, parent: LaserCutPartsTableWidget):
         super().__init__(parent)
-        self.parent: LaserCutPartsTableWidget = parent
+        self._parent_widget: LaserCutPartsTableWidget = parent
+        self.signals_blocked = False
         self.laser_cut_part = laser_cut_part
         self.paint_inventory = self.laser_cut_part.paint_inventory
 
@@ -197,7 +198,9 @@ class PaintSettingsWidget(QWidget):
         self.primer_layout.setContentsMargins(3, 3, 3, 3)
         self.primer_layout.setSpacing(0)
         self.combobox_primer = QComboBox(self.widget_primer)
-        self.combobox_primer.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.combobox_primer.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+            event
+        )
         self.combobox_primer.addItems(["None"] + self.paint_inventory.get_all_primers())
         if self.laser_cut_part.primer_name:
             self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
@@ -217,8 +220,8 @@ class PaintSettingsWidget(QWidget):
         self.paint_color_layout.setContentsMargins(3, 3, 3, 3)
         self.paint_color_layout.setSpacing(0)
         self.combobox_paint_color = QComboBox(self.widget_paint_color)
-        self.combobox_paint_color.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
+        self.combobox_paint_color.wheelEvent = (
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.combobox_paint_color.addItems(
             ["None"] + self.paint_inventory.get_all_paints()
@@ -244,7 +247,7 @@ class PaintSettingsWidget(QWidget):
         self.powder_coating_layout.setSpacing(0)
         self.combobox_powder_coating_color = QComboBox(self.widget_powder_coating)
         self.combobox_powder_coating_color.wheelEvent = (
-            lambda event: self.parent.wheelEvent(event)
+            lambda event: self._parent_widget.wheelEvent(event)
         )
         self.combobox_powder_coating_color.addItems(
             ["None"] + self.paint_inventory.get_all_powders()
@@ -272,11 +275,15 @@ class PaintSettingsWidget(QWidget):
             self.combobox_powder_coating_color.currentText()
         )
 
-        self.parent.resizeColumnsToContents()
-        self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
-        self.parent.parent.parent.sync_changes()
+        self._parent_widget.resizeColumnsToContents()
+        if not self.signals_blocked:
+            self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(
+                self.laser_cut_part
+            )
+        # self._parent_widget.parent.parent.sync_changes()
 
     def block_signals(self, block: bool):
+        self.signals_blocked = block
         self.combobox_primer.blockSignals(block)
         self.combobox_paint_color.blockSignals(block)
         self.combobox_powder_coating_color.blockSignals(block)
@@ -292,6 +299,7 @@ class PaintWidget(QWidget):
         super().__init__(parent)
         self._parent_widget: LaserCutPartsTableWidget = parent
 
+        self.signals_blocked = False
         self.laser_cut_part = laser_cut_part
         self.paint_settings_widget = paint_settings_widget
 
@@ -355,11 +363,15 @@ class PaintWidget(QWidget):
         )
 
         self._parent_widget.resizeColumnsToContents()
-        self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
-        self._parent_widget.parent.parent.sync_changes()
+        if not self.signals_blocked:
+            self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(
+                self.laser_cut_part
+            )
+        # self._parent_widget.parent.parent.sync_changes()
 
     def block_signals(self, block: bool):
         super().blockSignals(block)
+        self.signals_blocked = block
         self.checkbox_primer.blockSignals(block)
         self.checkbox_paint.blockSignals(block)
         self.checkbox_powder.blockSignals(block)
