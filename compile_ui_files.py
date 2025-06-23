@@ -93,7 +93,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     directories_to_watch = [
-        r"C:\Users\Jared\Documents\Code\Python-Projects\Inventory Manager\ui",
+        r"/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui",
     ]
 
     if args.watch:

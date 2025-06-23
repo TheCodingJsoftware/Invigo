@@ -20,6 +20,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from PyQt6.sip import isdeleted
 
 from config.environments import Environment
 from ui.custom.file_button import FileButton
@@ -443,8 +444,11 @@ class WorkspaceWidget(QWidget, Ui_Form):
         # PART NAME
         # TODO: Consider flow tag
         # if group.base_part.recut or group.base_part.recoat or group.base_part.is_process_finished():
-        if not part_tree_widget_item:
+
+        if part_tree_widget_item is None or isdeleted(part_tree_widget_item):
             return
+
+        # ! TODO: This throws C++ Runtime Error when updating entries.
         part_tree_widget_item.setDisabled(True)
         self.parts_tree_index.update({id(part_tree_widget_item): group})
         part_tree_widget_item.setText(
@@ -783,11 +787,11 @@ class WorkspaceWidget(QWidget, Ui_Form):
     def get_paint_text(self, item: Union[Assembly, LaserCutPart]) -> str:
         text: list[str] = []
         if item.uses_primer and item.primer_item:
-            text.append(item.primer_item.name)
+            text.append(item.primer_item.part_name)
         if item.uses_paint and item.paint_item:
-            text.append(item.paint_item.name)
+            text.append(item.paint_item.part_name)
         if item.uses_powder and item.powder_item:
-            text.append(item.powder_item.name)
+            text.append(item.powder_item.part_name)
         if not (item.uses_powder or item.uses_paint or item.uses_primer):
             return "Not painted"
         return "\n".join(text)
@@ -1183,6 +1187,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
                     part_name
                 ):
                     group, item = result
+                    print(item, item.parent() if item else None)
                     group.update_entry(entry_data)
                     self.update_part_tree_widget_item(group, item)
 
