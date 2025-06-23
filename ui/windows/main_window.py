@@ -6,9 +6,12 @@ import subprocess
 import sys
 import threading
 import time
+import tkinter as tk
+import traceback
 import webbrowser
 from datetime import datetime
 from functools import partial
+from tkinter import messagebox
 from typing import Any, Callable, Optional, Union
 
 import qtawesome as qta
@@ -21,7 +24,6 @@ from PyQt6.QtCore import (
     QThread,
     QThreadPool,
     QTimer,
-    pyqtSignal,
 )
 from PyQt6.QtGui import (
     QAction,
@@ -212,43 +214,53 @@ logging.basicConfig(
 
 def excepthook(exc_type, exc_value, exc_traceback):
     logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
-    sys.__excepthook__(exc_type, exc_value, exc_traceback)
     threading.Thread(target=send_error_report).start()
-    try:
-        import win32api  # pywin32
 
-        win32api.MessageBox(
-            0,
-            f"An unhandled exception has occurred and has been reported to jared@pinelandfarms.ca and will be fixed as soon as possible in the next update. If the error persists and needs an immediate fix please contact me the exact details of how and where the error occured.\n\nTechnical details for reference:\n - Exception Type: {exc_type}\n - Error Message: {exc_value}\n - Traceback Information: {exc_traceback}",
-            "Unhandled exception",
-            0x40,
-        )  # 0x40 for OK button
-    except ImportError:
-        pass
+    error_msg = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
+    user_msg = (
+        f"An unhandled exception has occurred and has been reported to jared@pinelandfarms.ca.\n"
+        f"If it persists, please contact me with details.\n\n"
+        f"Technical Info:\n{error_msg}"
+    )
+
+    # Use tkinter to show the error
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    messagebox.showerror("Unhandled Exception", user_msg)
+    root.destroy()
+
+    sys.__excepthook__(exc_type, exc_value, exc_traceback)
 
 
 def send_error_report():
+    from utils.ip_utils import get_server_ip_address, get_server_port
+
     SERVER_IP: str = get_server_ip_address()
     SERVER_PORT: int = get_server_port()
     url = f"http://{SERVER_IP}:{SERVER_PORT}/send_error_report"
-    with open("logs/app.log", "r", encoding="utf-8") as error_log:
-        error_data = error_log.read()
-    data = {
-        "error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"
-    }
-    response = requests.post(url, data=data, timeout=5)
-    if response.status_code != 200:
-        try:
-            import win32api  # pywin32
 
-            win32api.MessageBox(
-                0,
-                "Failed to send email. Kindly notify Jared about the issue you just encountered!",
-                "Failed to send email",
-                0x40,
+    try:
+        with open("logs/app.log", "r", encoding="utf-8") as error_log:
+            error_data = error_log.read()
+        data = {
+            "error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"
+        }
+        with requests.Session() as session:
+            response = session.post(
+                url, data=data, headers={"X-Client-Name": os.getlogin()}, timeout=10
             )
-        except ImportError:
-            pass
+            if response.status_code != 200:
+                raise Exception("Failed to send report")
+
+    except Exception as e:
+        # Use tkinter to show fallback error
+        root = tk.Tk()
+        root.withdraw()
+        messagebox.showwarning(
+            "Report Failed",
+            f"Failed to send error report. (This is bad)\nPlease notify Jared AS SOON AS POSSIBLE.\n\nReason: {e}",
+        )
+        root.destroy()
 
 
 sys.excepthook = excepthook
@@ -1044,6 +1056,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.quote_generator_layout.addWidget(self.job_quote_widget)
         self.has_loaded_job_quoter_tab = True
 
+    def load_paint_inventory_tab(self):
+        # Nothing needs to be done
+        pass
+
     def load_sheets_inventory_tab(self):
         current_tab = self.tab_text(self.stackedWidget.currentIndex())
         self.clear_layout(self.sheets_inventory_layout)
@@ -1070,6 +1086,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.should_update_sheets_in_inventory_tab = False
 
     def load_components_inventory_tab(self):
+        self.paint_inventory.load_data(
+            on_loaded=self.load_paint_inventory_tab
+        )  # Paint inventory is depdendent on components inventory
         # We load these because components tab is depended on them, they might be loaded ahead of time or they might not be
         self.load_job_planning_tab()
         self.load_job_quoting_tab()
@@ -3190,8 +3209,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # self.workspace.load_data()
                 self.should_update_workspace_tab = True
 
-            if f"{self.paint_inventory.filename}.json" in response["successful_files"]:
-                self.paint_inventory.load_data()
+            # if f"{self.paint_inventory.filename}.json" in response["successful_files"]:
+            #     self.paint_inventory.load_data()
 
             # Update relevant tabs
             # if (

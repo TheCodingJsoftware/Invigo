@@ -276,6 +276,12 @@ class PaintSettingsWidget(QWidget):
         self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
         self.parent.parent.parent.sync_changes()
 
+    def blockSignals(self, block: bool):
+        super().blockSignals(block)
+        self.combobox_primer.blockSignals(block)
+        self.combobox_paint_color.blockSignals(block)
+        self.combobox_powder_coating_color.blockSignals(block)
+
 
 class PaintWidget(QWidget):
     def __init__(
@@ -352,6 +358,12 @@ class PaintWidget(QWidget):
         self.parent.resizeColumnsToContents()
         self.laser_cut_part.laser_cut_inventory.save_laser_cut_part(self.laser_cut_part)
         self.parent.parent.parent.sync_changes()
+
+    def blockSignals(self, block: bool):
+        super().blockSignals(block)
+        self.checkbox_primer.blockSignals(block)
+        self.checkbox_paint.blockSignals(block)
+        self.checkbox_powder.blockSignals(block)
 
 
 class PopoutWidget(QWidget):
@@ -688,13 +700,27 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(
             laser_cut_part.modified_date
         )
+
+        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].blockSignals(
+            True
+        )
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_widget"
         ].update_paint()
+        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].blockSignals(
+            False
+        )
 
         self.table_laser_cut_parts_widgets[laser_cut_part][
             "paint_settings_widget"
+        ].blockSignals(True)
+        self.table_laser_cut_parts_widgets[laser_cut_part][
+            "paint_settings_widget"
         ].update_paint_settings()
+        self.table_laser_cut_parts_widgets[laser_cut_part][
+            "paint_settings_widget"
+        ].blockSignals(False)
+
         # self.update_all_laser_cut_parts_costs()
         self.update_category_total_stock_costs()
         self.update_laser_cut_part_row_color(current_table, laser_cut_part)

@@ -10,8 +10,11 @@ class SpinBox(QDoubleSpinBox):
         self.setRange(0, 999999999)
         self.setDecimals(0)
         self.setButtonSymbols(QDoubleSpinBox.ButtonSymbols.NoButtons)
-        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.setFixedHeight(30)
+
+    def wheelEvent(self, event):
+        # Do nothing, or comment this out to disable wheel scrolling
+        event.ignore()
 
 
 class TimeSpinBox(QWidget):

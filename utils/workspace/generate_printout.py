@@ -292,11 +292,11 @@ class SheetImages:
                 <div class="s6" id="nest-container">
                     <article class="nest no-padding border">
                         <img src="{self.server_directory}/image/{nest.image_path}" class="responsive nest_image">
-                        <div class="{'right-align' if i % 2 == 0 else 'left-align'}">
+                        <div class="{"right-align" if i % 2 == 0 else "left-align"}">
                             <button class="nested-parts transparent small small-round">
                                 <i>format_list_bulleted</i>
                                 <span>Parts</span>
-                                <div class="tooltip {'right' if i % 2 == 0 else 'left'}">
+                                <div class="tooltip {"right" if i % 2 == 0 else "left"}">
                                     {parts_list}
                                 </div>
                             </button>
@@ -458,11 +458,11 @@ class LaserCutPartsTable:
     def get_paint(self, laser_cut_part: LaserCutPart) -> str:
         html = '<div class="no-padding small-text grid center-align">'
         if laser_cut_part.uses_primer and laser_cut_part.primer_item:
-            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.primer_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.primer_item.name}</span></div>'
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.primer_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.primer_item.part_name}</span></div>'
         if laser_cut_part.uses_paint and laser_cut_part.paint_item:
-            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.paint_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.paint_item.name}</span></div>'
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.paint_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.paint_item.part_name}</span></div>'
         if laser_cut_part.uses_powder and laser_cut_part.powder_item:
-            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.powder_item.name}</span></div>'
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.powder_item.part_name}</span></div>'
         if not (
             laser_cut_part.uses_primer
             or laser_cut_part.uses_paint
@@ -756,11 +756,11 @@ class AssemblyDiv:
     def get_paint(self) -> str:
         html = '<div class="no-padding small-text">'
         if self.assembly.uses_primer and self.assembly.primer_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.primer_item.color}; border-radius: 5px;"></div>{self.assembly.primer_item.name}</div>'
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.primer_item.color}; border-radius: 5px;"></div>{self.assembly.primer_item.part_name}</div>'
         if self.assembly.uses_paint and self.assembly.paint_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.paint_item.color}; border-radius: 5px;"></div>{self.assembly.paint_item.name}</div>'
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.paint_item.color}; border-radius: 5px;"></div>{self.assembly.paint_item.part_name}</div>'
         if self.assembly.uses_powder and self.assembly.powder_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.powder_item.color}; border-radius: 5px;"></div>{self.assembly.powder_item.name}</div>'
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.powder_item.color}; border-radius: 5px;"></div>{self.assembly.powder_item.part_name}</div>'
         if not (
             self.assembly.uses_primer
             or self.assembly.uses_paint
@@ -803,15 +803,15 @@ class PrintoutHeader:
                 </button>
             </nav>
             <nav class="tabbed primary-container">
-                <a {'class="active primary"' if self.printout_type == "QUOTE" else ''} data-target="quote">
+                <a {'class="active primary"' if self.printout_type == "QUOTE" else ""} data-target="quote">
                     <i>request_quote</i>
                     <span>Quote</span>
                 </a>
-                <a {'class="active primary"' if self.printout_type == "WORKORDER" else ''} data-target="workorder">
+                <a {'class="active primary"' if self.printout_type == "WORKORDER" else ""} data-target="workorder">
                     <i>construction</i>
                     <span>Workorder</span>
                 </a>
-                <a {'class="active primary"' if self.printout_type == "PACKINGSLIP" else ''} data-target="packingslip">
+                <a {'class="active primary"' if self.printout_type == "PACKINGSLIP" else ""} data-target="packingslip">
                     <i>receipt_long</i>
                     <span>Packing Slip</span>
                 </a>

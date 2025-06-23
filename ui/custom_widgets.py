@@ -147,7 +147,6 @@ class SavedQuoteItem(QGroupBox):
         self.status_combobox.addItems(
             ["In progress", "Need more info", "Quoted", "Confirmed"]
         )
-        self.status_combobox.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.status_combobox.setCurrentText(status)
         self.status_combobox.currentTextChanged.connect(self.status_changed.emit)
 
@@ -245,7 +244,6 @@ class MachineCutTimeSpinBox(QDoubleSpinBox):
         self.setDecimals(9)
         self.setWrapping(True)
         self.setAccelerated(True)
-        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         regex = QRegularExpression(r"\d+.\d{2}")
@@ -1373,8 +1371,11 @@ class PriorityComboBox(QComboBox):
         super().__init__(parent)
         self.addItems(["Default", "Low", "Medium", "High"])
         self.setCurrentIndex(selected_item)
-        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.setFixedWidth(120)
+
+    def wheelEvent(self, event):
+        # Do nothing, or comment this out to disable wheel scrolling
+        event.ignore()
 
 
 class ExchangeRateComboBox(QComboBox):
@@ -1382,8 +1383,11 @@ class ExchangeRateComboBox(QComboBox):
         super().__init__(parent)
         self.addItems(["CAD", "USD"])
         self.setCurrentText(selected_item)
-        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         # #self.setFixedWidth(40)
+
+    def wheelEvent(self, event):
+        # Do nothing, or comment this out to disable wheel scrolling
+        event.ignore()
 
 
 class NotesPlainTextEdit(QPlainTextEdit):

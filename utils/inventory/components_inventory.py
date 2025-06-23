@@ -176,6 +176,16 @@ class ComponentsInventory(Inventory):
             None,
         )
 
+    def get_component_by_id(self, component_id: int) -> Component | None:
+        return next(
+            (
+                component
+                for component in self.components
+                if component.id == component_id
+            ),
+            None,
+        )
+
     def sort_by_quantity(self, ascending: bool) -> list[Component]:
         self.components = natsorted(
             self.components, key=lambda component: component.quantity, reverse=ascending
