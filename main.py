@@ -8,10 +8,10 @@ from ui.icons import Icons
 from ui.theme import set_theme
 from ui.windows.main_window import MainWindow
 
-if Environment.APP_ENV == "development":
-    from rich import print as rich_print
+# if Environment.APP_ENV == "development":
+#     from rich import print as rich_print
 
-    builtins.print = rich_print
+#     builtins.print = rich_print
 
 
 def main():

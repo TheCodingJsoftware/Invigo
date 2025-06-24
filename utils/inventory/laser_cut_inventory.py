@@ -10,8 +10,8 @@ from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint_inventory import PaintInventory
-from utils.workers.laser_cut_parts_inventory.add_laser_cut_part import (
-    AddLaserCutPartWorker,
+from utils.workers.laser_cut_parts_inventory.add_laser_cut_parts import (
+    AddLaserCutPartsWorker,
 )
 from utils.workers.laser_cut_parts_inventory.get_all_laser_cut_parts import (
     GetAllLaserCutPartsWorker,
@@ -83,98 +83,122 @@ class LaserCutInventory(Inventory):
             total_stock_cost += recut_part.price * recut_part.quantity
         return total_stock_cost
 
-    def add_or_update_laser_cut_part(
-        self, laser_cut_part_to_add: LaserCutPart, from_where: str
-    ):
-        if laser_cut_part_to_add.recut:
-            new_recut_part = LaserCutPart(
-                laser_cut_part_to_add.to_dict(),
-                self,
-            )
-            new_recut_part.add_to_category(self.get_category("Recut"))
-            if existing_recut_part := self.get_recut_part_by_name(
+    def add_or_update_laser_cut_parts(
+        self, laser_cut_parts: list[LaserCutPart], from_where: str
+    ) -> tuple[list[LaserCutPart], list[LaserCutPart], list[LaserCutPart]]:
+        laser_cut_parts_to_add: list[LaserCutPart] = []
+        laser_cut_parts_to_update: list[LaserCutPart] = []
+        recut_laser_cut_parts: list[LaserCutPart] = []
+        for laser_cut_part_to_add in laser_cut_parts:
+            if laser_cut_part_to_add.recut:
+                new_recut_part = LaserCutPart(
+                    laser_cut_part_to_add.to_dict(),
+                    self,
+                )
+                new_recut_part.add_to_category(self.get_category("Recut"))
+                if existing_recut_part := self.get_recut_part_by_name(
+                    laser_cut_part_to_add.name
+                ):
+                    existing_recut_part.recut_count += 1
+                    new_recut_part.recut_count = existing_recut_part.recut_count
+                    new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
+                new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            elif existing_laser_cut_part := self.get_laser_cut_part_by_name(
                 laser_cut_part_to_add.name
             ):
-                existing_recut_part.recut_count += 1
-                new_recut_part.recut_count = existing_recut_part.recut_count
-                new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
-            new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            self.add_recut_part(new_recut_part)
-        elif existing_laser_cut_part := self.get_laser_cut_part_by_name(
-            laser_cut_part_to_add.name
-        ):
-            existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
+                existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
 
-            existing_laser_cut_part.flowtag = laser_cut_part_to_add.flowtag
+                existing_laser_cut_part.flowtag = laser_cut_part_to_add.flowtag
 
-            existing_laser_cut_part.shelf_number = laser_cut_part_to_add.shelf_number
+                existing_laser_cut_part.shelf_number = (
+                    laser_cut_part_to_add.shelf_number
+                )
 
-            existing_laser_cut_part.material = laser_cut_part_to_add.material
-            existing_laser_cut_part.gauge = laser_cut_part_to_add.gauge
+                existing_laser_cut_part.material = laser_cut_part_to_add.material
+                existing_laser_cut_part.gauge = laser_cut_part_to_add.gauge
 
-            existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
-            existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
-            existing_laser_cut_part.uses_paint = laser_cut_part_to_add.uses_paint
-            existing_laser_cut_part.paint_name = laser_cut_part_to_add.paint_name
-            existing_laser_cut_part.uses_powder = laser_cut_part_to_add.uses_powder
-            existing_laser_cut_part.powder_name = laser_cut_part_to_add.powder_name
-            existing_laser_cut_part.primer_overspray = (
-                laser_cut_part_to_add.primer_overspray
-            )
-            existing_laser_cut_part.paint_overspray = (
-                laser_cut_part_to_add.paint_overspray
-            )
-            existing_laser_cut_part.powder_transfer_efficiency = (
-                laser_cut_part_to_add.powder_transfer_efficiency
-            )
-            existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            self.save_laser_cut_part(existing_laser_cut_part)
-        else:
-            if not (category := self.get_category("Uncategorized")):
-                category = Category("Uncategorized")
-                self.add_category(category)
-            laser_cut_part_to_add.add_to_category(category)
-            laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            self.add_laser_cut_part(laser_cut_part_to_add)
+                existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
+                existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
+                existing_laser_cut_part.uses_paint = laser_cut_part_to_add.uses_paint
+                existing_laser_cut_part.paint_name = laser_cut_part_to_add.paint_name
+                existing_laser_cut_part.uses_powder = laser_cut_part_to_add.uses_powder
+                existing_laser_cut_part.powder_name = laser_cut_part_to_add.powder_name
+                existing_laser_cut_part.primer_overspray = (
+                    laser_cut_part_to_add.primer_overspray
+                )
+                existing_laser_cut_part.paint_overspray = (
+                    laser_cut_part_to_add.paint_overspray
+                )
+                existing_laser_cut_part.powder_transfer_efficiency = (
+                    laser_cut_part_to_add.powder_transfer_efficiency
+                )
+                existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                laser_cut_parts_to_update.append(existing_laser_cut_part)
+            else:
+                if not (category := self.get_category("Uncategorized")):
+                    category = Category("Uncategorized")
+                    self.add_category(category)
+                laser_cut_part_to_add.add_to_category(category)
+                laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                laser_cut_parts_to_add.append(laser_cut_part_to_add)
+        self.add_recut_parts(recut_laser_cut_parts)
+        self.add_laser_cut_parts(laser_cut_parts_to_add)
+        self.save_laser_cut_parts(laser_cut_parts_to_update)
+        return recut_laser_cut_parts, laser_cut_parts_to_add, laser_cut_parts_to_update
 
-    def remove_laser_cut_part_quantity(
-        self, laser_cut_part_to_update: LaserCutPart, from_where: str
+    def remove_laser_cut_parts_quantity(
+        self, laser_cut_parts: list[LaserCutPart], from_where: str
     ):
-        if existing_laser_cut_part := self.get_laser_cut_part_by_name(
-            laser_cut_part_to_update.name
-        ):
-            existing_laser_cut_part.quantity -= laser_cut_part_to_update.quantity
-            existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Removed {laser_cut_part_to_update.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-        else:
-            if not (category := self.get_category("Uncategorized")):
-                category = Category("Uncategorized")
-                self.add_category(category)
-            laser_cut_part_to_update.add_to_category(category)
-            laser_cut_part_to_update.quantity = 0
-            laser_cut_part_to_update.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            self.add_laser_cut_part(laser_cut_part_to_update)
+        laser_cut_parts_to_save: list[LaserCutPart] = []
+        laser_cut_parts_to_add: list[LaserCutPart] = []
+        for laser_cut_part_to_update in laser_cut_parts:
+            if existing_laser_cut_part := self.get_laser_cut_part_by_name(
+                laser_cut_part_to_update.name
+            ):
+                existing_laser_cut_part.quantity -= laser_cut_part_to_update.quantity
+                existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Removed {laser_cut_part_to_update.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                laser_cut_parts_to_save.append(existing_laser_cut_part)
+            else:
+                if not (category := self.get_category("Uncategorized")):
+                    category = Category("Uncategorized")
+                    self.add_category(category)
+                laser_cut_part_to_update.add_to_category(category)
+                laser_cut_part_to_update.quantity = 0
+                laser_cut_part_to_update.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                laser_cut_parts_to_add.append(laser_cut_part_to_update)
+        self.save_laser_cut_parts(laser_cut_parts_to_save)
+        self.add_laser_cut_parts(laser_cut_parts_to_add)
+
+    def add_recut_parts(self, laser_cut_parts: list[LaserCutPart]):
+        raise NotImplementedError
 
     # ! TODO IMPLEMENT THIS
     def add_recut_part(self, laser_cut_part: LaserCutPart):
-        raise NotImplementedError
+        self.add_recut_parts([laser_cut_part])
 
     # ! TODO IMPLEMENT THIS
     def remove_recut_part(self, laser_cut_part: LaserCutPart):
         raise NotImplementedError
 
-    def add_laser_cut_part(
-        self, laser_cut_part: LaserCutPart, on_finished: Callable | None = None
+    def add_laser_cut_parts(
+        self, laser_cut_parts: list[LaserCutPart], on_finished: Callable | None = None
     ):
-        worker = AddLaserCutPartWorker(laser_cut_part)
+        worker = AddLaserCutPartsWorker(laser_cut_parts)
         worker.signals.success.connect(self.add_laser_cut_part_response)
         if on_finished:
             worker.signals.finished.connect(on_finished)
         QThreadPool.globalInstance().start(worker)
 
-    def add_laser_cut_part_response(self, response: tuple[dict, LaserCutPart]):
-        data, laser_cut_part = response
-        laser_cut_part.id = data["id"]
-        self.laser_cut_parts.append(laser_cut_part)
+    def add_laser_cut_part(
+        self, laser_cut_part: LaserCutPart, on_finished: Callable | None = None
+    ):
+        self.add_laser_cut_parts([laser_cut_part], on_finished)
+
+    def add_laser_cut_part_response(self, response: tuple[dict, list[LaserCutPart]]):
+        data, laser_cut_parts = response
+        for laser_cut_part in laser_cut_parts:
+            laser_cut_part.id = data["id"]
+            self.laser_cut_parts.append(laser_cut_part)
 
     def remove_laser_cut_parts(
         self, laser_cut_parts: list[LaserCutPart], on_finished: Callable | None = None
@@ -221,12 +245,6 @@ class LaserCutInventory(Inventory):
                 laser_cut_part.load_data(data)
                 return laser_cut_part
         return None
-
-    # def add_recut_part(self, laser_cut_part: LaserCutPart):
-    #     self.recut_parts.append(laser_cut_part)
-
-    # def remove_recut_part(self, laser_cut_part: LaserCutPart):
-    #     self.recut_parts.remove(laser_cut_part)
 
     def duplicate_category(
         self, category_to_duplicate: Category, new_category_name: str

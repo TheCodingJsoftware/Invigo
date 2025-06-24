@@ -1,5 +1,5 @@
+import getpass
 import logging
-import os
 import socket
 import time
 
@@ -25,7 +25,7 @@ class BaseWorker(QRunnable):
         self.DOMAIN = f"http://{self.SERVER_IP}:{self.SERVER_PORT}"
 
         self.headers = {
-            "X-Client-Name": os.getlogin(),
+            "X-Client-Name": getpass.getuser(),
             "X-Client-Address": socket.gethostname(),
         }
 

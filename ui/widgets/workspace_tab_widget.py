@@ -75,7 +75,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.lineEdit_search.textChanged.connect(self.search_typing)
 
         self.pushButton_clear_search.clicked.connect(self.clear_search)
-        self.pushButton_reload.clicked.connect(self.get_all_worksapce_jobs_thread)
+        self.pushButton_reload.clicked.connect(self.get_all_workspace_jobs_thread)
         self.pushButton_reload.setIcon(Icons.refresh_icon)
 
         self.workspace_widget = WorkspaceWidget(self)
@@ -265,7 +265,7 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         # self.workspace_widget.load_assembly_tree()
         self.tabChanged.emit(tab_name)
 
-    def get_all_worksapce_jobs_thread(self):
+    def get_all_workspace_jobs_thread(self):
         self.workspace_widget.get_all_workspace_jobs_thread()
 
     def workspace_settings_changed(self):

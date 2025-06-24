@@ -696,7 +696,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
                     new_part.modified_date = f"Added from Workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     self.laser_cut_inventory.add_recut_part(new_part)
                     # self.laser_cut_inventory.save_local_copy()
-                    self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
+                    # self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
                     laser_cut_parts_to_update.append(
                         laser_cut_part_group.laser_cut_parts[i]
                     )

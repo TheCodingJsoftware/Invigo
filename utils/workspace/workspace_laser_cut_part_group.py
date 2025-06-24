@@ -122,11 +122,32 @@ class WorkspaceLaserCutPartGroup:
             self.move_to_next_process()
 
     def get_current_tag(self) -> Optional[Tag]:
-        return self.base_part.get_current_tag()
+        if self.base_part:
+            return self.base_part.get_current_tag()
+        return None
 
     def set_flow_tag_status_index(self, status_index: int):
         for laser_cut_part in self:
             laser_cut_part.current_flow_tag_status_index = status_index
+
+    def check_update_quantity_tags(self):
+        if not self.base_part:
+            return
+        if current_tag := self.get_current_tag():
+            if (
+                self.base_part.flowtag.add_quantity_tag
+                and current_tag.name == self.base_part.flowtag.add_quantity_tag.name
+            ):
+                self.base_part.laser_cut_inventory.add_or_update_laser_cut_parts(
+                    self.laser_cut_parts, f"workspace tag: {current_tag.name}"
+                )
+            if (
+                self.base_part.flowtag.remove_quantity_tag
+                and current_tag.name == self.base_part.flowtag.remove_quantity_tag.name
+            ):
+                self.base_part.laser_cut_inventory.remove_laser_cut_parts_quantity(
+                    self.laser_cut_parts, f"workspace tag: {current_tag.name}"
+                )
 
     def move_to_next_process(self, quantity: Optional[int] = None):
         max_quantity = len(self.laser_cut_parts)
@@ -135,6 +156,7 @@ class WorkspaceLaserCutPartGroup:
 
         for i in range(quantity):
             self.laser_cut_parts[i].move_to_next_process()
+        self.check_update_quantity_tags()
 
     def get_process_status(self) -> str:
         try:

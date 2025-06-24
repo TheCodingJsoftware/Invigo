@@ -5,15 +5,17 @@ from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workers.base_worker import BaseWorker
 
 
-class AddLaserCutPartWorker(BaseWorker):
-    def __init__(self, laser_cut_part: LaserCutPart):
-        super().__init__(name="AddLaserCutPartWorker")
-        self.laser_cut_part = laser_cut_part
-        self.url = f"{self.DOMAIN}/laser_cut_parts_inventory/add_laser_cut_part"
+class AddLaserCutPartsWorker(BaseWorker):
+    def __init__(self, laser_cut_parts: list[LaserCutPart]):
+        super().__init__(name="AddLaserCutPartsWorker")
+        self.laser_cut_parts = laser_cut_parts
+        self.url = f"{self.DOMAIN}/laser_cut_parts_inventory/add_laser_cut_parts"
 
-    def do_work(self) -> tuple[dict, LaserCutPart]:
-        self.logger.info(f"Adding new laser_cut_part via POST to {self.url}")
-        data = self.laser_cut_part.to_dict()
+    def do_work(self) -> tuple[dict, list[LaserCutPart]]:
+        self.logger.info(f"Adding new laser_cut_parts via POST to {self.url}")
+        data = []
+        for laser_cut_part in self.laser_cut_parts:
+            data.append(laser_cut_part.to_dict())
 
         with requests.Session() as session:
             response = session.post(
@@ -34,4 +36,4 @@ class AddLaserCutPartWorker(BaseWorker):
                 "data": data,
             }
 
-            return (response_data, self.laser_cut_part)
+            return (response_data, self.laser_cut_parts)

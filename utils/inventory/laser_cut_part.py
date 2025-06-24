@@ -141,7 +141,6 @@ class LaserCutPart(InventoryItem):
     def move_to_next_process(self):
         if current_tag := self.get_current_tag():
             self.timer.stop(current_tag)
-            self.check_update_quantity_tags()
             if not self.is_process_finished():
                 self.current_flow_tag_index += 1
                 self.current_flow_tag_status_index = 0
@@ -155,23 +154,6 @@ class LaserCutPart(InventoryItem):
         for file in files:
             all_files.add(file)
         return list(all_files)
-
-    def check_update_quantity_tags(self):
-        if current_tag := self.get_current_tag():
-            if (
-                self.flowtag.add_quantity_tag
-                and current_tag.name == self.flowtag.add_quantity_tag.name
-            ):
-                self.laser_cut_inventory.add_or_update_laser_cut_part(
-                    self, f"workspace tag: {current_tag.name}"
-                )
-            if (
-                self.flowtag.remove_quantity_tag
-                and current_tag.name == self.flowtag.remove_quantity_tag.name
-            ):
-                self.laser_cut_inventory.remove_laser_cut_part_quantity(
-                    self, f"workspace tag: {current_tag.name}"
-                )
 
     def get_current_tag(self) -> Optional[Tag]:
         try:

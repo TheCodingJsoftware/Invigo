@@ -632,7 +632,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.workspace_tab_widget_last_selected_tab = (
             self.workspace_tab_widget.tag_buttons[0].text()
         )
-        self.workspace_tab_widget.get_all_worksapce_jobs_thread()
+        self.workspace_tab_widget.get_all_workspace_jobs_thread()
 
         print("Here 2")
         with contextlib.suppress(AttributeError):  # There are no visible process tags
@@ -3664,6 +3664,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self.show_nested_parts_not_in_workspace_dialog(
                     nested_parts_not_in_workspace
                 ):
+                    laser_cut_parts_to_update: list[LaserCutPart] = []
                     for nest in nests:
                         for nest_laser_cut_part in nest.laser_cut_parts:
                             for (
@@ -3673,12 +3674,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     nest_laser_cut_part.name
                                     == nested_laser_cut_part_not_in_workspace.name
                                 ):
-                                    self.handle_nest_laser_cut_part_over_flow(
-                                        nested_laser_cut_part_not_in_workspace,
-                                        nested_laser_cut_part_not_in_workspace.quantity_on_sheet
-                                        * nest.sheet_count,
+                                    new_part = LaserCutPart(
+                                        nested_laser_cut_part_not_in_workspace.to_dict(),
+                                        self.laser_cut_parts_inventory,
                                     )
+                                    new_part.quantity = (
+                                        nested_laser_cut_part_not_in_workspace.quantity_on_sheet
+                                        * nest.sheet_count
+                                    )
+                                    laser_cut_parts_to_update.append(new_part)
                                     break
+
+                    self.laser_cut_parts_inventory.add_or_update_laser_cut_parts(
+                        laser_cut_parts_to_update, "workorder nest overflow"
+                    )
                     # self.laser_cut_parts_inventory.save_local_copy()
                     # self.upload_files(
                     #     [f"{self.laser_cut_parts_inventory.filename}.json"]
@@ -3828,6 +3837,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         all_workspace_laser_part_groups: list[WorkspaceLaserCutPartGroup],
         should_handle_remaining_parts: bool,
     ):
+        laser_cut_parts_to_update: list[LaserCutPart] = []
         for nest in nests:
             for nest_laser_cut_part in nest.laser_cut_parts:
                 for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
@@ -3851,20 +3861,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             nest_quantity > workorder_quantity
                             and should_handle_remaining_parts
                         ):
-                            self.handle_nest_laser_cut_part_over_flow(
-                                nest_laser_cut_part, workorder_remaining_quantity
+                            new_part = LaserCutPart(
+                                nest_laser_cut_part.to_dict(),
+                                self.laser_cut_parts_inventory,
                             )
+                            new_part.quantity = workorder_remaining_quantity
+                            laser_cut_parts_to_update.append(new_part)
                         break
-
-    def handle_nest_laser_cut_part_over_flow(
-        self, nest_laser_cut_part: LaserCutPart, workorder_remaining_quantity: int
-    ):
-        new_part = LaserCutPart(
-            nest_laser_cut_part.to_dict(), self.laser_cut_parts_inventory
-        )
-        new_part.quantity = workorder_remaining_quantity
-        self.laser_cut_parts_inventory.add_or_update_laser_cut_part(
-            new_part, "workorder nest overflow"
+        self.laser_cut_parts_inventory.add_or_update_laser_cut_parts(
+            laser_cut_parts_to_update, "workorder nest overflow"
         )
 
     def generate_quote_thread(self, nests: list[str]):
