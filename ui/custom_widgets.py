@@ -1216,7 +1216,7 @@ class ButtonManagerWidget(QWidget):
 
 
 class PdfFilterProxyModel(QSortFilterProxyModel):
-    def __init__(self, model, parent=None, path=""):
+    def __init__(self, model: QFileSystemModel, parent=None, path=""):
         super().__init__(parent)
         self.path = path
         self.setSourceModel(model)
@@ -1261,15 +1261,19 @@ class PdfTreeView(QTreeView):
     def __init__(self, path: str, parent=None):
         super().__init__(parent)
         print(path)
-        self.parent = parent
-        self.model = QFileSystemModel(self.parent)
-        self.model.setRootPath(path)
-        self.setModel(self.model)
-        self.filterModel = PdfFilterProxyModel(self.model, self.parent, path)
-        self.filterModel.setSourceModel(self.model)
+        self._parent_widget = parent
+        self.file_system_model = QFileSystemModel(self._parent_widget)
+        self.file_system_model.setRootPath(path)
+        self.setModel(self.file_system_model)
+        self.filterModel = PdfFilterProxyModel(
+            self.file_system_model, self._parent_widget, path
+        )
+        self.filterModel.setSourceModel(self.file_system_model)
         self.filterModel.setFilterKeyColumn(0)
         self.setModel(self.filterModel)
-        self.setRootIndex(self.filterModel.mapFromSource(self.model.index(path)))
+        self.setRootIndex(
+            self.filterModel.mapFromSource(self.file_system_model.index(path))
+        )
         self.header().resizeSection(0, 170)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.header().hideSection(1)  # Size
@@ -1291,7 +1295,7 @@ class PdfTreeView(QTreeView):
         self.full_paths.clear()
         for index in self.selected_indexes:
             source_index = self.filterModel.mapToSource(index)
-            self.full_paths.append(self.model.filePath(source_index))
+            self.full_paths.append(self.file_system_model.filePath(source_index))
         self.full_paths = natsorted(self.full_paths)
         self.selected_items = natsorted(self.selected_items)
 

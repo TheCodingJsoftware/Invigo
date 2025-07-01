@@ -722,8 +722,19 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             else:
                 self.nests_toolbox.open(i)
 
+    def safe_copy_nests(self, nests: list[Nest]) -> list[Nest]:
+        new_nests: list[Nest] = []
+        for nest in nests:
+            new_nest = Nest(
+                nest.to_dict(),
+                self.job.sheet_settings,
+                self.job.laser_cut_inventory,
+            )
+            new_nests.append(new_nest)
+        return new_nests
+
     def open_nest_editor(self):
-        nests_copy = deepcopy(self.job.nests)
+        nests_copy = self.safe_copy_nests(self.job.nests)
         nest_editor_dialog = NestEditorDialog(
             nests_copy, self._parent_widget._parent_widget
         )

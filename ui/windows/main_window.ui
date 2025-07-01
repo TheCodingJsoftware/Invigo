@@ -84,7 +84,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="components_tab">
        <layout class="QVBoxLayout" name="verticalLayout_41">
@@ -326,8 +326,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1398</width>
-                       <height>683</height>
+                       <width>1405</width>
+                       <height>615</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -367,8 +367,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>68</width>
-                       <height>16</height>
+                       <width>1405</width>
+                       <height>615</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -453,6 +453,16 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_job_generator">
+                <property name="text">
+                 <string>Job Generator</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_send_to_production_planner">
@@ -722,8 +732,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
-                     <height>16</height>
+                     <width>98</width>
+                     <height>28</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -776,8 +786,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
-                     <height>16</height>
+                     <width>98</width>
+                     <height>28</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -1134,8 +1144,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
-                        <height>16</height>
+                        <width>98</width>
+                        <height>28</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1206,8 +1216,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
-                        <height>16</height>
+                        <width>98</width>
+                        <height>28</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1518,7 +1528,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>33</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

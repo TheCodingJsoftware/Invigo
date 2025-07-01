@@ -115,3 +115,4 @@ upload_update.py
 *.bat
 *.lock
 *.sql
+dxf test files/

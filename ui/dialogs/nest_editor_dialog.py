@@ -1,5 +1,4 @@
 import contextlib
-from copy import deepcopy
 from functools import partial
 from typing import TYPE_CHECKING
 
@@ -31,13 +30,13 @@ class NestEditorDialog(QDialog, Ui_Form):
         parent=None,
     ):
         super().__init__(parent)
-        self.parent: MainWindow = parent
+        self._parent_widget: MainWindow = parent
         self.setupUi(self)
 
         self.nests = natsorted(nests, key=lambda nest: nest.name)
-        self.sheet_settings = self.parent.sheet_settings
-        self.laser_cut_inventory = self.parent.laser_cut_parts_inventory
-        self.deep_copy_nests = deepcopy(self.nests)
+        self.sheet_settings = self._parent_widget.sheet_settings
+        self.laser_cut_inventory = self._parent_widget.laser_cut_parts_inventory
+        self.deep_copy_nests = self.safe_copy_nests(self.nests)
         self.nest_widgets: dict[Nest, NestEditorWidget] = {}
 
         self.load_ui()
@@ -110,6 +109,17 @@ class NestEditorDialog(QDialog, Ui_Form):
         self.splitter.setStretchFactor(0, 0)
         self.splitter.setStretchFactor(1, 1)
 
+    def safe_copy_nests(self, nests: list[Nest]) -> list[Nest]:
+        new_nests: list[Nest] = []
+        for nest in nests:
+            new_nest = Nest(
+                nest.to_dict(),
+                self.sheet_settings,
+                self.laser_cut_inventory,
+            )
+            new_nests.append(new_nest)
+        return new_nests
+
     def reset(self):
         msg = QMessageBox(
             QMessageBox.Icon.Question,
@@ -122,7 +132,7 @@ class NestEditorDialog(QDialog, Ui_Form):
         )
         if msg.exec() == QMessageBox.StandardButton.Yes:
             self.nests.clear()
-            self.nests = deepcopy(self.deep_copy_nests)
+            self.nests = self.safe_copy_nests(self.deep_copy_nests)
             self.load_nests()
 
     def load_nests(self):
@@ -258,7 +268,7 @@ class NestEditorDialog(QDialog, Ui_Form):
             self.treeWidget_nest_summary.resizeColumnToContents(1)
 
     def sync_changes(self):
-        self.parent.sync_changes("nest_editor")
+        self._parent_widget.sync_changes("nest_editor")
 
     def delete_nest(self, nest: Nest):
         self.nest_widgets[nest].deleteLater()

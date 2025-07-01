@@ -53,9 +53,9 @@ class NestEditorWidget(QWidget, Ui_Form):
             LaserCutPart, dict[str, int | QTableWidgetItem | QComboBox | RecutButton]
         ] = {}
         self.pushButton_nest_name.setText(self.nest.get_name())
-        self.sheet_settings = self.parent.parent.sheet_settings
-        self.sheets_inventory = self.parent.parent.sheets_inventory
-        self.laser_cut_inventory = self.parent.parent.laser_cut_parts_inventory
+        self.sheet_settings = self.parent._parent_widget.sheet_settings
+        self.sheets_inventory = self.parent._parent_widget.sheets_inventory
+        self.laser_cut_inventory = self.parent._parent_widget.laser_cut_parts_inventory
 
         self.settings_file = Settings()
         self.tables_font = QFont()
@@ -540,7 +540,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         laser_cut_parts_to_update = []
         for laser_cut_part, table_item_data in self.parts_table_items.items():
             if table_item_data["row"] in selected_rows:
-                self.parent.parent.add_laser_cut_part_to_inventory(
+                self.parent._parent_widget.add_laser_cut_part_to_inventory(
                     laser_cut_part, self.nest.get_name()
                 )
                 laser_cut_parts_to_update.append(laser_cut_part)

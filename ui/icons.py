@@ -1,5 +1,6 @@
 import qtawesome as qta
 
+# qta-browser to view icons
 from ui.theme import theme_var
 from utils.colors import get_contrast_text_color
 
@@ -68,6 +69,7 @@ class Icons:
     arrow_right_fill_icon = None
     recut_icon = None
     recoat_icon = None
+    merge_icon = None
     job_planning_icon = None
     job_quoting_icon = None
     job_quoted_icon = None
@@ -451,6 +453,13 @@ class Icons:
             color_on_active=theme_var("on-primary"),
             color_off=theme_var("on-primary"),
             color_off_active=theme_var("on-primary"),
+        )
+        cls.merge_icon = qta.icon(
+            "ph.git-merge-fill",
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
+            color_off_active=theme_var("primary"),
         )
         cls.job_planning_icon = make_icon("fa6s.calendar", "job-planning")
         cls.job_quoting_icon = make_icon("fa6s.file-invoice-dollar", "job-quoting")

@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Callable, Union
+from typing import Callable, Literal, Union
 
 import msgspec
 from natsort import natsorted
@@ -27,6 +27,9 @@ from utils.workers.laser_cut_parts_inventory.remove_laser_cut_parts import (
 )
 from utils.workers.laser_cut_parts_inventory.update_laser_cut_parts import (
     UpdateLaserCutPartsWorker,
+)
+from utils.workers.laser_cut_parts_inventory.upsert_quantities import (
+    UpsertQuantitiesWorker,
 )
 from utils.workers.runnable_chain import RunnableChain
 from utils.workspace.workspace_settings import WorkspaceSettings
@@ -142,8 +145,11 @@ class LaserCutInventory(Inventory):
                 laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_add.append(laser_cut_part_to_add)
         self.add_recut_parts(recut_laser_cut_parts)
-        self.add_laser_cut_parts(laser_cut_parts_to_add)
-        self.save_laser_cut_parts(laser_cut_parts_to_update)
+        self.upsert_laser_cut_parts(
+            laser_cut_parts_to_add + laser_cut_parts_to_update, operation="ADD"
+        )
+        # self.add_laser_cut_parts(laser_cut_parts_to_add)
+        # self.save_laser_cut_parts(laser_cut_parts_to_update)
         return recut_laser_cut_parts, laser_cut_parts_to_add, laser_cut_parts_to_update
 
     def remove_laser_cut_parts_quantity(
@@ -166,8 +172,11 @@ class LaserCutInventory(Inventory):
                 laser_cut_part_to_update.quantity = 0
                 laser_cut_part_to_update.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_add.append(laser_cut_part_to_update)
-        self.save_laser_cut_parts(laser_cut_parts_to_save)
-        self.add_laser_cut_parts(laser_cut_parts_to_add)
+        self.upsert_laser_cut_parts(
+            laser_cut_parts_to_save + laser_cut_parts_to_add, operation="SUBTRACT"
+        )
+        # self.save_laser_cut_parts(laser_cut_parts_to_save)
+        # self.add_laser_cut_parts(laser_cut_parts_to_add)
 
     def add_recut_parts(self, laser_cut_parts: list[LaserCutPart]):
         raise NotImplementedError
@@ -179,6 +188,25 @@ class LaserCutInventory(Inventory):
     # ! TODO IMPLEMENT THIS
     def remove_recut_part(self, laser_cut_part: LaserCutPart):
         raise NotImplementedError
+
+    def upsert_laser_cut_parts(
+        self,
+        laser_cut_parts: list[LaserCutPart],
+        operation: Literal["ADD", "SUBTRACT"] = "ADD",
+    ):
+        worker = UpsertQuantitiesWorker(laser_cut_parts, operation)
+        worker.signals.success.connect(self.upsert_laser_cut_parts_response)
+        QThreadPool.globalInstance().start(worker)
+
+    def upsert_laser_cut_parts_response(
+        self, response: tuple[dict, list[LaserCutPart]]
+    ):
+        data, laser_cut_parts = response
+        print(data)
+        # for laser_cut_part in laser_cut_parts:
+        #     laser_cut_part.id = data["id"]
+        #     laser_cut_part.load_part_data(data["laser_cut_part_data"])
+        #     self.laser_cut_parts.append(laser_cut_part)
 
     def add_laser_cut_parts(
         self, laser_cut_parts: list[LaserCutPart], on_finished: Callable | None = None
@@ -311,6 +339,7 @@ class LaserCutInventory(Inventory):
         self.recut_parts = natsorted(
             self.recut_parts, key=lambda recut_part: recut_part.quantity
         )
+        return self.laser_cut_parts
 
     def save_local_copy(self):
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:

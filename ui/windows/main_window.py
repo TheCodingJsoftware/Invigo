@@ -74,6 +74,7 @@ from ui.dialogs.edit_user_workspace_settings import EditUserWorkspaceSettingsDia
 from ui.dialogs.edit_workspace_settings import EditWorkspaceSettings
 from ui.dialogs.generate_quote_dialog import GenerateQuoteDialog
 from ui.dialogs.generate_workorder_dialog import GenerateWorkorderDialog
+from ui.dialogs.job_generator import JobGeneratorDialog
 from ui.dialogs.job_sorter_dialog import JobSorterDialog
 from ui.dialogs.message_dialog import MessageDialog
 from ui.dialogs.nest_editor_dialog import NestEditorDialog
@@ -213,7 +214,10 @@ logging.basicConfig(
 
 
 def excepthook(exc_type, exc_value, exc_traceback):
-    logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
+    logging.error(
+        f"Unhandled exception traceback: {traceback.format_exc()}",
+        exc_info=(exc_type, exc_value, exc_traceback),
+    )
     threading.Thread(target=send_error_report).start()
 
     error_msg = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
@@ -730,6 +734,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_refresh_directories_3.setIcon(Icons.refresh_icon)
 
         # Jobs
+        self.pushButton_job_generator.clicked.connect(self.job_generator)
+        self.pushButton_job_generator.setIcon(Icons.merge_icon)
+
         self.pushButton_refresh_jobs.clicked.connect(self.load_jobs_worker)
         self.pushButton_refresh_jobs.setIcon(Icons.refresh_icon)
         self.pushButton_refresh_jobs_2.clicked.connect(self.load_jobs_worker)
@@ -1584,6 +1591,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return selected_items
 
     # * /\ GETTERS /\
+    def job_generator(self):
+        self.job_generator_window = JobGeneratorDialog(self)
+        self.job_generator_window.show()
+
     def save_geometry(self):
         geometry = self.settings_file.get_value("geometry")
         geometry["x"] = max(self.pos().x(), 0)
