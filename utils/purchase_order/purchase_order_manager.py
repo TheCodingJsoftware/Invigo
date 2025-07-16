@@ -3,7 +3,9 @@ from typing import Callable
 from natsort import natsorted
 from PyQt6.QtCore import QThreadPool
 
+from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
 from utils.purchase_order.purchase_order import PurchaseOrder as PO
 from utils.purchase_order.purchase_order import PurchaseOrderDict
@@ -50,7 +52,7 @@ class PurchaseOrderManager:
         if on_finished:
             self.chain.finished.connect(on_finished)
 
-        self.chain.finished.connect(self.link_purchase_orders_with_orders)
+        self.chain.finished.connect(self.link_purchase_orders_with_inventory_items)
 
         self.chain.start()
 
@@ -102,26 +104,31 @@ class PurchaseOrderManager:
                 break
 
     def get_latest_po_number(self, vendor: Vendor) -> int:
-        return (
-            next(
-                (po.meta_data.purchase_order_number for po in self.purchase_orders if po.meta_data.vendor == vendor),
-                0,
-            )
-            + 1
+        max_po_number = max(
+            (po.meta_data.purchase_order_number for po in self.purchase_orders if po.meta_data.vendor == vendor),
+            default=0,
         )
+        return max_po_number + 1
 
-    def link_purchase_orders_with_orders(self):
+    def link_purchase_orders_with_inventory_items(self):
         purchase_order_lookup = {po.id: po for po in self.purchase_orders}
+        vendor_lookup = {vendor.id: vendor for vendor in self.vendors}
 
         for sheet in self.sheets_inventory.sheets:
             for order in sheet.orders:
                 if po := purchase_order_lookup.get(order.purchase_order_id):
                     order.set_purchase_order(po)
+            for vendor_id in sheet._vendor_ids:
+                if vendor := vendor_lookup.get(vendor_id):
+                    sheet.vendors.append(vendor)
 
         for component in self.components_inventory.components:
             for order in component.orders:
                 if po := purchase_order_lookup.get(order.purchase_order_id):
                     order.set_purchase_order(po)
+            for vendor_id in component._vendor_ids:
+                if vendor := vendor_lookup.get(vendor_id):
+                    component.vendors.append(vendor)
 
     def get_organized_purchase_orders(self) -> dict[str, list[PO]]:
         return {vendor.name: [po for po in self.purchase_orders if po.meta_data.vendor.name == vendor.name] for vendor in self.vendors}
@@ -129,11 +136,35 @@ class PurchaseOrderManager:
     def get_vendor_by_name(self, vendor_name: str) -> Vendor | None:
         return next((vendor for vendor in self.vendors if vendor.name == vendor_name), None)
 
+    def get_vendor_by_id(self, vendor_id: int) -> Vendor | None:
+        return next((vendor for vendor in self.vendors if vendor.id == vendor_id), None)
+
     def get_shipping_address_by_name(self, shipping_address_name: str) -> ShippingAddress | None:
         return next((address for address in self.shipping_addresses if address.name == shipping_address_name), None)
 
+    def get_shipping_address_by_id(self, shipping_address_id: int) -> ShippingAddress | None:
+        return next((address for address in self.shipping_addresses if address.id == shipping_address_id), None)
+
     def find_orders_by_vendor(self, vendor_name: str) -> list[PO]:
         return [po for po in self.purchase_orders if po.meta_data.vendor.name.lower() == vendor_name.lower()]
+
+    def get_components_by_vendor(self, vendor: Vendor) -> list[Component]:
+        return [component for component in self.components_inventory.components if component.vendors and vendor in component.vendors]
+
+    def get_sheets_by_vendor(self, vendor: Vendor) -> list[Sheet]:
+        return [sheet for sheet in self.sheets_inventory.sheets if sheet.vendors and vendor in sheet.vendors]
+
+    def autofill_purchase_order(self, purchase_order: PO):
+        purchase_order.components.clear()
+        purchase_order.components_order_data.clear()
+        purchase_order.sheets.clear()
+        purchase_order.sheets_order_data.clear()
+        for component in self.get_components_by_vendor(purchase_order.meta_data.vendor):
+            purchase_order.set_component_order_quantity(component, 0)
+            purchase_order.components.append(component)
+        for sheet in self.get_sheets_by_vendor(purchase_order.meta_data.vendor):
+            purchase_order.set_sheet_order_quantity(sheet, 0)
+            purchase_order.sheets.append(sheet)
 
     def add_purchase_order(self, purchase_order: PO, on_finished: Callable | None = None):
         worker = SavePurchaseOrderWorker(purchase_order)

@@ -6,6 +6,7 @@ from functools import partial
 from typing import TYPE_CHECKING, Callable
 
 from natsort import natsorted
+from numpy import add
 from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QCloseEvent, QCursor, QIcon
 from PyQt6.QtWidgets import (
@@ -84,6 +85,8 @@ class ComponentsTable(CustomTableWidget):
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
 
         editable_columns = [
+            ComponentsTableColumns.PART_NAME,
+            ComponentsTableColumns.PART_NUMBER,
             ComponentsTableColumns.UNIT_PRICE,
             ComponentsTableColumns.QUANTITY_TO_ORDER,
         ]
@@ -517,6 +520,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         self.pushButton_refresh_purchase_orders.setIcon(Icons.refresh_icon)
         self.pushButton_refresh_purchase_orders.clicked.connect(self.refresh_purchase_orders)
+        self.pushButton_autofill.clicked.connect(self.autofill_purchase_order)
         self.pushButton_edit_vendor.setIcon(Icons.edit_icon)
         self.pushButton_edit_vendor.clicked.connect(self.edit_vendor)
         self.pushButton_edit_shipping_address.setIcon(Icons.edit_icon)
@@ -536,7 +540,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
             self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
 
-        self.doubleSpinBox_po_number.setValue(self.purchase_order.meta_data.purchase_order_number)
+        self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
         self.doubleSpinBox_po_number.valueChanged.connect(self.meta_data_changed)
         status_list = list(Status)
         self.comboBox_status.addItems([status.name.replace("_", " ").title() for status in status_list])
@@ -604,10 +608,29 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
     def add_component(self):
         add_component_dialog = AddComponentDialog(self.purchase_order_manager.components_inventory, self)
         if add_component_dialog.exec():
-            selected_components = add_component_dialog.get_selected_components()
-            for component in selected_components:
-                self.purchase_order.set_component_order_quantity(component, 0)
-                self.add_component_to_table(component)
+            if selected_components := add_component_dialog.get_selected_components():
+                for component in selected_components:
+                    component.vendors.append(self.purchase_order.meta_data.vendor)
+                    self.purchase_order.components.append(component)
+                    self.purchase_order.set_component_order_quantity(component, 0)
+                    self.add_component_to_table(component)
+            else:
+                new_component = Component(
+                    {
+                        "part_name": add_component_dialog.get_name(),
+                        "part_number": add_component_dialog.get_name(),
+                    },
+                    self.purchase_order_manager.components_inventory,
+                )
+
+                def add_component_to_purchase_order():
+                    self.purchase_order.components.append(new_component)
+                    new_component.vendors.append(self.purchase_order.meta_data.vendor)
+                    new_component.quantity = 0
+                    self.purchase_order.set_component_order_quantity(new_component, add_component_dialog.get_current_quantity())
+                    self.add_component_to_table(new_component)
+
+                self.purchase_order_manager.components_inventory.add_component(new_component, on_finished=add_component_to_purchase_order)
 
             self.unsaved_changes = True
 
@@ -672,11 +695,15 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.components_table.blockSignals(True)
         if component := self.components_dict.get(row):
             with contextlib.suppress(ValueError):
+                part_name = self.components_table.item(row, ComponentsTableColumns.PART_NAME.value).text()
+                part_number = self.components_table.item(row, ComponentsTableColumns.PART_NUMBER.value).text()
                 unit_price = float(
                     self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).text().replace("$", "").replace(",", "").replace("CAD", "").replace("USD", "").strip()
                 )
                 quantity_to_order = int(self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
 
+                component.part_name = part_name
+                component.part_number = part_number
                 component.price = unit_price
                 self.purchase_order.set_component_order_quantity(component, quantity_to_order)
                 order_cost = unit_price * quantity_to_order
@@ -736,6 +763,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         if sheet_name and ok:
             if sheet := self.purchase_order_manager.sheets_inventory.get_sheet_by_name(sheet_name):
                 self.purchase_order.set_sheet_order_quantity(sheet, 0)
+                self.purchase_order.sheets.append(sheet)
                 self.add_sheet_to_table(sheet)
                 self.unsaved_changes = True
 
@@ -753,7 +781,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         quantity_in_stock = sheet.quantity
         quantity_to_order = self.purchase_order.get_sheet_quantity_to_order(sheet)
         quantity_weight = quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
-        order_price = price_per_pound * quantity_to_order
+        order_price = price_per_pound * quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
         history_button = QPushButton("View History", self)
         history_button.clicked.connect(partial(self.open_sheet_history, sheet))
         history_button.setFlat(True)
@@ -806,8 +834,8 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
                 sheet.price_per_pound = price_per_pound
                 self.purchase_order.set_sheet_order_quantity(sheet, quantity_to_order)
-                order_cost = price_per_pound * quantity_to_order
                 quantity_weight = quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
+                order_cost = price_per_pound * quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
 
                 self.sheets_table.item(row, SheetsTableColumns.ORDER_COST.value).setText(f"${order_cost:,.2f}")
                 self.sheets_table.item(row, SheetsTableColumns.PRICE_PER_POUND.value).setText(f"${price_per_pound:,.2f}")
@@ -994,6 +1022,20 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self,
         )
         msg.exec()
+
+    def autofill_purchase_order(self):
+        are_you_sure = QMessageBox(
+            QMessageBox.Icon.Question,
+            "Autofill Purchase Order",
+            "Are you sure you want to autofill this purchase order?\n\nThis is permanent and cannot be undone.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+            self,
+        )
+        if are_you_sure.exec() != QMessageBox.StandardButton.Yes:
+            return
+
+        self.purchase_order_manager.autofill_purchase_order(self.purchase_order)
+        self.load_purchase_order_data(self.purchase_order)
 
     # * \/ OTHER \/
     def open_sheet_history(self, sheet: Sheet):

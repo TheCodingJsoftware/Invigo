@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.order import Order
+from utils.purchase_order.vendor import Vendor
 
 if TYPE_CHECKING:
     from utils.inventory.components_inventory import ComponentsInventory
@@ -13,6 +14,7 @@ class Component(InventoryItem):
     def __init__(self, data: dict, components_inventory):
         super().__init__()
         self.components_inventory: ComponentsInventory = components_inventory
+        self.id: int = -1
         self.quantity: float = 0.0
         self.category_quantities: dict[Category, float] = {}
         self.part_number: str = ""
@@ -29,6 +31,8 @@ class Component(InventoryItem):
         self.yellow_quantity_limit: float = 0.0
         self.orders: list[Order] = []
         self.quantity_to_order: int = 0  # Purchase Order Quantity
+        self.vendors: list[Vendor] = []
+        self._vendor_ids: list[int] = []
 
         self.load_data(data)
 
@@ -99,6 +103,9 @@ class Component(InventoryItem):
         self.yellow_quantity_limit = data.get("yellow_quantity_limit", 20.0)
 
         self.quantity_to_order = data.get("quantity_to_order", 0)
+
+        self._vendor_ids = data.get("vendor_ids", [])
+
         self.orders.clear()
         for order_data in data.get("orders", []):
             order = Order(order_data)
@@ -131,6 +138,7 @@ class Component(InventoryItem):
             "red_quantity_limit": self.red_quantity_limit,
             "yellow_quantity_limit": self.yellow_quantity_limit,
             "quantity_to_order": self.quantity_to_order,
+            "vendor_ids": list({vendor.id for vendor in self.vendors}),
             "orders": [order.to_dict() for order in self.orders],
             "categories": [category.name for category in self.categories],
             "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},

@@ -501,7 +501,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.stackedWidget.widget(tab_index).objectName()
 
     def set_current_tab(self, tab_name: str):
-        for i, button in enumerate(self.stack_tab_buttons):
+        for button in self.stack_tab_buttons:
             if button.text() == tab_name:
                 button.click()
                 break
@@ -1036,6 +1036,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.laser_cut_parts_tab_widget.unblock_table_signals()
             self.should_update_laser_cut_inventory_tab = False
 
+    def load_inventory_vendors(self):
+        self.components_tab_widget.load_inventory_vendors()
+        self.sheets_inventory_tab_widget.load_inventory_vendors()
+
     # * \/ SLOTS & SIGNALS \/
     def tool_box_menu_changed(self):
         if self.last_selected_menu_tab == "Job Planner" and self.job_planner_widget.get_active_job().unsaved_changes:
@@ -1293,6 +1297,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             load_purchase_order_menu()
             load_vendors_menu()
             load_shipping_addresses_menu()
+            QTimer.singleShot(250, self.load_inventory_vendors)
 
         self.purchase_order_manager.load_data(on_finished=after_load)
 

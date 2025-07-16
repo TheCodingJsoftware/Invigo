@@ -30,6 +30,7 @@ from ui.custom_widgets import (
 )
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
+from ui.dialogs.select_items_dialog import SelectItemsDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.dialogs.update_component_order_pending_dialog import (
@@ -39,6 +40,7 @@ from ui.dialogs.view_item_history_dialog import ViewItemHistoryDialog
 from ui.icons import Icons
 from ui.theme import theme_var
 from ui.widgets.sheets_in_inventory_tab_UI import Ui_Form
+from utils.dialog_buttons import DialogButtons
 from utils.inventory.category import Category
 from utils.inventory.order import Order, OrderDict
 from utils.inventory.sheet import Sheet
@@ -72,6 +74,7 @@ class SheetsTableWidget(CustomTableWidget):
             "Total Cost in Stock",
             "Orders",
             "Notes",
+            "Vendors",
             "Modified Date",
         ]
         self.setColumnCount(len(headers))
@@ -381,6 +384,14 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
                 self.load_categories()
                 self.restore_last_selected_tab()
 
+    def load_inventory_vendors(self):
+        self.block_table_signals()
+        for sheet in self.sheets_inventory.sheets:
+            with contextlib.suppress(KeyError):
+                self.table_sheets_widgets[sheet]["vendors"].setText("\n".join([vendor.name for vendor in sheet.vendors]))
+                self.table_sheets_widgets[sheet]["vendors"].setToolTip("\n\n".join([vendor.__str__() for vendor in sheet.vendors]))
+        self.unblock_table_signals()
+
     def load_categories(self):
         self.settings_file.load_data()
         self.tab_widget.clear()
@@ -437,6 +448,8 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.table_sheets_widgets[sheet]["total_cost_in_stock"].setText(f"${self.sheets_inventory.get_sheet_cost(sheet) * sheet.quantity:,.2f}")
         self.table_sheets_widgets[sheet]["order_widget"].load_ui()
         self.table_sheets_widgets[sheet]["notes"].setText(sheet.notes)
+        self.table_sheets_widgets[sheet]["vendors"].setText("\n".join([vendor.name for vendor in sheet.vendors]))
+        self.table_sheets_widgets[sheet]["vendors"].setToolTip("\n\n".join([vendor.__str__() for vendor in sheet.vendors]))
         self.table_sheets_widgets[sheet]["modified_date"].setText(sheet.latest_change_quantity)
         self.update_sheet_row_color(current_table, sheet)
 
@@ -538,6 +551,12 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.table_sheets_widgets[sheet].update({"notes": table_item_notes})
         col_index += 1
 
+        vendors_list = QTableWidgetItem("\n".join([vendor.name for vendor in sheet.vendors]))
+        vendors_list.setToolTip("\n\n".join([vendor.__str__() for vendor in sheet.vendors]))
+        current_table.setItem(row_index, col_index, vendors_list)
+        self.table_sheets_widgets[sheet].update({"vendors": vendors_list})
+        col_index += 1
+
         # MODIFIED DATE
         table_item_modified_date = QTableWidgetItem(sheet.latest_change_quantity)
         table_item_modified_date.setToolTip(sheet.latest_change_quantity)
@@ -587,6 +606,8 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             action.setText("Set Custom Quantity Limit")
             menu.addAction(action)
 
+            menu.addSeparator()
+
             action = QAction(self)
             action.setIcon(Icons.printer_icon)
             action.triggered.connect(self.print_selected_items)
@@ -600,15 +621,31 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
 
                 self.sheets_inventory.remove_sheets(selected_sheets, on_finished=self.load_table)
 
+            menu.addSeparator()
+
+            action = QAction("Set Vendor", self)
+            action.setIcon(Icons.add_file_icon)
+            action.triggered.connect(self.set_vendor)
+            menu.addAction(action)
+
+            menu.addSeparator()
+
             action = QAction("View Quantity History", self)
             action.setIcon(Icons.graph_icon)
             action.triggered.connect(self.view_quantity_history)
+            menu.addAction(action)
+
+            action = QAction("View Price History", self)
+            action.setIcon(Icons.graph_icon)
+            action.triggered.connect(self.view_price_history)
             menu.addAction(action)
 
             action = QAction("View Order History", self)
             action.setIcon(Icons.graph_icon)
             action.triggered.connect(self.view_order_history)
             menu.addAction(action)
+
+            menu.addSeparator()
 
             action = QAction("Delete", self)
             action.setIcon(Icons.delete_icon)
@@ -622,10 +659,42 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.save_category_tabs_order()
         self.restore_scroll_position()
 
+    def set_vendor(self):
+        selected_sheets = self.get_selected_sheets()
+
+        if not selected_sheets:
+            return
+
+        select_items_dialog = SelectItemsDialog(
+            DialogButtons.set_cancel,
+            "Select Vendors",
+            "Select all vendors that apply to the selected sheets.",
+            [vendor.name for vendor in self._parent_widget.purchase_order_manager.vendors],
+            self,
+        )
+        if select_items_dialog.exec():
+            response = select_items_dialog.get_response()
+            if response == DialogButtons.cancel:
+                return
+            selected_items = select_items_dialog.get_selected_items()
+            for sheet in selected_sheets:
+                sheet.vendors.clear()
+                for item in selected_items:
+                    if vendor := self._parent_widget.purchase_order_manager.get_vendor_by_name(item):
+                        sheet.vendors.append(vendor)
+
+        self.sheets_inventory.save_sheets(selected_sheets)
+
     def view_order_history(self):
         if selected_sheet := self.get_selected_sheet():
             item_history_dialog = ViewItemHistoryDialog(self, "sheet", selected_sheet.id)
             item_history_dialog.tabWidget.setCurrentIndex(2)
+            item_history_dialog.show()
+
+    def view_price_history(self):
+        if selected_sheet := self.get_selected_sheet():
+            item_history_dialog = ViewItemHistoryDialog(self, "sheet", selected_sheet.id)
+            item_history_dialog.tabWidget.setCurrentIndex(1)
             item_history_dialog.show()
 
     def view_quantity_history(self):

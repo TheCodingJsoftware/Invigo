@@ -36,9 +36,7 @@ class ViewItemHistoryDialog(QDialog, Ui_Form):
         self.item_type = item_type
         self.item_id = item_id
 
-        if self.item_type == "sheet":
-            self.tabWidget.tabBar().setTabVisible(1, False)
-        elif self.item_type == "laser_cut_part":
+        if self.item_type == "laser_cut_part":
             self.tabWidget.tabBar().setTabVisible(1, False)
             self.tabWidget.tabBar().setTabVisible(2, False)
 
@@ -556,10 +554,10 @@ class ViewItemHistoryDialog(QDialog, Ui_Form):
         chain = RunnableChain(self)
         get_quantity_history_worker = GetItemQuantityHistoryWorker(self.item_type, self.item_id)
         chain.add(get_quantity_history_worker, self.get_quantity_history_response)
-        if self.item_type == "component":
+        if self.item_type in ["sheet", "component"]:
             get_price_history_worker = GetItemPriceHistoryWorker(self.item_type, self.item_id)
             chain.add(get_price_history_worker, self.get_price_history_response)
-        if self.item_type == "sheet" or self.item_type == "component":
+        if self.item_type in ["sheet", "component"]:
             get_order_history_worker = GetItemOrderHistoryWorker(self.item_type, self.item_id)
             chain.add(get_order_history_worker, self.get_order_history_response)
         chain.start()

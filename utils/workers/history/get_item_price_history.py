@@ -23,8 +23,8 @@ class GetItemPriceHistoryWorker(BaseWorker):
 
             try:
                 item_history = msgspec.json.decode(response.content)
-            except msgspec.DecodeError:
-                raise ValueError("Failed to decode server response")
+            except msgspec.DecodeError as e:
+                raise ValueError("Failed to decode server response") from e
 
             if not isinstance(item_history, dict):
                 raise ValueError("Invalid data format received")

@@ -34,6 +34,7 @@ from ui.custom_widgets import (
 from ui.dialogs.add_item_dialog import AddItemDialog
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.items_change_quantity_dialog import ItemsChangeQuantityDialog
+from ui.dialogs.select_items_dialog import SelectItemsDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.dialogs.update_component_order_pending_dialog import (
@@ -43,6 +44,7 @@ from ui.dialogs.view_item_history_dialog import ViewItemHistoryDialog
 from ui.icons import Icons
 from ui.theme import theme_var
 from ui.widgets.components_tab_UI import Ui_Form
+from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
 from utils.inventory.component import Component
@@ -80,6 +82,7 @@ class ComponentsTableWidget(CustomTableWidget):
             "Priority",
             "Shelf #",
             "Notes",
+            "Vendors",
             "Orders",
         ]
         self.setColumnCount(len(headers))
@@ -182,6 +185,7 @@ class OrderWidget(QWidget):
 
     def view_order_history(self):
         view_item_history_dialog = ViewItemHistoryDialog(self, "component", self.component.id)
+        view_item_history_dialog.tabWidget.setCurrentIndex(2)
         view_item_history_dialog.show()
 
     def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
@@ -410,6 +414,14 @@ class ComponentsTab(QWidget, Ui_Form):
                 self.load_categories()
                 self.restore_last_selected_tab()
 
+    def load_inventory_vendors(self):
+        self.block_table_signals()
+        for component in self.components_inventory.components:
+            with contextlib.suppress(KeyError):
+                self.table_components_widgets[component]["vendors"].setText("\n".join([vendor.name for vendor in component.vendors]))
+                self.table_components_widgets[component]["vendors"].setToolTip("\n\n".join([vendor.__str__() for vendor in component.vendors]))
+        self.unblock_table_signals()
+
     def load_categories(self):
         self.settings_file.load_data()
         self.tab_widget.clear()
@@ -468,6 +480,9 @@ class ComponentsTab(QWidget, Ui_Form):
         self.table_components_widgets[component]["notes"].blockSignals(True)
         self.table_components_widgets[component]["notes"].setPlainText(component.notes)
         self.table_components_widgets[component]["notes"].blockSignals(False)
+
+        self.table_components_widgets[component]["vendors"].setText("\n".join([vendor.name for vendor in component.vendors]))
+        self.table_components_widgets[component]["vendors"].setToolTip("\n\n".join([vendor.__str__() for vendor in component.vendors]))
 
         self.table_components_widgets[component]["priority"].blockSignals(True)
         self.table_components_widgets[component]["priority"].setCurrentIndex(component.priority)
@@ -640,6 +655,13 @@ class ComponentsTab(QWidget, Ui_Form):
 
         col_index += 1
 
+        vendors_list = QTableWidgetItem("\n".join([vendor.name for vendor in component.vendors]))
+        vendors_list.setToolTip("\n\n".join([vendor.__str__() for vendor in component.vendors]))
+        current_table.setItem(row_index, col_index, vendors_list)
+        self.table_components_widgets[component].update({"vendors": vendors_list})
+
+        col_index += 1
+
         # ORDER WIDGET
         order_widget = OrderWidget(component, self)
         order_widget.orderOpened.connect(self.block_table_signals)
@@ -682,6 +704,34 @@ class ComponentsTab(QWidget, Ui_Form):
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
+
+    def set_vendor(self):
+        selected_components = self.get_selected_components()
+
+        if not selected_components:
+            return
+
+        select_items_dialog = SelectItemsDialog(
+            DialogButtons.set_cancel,
+            "Select Vendors",
+            "Select a sheet to set a vendor for.",
+            [vendor.name for vendor in self._parent_widget.purchase_order_manager.vendors],
+            self,
+        )
+        if select_items_dialog.exec():
+            response = select_items_dialog.get_response()
+            if response == DialogButtons.cancel:
+                return
+            selected_items = select_items_dialog.get_selected_items()
+            for component in selected_components:
+                component.vendors.clear()
+                for item in selected_items:
+                    if vendor := self._parent_widget.purchase_order_manager.get_vendor_by_name(item):
+                        component.vendors.append(vendor)
+                self.table_components_widgets[component]["vendors"].setText("\n".join([vendor.name for vendor in component.vendors]))
+                self.table_components_widgets[component]["vendors"].setToolTip("\n\n".join([vendor.__str__() for vendor in component.vendors]))
+
+        self.components_inventory.save_components(selected_components)
 
     def view_quantity_history(self):
         if selected_component := self.get_selected_component():
@@ -1019,6 +1069,13 @@ class ComponentsTab(QWidget, Ui_Form):
             action.triggered.connect(partial(copy_to_category, category))
             categories.addAction(action)
         menu.addMenu(categories)
+
+        menu.addSeparator()
+
+        action = QAction("Set Vendor", self)
+        action.setIcon(Icons.add_file_icon)
+        action.triggered.connect(self.set_vendor)
+        menu.addAction(action)
 
         menu.addSeparator()
 

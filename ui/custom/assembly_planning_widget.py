@@ -438,7 +438,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.update_component_table_quantity()
         self.changes_made()
 
-    def get_component_by_name(self, component_name: str) -> Component:
+    def get_component_by_name(self, component_name: str) -> Component | None:
         return next(
             (component for component in self.assembly.components if component.name == component_name),
             None,

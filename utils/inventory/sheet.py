@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.order import Order
+from utils.purchase_order.vendor import Vendor
 
 if TYPE_CHECKING:
     from utils.inventory.sheets_inventory import SheetsInventory
@@ -28,6 +29,8 @@ class Sheet(InventoryItem):
         self.has_sent_warning: bool = False
         self.notes: str = ""
         self.orders: list[Order] = []
+        self._vendor_ids: list[int] = []
+        self.vendors: list[Vendor] = []
         self.quantity_to_order: int = 0  # Purchase Order Quantity
         self.load_data(data)
 
@@ -69,6 +72,9 @@ class Sheet(InventoryItem):
         self.yellow_quantity_limit = data.get("yellow_quantity_limit", 10)
 
         self.quantity_to_order = data.get("quantity_to_order", 0)
+
+        self._vendor_ids = data.get("vendor_ids", [])
+
         self.orders.clear()
         for order_data in data.get("orders", []):
             order = Order(order_data)
@@ -97,6 +103,7 @@ class Sheet(InventoryItem):
             "has_sent_warning": self.has_sent_warning,
             "notes": self.notes,
             "quantity_to_order": self.quantity_to_order,
+            "vendor_ids": list({vendor.id for vendor in self.vendors}),
             "orders": [order.to_dict() for order in self.orders],
             "categories": [category.name for category in self.categories],
             "quantity": self.quantity,

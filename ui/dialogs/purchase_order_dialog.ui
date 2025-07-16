@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1221</width>
-    <height>931</height>
+    <width>1780</width>
+    <height>1151</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
         <number>9</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
          <item>
           <layout class="QGridLayout" name="gridLayout">
            <item row="1" column="2">
@@ -116,13 +116,20 @@
             </widget>
            </item>
            <item row="0" column="2">
-            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,0">
+            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,1,0">
              <property name="spacing">
               <number>6</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
              </property>
+             <item>
+              <widget class="QPushButton" name="pushButton_autofill">
+               <property name="text">
+                <string>Autofill</string>
+               </property>
+              </widget>
+             </item>
              <item>
               <widget class="QComboBox" name="comboBox_vendor"/>
              </item>
@@ -219,11 +226,11 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>780</width>
-            <height>619</height>
+            <width>1152</width>
+            <height>837</height>
            </rect>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_8">
+          <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,1">
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
              <item>
