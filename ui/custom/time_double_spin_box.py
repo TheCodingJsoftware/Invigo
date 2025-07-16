@@ -27,9 +27,7 @@ class TimeSpinBox(QWidget):
         # Create QDoubleSpinBoxes for days, hours, minutes, and seconds
         self.days_spinbox = SpinBox(self)
         self.days_spinbox.setSuffix("d")
-        self.days_spinbox.setStyleSheet(
-            "border-top-right-radius: 0; border-bottom-right-radius: 0;"
-        )
+        self.days_spinbox.setStyleSheet("border-top-right-radius: 0; border-bottom-right-radius: 0;")
 
         self.hours_spinbox = SpinBox(self)
         self.hours_spinbox.setSuffix("h")
@@ -41,9 +39,7 @@ class TimeSpinBox(QWidget):
 
         self.seconds_spinbox = SpinBox(self)
         self.seconds_spinbox.setSuffix("s")
-        self.seconds_spinbox.setStyleSheet(
-            "border-top-left-radius: 0; border-bottom-left-radius: 0;"
-        )
+        self.seconds_spinbox.setStyleSheet("border-top-left-radius: 0; border-bottom-left-radius: 0;")
 
         layout = QHBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignLeft)

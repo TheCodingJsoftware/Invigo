@@ -26,9 +26,7 @@ class AddItemDialog(QDialog, Ui_Form):
         self.lblMessage.setText(message)
 
         self.lineEdit_name.addItems(self.components_inventory.get_all_part_names())
-        self.lineEdit_part_number.addItems(
-            self.components_inventory.get_all_part_numbers()
-        )
+        self.lineEdit_part_number.addItems(self.components_inventory.get_all_part_numbers())
 
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_part_number.setCurrentText("")
@@ -69,16 +67,12 @@ class AddItemDialog(QDialog, Ui_Form):
 
         self.doubleSpinBox_unit_quantity.setValue(1)
         self.doubleSpinBox_price.setValue(component.price)
-        self.comboBox_exchange_price.setCurrentText(
-            "USD" if component.use_exchange_rate else "CAD"
-        )
+        self.comboBox_exchange_price.setCurrentText("USD" if component.use_exchange_rate else "CAD")
 
         self.plainTextEdit_notes.setPlainText(component.notes)
 
     def get_part_number(self) -> str:
-        return (
-            self.lineEdit_part_number.currentText().encode("ascii", "ignore").decode()
-        )
+        return self.lineEdit_part_number.currentText().encode("ascii", "ignore").decode()
 
     def get_name(self) -> str:
         return self.lineEdit_name.currentText().encode("ascii", "ignore").decode()

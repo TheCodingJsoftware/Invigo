@@ -18,9 +18,7 @@ class StructuralSteelSettings:
 
         self.materials = Collection[Material]()
         self.material_densities: MaterialDensities = MaterialDensities()
-        self.material_price_per_pounds: MaterialPricePerPounds = (
-            MaterialPricePerPounds()
-        )
+        self.material_price_per_pounds: MaterialPricePerPounds = MaterialPricePerPounds()
 
         self.FOLDER_LOCATION: str = f"{Environment.DATA_PATH}/data"
         self.load_data()
@@ -72,17 +70,13 @@ class StructuralSteelSettings:
             self._reset_file()
 
     def _reset_file(self):
-        with open(
-            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
-        ) as file:
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
             file.write("{}")
 
     def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-                data: dict[str, Union[list[str], dict[str, dict]]] = (
-                    msgspec.json.decode(file.read())
-                )
+                data: dict[str, Union[list[str], dict[str, dict]]] = msgspec.json.decode(file.read())
             self.materials.clear()
             for material in data.get("materials", []):
                 self.materials.add_item(Material(material))
@@ -90,22 +84,12 @@ class StructuralSteelSettings:
             self.material_densities.clear()
             self.material_price_per_pounds.clear()
 
-            for material, (_, material_data) in zip(
-                self.materials, data.get("material_price_per_pounds", {}).items()
-            ):
-                material_price_per_pound_object = (
-                    self.material_price_per_pounds.add_price_per_pound(material)
-                )
-                material_price_per_pound_object.price_per_pound = material_data[
-                    "price_per_pound"
-                ]
-                material_price_per_pound_object.latest_change = material_data[
-                    "latest_change"
-                ]
+            for material, (_, material_data) in zip(self.materials, data.get("material_price_per_pounds", {}).items()):
+                material_price_per_pound_object = self.material_price_per_pounds.add_price_per_pound(material)
+                material_price_per_pound_object.price_per_pound = material_data["price_per_pound"]
+                material_price_per_pound_object.latest_change = material_data["latest_change"]
 
-            for material, (_, material_data) in zip(
-                self.materials, data.get("material_densities", {}).items()
-            ):
+            for material, (_, material_data) in zip(self.materials, data.get("material_densities", {}).items()):
                 material_density_object = self.material_densities.add_density(material)
                 material_density_object.density = material_data["density"]
                 material_density_object.latest_change = material_data["latest_change"]

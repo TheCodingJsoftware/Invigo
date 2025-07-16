@@ -30,15 +30,9 @@ class ProfilesTypes(Enum):
 class StructuralProfile(InventoryItem):
     def __init__(self, structural_steel_inventory) -> None:
         super().__init__()
-        self.structural_steel_inventory: StructuralSteelInventory = (
-            structural_steel_inventory
-        )
-        self.structural_steel_settings: StructuralSteelSettings = (
-            self.structural_steel_inventory.structural_steel_settings
-        )
-        self.workspace_settings: WorkspaceSettings = (
-            self.structural_steel_inventory.workspace_settings
-        )
+        self.structural_steel_inventory: StructuralSteelInventory = structural_steel_inventory
+        self.structural_steel_settings: StructuralSteelSettings = self.structural_steel_inventory.structural_steel_settings
+        self.workspace_settings: WorkspaceSettings = self.structural_steel_inventory.workspace_settings
 
         self.part_number: str = ""
         self.notes: str = ""
@@ -62,9 +56,7 @@ class StructuralProfile(InventoryItem):
         self.id = -1
 
     def get_density(self) -> float:
-        return (
-            self.structural_steel_settings.get_density(self.material) / 1728
-        )  # Convert from lb/ft^3 to lb/in^3
+        return self.structural_steel_settings.get_density(self.material) / 1728  # Convert from lb/ft^3 to lb/in^3
 
     def get_categories(self) -> list[str]:
         return [category.name for category in self.categories]
@@ -86,9 +78,7 @@ class StructuralProfile(InventoryItem):
         self.flowtag = Flowtag(data.get("flow_tag", []), self.workspace_settings)
 
         self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
-        self.current_flow_tag_status_index = data.get(
-            "current_flow_tag_status_index", 0
-        )
+        self.current_flow_tag_status_index = data.get("current_flow_tag_status_index", 0)
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace

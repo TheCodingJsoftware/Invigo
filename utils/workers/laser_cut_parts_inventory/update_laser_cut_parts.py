@@ -12,16 +12,12 @@ class UpdateLaserCutPartsWorker(BaseWorker):
         self.url = f"{self.DOMAIN}/laser_cut_parts_inventory/update_laser_cut_parts"
 
     def do_work(self):
-        self.logger.info(
-            f"Sending update for {len(self.laser_cut_parts)} laser_cut_parts to {self.url}"
-        )
+        self.logger.info(f"Sending update for {len(self.laser_cut_parts)} laser_cut_parts to {self.url}")
 
         data = [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts]
 
         with requests.Session() as session:
-            response = session.post(
-                self.url, json=data, headers=self.headers, timeout=10
-            )
+            response = session.post(self.url, json=data, headers=self.headers, timeout=10)
             response.raise_for_status()
             try:
                 response_data = msgspec.json.decode(response.content)

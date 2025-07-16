@@ -38,16 +38,7 @@ class Assembly:
         self.assembly_files: list[str] = []
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
-        self.structural_steel_items: list[
-            Pipe
-            | RectangularBar
-            | AngleBar
-            | FlatBar
-            | RoundBar
-            | RectangularTube
-            | RoundTube
-            | DOMRoundTube
-        ] = []
+        self.structural_steel_items: list[Pipe | RectangularBar | AngleBar | FlatBar | RoundBar | RectangularTube | RoundTube | DOMRoundTube] = []
         self.sub_assemblies: list[Assembly] = []
         self.not_part_of_process = False
 
@@ -163,11 +154,7 @@ class Assembly:
 
     def get_sub_assembly(self, assembly_name: str) -> "Assembly | None":
         return next(
-            (
-                sub_assembly
-                for sub_assembly in self.sub_assemblies
-                if sub_assembly.name == assembly_name
-            ),
+            (sub_assembly for sub_assembly in self.sub_assemblies if sub_assembly.name == assembly_name),
             None,
         )
 
@@ -182,22 +169,14 @@ class Assembly:
         return assemblies
 
     def get_all_laser_cut_parts(self) -> list[LaserCutPart]:
-        return self.laser_cut_parts + [
-            part
-            for sub_assembly in self.get_all_sub_assemblies()
-            for part in sub_assembly.laser_cut_parts
-        ]
+        return self.laser_cut_parts + [part for sub_assembly in self.get_all_sub_assemblies() for part in sub_assembly.laser_cut_parts]
 
     def get_expected_time_to_complete(self) -> int:
         total_time: int = 0
         for laser_cut_part in self.laser_cut_parts:
-            total_time += (
-                laser_cut_part.get_expected_time_to_complete() * laser_cut_part.quantity
-            )
+            total_time += laser_cut_part.get_expected_time_to_complete() * laser_cut_part.quantity
         for tag in self.flowtag_data.tags_data:
-            total_time += self.flowtag_data.get_tag_data(
-                tag, "expected_time_to_complete"
-            )
+            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
         for sub_assembly in self.sub_assemblies:
             total_time += sub_assembly.get_expected_time_to_complete()
         return total_time * self.quantity
@@ -207,17 +186,11 @@ class Assembly:
         self.id = assembly_data.get("id", -1)
         self.name = assembly_data.get("name", "Assembly")
         self.starting_date = assembly_data.get("starting_date", "")
-        self.expected_time_to_complete = assembly_data.get(
-            "expected_time_to_complete", 0
-        )
+        self.expected_time_to_complete = assembly_data.get("expected_time_to_complete", 0)
         self.ending_date = assembly_data.get("ending_date", "")
-        self.flowtag = Flowtag(
-            assembly_data.get("flow_tag", {}), self.workspace_settings
-        )
+        self.flowtag = Flowtag(assembly_data.get("flow_tag", {}), self.workspace_settings)
         self.current_flow_tag_index = assembly_data.get("current_flow_tag_index", 0)
-        self.current_flow_tag_status_index = assembly_data.get(
-            "current_flow_tag_status_index", 0
-        )
+        self.current_flow_tag_status_index = assembly_data.get("current_flow_tag_status_index", 0)
         self.assembly_image = assembly_data.get("assembly_image")
         self.assembly_files = assembly_data.get("assembly_files", [])
         self.quantity = assembly_data.get("quantity", 1)
@@ -226,9 +199,7 @@ class Assembly:
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
-        self.timer = FlowtagTimer(
-            copy.deepcopy(assembly_data.get("timer", {})), self.flowtag
-        )
+        self.timer = FlowtagTimer(copy.deepcopy(assembly_data.get("timer", {})), self.flowtag)
         self.flowtag_data = FlowtagData(self.flowtag)
         self.flowtag_data.load_data(assembly_data.get("flow_tag_data", {}))
 
@@ -248,9 +219,7 @@ class Assembly:
 
         self.uses_powder = assembly_data.get("uses_powder_coating", False)
         self.powder_name = assembly_data.get("powder_name")
-        self.powder_transfer_efficiency = assembly_data.get(
-            "powder_transfer_efficiency", 66.67
-        )
+        self.powder_transfer_efficiency = assembly_data.get("powder_transfer_efficiency", 66.67)
         if self.uses_powder and self.powder_name:
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = assembly_data.get("cost_for_powder_coating", 0.0)
@@ -276,66 +245,42 @@ class Assembly:
         self.structural_steel_items.clear()
         structural_steel_components = data.get("structural_steel_components", [])
         for structural_steel_component_data in structural_steel_components:
-            if (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.RECTANGULAR_BAR.value
-            ):
+            if structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_BAR.value:
                 structural_steel_component = RectangularBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.ROUND_BAR.value
-            ):
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_BAR.value:
                 structural_steel_component = RoundBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.FLAT_BAR.value
-            ):
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.FLAT_BAR.value:
                 structural_steel_component = FlatBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.ANGLE_BAR.value
-            ):
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ANGLE_BAR.value:
                 structural_steel_component = AngleBar(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.RECTANGULAR_TUBE.value
-            ):
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_TUBE.value:
                 structural_steel_component = RectangularTube(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.ROUND_TUBE.value
-            ):
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_TUBE.value:
                 structural_steel_component = RoundTube(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.DOM_ROUND_TUBE.value
-            ):
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.DOM_ROUND_TUBE.value:
                 structural_steel_component = DOMRoundTube(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
                 )
-            elif (
-                structural_steel_component_data.get("profile_type")
-                == ProfilesTypes.PIPE.value
-            ):
+            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.PIPE.value:
                 structural_steel_component = Pipe(
                     structural_steel_component_data,
                     self.job.structural_steel_inventory,
@@ -381,15 +326,8 @@ class Assembly:
                 "timer": self.timer.to_dict(),
                 "flow_tag_data": self.flowtag_data.to_dict(),
             },
-            "laser_cut_parts": [
-                laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts
-            ],
+            "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
             "components": [component.to_dict() for component in self.components],
-            "structural_steel_components": [
-                structural_steel_component.to_dict()
-                for structural_steel_component in self.structural_steel_items
-            ],
-            "sub_assemblies": [
-                sub_assembly.to_dict() for sub_assembly in self.sub_assemblies
-            ],
+            "structural_steel_components": [structural_steel_component.to_dict() for structural_steel_component in self.structural_steel_items],
+            "sub_assemblies": [sub_assembly.to_dict() for sub_assembly in self.sub_assemblies],
         }

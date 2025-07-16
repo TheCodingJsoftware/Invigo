@@ -24,7 +24,6 @@ class SheetsInventory(Inventory):
         super().__init__("sheets_inventory")
         self.sheets: list[Sheet] = []
         self.sheet_settings = sheet_settings
-        self.threads: list[QThread] = []
 
     def get_all_sheets_material(self, sheets: list[Sheet] | None = None) -> list[str]:
         materials: set[str] = set()
@@ -38,6 +37,9 @@ class SheetsInventory(Inventory):
         if isinstance(category, str):
             category = self.get_category(category)
         return [sheet for sheet in self.sheets if category in sheet.categories]
+
+    def get_sheet_by_id(self, sheet_id: int) -> Sheet | None:
+        return next((sheet for sheet in self.sheets if sheet.id == sheet_id), None)
 
     def add_sheet(self, new_sheet: Sheet, on_finished: Callable | None = None):
         worker = AddSheetWorker(new_sheet)
@@ -88,9 +90,7 @@ class SheetsInventory(Inventory):
                 return sheet
         return None
 
-    def duplicate_category(
-        self, category_to_duplicate: Category, new_category_name: str
-    ) -> Category:
+    def duplicate_category(self, category_to_duplicate: Category, new_category_name: str) -> Category:
         new_category = Category(new_category_name)
         super().add_category(new_category)
         sheets_to_duplicate = self.get_sheets_by_category(category_to_duplicate)
@@ -108,12 +108,14 @@ class SheetsInventory(Inventory):
         return deleted_category
 
     def get_sheet_cost(self, sheet: Sheet) -> float:
-        pounds_per_square_foot = self.sheet_settings.get_pounds_per_square_foot(
-            sheet.material, sheet.thickness
-        )
+        pounds_per_square_foot = self.sheet_settings.get_pounds_per_square_foot(sheet.material, sheet.thickness)
         pounds_per_sheet = ((sheet.length * sheet.width) / 144) * pounds_per_square_foot
         price_per_pound = self.sheet_settings.get_price_per_pound(sheet.material)
-        return pounds_per_sheet * price_per_pound
+        price = pounds_per_sheet * price_per_pound
+        sheet.price = price
+        sheet.price_per_pound = price_per_pound
+        sheet.pounds_per_square_foot = pounds_per_square_foot
+        return price
 
     def get_category_stock_cost(self, category: Category) -> float:
         total = 0.0
@@ -122,9 +124,7 @@ class SheetsInventory(Inventory):
         return total
 
     def get_sheet_by_name(self, sheet_name: str) -> Sheet | None:
-        return next(
-            (sheet for sheet in self.sheets if sheet.get_name() == sheet_name), None
-        )
+        return next((sheet for sheet in self.sheets if sheet.get_name() == sheet_name), None)
 
     def exists(self, other: Sheet) -> bool:
         return any(sheet.get_name() == other.get_name() for sheet in self.sheets)

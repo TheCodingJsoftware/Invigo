@@ -37,7 +37,12 @@ class Ui_Form(object):
         self.iconHolder.setSpacing(0)
         self.iconHolder.setObjectName("iconHolder")
         self.verticalLayout_2.addLayout(self.iconHolder)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.verticalLayout_2.addItem(spacerItem)
         self.horizontalLayout_4.addLayout(self.verticalLayout_2)
         self.scrollArea = QtWidgets.QScrollArea(parent=self.widget)
@@ -56,7 +61,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
@@ -66,7 +71,7 @@ class Ui_Form(object):
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName("gridLayout")
         self.label_3 = QtWidgets.QLabel(parent=self.widget)
-        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
         self.doubleSpinBox_red_limit = QtWidgets.QDoubleSpinBox(parent=self.widget)
@@ -89,7 +94,12 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem1)
         self.pushButton_set = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_set.setMaximumSize(QtCore.QSize(16777215, 16777215))

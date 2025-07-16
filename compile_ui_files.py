@@ -6,6 +6,8 @@ from datetime import datetime
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+from config.environments import Environment
+
 
 class UIFileHandler(FileSystemEventHandler):
     def on_modified(self, event):
@@ -34,18 +36,14 @@ class UIFileHandler(FileSystemEventHandler):
         # Compile the .ui file
         try:
             subprocess.run(["pyuic6", ui_path, "-o", output_path], check=True)
-            print(
-                f"{datetime.now().isoformat()} - Compiled: {ui_name}.ui -> {ui_name}_UI.py"
-            )
+            print(f"{datetime.now().isoformat()} - Compiled: {ui_name}.ui -> {ui_name}_UI.py")
         except subprocess.CalledProcessError as e:
             print(f"{datetime.now().isoformat()} - Error compiling {ui_path}: {e}")
         except FileNotFoundError:
-            print(
-                f"{datetime.now().isoformat()} - Error: pyuic6 command not found. Ensure it's installed and accessible in PATH."
-            )
+            print(f"{datetime.now().isoformat()} - Error: pyuic6 command not found. Ensure it's installed and accessible in PATH.")
 
 
-def compile_ui_files_once(directories: list[str]):
+def compile_ui_files_once(directories: list[str]) -> None:
     """Run the compilation once for all .ui files."""
     for directory in directories:
         for root, _, files in os.walk(directory):
@@ -62,7 +60,7 @@ def compile_ui_files_once(directories: list[str]):
                     )
 
 
-def watch_directories(directories: list[str]):
+def watch_directories(directories: list[str]) -> None:
     """Watch directories for changes to .ui files."""
     observer = Observer()
     for directory in directories:
@@ -82,9 +80,7 @@ def watch_directories(directories: list[str]):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Compile PyQt6 .ui files. Use --watch to monitor changes."
-    )
+    parser = argparse.ArgumentParser(description="Compile PyQt6 .ui files. Use --watch to monitor changes.")
     parser.add_argument(
         "--watch",
         action="store_true",
@@ -93,7 +89,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     directories_to_watch = [
-        r"/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui",
+        f"{Environment.DATA_PATH}/ui/dialogs",
     ]
 
     if args.watch:

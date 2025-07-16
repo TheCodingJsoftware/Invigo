@@ -12,16 +12,12 @@ class UpdateComponentsWorker(BaseWorker):
         self.url = f"{self.DOMAIN}/components_inventory/update_components"
 
     def do_work(self):
-        self.logger.info(
-            f"Sending update for {len(self.components)} components to {self.url}"
-        )
+        self.logger.info(f"Sending update for {len(self.components)} components to {self.url}")
 
         data = [component.to_dict() for component in self.components]
 
         with requests.Session() as session:
-            response = session.post(
-                self.url, json=data, headers=self.headers, timeout=10
-            )
+            response = session.post(self.url, json=data, headers=self.headers, timeout=10)
             response.raise_for_status()
             try:
                 response_data = msgspec.json.decode(response.content)

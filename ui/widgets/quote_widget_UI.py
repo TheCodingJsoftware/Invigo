@@ -63,7 +63,7 @@ class Ui_Form(object):
         self.groupBox_13 = QtWidgets.QGroupBox(parent=self.tabWidget_nest_paintPage1)
         self.groupBox_13.setMinimumSize(QtCore.QSize(0, 0))
         self.groupBox_13.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.groupBox_13.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.groupBox_13.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.groupBox_13.setObjectName("groupBox_13")
         self.gridLayout_8 = QtWidgets.QGridLayout(self.groupBox_13)
         self.gridLayout_8.setObjectName("gridLayout_8")
@@ -113,7 +113,7 @@ class Ui_Form(object):
         font.setStyleStrategy(QtGui.QFont.StyleStrategy.PreferDefault)
         self.label_16.setFont(font)
         self.label_16.setScaledContents(False)
-        self.label_16.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_16.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_16.setObjectName("label_16")
         self.gridLayout_8.addWidget(self.label_16, 1, 0, 1, 1)
         self.label_22 = QtWidgets.QLabel(parent=self.groupBox_13)
@@ -142,7 +142,12 @@ class Ui_Form(object):
         self.doubleSpinBox_global_sheet_width_2.setObjectName("doubleSpinBox_global_sheet_width_2")
         self.horizontalLayout_23.addWidget(self.doubleSpinBox_global_sheet_width_2)
         self.gridLayout_8.addLayout(self.horizontalLayout_23, 4, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.gridLayout_8.addItem(spacerItem, 5, 0, 1, 1)
         self.horizontalLayout_2.addWidget(self.groupBox_13)
         self.verticalLayout_62 = QtWidgets.QVBoxLayout()
@@ -184,7 +189,12 @@ class Ui_Form(object):
         self.pushButton_item_to_sheet.setFlat(True)
         self.pushButton_item_to_sheet.setObjectName("pushButton_item_to_sheet")
         self.verticalLayout.addWidget(self.pushButton_item_to_sheet)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.verticalLayout.addItem(spacerItem1)
         self.verticalLayout_62.addWidget(self.groupBox_14)
         self.groupBox_15 = QtWidgets.QGroupBox(parent=self.tabWidget_nest_paintPage1)
@@ -220,7 +230,12 @@ class Ui_Form(object):
         self.pushButton_match_sheet_to_item_2.setFlat(True)
         self.pushButton_match_sheet_to_item_2.setObjectName("pushButton_match_sheet_to_item_2")
         self.verticalLayout_63.addWidget(self.pushButton_match_sheet_to_item_2)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.verticalLayout_63.addItem(spacerItem2)
         self.verticalLayout_62.addWidget(self.groupBox_15)
         self.horizontalLayout_2.addLayout(self.verticalLayout_62)
@@ -273,7 +288,12 @@ class Ui_Form(object):
         self.verticalLayout_9.addLayout(self.gridLayout_5)
         self.verticalLayout_10.addLayout(self.verticalLayout_9)
         self.verticalLayout_11.addLayout(self.verticalLayout_10)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.verticalLayout_11.addItem(spacerItem3)
         self.verticalLayout_6.addWidget(self.groupBox_3)
         self.groupBox_4 = QtWidgets.QGroupBox(parent=self.tabWidget_nest_paintPage2)
@@ -313,7 +333,12 @@ class Ui_Form(object):
         self.verticalLayout_8.addLayout(self.gridLayout_4)
         self.verticalLayout_12.addLayout(self.verticalLayout_8)
         self.verticalLayout_13.addLayout(self.verticalLayout_12)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.verticalLayout_13.addItem(spacerItem4)
         self.verticalLayout_6.addWidget(self.groupBox_4)
         self.horizontalLayout_5.addLayout(self.verticalLayout_6)
@@ -359,7 +384,12 @@ class Ui_Form(object):
         self.gridLayout_3.addWidget(self.label_12, 1, 0, 1, 1)
         self.verticalLayout_14.addLayout(self.gridLayout_3)
         self.verticalLayout_15.addLayout(self.verticalLayout_14)
-        spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.verticalLayout_15.addItem(spacerItem5)
         self.horizontalLayout_5.addWidget(self.groupBox)
         self.verticalLayout_2.addLayout(self.horizontalLayout_5)
@@ -378,7 +408,7 @@ class Ui_Form(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout_2.addWidget(self.label_2, 2, 0, 1, 1)
         self.label_4 = QtWidgets.QLabel(parent=self.tabWidget_nest_paintPage3)
-        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.label_4.setObjectName("label_4")
         self.gridLayout_2.addWidget(self.label_4, 4, 0, 1, 1)
         self.dateEdit_expected = QtWidgets.QDateEdit(parent=self.tabWidget_nest_paintPage3)
@@ -389,7 +419,10 @@ class Ui_Form(object):
         self.label_3.setObjectName("label_3")
         self.gridLayout_2.addWidget(self.label_3, 3, 0, 1, 1)
         self.textEdit_ship_to = QtWidgets.QTextEdit(parent=self.tabWidget_nest_paintPage3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textEdit_ship_to.sizePolicy().hasHeightForWidth())
@@ -414,7 +447,7 @@ class Ui_Form(object):
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.doubleSpinBox_order_number = QtWidgets.QDoubleSpinBox(parent=self.tabWidget_nest_paintPage3)
         self.doubleSpinBox_order_number.setDecimals(0)
-        self.doubleSpinBox_order_number.setMaximum(1e+25)
+        self.doubleSpinBox_order_number.setMaximum(1e25)
         self.doubleSpinBox_order_number.setObjectName("doubleSpinBox_order_number")
         self.horizontalLayout_6.addWidget(self.doubleSpinBox_order_number)
         self.pushButton_get_order_number = QtWidgets.QPushButton(parent=self.tabWidget_nest_paintPage3)
@@ -432,7 +465,10 @@ class Ui_Form(object):
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 9)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
         self.groupBox_16 = QtWidgets.QGroupBox(parent=self.verticalLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.groupBox_16.sizePolicy().hasHeightForWidth())
@@ -443,7 +479,7 @@ class Ui_Form(object):
         self.verticalLayout_64.setObjectName("verticalLayout_64")
         self.scrollArea_7 = QtWidgets.QScrollArea(parent=self.groupBox_16)
         self.scrollArea_7.setWidgetResizable(True)
-        self.scrollArea_7.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.scrollArea_7.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignTop)
         self.scrollArea_7.setObjectName("scrollArea_7")
         self.scrollAreaWidgetContents_6 = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_6.setGeometry(QtCore.QRect(0, 0, 469, 66))
@@ -460,7 +496,12 @@ class Ui_Form(object):
         self.gridLayout_nest_summary_2.setHorizontalSpacing(0)
         self.gridLayout_nest_summary_2.setObjectName("gridLayout_nest_summary_2")
         self.verticalLayout_65.addLayout(self.gridLayout_nest_summary_2)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem6 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.verticalLayout_65.addItem(spacerItem6)
         self.scrollArea_7.setWidget(self.scrollAreaWidgetContents_6)
         self.verticalLayout_64.addWidget(self.scrollArea_7)
@@ -521,7 +562,10 @@ class Ui_Form(object):
         self.verticalLayout_20.setContentsMargins(9, 0, 0, 9)
         self.verticalLayout_20.setObjectName("verticalLayout_20")
         self.groupBox_2 = QtWidgets.QGroupBox(parent=self.verticalLayoutWidget_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
@@ -542,7 +586,12 @@ class Ui_Form(object):
         self.pushButton_add_laser_cut_part_2.setDefault(True)
         self.pushButton_add_laser_cut_part_2.setObjectName("pushButton_add_laser_cut_part_2")
         self.horizontalLayout_4.addWidget(self.pushButton_add_laser_cut_part_2)
-        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem7 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_4.addItem(spacerItem7)
         self.verticalLayout_26.addLayout(self.horizontalLayout_4)
         self.verticalLayout_26.setStretch(0, 1)
@@ -588,7 +637,12 @@ class Ui_Form(object):
         self.pushButton_clear_all_components_2.setDefault(True)
         self.pushButton_clear_all_components_2.setObjectName("pushButton_clear_all_components_2")
         self.horizontalLayout_17.addWidget(self.pushButton_clear_all_components_2)
-        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem8 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_17.addItem(spacerItem8)
         self.verticalLayout_47.addLayout(self.horizontalLayout_17)
         self.verticalLayout_47.setStretch(0, 1)
@@ -615,19 +669,40 @@ class Ui_Form(object):
         self.tabWidget_quote_settings.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
         Form.setTabOrder(self.comboBox_laser_cutting_2, self.doubleSpinBox_cost_for_laser_2)
-        Form.setTabOrder(self.doubleSpinBox_cost_for_laser_2, self.doubleSpinBox_global_sheet_length_2)
-        Form.setTabOrder(self.doubleSpinBox_global_sheet_length_2, self.doubleSpinBox_global_sheet_width_2)
+        Form.setTabOrder(
+            self.doubleSpinBox_cost_for_laser_2,
+            self.doubleSpinBox_global_sheet_length_2,
+        )
+        Form.setTabOrder(
+            self.doubleSpinBox_global_sheet_length_2,
+            self.doubleSpinBox_global_sheet_width_2,
+        )
         Form.setTabOrder(self.doubleSpinBox_global_sheet_width_2, self.doubleSpinBox_overhead_items_2)
-        Form.setTabOrder(self.doubleSpinBox_overhead_items_2, self.doubleSpinBox_profit_margin_items_2)
+        Form.setTabOrder(
+            self.doubleSpinBox_overhead_items_2,
+            self.doubleSpinBox_profit_margin_items_2,
+        )
         Form.setTabOrder(self.doubleSpinBox_profit_margin_items_2, self.pushButton_item_to_sheet)
         Form.setTabOrder(self.pushButton_item_to_sheet, self.doubleSpinBox_overhead_sheets_2)
-        Form.setTabOrder(self.doubleSpinBox_overhead_sheets_2, self.doubleSpinBox_profit_margin_sheets_2)
-        Form.setTabOrder(self.doubleSpinBox_profit_margin_sheets_2, self.pushButton_match_sheet_to_item_2)
+        Form.setTabOrder(
+            self.doubleSpinBox_overhead_sheets_2,
+            self.doubleSpinBox_profit_margin_sheets_2,
+        )
+        Form.setTabOrder(
+            self.doubleSpinBox_profit_margin_sheets_2,
+            self.pushButton_match_sheet_to_item_2,
+        )
         Form.setTabOrder(self.pushButton_match_sheet_to_item_2, self.scrollArea_7)
         Form.setTabOrder(self.scrollArea_7, self.scrollArea_5)
         Form.setTabOrder(self.scrollArea_5, self.checkBox_components_use_overhead_2)
-        Form.setTabOrder(self.checkBox_components_use_overhead_2, self.checkBox_components_use_profit_margin_2)
-        Form.setTabOrder(self.checkBox_components_use_profit_margin_2, self.pushButton_add_component_2)
+        Form.setTabOrder(
+            self.checkBox_components_use_overhead_2,
+            self.checkBox_components_use_profit_margin_2,
+        )
+        Form.setTabOrder(
+            self.checkBox_components_use_profit_margin_2,
+            self.pushButton_add_component_2,
+        )
         Form.setTabOrder(self.pushButton_add_component_2, self.pushButton_clear_all_components_2)
 
     def retranslateUi(self, Form):
@@ -640,8 +715,18 @@ class Ui_Form(object):
         self.comboBox_laser_cutting_2.setCurrentText(_translate("Form", "CO2"))
         self.comboBox_laser_cutting_2.setItemText(0, _translate("Form", "CO2"))
         self.comboBox_laser_cutting_2.setItemText(1, _translate("Form", "Nitrogen"))
-        self.doubleSpinBox_cost_for_laser_2.setToolTip(_translate("Form", "<html><head/><body><p>Defaults:</p><p>CO2: $150 per hour</p><p>Nitrogen: $250 per hour</p></body></html>"))
-        self.doubleSpinBox_cost_for_laser_2.setStatusTip(_translate("Form", "This number will not be saved, to set a default value go into laser_quote_variables.cfg and change it manually."))
+        self.doubleSpinBox_cost_for_laser_2.setToolTip(
+            _translate(
+                "Form",
+                "<html><head/><body><p>Defaults:</p><p>CO2: $150 per hour</p><p>Nitrogen: $250 per hour</p></body></html>",
+            )
+        )
+        self.doubleSpinBox_cost_for_laser_2.setStatusTip(
+            _translate(
+                "Form",
+                "This number will not be saved, to set a default value go into laser_quote_variables.cfg and change it manually.",
+            )
+        )
         self.doubleSpinBox_cost_for_laser_2.setPrefix(_translate("Form", "$"))
         self.label_16.setText(_translate("Form", "* These will overide all nests sheet settings"))
         self.label_22.setText(_translate("Form", "Sheet dimensions (len x wid): *"))
@@ -670,7 +755,10 @@ class Ui_Form(object):
         self.doubleSpinBox_profit_margin_sheets_2.setSuffix(_translate("Form", "%"))
         self.pushButton_match_sheet_to_item_2.setStatusTip(_translate("Form", "Match sheet cost to item cost"))
         self.pushButton_match_sheet_to_item_2.setText(_translate("Form", "Match Sheet Cost to Item Cost"))
-        self.tabWidget_quote_settings.setTabText(self.tabWidget_quote_settings.indexOf(self.tabWidget_nest_paintPage1), _translate("Form", "Item, Sheet and Quoting Settings"))
+        self.tabWidget_quote_settings.setTabText(
+            self.tabWidget_quote_settings.indexOf(self.tabWidget_nest_paintPage1),
+            _translate("Form", "Item, Sheet and Quoting Settings"),
+        )
         self.label_19.setText(_translate("Form", "* These will overide all parts paint settings"))
         self.groupBox_3.setTitle(_translate("Form", "Primer Settings"))
         self.label_18.setText(_translate("Form", "Overspray: *"))
@@ -688,13 +776,26 @@ class Ui_Form(object):
         self.label_6.setText(_translate("Form", "Transfer efficiency: *"))
         self.label_14.setText(_translate("Form", "Use powder coating: *"))
         self.pushButton_toggle_powder_coating.setText(_translate("Form", "Toggle all parts"))
-        self.doubleSpinBox_mil_thickness.setToolTip(_translate("Form", "<html><head/><body><p>Default: 2.00 mils</p><p>Mil Thickness: number used to determine how many &quot;mils&quot; or how thick your coating will be.</p><p>About &quot;Mil Thickness&quot;</p><p>Mil thickness is the coating thickness measured in &quot;mils&quot; (.001 of an inch, not millimeters). Your desired mil thickness will come down to user preference and the job requirements. We highly recommend using a digital mil thickness gauge as this is the most effective and accurate way to measure mil thickness.</p><p>https://www.prismaticpowders.com/coverage-calculator</p></body></html>"))
+        self.doubleSpinBox_mil_thickness.setToolTip(
+            _translate(
+                "Form",
+                "<html><head/><body><p>Default: 2.00 mils</p><p>Mil Thickness: number used to determine how many &quot;mils&quot; or how thick your coating will be.</p><p>About &quot;Mil Thickness&quot;</p><p>Mil thickness is the coating thickness measured in &quot;mils&quot; (.001 of an inch, not millimeters). Your desired mil thickness will come down to user preference and the job requirements. We highly recommend using a digital mil thickness gauge as this is the most effective and accurate way to measure mil thickness.</p><p>https://www.prismaticpowders.com/coverage-calculator</p></body></html>",
+            )
+        )
         self.doubleSpinBox_mil_thickness.setSuffix(_translate("Form", " mils"))
         self.label_7.setText(_translate("Form", "Mil thickness:"))
-        self.doubleSpinBox_transfer_efficiency.setToolTip(_translate("Form", "<html><head/><body><p>percentage (1-100%) that your powder will adhere to your part.</p><p>About &quot;Transfer Efficiency&quot; </p><p>Transfer efficiency is the percentage of powder that adheres to your part. This number is completely subjective, but keep in mind that at 100% you\'d have zero waste and zero overspray in your application. Everything from equipment to experience to setup can be determining factors for this value. </p><p>Transfer efficiency is affected first and foremost by the setup of the spray gun as well as proper grounding. Kilovolt and microamp adjustments (if you gun has them) provided by spray gun manufacturers, are there to assist in adjusting transfer efficiency. Typically, the KV number (0-100) represents the voltage potential (percentage) available. Microamps manage the delivery of the voltage (KV) potential. The two settings work in conjunction to enable the applicator to find the best setting for maximum transfer efficiency for the given project/conditions. These settings will change due to variable factors and conditions including: part substrate, powder used, part shape, climate, humidity, etc. There is a misconception that a setting value of 100 will achieve the best results. This is not always true due to the above mentioned factors.<br/></p><p>https://www.prismaticpowders.com/coverage-calculator</p></body></html>"))
+        self.doubleSpinBox_transfer_efficiency.setToolTip(
+            _translate(
+                "Form",
+                "<html><head/><body><p>percentage (1-100%) that your powder will adhere to your part.</p><p>About &quot;Transfer Efficiency&quot; </p><p>Transfer efficiency is the percentage of powder that adheres to your part. This number is completely subjective, but keep in mind that at 100% you'd have zero waste and zero overspray in your application. Everything from equipment to experience to setup can be determining factors for this value. </p><p>Transfer efficiency is affected first and foremost by the setup of the spray gun as well as proper grounding. Kilovolt and microamp adjustments (if you gun has them) provided by spray gun manufacturers, are there to assist in adjusting transfer efficiency. Typically, the KV number (0-100) represents the voltage potential (percentage) available. Microamps manage the delivery of the voltage (KV) potential. The two settings work in conjunction to enable the applicator to find the best setting for maximum transfer efficiency for the given project/conditions. These settings will change due to variable factors and conditions including: part substrate, powder used, part shape, climate, humidity, etc. There is a misconception that a setting value of 100 will achieve the best results. This is not always true due to the above mentioned factors.<br/></p><p>https://www.prismaticpowders.com/coverage-calculator</p></body></html>",
+            )
+        )
         self.doubleSpinBox_transfer_efficiency.setSuffix(_translate("Form", "%"))
         self.label_12.setText(_translate("Form", "Color: *"))
-        self.tabWidget_quote_settings.setTabText(self.tabWidget_quote_settings.indexOf(self.tabWidget_nest_paintPage2), _translate("Form", "Paint Settings"))
+        self.tabWidget_quote_settings.setTabText(
+            self.tabWidget_quote_settings.indexOf(self.tabWidget_nest_paintPage2),
+            _translate("Form", "Paint Settings"),
+        )
         self.label.setText(_translate("Form", "Order number:"))
         self.label_2.setText(_translate("Form", "Date shipped:"))
         self.label_4.setText(_translate("Form", "Ship to:"))
@@ -705,7 +806,10 @@ class Ui_Form(object):
         self.comboBox_quote_status.setItemText(3, _translate("Form", "Confirmed"))
         self.label_30.setText(_translate("Form", "Status:"))
         self.pushButton_get_order_number.setText(_translate("Form", "Get latest order number"))
-        self.tabWidget_quote_settings.setTabText(self.tabWidget_quote_settings.indexOf(self.tabWidget_nest_paintPage3), _translate("Form", "Quote Settings"))
+        self.tabWidget_quote_settings.setTabText(
+            self.tabWidget_quote_settings.indexOf(self.tabWidget_nest_paintPage3),
+            _translate("Form", "Quote Settings"),
+        )
         self.groupBox_16.setTitle(_translate("Form", "Nest Summary"))
         self.groupBox_17.setTitle(_translate("Form", "Nest Settings"))
         self.pushButton_clear_all_nests.setText(_translate("Form", "Clear All Nests"))

@@ -43,9 +43,7 @@ class LoadJobFromWorkspaceWorker(BaseWorker):
                     assembly = Assembly({"assembly_data": child["data"]}, self.job)
                     assembly.id = child["id"]
                     self.job.add_assembly(assembly)
-                    self._process_children(
-                        self.job, assembly, child.get("children", [])
-                    )
+                    self._process_children(self.job, assembly, child.get("children", []))
 
             return (self.job, self.item, job_data, 200)
 

@@ -36,7 +36,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.horizontalLayout_4.addWidget(self.lblMessage)
@@ -96,7 +96,12 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_3.addItem(spacerItem)
         self.checkBox_update_components = QtWidgets.QCheckBox(parent=self.widget)
         self.checkBox_update_components.setCheckable(True)
@@ -106,7 +111,12 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem1)
         self.pushButton_add = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_add.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -127,13 +137,21 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lblMessage.setText(_translate("Form", "Select jobs and set quantity for selected jobs.\n"
-"\n"
-"Press \'Add\' when finished."))
+        self.lblMessage.setText(
+            _translate(
+                "Form",
+                "Select jobs and set quantity for selected jobs.\n\nPress 'Add' when finished.",
+            )
+        )
         self.groupBox.setTitle(_translate("Form", "Select Jobs"))
         self.groupBox_2.setTitle(_translate("Form", "Quantities"))
         self.label.setText(_translate("Form", "* Will add the job 𝓍 amount of times to workspace."))
-        self.checkBox_update_components.setToolTip(_translate("Form", "Will remove components and update components inventory accordingly to what is in the jobs."))
+        self.checkBox_update_components.setToolTip(
+            _translate(
+                "Form",
+                "Will remove components and update components inventory accordingly to what is in the jobs.",
+            )
+        )
         self.checkBox_update_components.setText(_translate("Form", "Update Components Quantity"))
         self.pushButton_add.setText(_translate("Form", "Send to Production Planner"))
         self.pushButton_cancel.setText(_translate("Form", "Cancel"))

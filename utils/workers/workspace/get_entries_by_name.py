@@ -12,14 +12,10 @@ class GetWorkspaceEntriesByNameWorker(BaseWorker):
         self.job_id = job_id
         self.entry_name = entry_name
         encoded_name = quote(entry_name, safe="")
-        self.url = (
-            f"{self.DOMAIN}/workspace/get_entries_by_name/{job_id}/{encoded_name}"
-        )
+        self.url = f"{self.DOMAIN}/workspace/get_entries_by_name/{job_id}/{encoded_name}"
 
     def do_work(self):
-        self.logger.info(
-            f"Requesting entries for job {self.job_id} with name '{self.entry_name}' from {self.url}"
-        )
+        self.logger.info(f"Requesting entries for job {self.job_id} with name '{self.entry_name}' from {self.url}")
         with requests.Session() as session:
             response = session.get(self.url, headers=self.headers, timeout=10)
             response.raise_for_status()
@@ -38,13 +34,9 @@ class GetWorkspaceEntriesByNameWorker(BaseWorker):
         if isinstance(e, requests.exceptions.Timeout):
             self.signals.error.emit({"error": f"Request timed out: {str(e)}"}, 408)
         elif isinstance(e, requests.exceptions.ConnectionError):
-            self.signals.error.emit(
-                {"error": f"Could not connect to the server: {str(e)}"}, 503
-            )
+            self.signals.error.emit({"error": f"Could not connect to the server: {str(e)}"}, 503)
         elif isinstance(e, requests.exceptions.HTTPError):
-            self.signals.error.emit(
-                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
-            )
+            self.signals.error.emit({"error": f"HTTP Error: {str(e)}"}, e.response.status_code)
         elif isinstance(e, requests.exceptions.RequestException):
             self.signals.error.emit({"error": f"Request failed: {str(e)}"}, 500)
         elif isinstance(e, ValueError):

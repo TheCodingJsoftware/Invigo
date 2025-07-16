@@ -69,9 +69,7 @@ class JobLoaderController(QObject):
     def download_files(self, files: list[str]):
         self.logger.info(f"Starting file download: {files}")
         worker = WorkspaceDownloadWorker(files, open_when_done=False)
-        worker.signals.success.connect(
-            lambda *_: self.logger.info("Files downloaded successfully")
-        )
+        worker.signals.success.connect(lambda *_: self.logger.info("Files downloaded successfully"))
         worker.signals.error.connect(lambda *args: self.task_finished("files"))
         worker.signals.finished.connect(lambda: self.task_finished("files"))
         self.thread_pool.start(worker)
@@ -108,9 +106,7 @@ class JobLoaderController(QObject):
             return
         self.completed_tasks.add(task_name)
         remaining = self.expected_tasks - self.completed_tasks
-        self.logger.debug(
-            f"Marked task '{task_name}' as finished. Remaining: {remaining}"
-        )
+        self.logger.debug(f"Marked task '{task_name}' as finished. Remaining: {remaining}")
 
         if self.completed_tasks == self.expected_tasks:
             self.logger.info("All expected tasks complete. Emitting final signal.")

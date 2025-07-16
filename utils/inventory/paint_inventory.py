@@ -44,10 +44,7 @@ class PaintInventory(Inventory):
                 if primer := self.get_primer(laser_cut_part.primer_name):
                     if primer.component:
                         primer_cost_per_gallon = primer.component.price
-                        gallons_used = (
-                            ((laser_cut_part.surface_area * 2) / 144)
-                            / primer.average_coverage
-                        ) * ((laser_cut_part.primer_overspray / 100) + 1)
+                        gallons_used = (((laser_cut_part.surface_area * 2) / 144) / primer.average_coverage) * ((laser_cut_part.primer_overspray / 100) + 1)
                         return primer_cost_per_gallon * gallons_used
         return 0.0
 
@@ -73,10 +70,7 @@ class PaintInventory(Inventory):
                 if paint := self.get_paint(laser_cut_part.paint_name):
                     if paint.component:
                         paint_cost_per_gallon = paint.component.price
-                        gallons_used = (
-                            ((laser_cut_part.surface_area * 2) / 144)
-                            / paint.average_coverage
-                        ) * ((laser_cut_part.paint_overspray / 100) + 1)
+                        gallons_used = (((laser_cut_part.surface_area * 2) / 144) / paint.average_coverage) * ((laser_cut_part.paint_overspray / 100) + 1)
                         return paint_cost_per_gallon * gallons_used
         return 0.0
 
@@ -96,19 +90,13 @@ class PaintInventory(Inventory):
     def get_all_powders(self) -> list[str]:
         return [powder.part_name for powder in self.powders]
 
-    def get_powder_cost(
-        self, laser_cut_part: LaserCutPart, mil_thickness: float
-    ) -> float:
+    def get_powder_cost(self, laser_cut_part: LaserCutPart, mil_thickness: float) -> float:
         with contextlib.suppress(ZeroDivisionError, AttributeError):
             if laser_cut_part.uses_powder:
                 if powder := self.get_powder(laser_cut_part.powder_name):
                     if powder.component:
-                        estimated_sq_ft_coverage = (
-                            192.3 / (powder.gravity * mil_thickness)
-                        ) * (laser_cut_part.powder_transfer_efficiency / 100)
-                        estimated_lbs_needed = (
-                            (laser_cut_part.surface_area * 2) / 144
-                        ) / estimated_sq_ft_coverage
+                        estimated_sq_ft_coverage = (192.3 / (powder.gravity * mil_thickness)) * (laser_cut_part.powder_transfer_efficiency / 100)
+                        estimated_lbs_needed = ((laser_cut_part.surface_area * 2) / 144) / estimated_sq_ft_coverage
                         return estimated_lbs_needed * powder.component.price
         return 0.0
 
@@ -150,9 +138,7 @@ class PaintInventory(Inventory):
             self._reset_file()
             self.load_data()
 
-    def load_data_response(
-        self, response: dict[str, list[dict[str, object]]], next_step: Callable
-    ):
+    def load_data_response(self, response: dict[str, list[dict[str, object]]], next_step: Callable):
         self.primers.clear()
         self.paints.clear()
         self.powders.clear()
@@ -169,8 +155,5 @@ class PaintInventory(Inventory):
     def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:
         return {
             "categories": self.categories.to_dict(),
-            "coatings": [
-                coating.to_dict()
-                for coating in self.primers + self.paints + self.powders
-            ],
+            "coatings": [coating.to_dict() for coating in self.primers + self.paints + self.powders],
         }

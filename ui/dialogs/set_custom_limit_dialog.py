@@ -35,9 +35,7 @@ class SetCustomLimitDialog(QDialog, Ui_Form):
 
     def check_quantity_values(self):
         if self.get_red_limit() > self.get_yellow_limit():
-            self.doubleSpinBox_red_limit.setValue(
-                self.doubleSpinBox_yellow_limit.value()
-            )
+            self.doubleSpinBox_red_limit.setValue(self.doubleSpinBox_yellow_limit.value())
 
     def get_red_limit(self) -> float:
         return self.doubleSpinBox_red_limit.value()

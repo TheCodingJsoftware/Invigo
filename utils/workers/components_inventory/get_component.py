@@ -8,9 +8,7 @@ class GetComponentWorker(BaseWorker):
     def __init__(self, component_id: int | str):
         super().__init__(name="GetComponentWorker")
         self.component_id = component_id
-        self.url = (
-            f"{self.DOMAIN}/components_inventory/get_component/{self.component_id}"
-        )
+        self.url = f"{self.DOMAIN}/components_inventory/get_component/{self.component_id}"
 
     def do_work(self):
         self.logger.info(f"Fetching component ID {self.component_id} from {self.url}")
@@ -34,9 +32,7 @@ class GetComponentWorker(BaseWorker):
         elif isinstance(e, requests.exceptions.ConnectionError):
             self.signals.error.emit({"error": "Could not connect to the server"}, 503)
         elif isinstance(e, requests.exceptions.HTTPError):
-            self.signals.error.emit(
-                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
-            )
+            self.signals.error.emit({"error": f"HTTP Error: {str(e)}"}, e.response.status_code)
         elif isinstance(e, requests.exceptions.RequestException):
             self.signals.error.emit({"error": f"Request failed: {str(e)}"}, 500)
         elif isinstance(e, ValueError):

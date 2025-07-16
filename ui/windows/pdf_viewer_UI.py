@@ -49,7 +49,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(0, 1)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.scrollArea = QtWidgets.QScrollArea(parent=self.verticalLayoutWidget_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())

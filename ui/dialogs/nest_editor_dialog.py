@@ -8,6 +8,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
+    QHBoxLayout,
     QMessageBox,
     QTreeWidgetItem,
     QVBoxLayout,
@@ -44,61 +45,32 @@ class NestEditorDialog(QDialog, Ui_Form):
     def load_ui(self):
         self.setWindowTitle(f"Nest Editor ({len(self.nests)})")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
-        self.setWindowFlags(
-            Qt.WindowType.WindowMinimizeButtonHint
-            | Qt.WindowType.WindowMaximizeButtonHint
-            | Qt.WindowType.WindowCloseButtonHint
-            | Qt.WindowType.Dialog
-        )
+        self.setWindowFlags(Qt.WindowType.WindowMinimizeButtonHint | Qt.WindowType.WindowMaximizeButtonHint | Qt.WindowType.WindowCloseButtonHint | Qt.WindowType.Dialog)
         self.resize(1600, 1000)
 
         self.showMaximized()
 
-        self.buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(
-            self.accept
-        )
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
-        self.buttonBox.button(QDialogButtonBox.StandardButton.Reset).clicked.connect(
-            self.reset
-        )
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Reset).clicked.connect(self.reset)
 
         self.comboBox_nests_sheet_material.addItems(self.sheet_settings.get_materials())
-        self.comboBox_nests_sheet_thickness.addItems(
-            self.sheet_settings.get_thicknesses()
-        )
+        self.comboBox_nests_sheet_thickness.addItems(self.sheet_settings.get_thicknesses())
 
-        self.comboBox_cutting_method.currentTextChanged.connect(
-            self.on_cutting_method_changed
-        )
+        self.comboBox_cutting_method.currentTextChanged.connect(self.on_cutting_method_changed)
         self.comboBox_cutting_method.wheelEvent = lambda event: self.wheelEvent(event)
 
-        self.comboBox_nests_sheet_material.currentTextChanged.connect(
-            self.on_nest_sheet_material_changed
-        )
-        self.comboBox_nests_sheet_material.wheelEvent = lambda event: self.wheelEvent(
-            event
-        )
+        self.comboBox_nests_sheet_material.currentTextChanged.connect(self.on_nest_sheet_material_changed)
+        self.comboBox_nests_sheet_material.wheelEvent = lambda event: self.wheelEvent(event)
 
-        self.comboBox_nests_sheet_thickness.currentTextChanged.connect(
-            self.on_nest_sheet_thickness_changed
-        )
-        self.comboBox_nests_sheet_thickness.wheelEvent = lambda event: self.wheelEvent(
-            event
-        )
+        self.comboBox_nests_sheet_thickness.currentTextChanged.connect(self.on_nest_sheet_thickness_changed)
+        self.comboBox_nests_sheet_thickness.wheelEvent = lambda event: self.wheelEvent(event)
 
-        self.doubleSpinBox_nests_sheet_length.valueChanged.connect(
-            self.on_nest_sheet_length_changed
-        )
-        self.doubleSpinBox_nests_sheet_length.wheelEvent = (
-            lambda event: self.wheelEvent(event)
-        )
+        self.doubleSpinBox_nests_sheet_length.valueChanged.connect(self.on_nest_sheet_length_changed)
+        self.doubleSpinBox_nests_sheet_length.wheelEvent = lambda event: self.wheelEvent(event)
 
-        self.doubleSpinBox_nests_sheet_width.valueChanged.connect(
-            self.on_nest_sheet_width_changed
-        )
-        self.doubleSpinBox_nests_sheet_width.wheelEvent = lambda event: self.wheelEvent(
-            event
-        )
+        self.doubleSpinBox_nests_sheet_width.valueChanged.connect(self.on_nest_sheet_width_changed)
+        self.doubleSpinBox_nests_sheet_width.wheelEvent = lambda event: self.wheelEvent(event)
 
         self.verticalLayout_nests.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -125,9 +97,7 @@ class NestEditorDialog(QDialog, Ui_Form):
             QMessageBox.Icon.Question,
             "Reset Nests",
             "Are you sure you want to reset the nests?",
-            QMessageBox.StandardButton.Yes
-            | QMessageBox.StandardButton.No
-            | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
             self,
         )
         if msg.exec() == QMessageBox.StandardButton.Yes:
@@ -141,9 +111,7 @@ class NestEditorDialog(QDialog, Ui_Form):
         for nest in self.nests:
             nest_widget = NestEditorWidget(nest, self)
             nest_widget.sheetSettingsChanged.connect(self.on_sheet_settings_changed)
-            nest_widget.pushButton_delete.clicked.connect(
-                partial(self.delete_nest, nest)
-            )
+            nest_widget.pushButton_delete.clicked.connect(partial(self.delete_nest, nest))
             self.verticalLayout_nests.addWidget(nest_widget)
             self.nest_widgets[nest] = nest_widget
         self.update_nest_summary()
@@ -153,9 +121,7 @@ class NestEditorDialog(QDialog, Ui_Form):
         self.nests.append(new_nest)
         nest_widget = NestEditorWidget(new_nest, self)
         nest_widget.sheetSettingsChanged.connect(self.on_sheet_settings_changed)
-        nest_widget.pushButton_delete.clicked.connect(
-            partial(self.delete_nest, new_nest)
-        )
+        nest_widget.pushButton_delete.clicked.connect(partial(self.delete_nest, new_nest))
         self.verticalLayout_nests.addWidget(nest_widget)
         self.nest_widgets[new_nest] = nest_widget
         self.update_nest_summary()
@@ -163,9 +129,7 @@ class NestEditorDialog(QDialog, Ui_Form):
     def on_cutting_method_changed(self, new_cutting_method: str):
         for nest in self.nests:
             self.nest_widgets[nest].comboBox_cutting_method.blockSignals(True)
-            self.nest_widgets[nest].comboBox_cutting_method.setCurrentText(
-                new_cutting_method
-            )
+            self.nest_widgets[nest].comboBox_cutting_method.setCurrentText(new_cutting_method)
             self.nest_widgets[nest].comboBox_cutting_method.blockSignals(False)
             self.nest_widgets[nest].cutting_method_changed(new_cutting_method)
         self.update_nest_summary()
@@ -181,9 +145,7 @@ class NestEditorDialog(QDialog, Ui_Form):
     def on_nest_sheet_thickness_changed(self, new_thickness: str):
         for nest in self.nests:
             self.nest_widgets[nest].comboBox_sheet_thickness.blockSignals(True)
-            self.nest_widgets[nest].comboBox_sheet_thickness.setCurrentText(
-                new_thickness
-            )
+            self.nest_widgets[nest].comboBox_sheet_thickness.setCurrentText(new_thickness)
             self.nest_widgets[nest].comboBox_sheet_thickness.blockSignals(False)
             self.nest_widgets[nest].sheet_thickness_changed(new_thickness)
         self.update_nest_summary()
@@ -212,29 +174,15 @@ class NestEditorDialog(QDialog, Ui_Form):
         for nest in self.nests:
             if not nest.laser_cut_parts:
                 continue
-            summary_data["sheets"].setdefault(
-                nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0}
-            )
-            summary_data["material_total"].setdefault(
-                nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0}
-            )
-            summary_data["sheets"][nest.sheet.get_name()]["total_sheet_count"] += (
-                nest.sheet_count
-            )
-            summary_data["sheets"][nest.sheet.get_name()]["total_seconds"] += (
-                nest.sheet_cut_time * nest.sheet_count
-            )
-            summary_data["material_total"][nest.sheet.material]["total_seconds"] += (
-                nest.sheet_cut_time * nest.sheet_count
-            )
-            summary_data["material_total"][nest.sheet.material][
-                "total_sheet_count"
-            ] += nest.sheet_count
+            summary_data["sheets"].setdefault(nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0})
+            summary_data["material_total"].setdefault(nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0})
+            summary_data["sheets"][nest.sheet.get_name()]["total_sheet_count"] += nest.sheet_count
+            summary_data["sheets"][nest.sheet.get_name()]["total_seconds"] += nest.sheet_cut_time * nest.sheet_count
+            summary_data["material_total"][nest.sheet.material]["total_seconds"] += nest.sheet_cut_time * nest.sheet_count
+            summary_data["material_total"][nest.sheet.material]["total_sheet_count"] += nest.sheet_count
 
             self.treeWidget_nest_summary.clear()
-            self.treeWidget_nest_summary.setHeaderLabels(
-                ["Name", "Quantity", "Cut time"]
-            )
+            self.treeWidget_nest_summary.setHeaderLabels(["Name", "Quantity", "Cut time"])
 
             sorted_summary_keys = natsorted(summary_data.keys())
             sorted_summary = {key: summary_data[key] for key in sorted_summary_keys}
@@ -244,23 +192,17 @@ class NestEditorDialog(QDialog, Ui_Form):
                 minutes = int((data["total_seconds"] % 3600) // 60)
                 seconds = int(data["total_seconds"] % 60)
                 total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-                item = QTreeWidgetItem(
-                    [sheet, str(data["total_sheet_count"]), total_seconds_string]
-                )
+                item = QTreeWidgetItem([sheet, str(data["total_sheet_count"]), total_seconds_string])
                 self.treeWidget_nest_summary.addTopLevelItem(item)
 
-            materials_item = QTreeWidgetItem(
-                self.treeWidget_nest_summary, ["Materials Total"]
-            )
+            materials_item = QTreeWidgetItem(self.treeWidget_nest_summary, ["Materials Total"])
             materials_item.setFirstColumnSpanned(True)
             for material, data in sorted_summary.get("material_total", {}).items():
                 hours = int(data["total_seconds"] // 3600)
                 minutes = int((data["total_seconds"] % 3600) // 60)
                 seconds = int(data["total_seconds"] % 60)
                 total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-                item = QTreeWidgetItem(
-                    [material, str(data["total_sheet_count"]), total_seconds_string]
-                )
+                item = QTreeWidgetItem([material, str(data["total_sheet_count"]), total_seconds_string])
                 materials_item.addChild(item)
 
             self.treeWidget_nest_summary.expandAll()
@@ -276,7 +218,7 @@ class NestEditorDialog(QDialog, Ui_Form):
         self.nests.remove(nest)
         self.update_nest_summary()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget):
+    def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

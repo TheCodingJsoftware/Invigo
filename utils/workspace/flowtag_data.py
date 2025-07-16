@@ -16,11 +16,7 @@ class FlowtagData:
         for tag in self.flowtag.tags:
             tag_data = data.get(
                 tag.name,
-                {
-                    "expected_time_to_complete": self.workspace_settings.get_tag(
-                        tag.name
-                    ).attributes.expected_time_to_complete
-                },
+                {"expected_time_to_complete": self.workspace_settings.get_tag(tag.name).attributes.expected_time_to_complete},
             )
             self.tags_data.update({tag: tag_data})
 

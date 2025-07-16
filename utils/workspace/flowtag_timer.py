@@ -11,9 +11,7 @@ class TagTimer:
         self.load_data(data)
 
     def start(self):
-        self.timer_data.append(
-            {"started": datetime.now().isoformat(), "finished": None}
-        )
+        self.timer_data.append({"started": datetime.now().isoformat(), "finished": None})
 
     def stop(self):
         try:

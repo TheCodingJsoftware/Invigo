@@ -34,9 +34,7 @@ class UploadThread(QThread):
                     file = None
                     if file_to_upload.endswith(".json"):
                         with open(f"data/{file_to_upload}", "rb") as f:
-                            file = {
-                                "file": (file_to_upload, f.read(), "application/json")
-                            }
+                            file = {"file": (file_to_upload, f.read(), "application/json")}
                     elif file_to_upload.endswith((".jpeg", ".png", ".jpg")):
                         with open(file_to_upload, "rb") as f:
                             file = {"file": (file_to_upload, f.read(), "image/jpeg")}

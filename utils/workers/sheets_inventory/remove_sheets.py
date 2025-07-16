@@ -28,16 +28,10 @@ class RemoveSheetsWorker(BaseWorker):
                         if isinstance(result, bool):
                             results.append({"deleted": result, "id": sheet_id})
                         else:
-                            self.logger.warning(
-                                f"Invalid format deleting sheet {sheet_id}"
-                            )
-                            results.append(
-                                {"error": "Invalid data format", "id": sheet_id}
-                            )
+                            self.logger.warning(f"Invalid format deleting sheet {sheet_id}")
+                            results.append({"error": "Invalid data format", "id": sheet_id})
                     except msgspec.DecodeError:
-                        results.append(
-                            {"error": "Failed to decode response", "id": sheet_id}
-                        )
+                        results.append({"error": "Failed to decode response", "id": sheet_id})
                 except requests.exceptions.Timeout:
                     results.append({"error": "Request timed out", "id": sheet_id})
                 except requests.exceptions.ConnectionError:
@@ -45,8 +39,6 @@ class RemoveSheetsWorker(BaseWorker):
                 except requests.exceptions.HTTPError as e:
                     results.append({"error": f"HTTP Error: {str(e)}", "id": sheet_id})
                 except requests.exceptions.RequestException as e:
-                    results.append(
-                        {"error": f"Request failed: {str(e)}", "id": sheet_id}
-                    )
+                    results.append({"error": f"Request failed: {str(e)}", "id": sheet_id})
 
         return (results, self.sheets)

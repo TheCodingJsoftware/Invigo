@@ -44,7 +44,12 @@ class Ui_Form(object):
         self.verticalLayout_36.setObjectName("verticalLayout_36")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_3.addItem(spacerItem)
         self.pushButton_popout = QtWidgets.QPushButton(parent=self.verticalWidget_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -57,7 +62,11 @@ class Ui_Form(object):
         self.pushButton_popout.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_popout.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(
+            QtGui.QPixmap("/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"),
+            QtGui.QIcon.Mode.Normal,
+            QtGui.QIcon.State.Off,
+        )
         self.pushButton_popout.setIcon(icon)
         self.pushButton_popout.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_popout.setFlat(True)
@@ -77,7 +86,7 @@ class Ui_Form(object):
         self.label_exchange_price.setObjectName("label_exchange_price")
         self.verticalLayout_42.addWidget(self.label_exchange_price)
         self.label_total_unit_cost = QtWidgets.QLabel(parent=self.layoutWidget_2)
-        self.label_total_unit_cost.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.label_total_unit_cost.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.label_total_unit_cost.setObjectName("label_total_unit_cost")
         self.verticalLayout_42.addWidget(self.label_total_unit_cost)
         self.scrollArea = QtWidgets.QScrollArea(parent=self.layoutWidget_2)

@@ -46,7 +46,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
@@ -57,7 +57,7 @@ class Ui_Form(object):
         self.gridLayout.setObjectName("gridLayout")
         self.doubleSpinBox_order_number = QtWidgets.QDoubleSpinBox(parent=self.widget)
         self.doubleSpinBox_order_number.setDecimals(0)
-        self.doubleSpinBox_order_number.setMaximum(1e+17)
+        self.doubleSpinBox_order_number.setMaximum(1e17)
         self.doubleSpinBox_order_number.setProperty("value", 0.0)
         self.doubleSpinBox_order_number.setObjectName("doubleSpinBox_order_number")
         self.gridLayout.addWidget(self.doubleSpinBox_order_number, 2, 1, 1, 1)
@@ -71,7 +71,7 @@ class Ui_Form(object):
         self.label_10.setObjectName("label_10")
         self.gridLayout.addWidget(self.label_10, 4, 0, 1, 1)
         self.label = QtWidgets.QLabel(parent=self.widget)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 2, 0, 1, 1)
         self.comboBox_status = QtWidgets.QComboBox(parent=self.widget)
@@ -83,7 +83,7 @@ class Ui_Form(object):
         self.comboBox_status.addItem("")
         self.gridLayout.addWidget(self.comboBox_status, 3, 1, 1, 1)
         self.label_2 = QtWidgets.QLabel(parent=self.widget)
-        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 6, 0, 1, 1)
         self.label_3 = QtWidgets.QLabel(parent=self.widget)
@@ -116,7 +116,12 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem)
         self.pushButton_save = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_save.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -152,7 +157,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lblMessage.setText(_translate("Form", "Press \'Save\' when finished."))
+        self.lblMessage.setText(_translate("Form", "Press 'Save' when finished."))
         self.label_7.setText(_translate("Form", "Date expected:"))
         self.label_6.setText(_translate("Form", "Status:"))
         self.label_10.setText(_translate("Form", "Date shipped:"))

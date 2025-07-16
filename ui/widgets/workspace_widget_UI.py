@@ -125,9 +125,9 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.verticalLayout_7)
 
         self.retranslateUi(Form)
-        self.pushButton_recut.clicked['bool'].connect(self.widget.setVisible) # type: ignore
-        self.pushButton_recoat.clicked['bool'].connect(self.widget_2.setVisible) # type: ignore
-        self.pushButton_jobs.clicked['bool'].connect(self.widget_3.setVisible) # type: ignore
+        self.pushButton_recut.clicked["bool"].connect(self.widget.setVisible)  # type: ignore
+        self.pushButton_recoat.clicked["bool"].connect(self.widget_2.setVisible)  # type: ignore
+        self.pushButton_jobs.clicked["bool"].connect(self.widget_3.setVisible)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

@@ -1,5 +1,4 @@
 import contextlib
-from copy import deepcopy
 from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Optional, Union
@@ -8,6 +7,7 @@ from natsort import natsorted
 from PyQt6.QtCore import QDateTime, Qt, pyqtSignal
 from PyQt6.QtWidgets import (
     QComboBox,
+    QHBoxLayout,
     QPushButton,
     QTreeWidgetItem,
     QVBoxLayout,
@@ -28,7 +28,7 @@ from ui.theme import theme_var
 from ui.widgets.job_widget_UI import Ui_Form
 from ui.widgets.nest_widget import NestWidget
 from utils import colors
-from utils.colors import get_contrast_text_color, lighten_color
+from utils.colors import get_on_color_from_primary, lighten_color
 from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job, JobColor, JobStatus
@@ -53,9 +53,7 @@ class JobWidget(QWidget, Ui_Form):
         self.paint_inventory = self.main_window.paint_inventory
         self.main_window_tab_widget = self.main_window.stackedWidget
 
-        self.assembly_widgets: list[
-            Union[AssemblyPlanningWidget, AssemblyQuotingWidget]
-        ] = []
+        self.assembly_widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
 
         self.nest_widgets: list[NestWidget] = []
         self.nest_laser_cut_parts_assembly_comboboxes: list[QComboBox] = []
@@ -71,21 +69,11 @@ class JobWidget(QWidget, Ui_Form):
         self.nest_summary_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.nests_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_global_sheet_settings, self.global_sheet_settings_widget
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_item_quoting_options, self.item_quoting_options_widget
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_nest_summary, self.nest_summary_widget
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_nests, self.nests_widget
-        )
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_global_sheet_settings, self.global_sheet_settings_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_item_quoting_options, self.item_quoting_options_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nest_summary, self.nest_summary_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nests, self.nests_widget)
 
         self.pushButton_global_sheet_settings.clicked.connect(
             partial(
@@ -143,274 +131,146 @@ class JobWidget(QWidget, Ui_Form):
             )
         )
 
-        self.pushButton_global_sheet_settings.setChecked(
-            self.job_preferences.is_global_sheet_settings_closed(self.job.name)
-        )
-        self.global_sheet_settings_widget.setHidden(
-            not self.job_preferences.is_global_sheet_settings_closed(self.job.name)
-        )
-        self.pushButton_item_quoting_options.setChecked(
-            self.job_preferences.is_item_quoting_options_closed(self.job.name)
-        )
-        self.item_quoting_options_widget.setHidden(
-            not self.job_preferences.is_item_quoting_options_closed(self.job.name)
-        )
-        self.pushButton_sheet_quoting_options.setChecked(
-            self.job_preferences.is_sheet_quoting_options_closed(self.job.name)
-        )
-        self.sheet_quoting_options_widget.setHidden(
-            not self.job_preferences.is_sheet_quoting_options_closed(self.job.name)
-        )
-        self.pushButton_nest_summary.setChecked(
-            self.job_preferences.is_nest_summary_closed(self.job.name)
-        )
-        self.nest_summary_widget.setHidden(
-            not self.job_preferences.is_nest_summary_closed(self.job.name)
-        )
-        self.pushButton_nests.setChecked(
-            self.job_preferences.is_nests_closed(self.job.name)
-        )
-        self.nests_widget.setHidden(
-            not self.job_preferences.is_nests_closed(self.job.name)
-        )
+        self.pushButton_global_sheet_settings.setChecked(self.job_preferences.is_global_sheet_settings_closed(self.job.name))
+        self.global_sheet_settings_widget.setHidden(not self.job_preferences.is_global_sheet_settings_closed(self.job.name))
+        self.pushButton_item_quoting_options.setChecked(self.job_preferences.is_item_quoting_options_closed(self.job.name))
+        self.item_quoting_options_widget.setHidden(not self.job_preferences.is_item_quoting_options_closed(self.job.name))
+        self.pushButton_sheet_quoting_options.setChecked(self.job_preferences.is_sheet_quoting_options_closed(self.job.name))
+        self.sheet_quoting_options_widget.setHidden(not self.job_preferences.is_sheet_quoting_options_closed(self.job.name))
+        self.pushButton_nest_summary.setChecked(self.job_preferences.is_nest_summary_closed(self.job.name))
+        self.nest_summary_widget.setHidden(not self.job_preferences.is_nest_summary_closed(self.job.name))
+        self.pushButton_nests.setChecked(self.job_preferences.is_nests_closed(self.job.name))
+        self.nests_widget.setHidden(not self.job_preferences.is_nests_closed(self.job.name))
 
         self.pushButton_reload_job.clicked.connect(self.reload_job)
         self.pushButton_reload_job.setIcon(Icons.refresh_icon)
 
         self.doubleSpinBox_order_number.setValue(self.job.order_number)
-        self.doubleSpinBox_order_number.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
+        self.doubleSpinBox_order_number.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.doubleSpinBox_order_number.valueChanged.connect(self.job_settings_changed)
 
         self.doubleSpinBox_po_number.setValue(self.job.PO_number)
-        self.doubleSpinBox_po_number.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
+        self.doubleSpinBox_po_number.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.doubleSpinBox_po_number.valueChanged.connect(self.job_settings_changed)
 
         def get_latest_order_number():
-            self.doubleSpinBox_order_number.setValue(
-                self._parent_widget._parent_widget.order_number
-            )
+            self.doubleSpinBox_order_number.setValue(self._parent_widget._parent_widget.order_number)
             self.job_settings_changed()
 
         self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
 
         self.comboBox_type.setCurrentIndex(self.job.status.value - 1)
-        self.comboBox_type.wheelEvent = lambda event: self._parent_widget.wheelEvent(
-            event
-        )
+        self.comboBox_type.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
 
         try:
-            self.dateEdit_start.setDateTime(
-                QDateTime(
-                    datetime.strptime(self.job.starting_date, "%Y-%m-%d %I:%M %p")
-                )
-            )
+            self.dateEdit_start.setDateTime(QDateTime(datetime.strptime(self.job.starting_date, "%Y-%m-%d %I:%M %p")))
         except ValueError:
             self.dateEdit_start.setDateTime(QDateTime().currentDateTime())
-            self.job.starting_date = self.dateEdit_start.dateTime().toString(
-                "yyyy-MM-dd h:mm AP"
-            )
+            self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
 
         self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_start.wheelEvent = lambda event: self._parent_widget.wheelEvent(
-            event
-        )
+        self.dateEdit_start.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
 
         try:
-            self.dateEdit_end.setDateTime(
-                QDateTime(datetime.strptime(self.job.ending_date, "%Y-%m-%d %I:%M %p"))
-            )
+            self.dateEdit_end.setDateTime(QDateTime(datetime.strptime(self.job.ending_date, "%Y-%m-%d %I:%M %p")))
         except ValueError:
             current_date = QDateTime.currentDateTime()
             new_date = current_date.addDays(7)
             self.dateEdit_end.setDateTime(new_date)
-            self.job.ending_date = self.dateEdit_end.dateTime().toString(
-                "yyyy-MM-dd h:mm AP"
-            )
+            self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")
 
-        self.label_16.setText(
-            f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})"
-        )
+        self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.dateEdit_end.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_end.wheelEvent = lambda event: self._parent_widget.wheelEvent(
-            event
-        )
+        self.dateEdit_end.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.textEdit_ship_to.setText(self.job.ship_to)
         self.textEdit_ship_to.textChanged.connect(self.job_settings_changed)
 
-        self.pushButton_show_parts_list_summary.clicked.connect(
-            self.show_parts_list_summary
-        )
+        self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
 
         self.assemblies_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.pushButton_add_new_assembly.clicked.connect(self.add_assembly)
 
-        self.pushButton_add_existing_assembly.clicked.connect(
-            self.add_existing_assembly
-        )
+        self.pushButton_add_existing_assembly.clicked.connect(self.add_existing_assembly)
 
         self.assemblies_toolbox = AssemblyMultiToolBox(self)
         self.assemblies_layout.addWidget(self.assemblies_toolbox)
 
-        self.comboBox_laser_cutting.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
+        self.comboBox_laser_cutting.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
 
         self.doubleSpinBox_cost_for_laser.setValue(self.price_calculator.cost_for_laser)
-        self.doubleSpinBox_cost_for_laser.valueChanged.connect(
-            self.cost_for_laser_changed
-        )
-        self.doubleSpinBox_cost_for_laser.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
+        self.doubleSpinBox_cost_for_laser.valueChanged.connect(self.cost_for_laser_changed)
+        self.doubleSpinBox_cost_for_laser.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
 
-        self.comboBox_materials.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
+        self.comboBox_materials.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.comboBox_materials.addItems(self.sheet_settings.get_materials())
-        self.comboBox_materials.currentTextChanged.connect(
-            partial(self.update_nest_sheets, "MATERIAL")
-        )
+        self.comboBox_materials.currentTextChanged.connect(partial(self.update_nest_sheets, "MATERIAL"))
 
-        self.comboBox_thicknesses.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
+        self.comboBox_thicknesses.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.comboBox_thicknesses.addItems(self.sheet_settings.get_thicknesses())
-        self.comboBox_thicknesses.currentTextChanged.connect(
-            partial(self.update_nest_sheets, "THICKNESS")
-        )
+        self.comboBox_thicknesses.currentTextChanged.connect(partial(self.update_nest_sheets, "THICKNESS"))
 
-        self.doubleSpinBox_length.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
-        self.doubleSpinBox_length.valueChanged.connect(
-            partial(self.update_nest_sheets, "LENGTH")
-        )
+        self.doubleSpinBox_length.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+        self.doubleSpinBox_length.valueChanged.connect(partial(self.update_nest_sheets, "LENGTH"))
 
-        self.doubleSpinBox_width.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
-        self.doubleSpinBox_width.valueChanged.connect(
-            partial(self.update_nest_sheets, "WIDTH")
-        )
+        self.doubleSpinBox_width.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+        self.doubleSpinBox_width.valueChanged.connect(partial(self.update_nest_sheets, "WIDTH"))
 
-        self.doubleSpinBox_items_overhead.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
-        self.doubleSpinBox_items_overhead.setValue(
-            self.price_calculator.item_overhead * 100
-        )
-        self.doubleSpinBox_items_overhead.valueChanged.connect(
-            self.price_settings_changed
-        )
+        self.doubleSpinBox_items_overhead.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+        self.doubleSpinBox_items_overhead.setValue(self.price_calculator.item_overhead * 100)
+        self.doubleSpinBox_items_overhead.valueChanged.connect(self.price_settings_changed)
 
-        self.checkBox_components_use_overhead.toggled.connect(
-            self.price_settings_changed
-        )
-        self.checkBox_components_use_overhead.setChecked(
-            self.price_calculator.components_use_overhead
-        )
+        self.checkBox_components_use_overhead.toggled.connect(self.price_settings_changed)
+        self.checkBox_components_use_overhead.setChecked(self.price_calculator.components_use_overhead)
 
-        self.checkBox_components_use_profit_margin.toggled.connect(
-            self.price_settings_changed
-        )
-        self.checkBox_components_use_profit_margin.setChecked(
-            self.price_calculator.components_use_profit_margin
-        )
+        self.checkBox_components_use_profit_margin.toggled.connect(self.price_settings_changed)
+        self.checkBox_components_use_profit_margin.setChecked(self.price_calculator.components_use_profit_margin)
 
-        self.doubleSpinBox_items_profit_margin.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
-        self.doubleSpinBox_items_profit_margin.setValue(
-            self.price_calculator.item_profit_margin * 100
-        )
-        self.doubleSpinBox_items_profit_margin.valueChanged.connect(
-            self.price_settings_changed
-        )
+        self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+        self.doubleSpinBox_items_profit_margin.setValue(self.price_calculator.item_profit_margin * 100)
+        self.doubleSpinBox_items_profit_margin.valueChanged.connect(self.price_settings_changed)
 
-        self.pushButton_item_to_sheet.setChecked(
-            self.price_calculator.match_item_cogs_to_sheet
-        )
+        self.pushButton_item_to_sheet.setChecked(self.price_calculator.match_item_cogs_to_sheet)
         self.pushButton_item_to_sheet.clicked.connect(self.match_item_to_sheet_toggled)
 
-        self.doubleSpinBox_sheets_overhead.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
-        self.doubleSpinBox_sheets_overhead.setValue(
-            self.price_calculator.sheet_overhead * 100
-        )
-        self.doubleSpinBox_sheets_overhead.valueChanged.connect(
-            self.price_settings_changed
-        )
+        self.doubleSpinBox_sheets_overhead.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+        self.doubleSpinBox_sheets_overhead.setValue(self.price_calculator.sheet_overhead * 100)
+        self.doubleSpinBox_sheets_overhead.valueChanged.connect(self.price_settings_changed)
 
-        self.doubleSpinBox_sheets_profit_margin.wheelEvent = (
-            lambda event: self._parent_widget.wheelEvent(event)
-        )
-        self.doubleSpinBox_sheets_profit_margin.setValue(
-            self.price_calculator.sheet_profit_margin * 100
-        )
-        self.doubleSpinBox_sheets_profit_margin.valueChanged.connect(
-            self.price_settings_changed
-        )
+        self.doubleSpinBox_sheets_profit_margin.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+        self.doubleSpinBox_sheets_profit_margin.setValue(self.price_calculator.sheet_profit_margin * 100)
+        self.doubleSpinBox_sheets_profit_margin.valueChanged.connect(self.price_settings_changed)
 
         self.nests_toolbox = MultiToolBox(self)
         self.nests_layout.addWidget(self.nests_toolbox)
         self.pushButton_open_nest_editor.clicked.connect(self.open_nest_editor)
         self.pushButton_open_nest_editor.setIcon(Icons.flowtag_data_icon)
 
-        self.processes_widget.setVisible(
-            self._parent_widget._parent_widget.tab_text(
-                self._parent_widget._parent_widget.stackedWidget.currentIndex()
-            )
-            == "job_planner_tab"
-        )
+        self.processes_widget.setVisible(self._parent_widget._parent_widget.tab_text(self._parent_widget._parent_widget.stackedWidget.currentIndex()) == "job_planner_tab")
 
-        if (
-            self._parent_widget._parent_widget.tab_text(
-                self._parent_widget._parent_widget.stackedWidget.currentIndex()
-            )
-            == "job_planner_tab"
-        ):
+        if self._parent_widget._parent_widget.tab_text(self._parent_widget._parent_widget.stackedWidget.currentIndex()) == "job_planner_tab":
             self.splitter.setSizes([0, 1])
             # self.quoting_settings_widget.setEnabled(False)
 
         self.splitter.setStretchFactor(0, 3)
         self.splitter.setStretchFactor(1, 2)
 
-        self.label_total_cost_for_parts.setHidden(
-            self._parent_widget._parent_widget.tab_text(
-                self._parent_widget._parent_widget.stackedWidget.currentIndex()
-            )
-            == "job_planner_tab"
-        )
-        self.label_total_cost_for_parts.setText(
-            f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}"
-        )
+        self.label_total_cost_for_parts.setHidden(self._parent_widget._parent_widget.tab_text(self._parent_widget._parent_widget.stackedWidget.currentIndex()) == "job_planner_tab")
+        self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
 
         self.label_total_cost_for_sheets.setHidden(
-            self._parent_widget._parent_widget.tab_text(
-                self._parent_widget._parent_widget.stackedWidget.currentIndex()
-            )
-            == "job_planner_tab"
+            self._parent_widget._parent_widget.tab_text(self._parent_widget._parent_widget.stackedWidget.currentIndex()) == "job_planner_tab"
         )
-        self.label_total_cost_for_sheets.setText(
-            f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}"
-        )
+        self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
 
-        self.flowtag_timeline = JobFlowtagTimelineWidget(
-            self.job.flowtag_timeline, self
-        )
+        self.flowtag_timeline = JobFlowtagTimelineWidget(self.job.flowtag_timeline, self)
         self.verticalLayout_flowtag_timeline.addWidget(self.flowtag_timeline)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = JobColor.get_color(self.job.status)
         hover_color = lighten_color(base_color)
-        inverted_color = get_contrast_text_color(base_color)
+        inverted_color = get_on_color_from_primary(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
             f"""
@@ -476,19 +336,11 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         self.job.order_number = int(self.doubleSpinBox_order_number.value())
         self.job.PO_number = int(self.doubleSpinBox_po_number.value())
         self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
-        self.job.starting_date = self.dateEdit_start.dateTime().toString(
-            "yyyy-MM-dd h:mm AP"
-        )
-        self.job.ending_date = self.dateEdit_end.dateTime().toString(
-            "yyyy-MM-dd h:mm AP"
-        )
-        self.flowtag_timeline.set_range(
-            self.dateEdit_start.dateTime(), self.dateEdit_end.dateTime()
-        )
+        self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
+        self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")
+        self.flowtag_timeline.set_range(self.dateEdit_start.dateTime(), self.dateEdit_end.dateTime())
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
-        self.label_16.setText(
-            f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})"
-        )
+        self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.changes_made()
 
     def workspace_settings_changed(self):
@@ -518,9 +370,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 self.load_assembly(new_assembly)
             self.update_prices()
 
-    def add_assembly(
-        self, new_assembly: Optional[Assembly] = None
-    ) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
+    def add_assembly(self, new_assembly: Optional[Assembly] = None) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
         if not new_assembly:
             assembly = Assembly({}, self.job)
             assembly.name = f"Enter Assembly Name{len(self.job.assemblies)}"
@@ -530,15 +380,9 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         else:
             assembly = new_assembly
 
-        if (
-            self.main_window.tab_text(self.main_window_tab_widget.currentIndex())
-            == "job_planner_tab"
-        ):
+        if self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_planner_tab":
             assembly_widget = AssemblyPlanningWidget(assembly, self)
-        elif (
-            self.main_window.tab_text(self.main_window_tab_widget.currentIndex())
-            == "job_quoter_tab"
-        ):
+        elif self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_quoter_tab":
             assembly_widget = AssemblyQuotingWidget(assembly, self)
 
         self.assemblies_toolbox.addItem(assembly_widget, assembly.name, assembly.color)
@@ -546,9 +390,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         toggle_button = self.assemblies_toolbox.getLastToggleButton()
 
         name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
-        name_input.textChanged.connect(
-            partial(self.assembly_name_renamed, assembly, name_input)
-        )
+        name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, name_input))
 
         name_input.textChanged.connect(
             partial(
@@ -631,30 +473,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         else:
             self.assemblies_toolbox.openLastToolBox()
 
-        assembly_widget.pushButton_laser_cut_parts.setChecked(
-            self.job_preferences.is_assembly_laser_cut_closed(assembly.name)
-        )
-        assembly_widget.laser_cut_widget.setHidden(
-            not self.job_preferences.is_assembly_laser_cut_closed(assembly.name)
-        )
-        assembly_widget.pushButton_structural_steel_items.setChecked(
-            self.job_preferences.is_structural_steel_closed(assembly.name)
-        )
-        assembly_widget.structural_steel_items_widget.setHidden(
-            not self.job_preferences.is_structural_steel_closed(assembly.name)
-        )
-        assembly_widget.pushButton_components.setChecked(
-            self.job_preferences.is_assembly_component_closed(assembly.name)
-        )
-        assembly_widget.component_widget.setHidden(
-            not self.job_preferences.is_assembly_component_closed(assembly.name)
-        )
-        assembly_widget.pushButton_sub_assemblies.setChecked(
-            self.job_preferences.is_assembly_sub_assembly_closed(assembly.name)
-        )
-        assembly_widget.sub_assemblies_widget.setHidden(
-            not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name)
-        )
+        assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.pushButton_structural_steel_items.setChecked(self.job_preferences.is_structural_steel_closed(assembly.name))
+        assembly_widget.structural_steel_items_widget.setHidden(not self.job_preferences.is_structural_steel_closed(assembly.name))
+        assembly_widget.pushButton_components.setChecked(self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.component_widget.setHidden(not self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
+        assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
 
         self.update_context_menu()
         return assembly_widget
@@ -681,9 +507,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         self.update_context_menu()
         self.changes_made()
 
-    def delete_assembly(
-        self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]
-    ):
+    def delete_assembly(self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]):
         self.assembly_widgets.remove(assembly_widget)
         self.assemblies_toolbox.removeItem(assembly_widget)
         self.job.remove_assembly(assembly_widget.assembly)
@@ -708,13 +532,9 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             nest_widget = NestWidget(nest, self)
             nest_widget.updateLaserCutPartSettings.connect(self.nest_settings_changed)
             self.nest_widgets.append(nest_widget)
-            self.nests_toolbox.addItem(
-                nest_widget, nest.get_name(), JobColor.get_color(self.job.status)
-            )
+            self.nests_toolbox.addItem(nest_widget, nest.get_name(), JobColor.get_color(self.job.status))
             button = self.nests_toolbox.getLastButton()
-            button.clicked.connect(
-                partial(self.job_preferences.nest_toggled, nest.get_name(), button)
-            )
+            button.clicked.connect(partial(self.job_preferences.nest_toggled, nest.get_name(), button))
             nest_widget.toolbox_button = button
         for i, nest in enumerate(self.job.nests):
             if self.job_preferences.is_nest_closed(nest.get_name()):
@@ -735,9 +555,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
 
     def open_nest_editor(self):
         nests_copy = self.safe_copy_nests(self.job.nests)
-        nest_editor_dialog = NestEditorDialog(
-            nests_copy, self._parent_widget._parent_widget
-        )
+        nest_editor_dialog = NestEditorDialog(nests_copy, self._parent_widget._parent_widget)
         if nest_editor_dialog.exec():
             self.job.nests = nest_editor_dialog.nests
             self.load_nests()
@@ -752,29 +570,15 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         for nest in self.job.nests:
             if not nest.laser_cut_parts:
                 continue
-            summary_data["sheets"].setdefault(
-                nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0}
-            )
-            summary_data["material_total"].setdefault(
-                nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0}
-            )
-            summary_data["sheets"][nest.sheet.get_name()]["total_sheet_count"] += (
-                nest.sheet_count
-            )
-            summary_data["sheets"][nest.sheet.get_name()]["total_seconds"] += (
-                nest.sheet_cut_time * nest.sheet_count
-            )
-            summary_data["material_total"][nest.sheet.material]["total_seconds"] += (
-                nest.sheet_cut_time * nest.sheet_count
-            )
-            summary_data["material_total"][nest.sheet.material][
-                "total_sheet_count"
-            ] += nest.sheet_count
+            summary_data["sheets"].setdefault(nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0})
+            summary_data["material_total"].setdefault(nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0})
+            summary_data["sheets"][nest.sheet.get_name()]["total_sheet_count"] += nest.sheet_count
+            summary_data["sheets"][nest.sheet.get_name()]["total_seconds"] += nest.sheet_cut_time * nest.sheet_count
+            summary_data["material_total"][nest.sheet.material]["total_seconds"] += nest.sheet_cut_time * nest.sheet_count
+            summary_data["material_total"][nest.sheet.material]["total_sheet_count"] += nest.sheet_count
 
             self.treeWidget_nest_summary.clear()
-            self.treeWidget_nest_summary.setHeaderLabels(
-                ["Name", "Quantity", "Cut time"]
-            )
+            self.treeWidget_nest_summary.setHeaderLabels(["Name", "Quantity", "Cut time"])
 
             sorted_summary_keys = natsorted(summary_data.keys())
             sorted_summary = {key: summary_data[key] for key in sorted_summary_keys}
@@ -784,23 +588,17 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 minutes = int((data["total_seconds"] % 3600) // 60)
                 seconds = int(data["total_seconds"] % 60)
                 total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-                item = QTreeWidgetItem(
-                    [sheet, str(data["total_sheet_count"]), total_seconds_string]
-                )
+                item = QTreeWidgetItem([sheet, str(data["total_sheet_count"]), total_seconds_string])
                 self.treeWidget_nest_summary.addTopLevelItem(item)
 
-            materials_item = QTreeWidgetItem(
-                self.treeWidget_nest_summary, ["Materials Total"]
-            )
+            materials_item = QTreeWidgetItem(self.treeWidget_nest_summary, ["Materials Total"])
             materials_item.setFirstColumnSpanned(True)
             for material, data in sorted_summary.get("material_total", {}).items():
                 hours = int(data["total_seconds"] // 3600)
                 minutes = int((data["total_seconds"] % 3600) // 60)
                 seconds = int(data["total_seconds"] % 60)
                 total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-                item = QTreeWidgetItem(
-                    [material, str(data["total_sheet_count"]), total_seconds_string]
-                )
+                item = QTreeWidgetItem([material, str(data["total_sheet_count"]), total_seconds_string])
                 materials_item.addChild(item)
 
             self.treeWidget_nest_summary.expandAll()
@@ -812,9 +610,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         dialog.show()
 
     def match_item_to_sheet_toggled(self):
-        self.price_calculator.match_item_cogs_to_sheet = (
-            self.pushButton_item_to_sheet.isChecked()
-        )
+        self.price_calculator.match_item_cogs_to_sheet = self.pushButton_item_to_sheet.isChecked()
         self.changes_made()
 
     def cost_for_laser_changed(self):
@@ -843,41 +639,22 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             group_widget.update_tables()
 
     def update_prices(self):
-        if (
-            self.main_window.tab_text(self.main_window_tab_widget.currentIndex())
-            == "job_quoter_tab"
-        ):
+        if self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_quoter_tab":
             self.price_calculator.update_laser_cut_parts_cost()
             self.price_calculator.update_laser_cut_parts_to_sheet_price()
-            self.label_total_cost_for_parts.setText(
-                f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}"
-            )
-            self.label_total_cost_for_sheets.setText(
-                f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}"
-            )
+            self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
+            self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
             for assembly_widget in self.assembly_widgets:
                 if isinstance(assembly_widget, AssemblyQuotingWidget):
                     assembly_widget.update_prices()
 
     def price_settings_changed(self):
-        self.price_calculator.item_overhead = (
-            self.doubleSpinBox_items_overhead.value() / 100
-        )
-        self.price_calculator.item_profit_margin = (
-            self.doubleSpinBox_items_profit_margin.value() / 100
-        )
-        self.price_calculator.sheet_overhead = (
-            self.doubleSpinBox_sheets_overhead.value() / 100
-        )
-        self.price_calculator.sheet_profit_margin = (
-            self.doubleSpinBox_sheets_profit_margin.value() / 100
-        )
-        self.price_calculator.components_use_overhead = (
-            self.checkBox_components_use_overhead.isChecked()
-        )
-        self.price_calculator.components_use_profit_margin = (
-            self.checkBox_components_use_profit_margin.isChecked()
-        )
+        self.price_calculator.item_overhead = self.doubleSpinBox_items_overhead.value() / 100
+        self.price_calculator.item_profit_margin = self.doubleSpinBox_items_profit_margin.value() / 100
+        self.price_calculator.sheet_overhead = self.doubleSpinBox_sheets_overhead.value() / 100
+        self.price_calculator.sheet_profit_margin = self.doubleSpinBox_sheets_profit_margin.value() / 100
+        self.price_calculator.components_use_overhead = self.checkBox_components_use_overhead.isChecked()
+        self.price_calculator.components_use_profit_margin = self.checkBox_components_use_profit_margin.isChecked()
         self.changes_made()
 
     def nest_settings_changed(self, nest: Nest):
@@ -889,15 +666,13 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             assembly_widget.reload_context_menu()
 
     def changes_made(self):
-        with contextlib.suppress(
-            AttributeError
-        ):  # Happens when reloading when no flowtags set.
+        with contextlib.suppress(AttributeError):  # Happens when reloading when no flowtags set.
             self.flowtag_timeline.load_tag_timelines()
         self._parent_widget.job_changed(self.job)
         self.update_nest_parts_assemblies()
         self.update_prices()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget):
+    def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

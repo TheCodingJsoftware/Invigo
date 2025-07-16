@@ -644,8 +644,8 @@ QTreeView:focus {
 }
 QTreeView::indicator {
     padding: 1px;
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 16px;
     border-radius: var(--border-radius);
     border: 1px solid var(--outline);
     background: var(--outline-variant);
@@ -656,17 +656,20 @@ QTreeView::indicator:checked {
     background: var(--primary);
     image: url(ui/svg/dialog_apply.svg);
 }
+
 QTreeView::indicator:hover {
     border-color: var(--primary);
 }
+
 QTreeWidget{
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+
 QTreeWidget::indicator {
     padding: 1px;
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 16px;
     border-radius: var(--border-radius);
     border: 1px solid var(--outline);
     background: var(--outline-variant);
@@ -680,21 +683,24 @@ QTreeWidget::indicator:checked {
 
 QTreeWidget::item:selected {
     background: var(--primary-container);
-    color: var(--primary);
+    /* color: var(--primary); */
 }
 
 QTreeWidget::item {
     border-bottom: 1px solid var(--outline);
     padding: 5px;
 }
+
 QTreeWidget::item:disabled {
     /* background: var(--primary-container); */
     color: var(--disabled);
 }
 
 QTreeWidget::item:selected:focus {
-    background-color: var(--primary);
-    color: var(--on-primary);
+    background-color: var(--primary-container);
+    border: 1px solid var(--primary);
+    border-radius: 1px;
+    /* color: var(--on-primary); */
 }
 
 QTreeView::item:selected {
@@ -832,8 +838,9 @@ QTableView:focus {
     border-color: var(--primary);
 }
 QTableView::item:selected:focus {
-    background-color: var(--primary);
-    color: var(--on-primary);
+    background-color: var(--primary-container);
+    border: 1px solid var(--primary);
+    border-radius: 1px;
 }
 
 QTableWidget {
@@ -854,8 +861,9 @@ QTableWidget:focus {
     border-color: var(--primary);
 }
 QTableWidget::item:selected:focus {
-    background-color: var(--primary);
-    color: var(--on-primary);
+    background-color: var(--primary-container);
+    border: 1px solid var(--primary);
+    border-radius: 1px;
 }
 
 

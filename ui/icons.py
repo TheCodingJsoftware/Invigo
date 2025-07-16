@@ -2,7 +2,7 @@ import qtawesome as qta
 
 # qta-browser to view icons
 from ui.theme import theme_var
-from utils.colors import get_contrast_text_color
+from utils.colors import get_on_color_from_primary
 
 
 def make_icon(name: str, theme: str):
@@ -10,8 +10,8 @@ def make_icon(name: str, theme: str):
         name,
         color_on=theme_var(theme),
         color_on_active=theme_var(theme),
-        color_off=get_contrast_text_color(theme_var(theme)),
-        color_off_active=get_contrast_text_color(theme_var(theme)),
+        color_off=get_on_color_from_primary(theme_var(theme)),
+        color_off_active=get_on_color_from_primary(theme_var(theme)),
     )
 
 
@@ -24,6 +24,7 @@ class Icons:
     import_icon = None
     calendar_icon = None
     workspace_icon = None
+    graph_icon = None
     quit_icon = None
     edit_user_icon = None
     edit_icon = None
@@ -38,7 +39,8 @@ class Icons:
     generate_file_icon = None
     website_icon = None
     open_window_icon = None
-    history_icon = None
+    action_history_icon = None
+    button_history_icon = None
     info_icon = None
     question_icon = None
     update_icon = None
@@ -131,6 +133,13 @@ class Icons:
         )
 
         # QAction Icons
+        cls.graph_icon = qta.icon(
+            "msc.graph-line",
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
+        )
         cls.quit_icon = qta.icon(
             "ph.x-square-fill",
             color_on=theme_var("on-surface"),
@@ -175,6 +184,13 @@ class Icons:
         )
         cls.add_file_icon = qta.icon(
             "ph.file-plus-fill",
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
+        )
+        cls.remove_icon = qta.icon(
+            "msc.remove",
             color_on=theme_var("on-surface"),
             color_on_active=theme_var("primary"),
             color_off=theme_var("on-surface"),
@@ -229,11 +245,18 @@ class Icons:
             color_off=theme_var("on-surface"),
             color_off_active=theme_var("primary"),
         )
-        cls.history_icon = qta.icon(
+        cls.action_history_icon = qta.icon(
             "ph.clock-counter-clockwise",
             color_on=theme_var("on-surface"),
             color_on_active=theme_var("primary"),
             color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
+        )
+        cls.button_history_icon = qta.icon(
+            "ph.clock-counter-clockwise",
+            color_on=theme_var("primary"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("primary"),
             color_off_active=theme_var("primary"),
         )
         cls.info_icon = qta.icon(
@@ -464,9 +487,7 @@ class Icons:
         cls.job_planning_icon = make_icon("fa6s.calendar", "job-planning")
         cls.job_quoting_icon = make_icon("fa6s.file-invoice-dollar", "job-quoting")
         cls.job_quoted_icon = make_icon("ph.check-fill", "job-quoted")
-        cls.job_quote_confirmed_icon = make_icon(
-            "ph.checks-fill", "job-quote-confirmed"
-        )
+        cls.job_quote_confirmed_icon = make_icon("ph.checks-fill", "job-quote-confirmed")
         cls.job_template_icon = make_icon("fa6s.box-archive", "job-template")
         cls.job_workspace_icon = make_icon("fa6s.network-wired", "job-workspace")
         cls.job_archive_icon = make_icon("fa6s.box-archive", "job-archive")

@@ -16,9 +16,7 @@ class GetAllJobsWorker(BaseWorker):
                 response_data = response.json()
                 return response_data
         except requests.HTTPError as http_err:
-            self.signals.error.emit(
-                f"HTTP error occurred: {http_err}", http_err.response.status_code
-            )
+            self.signals.error.emit(f"HTTP error occurred: {http_err}", http_err.response.status_code)
         except requests.RequestException as err:
             self.signals.error.emit(f"An error occurred: {err}", 500)
         return None
@@ -29,9 +27,7 @@ class GetAllJobsWorker(BaseWorker):
         elif isinstance(e, requests.exceptions.ConnectionError):
             self.signals.error.emit({"error": "Could not connect to the server"}, 503)
         elif isinstance(e, requests.exceptions.HTTPError):
-            self.signals.error.emit(
-                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
-            )
+            self.signals.error.emit({"error": f"HTTP Error: {str(e)}"}, e.response.status_code)
         elif isinstance(e, requests.exceptions.RequestException):
             self.signals.error.emit({"error": f"Request failed: {str(e)}"}, 500)
         elif isinstance(e, ValueError):

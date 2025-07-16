@@ -12,16 +12,12 @@ class UpdateCoatingsWorker(BaseWorker):
         self.url = f"{self.DOMAIN}/coatings_inventory/update_coatings"
 
     def do_work(self):
-        self.logger.info(
-            f"Sending update for {len(self.coatings)} coatings to {self.url}"
-        )
+        self.logger.info(f"Sending update for {len(self.coatings)} coatings to {self.url}")
 
         data = [coating.to_dict() for coating in self.coatings]
 
         with requests.Session() as session:
-            response = session.post(
-                self.url, json=data, headers=self.headers, timeout=10
-            )
+            response = session.post(self.url, json=data, headers=self.headers, timeout=10)
             response.raise_for_status()
             try:
                 response_data = msgspec.json.decode(response.content)

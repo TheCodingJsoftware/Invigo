@@ -6,7 +6,7 @@ from utils.workers.base_worker import BaseWorker
 
 class GetJobWorker(BaseWorker):
     def __init__(self, job_id: int):
-        super().__init__()
+        super().__init__(name="GetJobWorker")
         self.url = f"{self.DOMAIN}/jobs/get_job/{job_id}"
 
     def do_work(self):
@@ -30,9 +30,7 @@ class GetJobWorker(BaseWorker):
         elif isinstance(e, requests.exceptions.ConnectionError):
             self.signals.error.emit({"error": "Could not connect to the server"}, 503)
         elif isinstance(e, requests.exceptions.HTTPError):
-            self.signals.error.emit(
-                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
-            )
+            self.signals.error.emit({"error": f"HTTP Error: {str(e)}"}, e.response.status_code)
         elif isinstance(e, requests.exceptions.RequestException):
             self.signals.error.emit({"error": f"Request failed: {str(e)}"}, 500)
         elif isinstance(e, ValueError):

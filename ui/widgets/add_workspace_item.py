@@ -37,9 +37,7 @@ class AddWorkspaceItem(QDialog, Ui_Form):
         self.lineEdit_name.setCompleter(completer)
         self.lineEdit_name.textChanged.connect(self.name_changed)
 
-        self.listWidget_all_items.itemSelectionChanged.connect(
-            self.listWidget_item_changed
-        )
+        self.listWidget_all_items.itemSelectionChanged.connect(self.listWidget_item_changed)
         self.listWidget_all_items.addItems(all_part_names)
 
         self.pushButton_add.clicked.connect(self.accept)
@@ -67,7 +65,4 @@ class AddWorkspaceItem(QDialog, Ui_Form):
         return self.lineEdit_name.text().encode("ascii", "ignore").decode()
 
     def get_all_part_names(self) -> list[str]:
-        return (
-            self.components_inventory.get_all_part_names()
-            + self.laser_cut_inventory.get_all_part_names()
-        )
+        return self.components_inventory.get_all_part_names() + self.laser_cut_inventory.get_all_part_names()

@@ -17,9 +17,7 @@ class UpdateSheetsWorker(BaseWorker):
         data = [sheet.to_dict() for sheet in self.sheets]
 
         with requests.Session() as session:
-            response = session.post(
-                self.url, json=data, headers=self.headers, timeout=10
-            )
+            response = session.post(self.url, json=data, headers=self.headers, timeout=10)
             response.raise_for_status()
             try:
                 response_data = msgspec.json.decode(response.content)

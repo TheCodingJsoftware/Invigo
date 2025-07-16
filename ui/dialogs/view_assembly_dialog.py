@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QDialog, QPushButton, QTableWidgetItem, QWidget
 from ui.dialogs.view_assembly_dialog_UI import Ui_Form
 from ui.icons import Icons
 from ui.theme import theme_var
-from utils.colors import get_contrast_text_color, lighten_color
+from utils.colors import get_on_color_from_primary, lighten_color
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.structural_profile import StructuralProfile
@@ -39,15 +39,9 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_12.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_components, self.widget_components
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_laser_cut_parts, self.widget_laser_cut_parts
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_structural_steel_items, self.widget_structural_steel_items
-        )
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.widget_components)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.widget_laser_cut_parts)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_structural_steel_items, self.widget_structural_steel_items)
 
         self.load_structural_steel_items_table()
         self.load_components_table()
@@ -58,7 +52,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color
         hover_color = lighten_color(base_color)
-        font_color = get_contrast_text_color(base_color)
+        font_color = get_on_color_from_primary(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
             f"""
@@ -125,18 +119,12 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
                 new_width = int(original_width * (new_height / original_height))
             except ZeroDivisionError:
                 new_width = original_width
-            pixmap = image.scaled(
-                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
-            )
+            pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
         self.tableWidget_components.setRowHeight(current_row, new_height)
         self.tableWidget_components.setItem(current_row, 0, image_item)
-        self.tableWidget_components.setItem(
-            current_row, 1, QTableWidgetItem(component.name)
-        )
-        self.tableWidget_components.setItem(
-            current_row, 2, QTableWidgetItem(f"{component.quantity}")
-        )
+        self.tableWidget_components.setItem(current_row, 1, QTableWidgetItem(component.name))
+        self.tableWidget_components.setItem(current_row, 2, QTableWidgetItem(f"{component.quantity}"))
 
     def load_components_table(self):
         self.tableWidget_components.setRowCount(0)
@@ -147,22 +135,14 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         # )
         self.tableWidget_components.resizeColumnsToContents()
 
-    def add_structural_steel_item_to_table(
-        self, structural_steel_item: StructuralProfile
-    ):
+    def add_structural_steel_item_to_table(self, structural_steel_item: StructuralProfile):
         current_row = self.tableWidget_structural_steel_items.rowCount()
         new_height = 70
         self.tableWidget_structural_steel_items.insertRow(current_row)
         self.tableWidget_components.setRowHeight(current_row, new_height)
-        self.tableWidget_structural_steel_items.setItem(
-            current_row, 0, QTableWidgetItem(structural_steel_item.name)
-        )
-        self.tableWidget_structural_steel_items.setItem(
-            current_row, 1, QTableWidgetItem(f"{structural_steel_item.quantity}")
-        )
-        self.tableWidget_structural_steel_items.setItem(
-            current_row, 2, QTableWidgetItem(f"{structural_steel_item.quantity}")
-        )
+        self.tableWidget_structural_steel_items.setItem(current_row, 0, QTableWidgetItem(structural_steel_item.name))
+        self.tableWidget_structural_steel_items.setItem(current_row, 1, QTableWidgetItem(f"{structural_steel_item.quantity}"))
+        self.tableWidget_structural_steel_items.setItem(current_row, 2, QTableWidgetItem(f"{structural_steel_item.quantity}"))
 
     def load_structural_steel_items_table(self):
         self.tableWidget_structural_steel_items.setRowCount(0)
@@ -173,9 +153,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         # )
         self.tableWidget_structural_steel_items.resizeColumnsToContents()
 
-    def add_laser_cut_part_to_table(
-        self, laser_cut_part_group: WorkspaceLaserCutPartGroup
-    ):
+    def add_laser_cut_part_to_table(self, laser_cut_part_group: WorkspaceLaserCutPartGroup):
         current_row = self.tableWidget_laser_cut_parts.rowCount()
         new_height = 70
         self.tableWidget_laser_cut_parts.insertRow(current_row)
@@ -189,48 +167,30 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
                 new_width = int(original_width * (new_height / original_height))
             except ZeroDivisionError:
                 new_width = 0
-            pixmap = image.scaled(
-                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
-            )
+            pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
         self.tableWidget_laser_cut_parts.setRowHeight(current_row, new_height)
         self.tableWidget_laser_cut_parts.setItem(current_row, 0, image_item)
         # NAME
-        self.tableWidget_laser_cut_parts.setItem(
-            current_row, 1, QTableWidgetItem(laser_cut_part_group.base_part.name)
-        )
+        self.tableWidget_laser_cut_parts.setItem(current_row, 1, QTableWidgetItem(laser_cut_part_group.base_part.name))
         # MATERIAL
         self.tableWidget_laser_cut_parts.setItem(
             current_row,
             2,
-            QTableWidgetItem(
-                f"{laser_cut_part_group.base_part.gauge} {laser_cut_part_group.base_part.material}"
-            ),
+            QTableWidgetItem(f"{laser_cut_part_group.base_part.gauge} {laser_cut_part_group.base_part.material}"),
         )
         # FILES
-        self.tableWidget_laser_cut_parts.setItem(
-            current_row, 3, QTableWidgetItem("TODO: FILES_WIDGET")
-        )
+        self.tableWidget_laser_cut_parts.setItem(current_row, 3, QTableWidgetItem("TODO: FILES_WIDGET"))
         # QUANTITY
-        self.tableWidget_laser_cut_parts.setItem(
-            current_row, 4, QTableWidgetItem(f"{laser_cut_part_group.get_quantity()}")
-        )
-        self.tableWidget_laser_cut_parts.item(current_row, 4).setTextAlignment(
-            Qt.AlignmentFlag.AlignCenter
-        )
+        self.tableWidget_laser_cut_parts.setItem(current_row, 4, QTableWidgetItem(f"{laser_cut_part_group.get_quantity()}"))
+        self.tableWidget_laser_cut_parts.item(current_row, 4).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         # QUANTITY IN STOCK
-        if inventory_part := self.laser_cut_inventory.get_laser_cut_part_by_name(
-            laser_cut_part_group.base_part.name
-        ):
+        if inventory_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part_group.base_part.name):
             quantity_in_stock = inventory_part.quantity
         else:
             quantity_in_stock = 0
-        self.tableWidget_laser_cut_parts.setItem(
-            current_row, 5, QTableWidgetItem(f"{quantity_in_stock}")
-        )
-        self.tableWidget_laser_cut_parts.item(current_row, 5).setTextAlignment(
-            Qt.AlignmentFlag.AlignCenter
-        )
+        self.tableWidget_laser_cut_parts.setItem(current_row, 5, QTableWidgetItem(f"{quantity_in_stock}"))
+        self.tableWidget_laser_cut_parts.item(current_row, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         # CURRENT FLOW TAG
         current_process = ""
         if laser_cut_part_group.base_part.recut:
@@ -240,32 +200,22 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         elif laser_cut_part_group.base_part.is_process_finished():
             current_process = "Part is Finished"
         else:
-            current_process = (
-                f"Part is currently in {laser_cut_part_group.get_current_tag().name}"
-            )
+            current_process = f"Part is currently in {laser_cut_part_group.get_current_tag().name}"
 
         # PROCESS TAG
         self.tableWidget_laser_cut_parts.setItem(
             current_row,
             6,
-            QTableWidgetItem(
-                f"{laser_cut_part_group.base_part.flowtag.get_flow_string()}\n\n{current_process}"
-            ),
+            QTableWidgetItem(f"{laser_cut_part_group.base_part.flowtag.get_flow_string()}\n\n{current_process}"),
         )
         # RECUT BUTTON
-        self.tableWidget_laser_cut_parts.setItem(
-            current_row, 7, QTableWidgetItem("TODO: RECUT_BUTTON")
-        )
+        self.tableWidget_laser_cut_parts.setItem(current_row, 7, QTableWidgetItem("TODO: RECUT_BUTTON"))
         # RECOAT BUTTON
-        self.tableWidget_laser_cut_parts.setItem(
-            current_row, 8, QTableWidgetItem("TODO: RECOAT_BUTTON")
-        )
+        self.tableWidget_laser_cut_parts.setItem(current_row, 8, QTableWidgetItem("TODO: RECOAT_BUTTON"))
 
     def load_laser_cut_parts_table(self):
         self.tableWidget_laser_cut_parts.setRowCount(0)
-        grouped_laser_cut_parts = self.workspace.get_grouped_laser_cut_parts(
-            self.assembly.laser_cut_parts
-        )
+        grouped_laser_cut_parts = self.workspace.get_grouped_laser_cut_parts(self.assembly.laser_cut_parts)
         for laser_cut_part_group in grouped_laser_cut_parts:
             self.add_laser_cut_part_to_table(laser_cut_part_group)
         # self.tableWidget_laser_cut_parts.setFixedHeight(

@@ -40,10 +40,7 @@ class MaterialPricePerPounds:
         self.data.clear()
 
     def to_dict(self):
-        return {
-            material.name: price_per_pound_object.to_dict()
-            for material, price_per_pound_object in self
-        }
+        return {material.name: price_per_pound_object.to_dict() for material, price_per_pound_object in self}
 
     def __iter__(self) -> Iterator[Tuple[Material, Price]]:
         return iter(self.data.items())

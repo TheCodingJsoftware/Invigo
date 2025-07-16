@@ -4,7 +4,14 @@ from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QIcon, QKeySequence, QShortcut
-from PyQt6.QtWidgets import QInputDialog, QMessageBox, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QHBoxLayout,
+    QInputDialog,
+    QMessageBox,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.job_tab_widget import JobTabWidget
 from ui.theme import theme_var
@@ -16,9 +23,7 @@ if TYPE_CHECKING:
 
 
 class PopoutWidget(QWidget):
-    def __init__(
-        self, tab_data: dict[str, str], layout_to_popout: QVBoxLayout, parent=None
-    ):
+    def __init__(self, tab_data: dict[str, str], layout_to_popout: QVBoxLayout, parent=None):
         super().__init__(parent)
         self._parent_widget: MainWindow = parent
         self.tab_data = tab_data
@@ -36,13 +41,9 @@ class PopoutWidget(QWidget):
     def closeEvent(self, event):
         if self.original_layout_parent:
             self.original_layout_parent.setLayout(self.original_layout)
-            self.original_layout_parent.pushButton_popout.setIcon(
-                QIcon("icons/open_in_new.png")
-            )
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
             self.original_layout_parent.pushButton_popout.clicked.disconnect()
-            self.original_layout_parent.pushButton_popout.clicked.connect(
-                self.original_layout_parent.popout
-            )
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
         super().closeEvent(event)
 
 
@@ -153,14 +154,10 @@ class JobTab(QWidget):
         job_widget.scrollArea.verticalScrollBar().setValue(y)
         job_widget.scrollArea.horizontalScrollBar().setValue(x)
 
-    def set_job_widget_scroll_position_with_delay(
-        self, job: Job, job_widget: JobWidget
-    ):
+    def set_job_widget_scroll_position_with_delay(self, job: Job, job_widget: JobWidget):
         self.timer = QTimer(self)  # For setting scroll in job widget
         self.timer.setSingleShot(True)
-        self.timer.timeout.connect(
-            partial(self.execute_set_job_widget_scroll_position, job, job_widget)
-        )
+        self.timer.timeout.connect(partial(self.execute_set_job_widget_scroll_position, job, job_widget))
         self.timer.start(500)
 
     def execute_set_job_widget_scroll_position(self, job: Job, job_widget: JobWidget):
@@ -169,11 +166,7 @@ class JobTab(QWidget):
 
     def get_tab_index(self, job: Job) -> int:
         return next(
-            (
-                i
-                for i, job_widget in enumerate(self.job_widgets)
-                if job_widget.job == job
-            ),
+            (i for i, job_widget in enumerate(self.job_widgets) if job_widget.job == job),
             0,
         )
 
@@ -195,11 +188,7 @@ class JobTab(QWidget):
 
     def get_job(self, job_name: str) -> Optional[Job]:
         return next(
-            (
-                job_widget.job
-                for job_widget in self.job_widgets
-                if job_widget.job.name == job_name
-            ),
+            (job_widget.job for job_widget in self.job_widgets if job_widget.job.name == job_name),
             None,
         )
 
@@ -208,30 +197,20 @@ class JobTab(QWidget):
 
     def get_active_job(self) -> Job:
         return next(
-            (
-                job_widget.job
-                for job_widget in self.job_widgets
-                if job_widget.job.name == self.get_active_tab()
-            ),
+            (job_widget.job for job_widget in self.job_widgets if job_widget.job.name == self.get_active_tab()),
             None,
         )
 
     def get_active_job_widget(self) -> JobWidget:
         active_job = self.job_widgets[self.get_tab_index(self.current_job)]
         return next(
-            (
-                self.job_tab.widget(tab_index)
-                for tab_index in range(self.job_tab.count())
-                if self.job_tab.widget(tab_index) == active_job
-            ),
+            (self.job_tab.widget(tab_index) for tab_index in range(self.job_tab.count()) if self.job_tab.widget(tab_index) == active_job),
             None,
         )
 
     def rename_tab(self, tab_index: int):
         active_tab = self.get_active_tab()
-        new_name, ok = QInputDialog.getText(
-            self, "Rename Job", "Enter new job name:", text=active_tab
-        )
+        new_name, ok = QInputDialog.getText(self, "Rename Job", "Enter new job name:", text=active_tab)
         if ok and new_name:
             self.current_job.name = new_name
             self.job_tab.setTabText(tab_index, new_name)
@@ -256,9 +235,7 @@ class JobTab(QWidget):
             self.job_tab.setTabsClosable(True)
 
     def popout(self):
-        self.popout_widget = PopoutWidget(
-            self.tab_data, self.layout(), self._parent_widget
-        )
+        self.popout_widget = PopoutWidget(self.tab_data, self.layout(), self._parent_widget)
         self.popout_widget.show()
         self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
         self.pushButton_popout.clicked.disconnect()
@@ -276,9 +253,7 @@ class JobTab(QWidget):
         self.current_job.unsaved_changes = False
         self.saveJob.emit(self.current_job)
         self.update_job_save_status(self.current_job)
-        self._parent_widget.open_job(
-            f"saved_jobs/{self.current_job.status.name.lower()}/{self.current_job.name}"
-        )
+        self._parent_widget.open_job(f"saved_jobs/{self.current_job.status.name.lower()}/{self.current_job.name}")
 
     def job_changed(self, job: Job):
         job.changes_made()
@@ -288,41 +263,26 @@ class JobTab(QWidget):
         SAVED_JOB_STYLE = f"background-color: {theme_var('primary-green')}; color: {theme_var('on-primary-green')}; padding: 5px; border-radius: 5px;"
         UNSAVED_JOB_STYLE = f"background-color: {theme_var('primary-yellow')}; color: {theme_var('on-primary-yellow')}; padding: 5px; border-radius: 5px;"
 
-        if (
-            self._parent_widget.tab_text(
-                self._parent_widget.stackedWidget.currentIndex()
-            )
-            == "job_planner_tab"
-        ):
+        if self._parent_widget.tab_text(self._parent_widget.stackedWidget.currentIndex()) == "job_planner_tab":
             if job.unsaved_changes:
-                self._parent_widget.label_job_save_status.setText(
-                    "You have unsaved changes"
-                )
-                self._parent_widget.label_job_save_status.setStyleSheet(
-                    UNSAVED_JOB_STYLE
-                )
+                self._parent_widget.label_job_save_status.setText("You have unsaved changes")
+                self._parent_widget.label_job_save_status.setStyleSheet(UNSAVED_JOB_STYLE)
             else:
                 self._parent_widget.label_job_save_status.setText("Job is saved")
                 self._parent_widget.label_job_save_status.setStyleSheet(SAVED_JOB_STYLE)
         else:
             if job.unsaved_changes:
-                self._parent_widget.label_job_save_status_2.setText(
-                    "You have unsaved changes"
-                )
-                self._parent_widget.label_job_save_status_2.setStyleSheet(
-                    UNSAVED_JOB_STYLE
-                )
+                self._parent_widget.label_job_save_status_2.setText("You have unsaved changes")
+                self._parent_widget.label_job_save_status_2.setStyleSheet(UNSAVED_JOB_STYLE)
             else:
                 self._parent_widget.label_job_save_status_2.setText("Job is saved")
-                self._parent_widget.label_job_save_status_2.setStyleSheet(
-                    SAVED_JOB_STYLE
-                )
+                self._parent_widget.label_job_save_status_2.setStyleSheet(SAVED_JOB_STYLE)
 
     def update_tables(self):
         for job_widget in self.job_widgets:
             job_widget.update_tables()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget):
+    def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

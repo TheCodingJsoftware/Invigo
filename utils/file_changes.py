@@ -10,15 +10,11 @@ class FileChanges:
         self.server_file = from_file
         self.client_file = to_file
 
-        self.file_name = (
-            self.client_file.replace(".json", "").replace("data/", "").title()
-        )
+        self.file_name = self.client_file.replace(".json", "").replace("data/", "").title()
 
     def get_time_difference(self) -> float:
         try:
-            server_file_modified_date = datetime.strptime(
-                pathlib.Path(self.server_file).read_text(), "%m/%d/%Y %I:%M:%S %p"
-            )
+            server_file_modified_date = datetime.strptime(pathlib.Path(self.server_file).read_text(), "%m/%d/%Y %I:%M:%S %p")
         except FileNotFoundError:
             return -1
         client_file_modified_date = datetime.strptime(
@@ -34,11 +30,7 @@ class FileChanges:
             "Database last updated on %A %B %d %Y at %I:%M:%S %p",
             time.localtime(os.path.getmtime(self.client_file)),
         )
-        (
-            datetime.now().strftime(
-                "Database last updated on %A %B %d %Y at %I:%M:%S %p"
-            ),
-        )
+        (datetime.now().strftime("Database last updated on %A %B %d %Y at %I:%M:%S %p"),)
         difference = client_file_modified_date - server_file_modified_date
         difference = difference.total_seconds()
         return difference

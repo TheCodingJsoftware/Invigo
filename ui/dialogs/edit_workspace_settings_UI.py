@@ -67,7 +67,7 @@ class Ui_Form(object):
         self.scrollArea_2 = QtWidgets.QScrollArea(parent=self.tab_3)
         self.scrollArea_2.setMinimumSize(QtCore.QSize(0, 0))
         self.scrollArea_2.setWidgetResizable(True)
-        self.scrollArea_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.scrollArea_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignTop)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 1209, 20))
@@ -76,7 +76,12 @@ class Ui_Form(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.assemblies_flow_tag_layout = QtWidgets.QVBoxLayout()
         self.assemblies_flow_tag_layout.setObjectName("assemblies_flow_tag_layout")
-        spacerItem = QtWidgets.QSpacerItem(20, 500, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20,
+            500,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.assemblies_flow_tag_layout.addItem(spacerItem)
         self.verticalLayout_5.addLayout(self.assemblies_flow_tag_layout)
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
@@ -89,7 +94,12 @@ class Ui_Form(object):
         self.pushButton_create_new_assembly_group.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.pushButton_create_new_assembly_group.setObjectName("pushButton_create_new_assembly_group")
         self.horizontalLayout_5.addWidget(self.pushButton_create_new_assembly_group)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_5.addItem(spacerItem1)
         self.verticalLayout_6.addLayout(self.horizontalLayout_5)
         self.tabWidget.addTab(self.tab_3, "")
@@ -110,7 +120,12 @@ class Ui_Form(object):
         self.verticalLayout_13.setObjectName("verticalLayout_13")
         self.laser_cut_parts_flow_tag_layout = QtWidgets.QVBoxLayout()
         self.laser_cut_parts_flow_tag_layout.setObjectName("laser_cut_parts_flow_tag_layout")
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.laser_cut_parts_flow_tag_layout.addItem(spacerItem2)
         self.verticalLayout_13.addLayout(self.laser_cut_parts_flow_tag_layout)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -121,7 +136,12 @@ class Ui_Form(object):
         self.pushButton_create_new_laser_cut_part_group = QtWidgets.QPushButton(parent=self.tab)
         self.pushButton_create_new_laser_cut_part_group.setObjectName("pushButton_create_new_laser_cut_part_group")
         self.horizontalLayout_7.addWidget(self.pushButton_create_new_laser_cut_part_group)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_7.addItem(spacerItem3)
         self.verticalLayout_8.addLayout(self.horizontalLayout_7)
         self.tabWidget.addTab(self.tab, "")
@@ -142,7 +162,12 @@ class Ui_Form(object):
         self.verticalLayout_17.setObjectName("verticalLayout_17")
         self.components_flow_tag_layout = QtWidgets.QVBoxLayout()
         self.components_flow_tag_layout.setObjectName("components_flow_tag_layout")
-        spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.components_flow_tag_layout.addItem(spacerItem4)
         self.verticalLayout_17.addLayout(self.components_flow_tag_layout)
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
@@ -153,7 +178,12 @@ class Ui_Form(object):
         self.pushButton_create_new_components_group = QtWidgets.QPushButton(parent=self.tab_2)
         self.pushButton_create_new_components_group.setObjectName("pushButton_create_new_components_group")
         self.horizontalLayout_8.addWidget(self.pushButton_create_new_components_group)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_8.addItem(spacerItem5)
         self.verticalLayout_7.addLayout(self.horizontalLayout_8)
         self.tabWidget.addTab(self.tab_2, "")
@@ -225,7 +255,12 @@ class Ui_Form(object):
         self.pushButton_add_status.setFlat(False)
         self.pushButton_add_status.setObjectName("pushButton_add_status")
         self.horizontalLayout_6.addWidget(self.pushButton_add_status)
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem6 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_6.addItem(spacerItem6)
         self.verticalLayout_9.addLayout(self.horizontalLayout_6)
         self.horizontalLayout_2.addWidget(self.groupBox_4)
@@ -260,7 +295,12 @@ class Ui_Form(object):
         self.verticalLayout_2.addWidget(self.splitter)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem7 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_4.addItem(spacerItem7)
         self.pushButton_save = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_save.setAutoDefault(False)
@@ -288,24 +328,35 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label_2.setText(_translate("Form", "Notes:"))
-        self.textEdit_notes.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:\'Segoe UI\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">Create and edit flow tags, set attributes and statuses.</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">If a tag box is left as \'None\' it will not be part of the flow.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">&quot;Starts Timer&quot; starts the timer if the flow tag has a timer enabled, timers will be stop automatically when flow tag is changed.</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;\">Tags such as, &quot;Staging&quot;, &quot;Editing&quot;, and &quot;Planning&quot; cannot be used as flow tags, nothing will be checked if you use them, it could break everything, so, don\'t use them.</span></p></body></html>"))
+        self.textEdit_notes.setHtml(
+            _translate(
+                "Form",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><meta charset="utf-8" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "hr { height: 1px; border-width: 0; }\n"
+                'li.unchecked::marker { content: "\\2610"; }\n'
+                'li.checked::marker { content: "\\2612"; }\n'
+                "</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;">Create and edit flow tags, set attributes and statuses.</span></p>\n'
+                "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;\"><br /></p>\n"
+                "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt;\">If a tag box is left as 'None' it will not be part of the flow.</span></p>\n"
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;">&quot;Starts Timer&quot; starts the timer if the flow tag has a timer enabled, timers will be stop automatically when flow tag is changed.</span></p>\n'
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt;">Tags such as, &quot;Staging&quot;, &quot;Editing&quot;, and &quot;Planning&quot; cannot be used as flow tags, nothing will be checked if you use them, it could break everything, so, don\'t use them.</span></p></body></html>',
+            )
+        )
         self.pushButton_create_new_assembly_group.setText(_translate("Form", "Create New Group"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("Form", "Assembly Flow Tags"))
         self.pushButton_create_new_laser_cut_part_group.setText(_translate("Form", "Create New Group"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Form", "Laser Cut Part Flow Tags"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab),
+            _translate("Form", "Laser Cut Part Flow Tags"),
+        )
         self.pushButton_create_new_components_group.setText(_translate("Form", "Create New Group"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Form", "Component Flow Tags"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_2),
+            _translate("Form", "Component Flow Tags"),
+        )
         self.groupBox_2.setTitle(_translate("Form", "Edit Tags"))
         self.groupBox_3.setTitle(_translate("Form", "Select Tag"))
         self.label.setText(_translate("Form", "Double-click to rename"))
@@ -324,7 +375,12 @@ class Ui_Form(object):
         self.groupBox_5.setTitle(_translate("Form", "Attributes"))
         self.label_4.setText(_translate("Form", "Default Exp. Dur.:"))
         self.label_3.setText(_translate("Form", "Next flow tag message:"))
-        self.plainTextEdit_next_flow_tag_message.setToolTip(_translate("Form", "This message will show when it is the next tag in the flow tag."))
+        self.plainTextEdit_next_flow_tag_message.setToolTip(
+            _translate(
+                "Form",
+                "This message will show when it is the next tag in the flow tag.",
+            )
+        )
         self.pushButton_save.setText(_translate("Form", "Save"))
         self.pushButton_save_and_close.setText(_translate("Form", "Save and Close"))
         self.pushButton_cancel.setText(_translate("Form", "Cancel"))

@@ -16,9 +16,7 @@ class AddJobToWorkspaceWorker(BaseWorker):
         job_data = msgspec.json.encode(self.job.to_dict())
 
         with requests.Session() as session:
-            response = session.post(
-                self.url, data=job_data, headers=self.headers, timeout=10
-            )
+            response = session.post(self.url, data=job_data, headers=self.headers, timeout=10)
             response.raise_for_status()
 
             try:
@@ -37,9 +35,7 @@ class AddJobToWorkspaceWorker(BaseWorker):
         elif isinstance(e, requests.exceptions.ConnectionError):
             self.signals.error.emit({"error": "Could not connect to the server"}, 503)
         elif isinstance(e, requests.exceptions.HTTPError):
-            self.signals.error.emit(
-                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
-            )
+            self.signals.error.emit({"error": f"HTTP Error: {str(e)}"}, e.response.status_code)
         elif isinstance(e, requests.exceptions.RequestException):
             self.signals.error.emit({"error": f"Request error: {str(e)}"}, 500)
         elif isinstance(e, ValueError):

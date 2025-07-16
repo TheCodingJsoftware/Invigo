@@ -46,7 +46,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
@@ -95,7 +95,12 @@ class Ui_Form(object):
         self.label = QtWidgets.QLabel(parent=self.widget)
         self.label.setObjectName("label")
         self.horizontalLayout_3.addWidget(self.label)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_3.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.selection_label = QtWidgets.QLabel(parent=self.widget)
@@ -103,7 +108,12 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.selection_label)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem1)
         self.pushButton_set = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_set.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -126,7 +136,12 @@ class Ui_Form(object):
         self.lblMessage.setText(_translate("Form", "TextLabel"))
         self.groupBox.setTitle(_translate("Form", "Start Date"))
         self.groupBox_2.setTitle(_translate("Form", "End Date"))
-        self.checkBox.setToolTip(_translate("Form", "When enabled, the end date will have a fixed gap with respect to the starting date"))
+        self.checkBox.setToolTip(
+            _translate(
+                "Form",
+                "When enabled, the end date will have a fixed gap with respect to the starting date",
+            )
+        )
         self.checkBox.setText(_translate("Form", "lock"))
         self.label.setText(_translate("Form", "days from today."))
         self.selection_label.setText(_translate("Form", "TextLabel"))

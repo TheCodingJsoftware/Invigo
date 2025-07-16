@@ -18,9 +18,7 @@ class WorkspaceDownloadWorker(BaseWorker):
         super().__init__(name="WorkspaceDownloadWorker")
         self.files_to_download = files_to_download
         self.open_when_done = open_when_done
-        self.download_directory = download_directory or os.path.join(
-            Environment.DATA_PATH, "data", "workspace"
-        )
+        self.download_directory = download_directory or os.path.join(Environment.DATA_PATH, "data", "workspace")
         self.file_url = f"{self.DOMAIN}/workspace/get_file"
 
     def do_work(self):
@@ -53,9 +51,7 @@ class WorkspaceDownloadWorker(BaseWorker):
                             )  # Used in PDF Viewer
                     else:
                         self.signals.error.emit(response.text, response.status_code)
-                        self.logger.error(
-                            f"Failed to download {file_name}: {response.text}"
-                        )
+                        self.logger.error(f"Failed to download {file_name}: {response.text}")
 
         except Exception as e:
             self.signals.error.emit(str(e), 500)

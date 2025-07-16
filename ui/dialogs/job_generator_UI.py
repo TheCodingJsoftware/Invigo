@@ -36,7 +36,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.horizontalLayout_4.addWidget(self.lblMessage)
@@ -77,12 +77,18 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem)
-        self.pushButton_add = QtWidgets.QPushButton(parent=self.widget)
-        self.pushButton_add.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.pushButton_add.setObjectName("pushButton_add")
-        self.buttonsLayout.addWidget(self.pushButton_add)
+        self.pushButton_merge = QtWidgets.QPushButton(parent=self.widget)
+        self.pushButton_merge.setEnabled(False)
+        self.pushButton_merge.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.pushButton_merge.setObjectName("pushButton_merge")
+        self.buttonsLayout.addWidget(self.pushButton_merge)
         self.pushButton_cancel = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_cancel.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.pushButton_cancel.setObjectName("pushButton_cancel")
@@ -98,10 +104,13 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lblMessage.setText(_translate("Form", "Select jobs/assemblies and set quantity for selected assemblies.\n"
-"\n"
-"Press \'Add\' when finished."))
+        self.lblMessage.setText(
+            _translate(
+                "Form",
+                "Select jobs/assemblies and set quantity for selected assemblies.\n\nPress 'Add' when finished.",
+            )
+        )
         self.lineEdit_job_name.setPlaceholderText(_translate("Form", "Job name..."))
         self.groupBox.setTitle(_translate("Form", "Select Jobs/Assemblies"))
-        self.pushButton_add.setText(_translate("Form", "Merge"))
+        self.pushButton_merge.setText(_translate("Form", "Merge"))
         self.pushButton_cancel.setText(_translate("Form", "Cancel"))

@@ -43,9 +43,7 @@ class FlowtagDataWidget(QWidget):
 
             time_spin_box = TimeSpinBox(self)
             time_spin_box.setValue(tag_data["expected_time_to_complete"])
-            time_spin_box.dateTimeChanged.connect(
-                lambda value, t=tag: self.update_expected_time_to_complete(t, value)
-            )
+            time_spin_box.dateTimeChanged.connect(lambda value, t=tag: self.update_expected_time_to_complete(t, value))
 
             self.grid_layout.addWidget(time_spin_box, row, 2)
 
@@ -84,12 +82,8 @@ class FlowtagDataButton(QPushButton):
         button_rect = self.rect()
         global_pos = self.mapToGlobal(button_rect.topLeft())
 
-        adjusted_x = (
-            global_pos.x() + (button_rect.width() / 2) - (self.dropdown.width() / 2)
-        )
-        adjusted_y = (
-            global_pos.y() + (button_rect.height() / 2) - (self.dropdown.height() / 2)
-        )
+        adjusted_x = global_pos.x() + (button_rect.width() / 2) - (self.dropdown.width() / 2)
+        adjusted_y = global_pos.y() + (button_rect.height() / 2) - (self.dropdown.height() / 2)
 
         self.dropdown.move(int(adjusted_x), int(adjusted_y))
 

@@ -9,7 +9,7 @@ class SaveJobWorker(BaseWorker):
     def __init__(self, job: Job):
         super().__init__(name="SaveJobWorker")
         self.job = job
-        self.upload_url = f"{self.DOMAIN}/jobs/save_job"
+        self.upload_url = f"{self.DOMAIN}/jobs/save"
 
     def do_work(self):
         try:
@@ -32,9 +32,7 @@ class SaveJobWorker(BaseWorker):
                 response_data = msgspec.json.decode(response.content)
                 return response_data
         except requests.HTTPError as http_err:
-            self.signals.error.emit(
-                f"HTTP error occurred: {http_err}", http_err.response.status_code
-            )
+            self.signals.error.emit(f"HTTP error occurred: {http_err}", http_err.response.status_code)
         except requests.RequestException as err:
             self.signals.error.emit(f"An error occurred: {err}", 500)
         except msgspec.DecodeError:
@@ -47,9 +45,7 @@ class SaveJobWorker(BaseWorker):
         elif isinstance(e, requests.exceptions.ConnectionError):
             self.signals.error.emit({"error": "Could not connect to the server"}, 503)
         elif isinstance(e, requests.exceptions.HTTPError):
-            self.signals.error.emit(
-                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
-            )
+            self.signals.error.emit({"error": f"HTTP Error: {str(e)}"}, e.response.status_code)
         elif isinstance(e, requests.exceptions.RequestException):
             self.signals.error.emit({"error": f"Request failed: {str(e)}"}, 500)
         elif isinstance(e, ValueError):

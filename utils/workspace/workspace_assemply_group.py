@@ -45,9 +45,7 @@ class WorkspaceAssemblyGroup:
         elif isinstance(raw_data, (bytes, bytearray, str)):
             json_data = msgspec.json.decode(raw_data)
         else:
-            raise TypeError(
-                f"Unsupported data type for entry_data['data']: {type(raw_data)}"
-            )
+            raise TypeError(f"Unsupported data type for entry_data['data']: {type(raw_data)}")
         for assembly in self:
             if assembly.id == entry_data["id"]:
                 assembly.load_data(json_data)

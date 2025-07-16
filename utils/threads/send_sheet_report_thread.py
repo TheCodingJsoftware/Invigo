@@ -19,9 +19,7 @@ class SendReportThread(QThread):
 
     def run(self):
         try:
-            response = requests.post(
-                self.command_url, data=self.data, headers=self.headers, timeout=10
-            )
+            response = requests.post(self.command_url, data=self.data, headers=self.headers, timeout=10)
 
             if response.status_code == 200:
                 # Process the received response

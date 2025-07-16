@@ -36,9 +36,7 @@ class RunnableChain(QObject):
 
         # Optional: Log or handle errors without stopping the chain
         def error_handler(err, code):
-            print(
-                f"[RunnableChain] Step {self.current_index - 1} failed: {err} (status {code})"
-            )
+            print(f"[RunnableChain] Step {self.current_index - 1} failed: {err} (status {code})")
             self._run_next()
 
         worker.signals.error.connect(error_handler)

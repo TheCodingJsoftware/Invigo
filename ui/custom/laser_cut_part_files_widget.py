@@ -74,9 +74,7 @@ class LaserCutPartFilesWidget(QWidget):
         file_path: str,
     ):
         file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
-        file_button.buttonClicked.connect(
-            partial(self.laser_cut_part_file_clicked, file_path)
-        )
+        file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, file_path))
         file_name = os.path.basename(file_path)
         file_ext = file_name.split(".")[-1].upper()
         file_button.setText(file_ext)
@@ -85,24 +83,26 @@ class LaserCutPartFilesWidget(QWidget):
         files_layout.addWidget(file_button)
 
     def laser_cut_part_file_clicked(self, file_path: str):
+        def open_pdf(files: list[str]):
+            if file_path.lower().endswith(".pdf"):
+                if isinstance(self.item, WorkspaceLaserCutPartGroup):
+                    self.open_pdf(
+                        self.item.get_all_files_with_ext(".pdf"),
+                        file_path,
+                    )
+                elif isinstance(self.item, WorkspaceAssemblyGroup):
+                    self.open_pdf(
+                        self.item.get_files(".pdf"),
+                        file_path,
+                    )
+
         self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
         self.download_file_thread.signals.success.connect(self.file_downloaded)
+        self.download_file_thread.signals.success.connect(open_pdf)
         QThreadPool.globalInstance().start(self.download_file_thread)
-        if file_path.lower().endswith(".pdf"):
-            if isinstance(self.item, WorkspaceLaserCutPartGroup):
-                self.open_pdf(
-                    self.item.get_all_files_with_ext(".pdf"),
-                    file_path,
-                )
-            elif isinstance(self.item, WorkspaceAssemblyGroup):
-                self.open_pdf(
-                    self.item.get_files(".pdf"),
-                    file_path,
-                )
 
-    def file_downloaded(
-        self, file_ext: Optional[str], file_name: str, open_when_done: bool
-    ):
+    def file_downloaded(self, response: tuple[str, str, bool]):
+        file_ext, file_name, open_when_done = response
         if file_ext is None:
             msg = QMessageBox(
                 QMessageBox.Icon.Critical,

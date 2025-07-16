@@ -40,9 +40,7 @@ class BaseWorker(QRunnable):
             self.handle_exception(e)
         finally:
             self.signals.finished.emit()
-            self.logger.info(
-                f"[{self.__class__.__name__}] finished in {time.perf_counter() - start:.2f}s"
-            )
+            self.logger.info(f"[{self.__class__.__name__}] finished in {time.perf_counter() - start:.2f}s")
 
     def handle_exception(self, e):
         self.signals.error.emit({"error": str(e)}, 500)

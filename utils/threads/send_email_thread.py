@@ -23,9 +23,7 @@ class SendEmailThread(QThread):
     def run(self):
         data = {"title": self.title, "message": self.message, "emails": self.emails}
         try:
-            response = requests.post(
-                self.url, data=data, headers=self.headers, timeout=10
-            )
+            response = requests.post(self.url, data=data, headers=self.headers, timeout=10)
             if response.status_code == 200:
                 self.signal.emit("Email sent successfully")
             else:

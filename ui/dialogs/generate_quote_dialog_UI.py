@@ -46,7 +46,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
@@ -140,7 +140,12 @@ class Ui_Form(object):
         self.horizontalLayout_7.addWidget(self.checkBox_workorder)
         self.verticalLayout_7.addLayout(self.horizontalLayout_7)
         self.verticalLayout_5.addLayout(self.verticalLayout_7)
-        spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        spacerItem = QtWidgets.QSpacerItem(
+            20,
+            10,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Fixed,
+        )
         self.verticalLayout_5.addItem(spacerItem)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -177,7 +182,12 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.groupBox)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem1)
         self.pushButton_generate = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_generate.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -197,11 +207,19 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lblMessage.setText(_translate("Form", "Select which ever options you need.\n"
-"\n"
-"Press \'Generate\' when finished."))
+        self.lblMessage.setText(
+            _translate(
+                "Form",
+                "Select which ever options you need.\n\nPress 'Generate' when finished.",
+            )
+        )
         self.groupBox.setTitle(_translate("Form", "Options"))
-        self.pushButton_group.setToolTip(_translate("Form", "Primarily used to generate Quotes/Workorders from Workspace. Instead of combining all items into one list, it seperates them by their respective nest/assembly."))
+        self.pushButton_group.setToolTip(
+            _translate(
+                "Form",
+                "Primarily used to generate Quotes/Workorders from Workspace. Instead of combining all items into one list, it seperates them by their respective nest/assembly.",
+            )
+        )
         self.pushButton_group.setText(_translate("Form", "Group Items by Nest"))
         self.pushButton_quote.setToolTip(_translate("Form", "Will generate and save a quote to the Quote directory"))
         self.pushButton_quote.setText(_translate("Form", "Generate Quote"))

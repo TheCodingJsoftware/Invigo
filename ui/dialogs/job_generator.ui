@@ -201,7 +201,10 @@ Press 'Add' when finished.</string>
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_add">
+           <widget class="QPushButton" name="pushButton_merge">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>

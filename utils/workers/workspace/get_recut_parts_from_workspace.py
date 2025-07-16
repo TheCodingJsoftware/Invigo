@@ -33,13 +33,9 @@ class GetRecutPartsFromWorkspaceWorker(BaseWorker):
         if isinstance(e, requests.exceptions.Timeout):
             self.signals.error.emit({"error": f"Request timed out: {str(e)}"}, 408)
         elif isinstance(e, requests.exceptions.ConnectionError):
-            self.signals.error.emit(
-                {"error": f"Could not connect to the server: {str(e)}"}, 503
-            )
+            self.signals.error.emit({"error": f"Could not connect to the server: {str(e)}"}, 503)
         elif isinstance(e, requests.exceptions.HTTPError):
-            self.signals.error.emit(
-                {"error": f"HTTP Error: {str(e)}"}, e.response.status_code
-            )
+            self.signals.error.emit({"error": f"HTTP Error: {str(e)}"}, e.response.status_code)
         elif isinstance(e, requests.exceptions.RequestException):
             self.signals.error.emit({"error": f"Request failed: {str(e)}"}, 500)
         elif isinstance(e, ValueError):

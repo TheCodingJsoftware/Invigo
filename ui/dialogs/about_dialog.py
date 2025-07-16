@@ -17,9 +17,7 @@ class AboutDialog(QDialog, Ui_Form):
         self.setFixedSize(600, 500)
 
         pixmap = QPixmap(Icons.invigo_icon)
-        scaled_pixmap = pixmap.scaled(
-            self.lblIcon.size(), Qt.AspectRatioMode.KeepAspectRatio
-        )
+        scaled_pixmap = pixmap.scaled(self.lblIcon.size(), Qt.AspectRatioMode.KeepAspectRatio)
 
         self.lblIcon.setFixedSize(128, 128)
         self.lblIcon.setPixmap(scaled_pixmap)
@@ -29,9 +27,7 @@ class AboutDialog(QDialog, Ui_Form):
 
         self.lblTitle.setText(f"{version}")
 
-        self.lblHome.setText(
-            f"Home: <a style='text-decoration:none;color:yellow'href='{home}'>{home}</a>"
-        )
+        self.lblHome.setText(f"Home: <a style='text-decoration:none;color:yellow'href='{home}'>{home}</a>")
 
         self.scrollArea.setStyleSheet("border: 0px")
 

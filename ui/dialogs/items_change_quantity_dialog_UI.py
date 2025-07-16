@@ -46,7 +46,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
@@ -100,7 +100,12 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.groupBox)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_2.addItem(spacerItem)
         self.label = QtWidgets.QLabel(parent=self.widget)
         self.label.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -111,12 +116,22 @@ class Ui_Form(object):
         self.doubleSpinBox_quantity.setMaximum(99999999.0)
         self.doubleSpinBox_quantity.setObjectName("doubleSpinBox_quantity")
         self.horizontalLayout_2.addWidget(self.doubleSpinBox_quantity)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_2.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem2)
         self.pushButton_add = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_add.setEnabled(False)
@@ -153,7 +168,12 @@ class Ui_Form(object):
         self.groupBox.setTitle(_translate("Form", "Change Quantities by"))
         self.pushButton_item.setToolTip(_translate("Form", "Will remove quantities from the selected components."))
         self.pushButton_item.setText(_translate("Form", "Selected Item"))
-        self.pushButton_category.setToolTip(_translate("Form", "Will remove quantities from all items in the category that is currently open."))
+        self.pushButton_category.setToolTip(
+            _translate(
+                "Form",
+                "Will remove quantities from all items in the category that is currently open.",
+            )
+        )
         self.pushButton_category.setText(_translate("Form", "All Items in Category"))
         self.label.setText(_translate("Form", "Quantity:"))
         self.doubleSpinBox_quantity.setToolTip(_translate("Form", "Quantity multiplier/amount you want to remove by."))

@@ -72,6 +72,7 @@ dependencies = [
     "PyQt6-sip",
     "PyQt6-WebEngine",
     "PyQt6-WebEngine-Qt6",
+    "pyqtgraph>=0.13.7",
     "pyreadline3",
     "PySide6_Addons",
     "PySide6_Essentials",

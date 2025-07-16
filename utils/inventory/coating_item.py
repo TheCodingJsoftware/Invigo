@@ -31,9 +31,7 @@ class CoatingItem(InventoryItem):
         self.load_data(data)
 
     def get_component(self):
-        self.component = self.paint_inventory.components_inventory.get_component_by_id(
-            self.component_id
-        )
+        self.component = self.paint_inventory.components_inventory.get_component_by_id(self.component_id)
         if self.component:
             self.part_number = self.component.part_number
             self.part_name = self.component.part_name

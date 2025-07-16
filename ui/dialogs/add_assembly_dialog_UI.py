@@ -34,7 +34,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout.addWidget(self.lblMessage)
         self.treeWidget_assemblies = QtWidgets.QTreeWidget(parent=self.widget)
@@ -43,7 +43,12 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.treeWidget_assemblies)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.buttonsLayout.addItem(spacerItem)
         self.pushButton_add = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_add.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -65,7 +70,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lblMessage.setText(_translate("Form", "Press \'Add\' when finished."))
+        self.lblMessage.setText(_translate("Form", "Press 'Add' when finished."))
         self.treeWidget_assemblies.headerItem().setText(0, _translate("Form", "Job / Assemblies"))
         self.pushButton_add.setText(_translate("Form", "Add"))
         self.pushButton_cancel.setText(_translate("Form", "Cancel"))

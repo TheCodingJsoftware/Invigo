@@ -28,27 +28,17 @@ class RemoveComponentsWorker(BaseWorker):
                         if isinstance(result, bool):
                             results.append({"deleted": result, "id": component_id})
                         else:
-                            self.logger.warning(
-                                f"Invalid format deleting component {component_id}"
-                            )
-                            results.append(
-                                {"error": "Invalid data format", "id": component_id}
-                            )
+                            self.logger.warning(f"Invalid format deleting component {component_id}")
+                            results.append({"error": "Invalid data format", "id": component_id})
                     except msgspec.DecodeError:
-                        results.append(
-                            {"error": "Failed to decode response", "id": component_id}
-                        )
+                        results.append({"error": "Failed to decode response", "id": component_id})
                 except requests.exceptions.Timeout:
                     results.append({"error": "Request timed out", "id": component_id})
                 except requests.exceptions.ConnectionError:
                     results.append({"error": "Connection error", "id": component_id})
                 except requests.exceptions.HTTPError as e:
-                    results.append(
-                        {"error": f"HTTP Error: {str(e)}", "id": component_id}
-                    )
+                    results.append({"error": f"HTTP Error: {str(e)}", "id": component_id})
                 except requests.exceptions.RequestException as e:
-                    results.append(
-                        {"error": f"Request failed: {str(e)}", "id": component_id}
-                    )
+                    results.append({"error": f"Request failed: {str(e)}", "id": component_id})
 
         return (results, self.components)

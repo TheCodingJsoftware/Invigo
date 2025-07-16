@@ -17,9 +17,7 @@ class IsClientTrustedWorker(BaseWorker):
                 response_data = response.json()
                 return response_data
         except requests.HTTPError as http_err:
-            self.signals.error.emit(
-                f"HTTP error occurred: {http_err}", http_err.response.status_code
-            )
+            self.signals.error.emit(f"HTTP error occurred: {http_err}", http_err.response.status_code)
         except requests.RequestException as err:
             self.signals.error.emit(f"An error occurred: {err}", 500)
         except msgspec.DecodeError:

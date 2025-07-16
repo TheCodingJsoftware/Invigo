@@ -120,15 +120,9 @@ class JobPreferences:
                 "is_image_closed": False,
             },
         )
-        self.closed_toolboxes[nest.get_name()]["is_setting_closed"] = (
-            setting_button.isChecked()
-        )
-        self.closed_toolboxes[nest.get_name()]["is_laser_cut_closed"] = (
-            laser_cut_button.isChecked()
-        )
-        self.closed_toolboxes[nest.get_name()]["is_image_closed"] = (
-            image_button.isChecked()
-        )
+        self.closed_toolboxes[nest.get_name()]["is_setting_closed"] = setting_button.isChecked()
+        self.closed_toolboxes[nest.get_name()]["is_laser_cut_closed"] = laser_cut_button.isChecked()
+        self.closed_toolboxes[nest.get_name()]["is_image_closed"] = image_button.isChecked()
 
     def is_nest_setting_closed(self, nest: Nest) -> bool:
         try:

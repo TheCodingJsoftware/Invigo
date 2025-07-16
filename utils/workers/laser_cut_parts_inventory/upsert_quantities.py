@@ -8,9 +8,7 @@ from utils.workers.base_worker import BaseWorker
 
 
 class UpsertQuantitiesWorker(BaseWorker):
-    def __init__(
-        self, laser_cut_parts: list[LaserCutPart], operation: Literal["ADD", "SUBTRACT"]
-    ):
+    def __init__(self, laser_cut_parts: list[LaserCutPart], operation: Literal["ADD", "SUBTRACT"]):
         super().__init__(name="UpsertQuantitiesWorker")
         self.laser_cut_parts = laser_cut_parts
         self.operation = operation
@@ -22,9 +20,7 @@ class UpsertQuantitiesWorker(BaseWorker):
             data.append(laser_cut_part.to_dict())
 
         with requests.Session() as session:
-            response = session.post(
-                self.url, json=data, headers=self.headers, timeout=10
-            )
+            response = session.post(self.url, json=data, headers=self.headers, timeout=10)
             response.raise_for_status()
 
             try:

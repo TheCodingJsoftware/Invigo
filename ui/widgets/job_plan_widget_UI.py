@@ -101,7 +101,12 @@ class Ui_Form(object):
         self.comboBox_job_status.setItemText(2, _translate("Form", "Quoted"))
         self.comboBox_job_status.setItemText(3, _translate("Form", "Quote Confirmed"))
         self.comboBox_job_status.setItemText(4, _translate("Form", "Template"))
-        self.pushButton_load_job.setToolTip(_translate("Form", "Loads the selected job into a new tab for detailed viewing and editing."))
+        self.pushButton_load_job.setToolTip(
+            _translate(
+                "Form",
+                "Loads the selected job into a new tab for detailed viewing and editing.",
+            )
+        )
         self.pushButton_load_job.setText(_translate("Form", "Load Job"))
         self.pushButton_open_in_browser.setToolTip(_translate("Form", "Will open up the printout in your default web browser."))
         self.label_modified_date.setText(_translate("Form", "TextLabel"))

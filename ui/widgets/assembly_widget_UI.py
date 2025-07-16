@@ -13,7 +13,10 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(945, 625)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
@@ -24,7 +27,10 @@ class Ui_Form(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.assembly_widget = QtWidgets.QWidget(parent=Form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.assembly_widget.sizePolicy().hasHeightForWidth())
@@ -37,7 +43,7 @@ class Ui_Form(object):
         self.verticalLayout_14.setObjectName("verticalLayout_14")
         self.label_total_cost_for_assembly = QtWidgets.QLabel(parent=self.assembly_widget)
         self.label_total_cost_for_assembly.setWordWrap(True)
-        self.label_total_cost_for_assembly.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.label_total_cost_for_assembly.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.label_total_cost_for_assembly.setObjectName("label_total_cost_for_assembly")
         self.verticalLayout_14.addWidget(self.label_total_cost_for_assembly)
         self.verticalWidget_4 = QtWidgets.QWidget(parent=self.assembly_widget)
@@ -126,12 +132,21 @@ class Ui_Form(object):
         self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.paint_widget)
         self.checkBox_not_part_of_process = QtWidgets.QCheckBox(parent=self.flowtag_widget_settings)
         self.checkBox_not_part_of_process.setObjectName("checkBox_not_part_of_process")
-        self.formLayout_3.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_not_part_of_process)
+        self.formLayout_3.setWidget(
+            2,
+            QtWidgets.QFormLayout.ItemRole.LabelRole,
+            self.checkBox_not_part_of_process,
+        )
         self.formLayout_2.setLayout(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.formLayout_3)
         self.verticalLayout_12.addWidget(self.flowtag_widget_settings)
         self.verticalLayout_12.setStretch(2, 1)
         self.horizontalLayout.addLayout(self.verticalLayout_12)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.horizontalLayout.setStretch(2, 1)
         self.verticalLayout_14.addWidget(self.verticalWidget_4)
@@ -168,7 +183,12 @@ class Ui_Form(object):
         self.add_laser_cut_part_button.setDefault(True)
         self.add_laser_cut_part_button.setObjectName("add_laser_cut_part_button")
         self.horizontalLayout_4.addWidget(self.add_laser_cut_part_button)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_4.addItem(spacerItem1)
         self.verticalLayout_5.addLayout(self.horizontalLayout_4)
         self.verticalLayout_7.addLayout(self.verticalLayout_5)
@@ -185,7 +205,10 @@ class Ui_Form(object):
         self.pushButton_components.setObjectName("pushButton_components")
         self.verticalLayout_3.addWidget(self.pushButton_components)
         self.component_widget = QtWidgets.QWidget(parent=self.assembly_widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.component_widget.sizePolicy().hasHeightForWidth())
@@ -212,7 +235,12 @@ class Ui_Form(object):
         self.add_component_button.setDefault(True)
         self.add_component_button.setObjectName("add_component_button")
         self.horizontalLayout_3.addWidget(self.add_component_button)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_3.addItem(spacerItem2)
         self.verticalLayout_6.addLayout(self.horizontalLayout_3)
         self.verticalLayout_2.addLayout(self.verticalLayout_6)
@@ -245,7 +273,12 @@ class Ui_Form(object):
         self.pushButton.setDefault(True)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_2.addItem(spacerItem3)
         self.verticalLayout_19.addLayout(self.horizontalLayout_2)
         self.verticalLayout_20.addLayout(self.verticalLayout_19)
@@ -263,7 +296,10 @@ class Ui_Form(object):
         self.pushButton_sub_assemblies.setObjectName("pushButton_sub_assemblies")
         self.verticalLayout_10.addWidget(self.pushButton_sub_assemblies)
         self.sub_assemblies_widget = QtWidgets.QWidget(parent=self.assembly_widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sub_assemblies_widget.sizePolicy().hasHeightForWidth())
@@ -289,7 +325,11 @@ class Ui_Form(object):
         self.add_new_sub_assembly_button.setSizePolicy(sizePolicy)
         self.add_new_sub_assembly_button.setDefault(True)
         self.add_new_sub_assembly_button.setObjectName("add_new_sub_assembly_button")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.add_new_sub_assembly_button)
+        self.formLayout.setWidget(
+            0,
+            QtWidgets.QFormLayout.ItemRole.LabelRole,
+            self.add_new_sub_assembly_button,
+        )
         self.add_existing_assembly_button = QtWidgets.QPushButton(parent=self.sub_assemblies_widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -298,7 +338,11 @@ class Ui_Form(object):
         self.add_existing_assembly_button.setSizePolicy(sizePolicy)
         self.add_existing_assembly_button.setDefault(True)
         self.add_existing_assembly_button.setObjectName("add_existing_assembly_button")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.add_existing_assembly_button)
+        self.formLayout.setWidget(
+            0,
+            QtWidgets.QFormLayout.ItemRole.FieldRole,
+            self.add_existing_assembly_button,
+        )
         self.verticalLayout_11.addLayout(self.formLayout)
         self.verticalLayout_11.setStretch(0, 1)
         self.verticalLayout_10.addWidget(self.sub_assemblies_widget)
@@ -310,10 +354,10 @@ class Ui_Form(object):
         self.label.setBuddy(self.comboBox_assembly_flow_tag)
 
         self.retranslateUi(Form)
-        self.pushButton_laser_cut_parts.clicked['bool'].connect(self.laser_cut_widget.setVisible) # type: ignore
-        self.pushButton_components.clicked['bool'].connect(self.component_widget.setVisible) # type: ignore
-        self.pushButton_sub_assemblies.clicked['bool'].connect(self.sub_assemblies_widget.setVisible) # type: ignore
-        self.pushButton_structural_steel_items.clicked['bool'].connect(self.structural_steel_items_widget.setVisible) # type: ignore
+        self.pushButton_laser_cut_parts.clicked["bool"].connect(self.laser_cut_widget.setVisible)  # type: ignore
+        self.pushButton_components.clicked["bool"].connect(self.component_widget.setVisible)  # type: ignore
+        self.pushButton_sub_assemblies.clicked["bool"].connect(self.sub_assemblies_widget.setVisible)  # type: ignore
+        self.pushButton_structural_steel_items.clicked["bool"].connect(self.structural_steel_items_widget.setVisible)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -326,7 +370,12 @@ class Ui_Form(object):
         self.pushButton_show_parts_list_summary.setText(_translate("Form", "Show Parts List Summary"))
         self.label_2.setText(_translate("Form", "Assembly files:"))
         self.label.setText(_translate("Form", "Assembly flowtag:"))
-        self.checkBox_not_part_of_process.setToolTip(_translate("Form", "Flow tags ignored as they’re irrelevant to the upper-level assembly"))
+        self.checkBox_not_part_of_process.setToolTip(
+            _translate(
+                "Form",
+                "Flow tags ignored as they’re irrelevant to the upper-level assembly",
+            )
+        )
         self.checkBox_not_part_of_process.setText(_translate("Form", "Not part of the process"))
         self.pushButton_laser_cut_parts.setText(_translate("Form", "Laser Cut Parts"))
         self.add_laser_cut_part_button.setText(_translate("Form", "Add Laser Cut Part"))

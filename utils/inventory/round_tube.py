@@ -18,12 +18,10 @@ class RoundTube(StructuralProfile):
         return f"{self.material} {self.PROFILE_TYPE.value} {self.outside_diameter:,.3f} x {self.inside_diameter:,.3f}"
 
     def tooltip(self) -> str:
-        return f'Length: {self.length:,.3f} in\nOutside Diameter: {self.outside_diameter:,.3f} in\nInside Diameter: {self.inside_diameter:,.3f} in\nWall Thickness: {self.wall_thickness:,.3f} in'
+        return f"Length: {self.length:,.3f} in\nOutside Diameter: {self.outside_diameter:,.3f} in\nInside Diameter: {self.inside_diameter:,.3f} in\nWall Thickness: {self.wall_thickness:,.3f} in"
 
     def get_cross_section_area(self) -> float:
-        return (math.pi / 4) * (
-            math.pow(self.outside_diameter, 2) - math.pow(self.inside_diameter, 2)
-        )
+        return (math.pi / 4) * (math.pow(self.outside_diameter, 2) - math.pow(self.inside_diameter, 2))
 
     def get_volume(self) -> float:
         return self.get_cross_section_area() * self.length

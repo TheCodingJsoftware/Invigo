@@ -34,7 +34,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout.addWidget(self.lblMessage)
@@ -74,13 +74,18 @@ class Ui_Form(object):
         self.horizontalLayout_3.addWidget(self.pushButton_selected_directory)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.label_2 = QtWidgets.QLabel(parent=self.widget)
-        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignTrailing | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_2.setWordWrap(True)
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout_2.addItem(spacerItem)
         self.pushButton_download = QtWidgets.QPushButton(parent=self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -118,6 +123,11 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "Download files to:"))
         self.label_3.setText(_translate("Form", "*"))
         self.lineEdit_download_path.setPlaceholderText(_translate("Form", "Path to where the files should download to..."))
-        self.label_2.setText(_translate("Form", "* Files will be sorted into folders with respect to their extension."))
+        self.label_2.setText(
+            _translate(
+                "Form",
+                "* Files will be sorted into folders with respect to their extension.",
+            )
+        )
         self.pushButton_download.setText(_translate("Form", "Download"))
         self.pushButton_cancel.setText(_translate("Form", "Cancel"))

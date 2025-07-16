@@ -29,33 +29,21 @@ class NestSheetVerification(QDialog, Ui_Form):
         self.setWindowTitle("Sheet Nest Verification")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.pushButton_set.clicked.connect(
-            partial(self.button_press, DialogButtons.set)
-        )
-        self.pushButton_skip.clicked.connect(
-            partial(self.button_press, DialogButtons.skip)
-        )
+        self.pushButton_set.clicked.connect(partial(self.button_press, DialogButtons.set))
+        self.pushButton_skip.clicked.connect(partial(self.button_press, DialogButtons.skip))
         self.pushButton_cancel.clicked.connect(self.reject)
 
         self.listWidget_thicknesses.addItems(self.sheet_settings.get_thicknesses())
-        self.listWidget_thicknesses.setSelectionMode(
-            QAbstractItemView.SelectionMode.SingleSelection
-        )
+        self.listWidget_thicknesses.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         try:
-            self.listWidget_thicknesses.setCurrentRow(
-                self.sheet_settings.get_thicknesses().index(thickness)
-            )
+            self.listWidget_thicknesses.setCurrentRow(self.sheet_settings.get_thicknesses().index(thickness))
         except ValueError:
             self.message += f'\n\nNOTICE: "{thickness}" is not in the global thickness list in "sheet_settings.json"; to add it go to Sheet Settings > Add Thickness'
 
         self.listWidget_materials.addItems(self.sheet_settings.get_materials())
-        self.listWidget_materials.setSelectionMode(
-            QAbstractItemView.SelectionMode.SingleSelection
-        )
+        self.listWidget_materials.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         try:
-            self.listWidget_materials.setCurrentRow(
-                self.sheet_settings.get_materials().index(material)
-            )
+            self.listWidget_materials.setCurrentRow(self.sheet_settings.get_materials().index(material))
         except ValueError:
             self.message += f'\n\nNOTICE: "{material}" is not in the global material list in "sheet_settings.json"; to add it go to > Sheet Settings > Add Material'
 
