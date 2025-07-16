@@ -48,15 +48,9 @@ class Nest:
             return 0.0
 
     def get_sheet_cost(self) -> float:
-        if price_per_pound := self.sheet_settings.get_price_per_pound(
-            self.sheet.material
-        ):
-            if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(
-                self.sheet.material, self.sheet.thickness
-            ):
-                pounds_per_sheet = (
-                    (self.sheet.length * self.sheet.width) / 144
-                ) * pounds_per_square_foot
+        if price_per_pound := self.sheet_settings.get_price_per_pound(self.sheet.material):
+            if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(self.sheet.material, self.sheet.thickness):
+                pounds_per_sheet = ((self.sheet.length * self.sheet.width) / 144) * pounds_per_square_foot
                 return price_per_pound * pounds_per_sheet
         return 0.0
 
@@ -77,9 +71,7 @@ class Nest:
         self.laser_cut_parts.clear()
         for laser_cut_part_data in data.get("laser_cut_parts", []):
             try:
-                laser_cut_part = LaserCutPart(
-                    laser_cut_part_data, self.laser_cut_inventory
-                )
+                laser_cut_part = LaserCutPart(laser_cut_part_data, self.laser_cut_inventory)
             except AttributeError:  # Old inventory format
                 laser_cut_part = LaserCutPart(
                     data["laser_cut_parts"][laser_cut_part_data],
@@ -109,9 +101,6 @@ class Nest:
             "scrap_percentage": self.scrap_percentage,
             "sheet_cut_time": self.sheet_cut_time,
             "image_path": self.image_path,
-            "laser_cut_parts": {
-                laser_cut_part.name: laser_cut_part.to_dict()
-                for laser_cut_part in self.laser_cut_parts
-            },
+            "laser_cut_parts": {laser_cut_part.name: laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts},
             "sheet": {self.sheet.get_name(): self.sheet.to_dict()},
         }

@@ -113,3 +113,6 @@ restore_laser_cut_inventory_category_quantities.py
 upload_update.py
 *.eddx
 *.bat
+*.lock
+*.sql
+dxf test files/

@@ -38,9 +38,7 @@ class AddAssemblyDialog(QDialog, Ui_Form):
             self.treeWidget_assemblies.addTopLevelItem(job_item)
             self.add_assemblies_to_tree(job_item, job.assemblies)
 
-    def add_assemblies_to_tree(
-        self, parent_item: QTreeWidgetItem, assemblies: list[Assembly]
-    ):
+    def add_assemblies_to_tree(self, parent_item: QTreeWidgetItem, assemblies: list[Assembly]):
         for assembly in assemblies:
             assembly_item = QTreeWidgetItem([assembly.name])
             parent_item.addChild(assembly_item)

@@ -7,9 +7,9 @@ from utils.workspace.tag import Tag
 
 
 class WorkspaceAssemblyGroup:
-    def __init__(self):
+    def __init__(self) -> None:
         self.assemblies: list[Assembly] = []
-        self.base_assembly: Assembly = None
+        self.base_assembly: Assembly | None = None
 
     def add_assembly(self, assembly: Assembly):
         if not self.base_assembly:
@@ -33,6 +33,11 @@ class WorkspaceAssemblyGroup:
     def get_ids(self) -> str:
         return ",".join(str(assembly.id) for assembly in self)
 
+    def update_all_entries(self, entries_data: list[dict]) -> "WorkspaceAssemblyGroup":
+        for entry_data in entries_data:
+            self.update_entry(entry_data)
+        return self
+
     def update_entry(self, entry_data: dict) -> Optional[Assembly]:
         raw_data = entry_data["data"]
         if isinstance(raw_data, dict):
@@ -40,9 +45,7 @@ class WorkspaceAssemblyGroup:
         elif isinstance(raw_data, (bytes, bytearray, str)):
             json_data = msgspec.json.decode(raw_data)
         else:
-            raise TypeError(
-                f"Unsupported data type for entry_data['data']: {type(raw_data)}"
-            )
+            raise TypeError(f"Unsupported data type for entry_data['data']: {type(raw_data)}")
         for assembly in self:
             if assembly.id == entry_data["id"]:
                 assembly.load_data(json_data)
@@ -50,7 +53,9 @@ class WorkspaceAssemblyGroup:
         return None
 
     def get_current_tag(self) -> Optional[Tag]:
-        return self.base_assembly.get_current_tag()
+        if self.base_assembly:
+            return self.base_assembly.get_current_tag()
+        return None
 
     def set_flow_tag_status_index(self, status_index: int):
         for assembly in self:

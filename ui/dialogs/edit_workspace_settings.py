@@ -51,9 +51,7 @@ class TagWidget(QWidget):
         self.remaining_tags = remaining_tags
         self.workspace_settings = workspace_settings
         self.tag = tag
-        self.setStyleSheet(
-            f"QWidget#tag_idget{{border: 1px solid {theme_var('outline')};}}"
-        )
+        self.setStyleSheet(f"QWidget#tag_idget{{border: 1px solid {theme_var('outline')};}}")
         v_layout = QVBoxLayout(self)
         v_layout.setContentsMargins(0, 0, 0, 0)
         v_layout.setSpacing(0)
@@ -86,9 +84,7 @@ class TagWidget(QWidget):
         self.remove_quantity_checkbox.setToolTip(
             "Removes quantity from inventory when this tag is completed.\nThis would typically be when the part is complete, or nearly complete.\nNote: This is part specific; quantity will be adjusted with respect to the part."
         )
-        self.remove_quantity_checkbox.toggled.connect(
-            self.removeQuantityTagChanged.emit
-        )
+        self.remove_quantity_checkbox.toggled.connect(self.removeQuantityTagChanged.emit)
         h_layout_2.addWidget(self.add_quantity_checkbox)
         h_layout_2.addWidget(self.remove_quantity_checkbox)
 
@@ -103,13 +99,7 @@ class TagWidget(QWidget):
     def update_tag_selections(self, used_tags: list[str]):
         self.tag_combobox.blockSignals(True)
         self.tag_combobox.clear()
-        self.tag_combobox.addItems(
-            [
-                tag.name
-                for tag in self.workspace_settings.tags
-                if tag.name not in used_tags
-            ]
-        )
+        self.tag_combobox.addItems([tag.name for tag in self.workspace_settings.tags if tag.name not in used_tags])
         self.tag_combobox.addItem(self.tag.name)
         self.tag_combobox.setCurrentText(self.tag.name)
         self.tag_combobox.blockSignals(False)
@@ -157,27 +147,15 @@ class FlowTagWidget(QWidget):
 
     def load_data(self):
         for tag in self.flow_tag:
-            tag_widget = TagWidget(
-                tag, self.remaining_tags, self.workspace_settings, self
-            )
-            tag_widget.addQuantityTagChanged.connect(
-                partial(self.add_quantity_tag_changed, tag_widget)
-            )
-            tag_widget.removeQuantityTagChanged.connect(
-                partial(self.remove_quantity_tag_changed, tag_widget)
-            )
+            tag_widget = TagWidget(tag, self.remaining_tags, self.workspace_settings, self)
+            tag_widget.addQuantityTagChanged.connect(partial(self.add_quantity_tag_changed, tag_widget))
+            tag_widget.removeQuantityTagChanged.connect(partial(self.remove_quantity_tag_changed, tag_widget))
             tag_widget.tagDeleted.connect(partial(self.delete_tag, tag_widget))
-            if (
-                self.flow_tag.add_quantity_tag
-                and self.flow_tag.add_quantity_tag.name == tag.name
-            ):
+            if self.flow_tag.add_quantity_tag and self.flow_tag.add_quantity_tag.name == tag.name:
                 tag_widget.add_quantity_checkbox.blockSignals(True)
                 tag_widget.add_quantity_checkbox.setChecked(True)
                 tag_widget.add_quantity_checkbox.blockSignals(False)
-            if (
-                self.flow_tag.remove_quantity_tag
-                and self.flow_tag.remove_quantity_tag.name == tag.name
-            ):
+            if self.flow_tag.remove_quantity_tag and self.flow_tag.remove_quantity_tag.name == tag.name:
                 tag_widget.remove_quantity_checkbox.blockSignals(True)
                 tag_widget.remove_quantity_checkbox.setChecked(True)
                 tag_widget.remove_quantity_checkbox.blockSignals(False)
@@ -187,16 +165,10 @@ class FlowTagWidget(QWidget):
 
     def add_tag(self):
         new_tag = self.remaining_tags[0]
-        tag_widget = TagWidget(
-            new_tag, self.remaining_tags, self.workspace_settings, self
-        )
+        tag_widget = TagWidget(new_tag, self.remaining_tags, self.workspace_settings, self)
         self.flow_tag.add_tag(new_tag)
-        tag_widget.addQuantityTagChanged.connect(
-            partial(self.add_quantity_tag_changed, tag_widget)
-        )
-        tag_widget.removeQuantityTagChanged.connect(
-            partial(self.remove_quantity_tag_changed, tag_widget)
-        )
+        tag_widget.addQuantityTagChanged.connect(partial(self.add_quantity_tag_changed, tag_widget))
+        tag_widget.removeQuantityTagChanged.connect(partial(self.remove_quantity_tag_changed, tag_widget))
         tag_widget.tagDeleted.connect(partial(self.delete_tag, tag_widget))
         self.tag_widgets.append(tag_widget)
         self.tag_layout.addWidget(tag_widget)
@@ -243,14 +215,8 @@ class FlowTagWidget(QWidget):
         self.update_tag_selections()
 
     def update_tag_selections(self):
-        self.add_tag_button.setEnabled(
-            len(self.flow_tag.tags) != len(self.workspace_settings.tags)
-        )
-        self.remaining_tags = [
-            tag
-            for tag in self.workspace_settings.tags
-            if tag.name not in self.flow_tag.to_list()
-        ]
+        self.add_tag_button.setEnabled(len(self.flow_tag.tags) != len(self.workspace_settings.tags))
+        self.remaining_tags = [tag for tag in self.workspace_settings.tags if tag.name not in self.flow_tag.to_list()]
         for tag_widget in self.tag_widgets:
             tag_widget.update_tag_selections(used_tags=self.flow_tag.to_list())
 
@@ -268,9 +234,7 @@ class FlowTagsTableWidget(QTableWidget):
         self.table_items: dict[Flowtag, QTableWidgetItem] = {}
         self.flow_tag_counter: int = 0
 
-        self.table_widgets: dict[
-            Flowtag, dict[str, QTableWidgetItem | FlowTagWidget]
-        ] = {}
+        self.table_widgets: dict[Flowtag, dict[str, QTableWidgetItem | FlowTagWidget]] = {}
 
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
@@ -309,9 +273,7 @@ class FlowTagsTableWidget(QTableWidget):
             self.removeCellWidget(row_count - 1, 0)
 
         self.insertRow(self.rowCount())
-        flow_tag = Flowtag(
-            f"Flowtag{self.flow_tag_counter}", {}, self.workspace_settings
-        )
+        flow_tag = Flowtag(f"Flowtag{self.flow_tag_counter}", {}, self.workspace_settings)
 
         self.flow_tag_group.add_flow_tag(flow_tag)
 
@@ -366,11 +328,7 @@ class FlowTagsTableWidget(QTableWidget):
 
     def get_selected_flow_tags(self) -> list[Flowtags]:
         selected_flow_tags: list[Flowtags] = []
-        selected_flow_tags.extend(
-            flow_tag
-            for flow_tag, table_items in self.table_widgets.items()
-            if table_items["name"].isSelected()
-        )
+        selected_flow_tags.extend(flow_tag for flow_tag, table_items in self.table_widgets.items() if table_items["name"].isSelected())
         return selected_flow_tags
 
     def get_selected_flow_tag(self) -> Flowtag:
@@ -404,17 +362,13 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
         self.laser_cut_parts_groups_multi_tool_box = AssemblyMultiToolBox(self)
         self.components_groups_multi_tool_box = AssemblyMultiToolBox(self)
 
-        self.actve_groups_multi_tool_box: AssemblyMultiToolBox = (
-            self.laser_cut_parts_groups_multi_tool_box
-        )
+        self.actve_groups_multi_tool_box: AssemblyMultiToolBox = self.laser_cut_parts_groups_multi_tool_box
 
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
         self.flow_tag_tables: dict[Flowtags, FlowTagsTableWidget] = {}
 
-        self.listWidget_select_tag.currentItemChanged.connect(
-            self.tag_selection_changed
-        )
+        self.listWidget_select_tag.currentItemChanged.connect(self.tag_selection_changed)
         self.listWidget_select_tag.itemDoubleClicked.connect(self.rename_tag)
         self.last_selected_row = 0
 
@@ -426,28 +380,20 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
         self.tableWidget_statuses.setColumnWidth(1, 200)
         self.tableWidget_statuses.setColumnWidth(2, 200)
         self.tableWidget_statuses.setColumnWidth(3, 40)
-        self.status_table_items: dict[
-            TagStatus, dict[str, QTableWidgetItem | QCheckBox]
-        ] = {}
+        self.status_table_items: dict[TagStatus, dict[str, QTableWidgetItem | QCheckBox]] = {}
         self.pushButton_add_status.clicked.connect(self.add_status)
 
-        self.plainTextEdit_next_flow_tag_message.textChanged.connect(
-            self.next_flow_tag_message_changed
-        )
+        self.plainTextEdit_next_flow_tag_message.textChanged.connect(self.next_flow_tag_message_changed)
 
         self.time_spin_box = TimeSpinBox(self)
-        self.time_spin_box.dateTimeChanged.connect(
-            self.default_expected_time_to_complete_changed
-        )
+        self.time_spin_box.dateTimeChanged.connect(self.default_expected_time_to_complete_changed)
         self.verticalLayout_expected_time_to_complete.addWidget(self.time_spin_box)
 
         self.pushButton_add_tag.clicked.connect(self.add_tag)
         self.pushButton_delete_tag.clicked.connect(self.delete_tag)
 
         self.pushButton_create_new_assembly_group.clicked.connect(self.create_group)
-        self.pushButton_create_new_laser_cut_part_group.clicked.connect(
-            self.create_group
-        )
+        self.pushButton_create_new_laser_cut_part_group.clicked.connect(self.create_group)
         self.pushButton_create_new_components_group.clicked.connect(self.create_group)
 
         self.pushButton_save.clicked.connect(self.save)
@@ -467,9 +413,7 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
         if self.tabWidget.currentIndex() == 0:
             self.actve_groups_multi_tool_box = self.assembly_groups_multi_tool_box
         elif self.tabWidget.currentIndex() == 1:
-            self.actve_groups_multi_tool_box = (
-                self.laser_cut_parts_groups_multi_tool_box
-            )
+            self.actve_groups_multi_tool_box = self.laser_cut_parts_groups_multi_tool_box
         elif self.tabWidget.currentIndex() == 2:
             self.actve_groups_multi_tool_box = self.components_groups_multi_tool_box
 
@@ -486,59 +430,31 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
             self.add_group(flow_tag_group)
 
     def add_group(self, flow_tag_group: Flowtags):
-        table_widget = FlowTagsTableWidget(
-            flow_tag_group, self.workspace_settings, self
-        )
+        table_widget = FlowTagsTableWidget(flow_tag_group, self.workspace_settings, self)
         if flow_tag_group.group == Group.ASSEMBLY:
-            self.assembly_groups_multi_tool_box.addItem(
-                table_widget, flow_tag_group.name
-            )
+            self.assembly_groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
             delete_button = self.assembly_groups_multi_tool_box.getLastDeleteButton()
             delete_button.clicked.connect(partial(self.delete_group, flow_tag_group))
             input_box = self.assembly_groups_multi_tool_box.getLastInputBox()
-            input_box.textChanged.connect(
-                partial(self.rename_group, flow_tag_group, input_box)
-            )
-            duplicate_button = (
-                self.assembly_groups_multi_tool_box.getLastDuplicateButton()
-            )
-            duplicate_button.clicked.connect(
-                partial(self.duplicate_group, flow_tag_group)
-            )
+            input_box.textChanged.connect(partial(self.rename_group, flow_tag_group, input_box))
+            duplicate_button = self.assembly_groups_multi_tool_box.getLastDuplicateButton()
+            duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
         elif flow_tag_group.group == Group.LASER_CUT_PART:
-            self.laser_cut_parts_groups_multi_tool_box.addItem(
-                table_widget, flow_tag_group.name
-            )
-            delete_button = (
-                self.laser_cut_parts_groups_multi_tool_box.getLastDeleteButton()
-            )
+            self.laser_cut_parts_groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
+            delete_button = self.laser_cut_parts_groups_multi_tool_box.getLastDeleteButton()
             delete_button.clicked.connect(partial(self.delete_group, flow_tag_group))
             input_box = self.laser_cut_parts_groups_multi_tool_box.getLastInputBox()
-            input_box.textChanged.connect(
-                partial(self.rename_group, flow_tag_group, input_box)
-            )
-            duplicate_button = (
-                self.laser_cut_parts_groups_multi_tool_box.getLastDuplicateButton()
-            )
-            duplicate_button.clicked.connect(
-                partial(self.duplicate_group, flow_tag_group)
-            )
+            input_box.textChanged.connect(partial(self.rename_group, flow_tag_group, input_box))
+            duplicate_button = self.laser_cut_parts_groups_multi_tool_box.getLastDuplicateButton()
+            duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
         elif flow_tag_group.group == Group.COMPONENT:
-            self.components_groups_multi_tool_box.addItem(
-                table_widget, flow_tag_group.name
-            )
+            self.components_groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
             delete_button = self.components_groups_multi_tool_box.getLastDeleteButton()
             delete_button.clicked.connect(partial(self.delete_group, flow_tag_group))
             input_box = self.components_groups_multi_tool_box.getLastInputBox()
-            input_box.textChanged.connect(
-                partial(self.rename_group, flow_tag_group, input_box)
-            )
-            duplicate_button = (
-                self.components_groups_multi_tool_box.getLastDuplicateButton()
-            )
-            duplicate_button.clicked.connect(
-                partial(self.duplicate_group, flow_tag_group)
-            )
+            input_box.textChanged.connect(partial(self.rename_group, flow_tag_group, input_box))
+            duplicate_button = self.components_groups_multi_tool_box.getLastDuplicateButton()
+            duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
         self.flow_tag_tables.update({flow_tag_group: table_widget})
 
     def rename_group(self, flow_tag_group: Flowtags, input_box: QLineEdit):
@@ -547,30 +463,16 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
     def delete_group(self, flow_tag_group: Flowtags):
         self.clear_layout(self.flow_tag_tables[flow_tag_group])
         if flow_tag_group.group == Group.ASSEMBLY:
-            self.assembly_groups_multi_tool_box.removeItem(
-                self.actve_groups_multi_tool_box.getWidget(
-                    self.workspace_settings.flow_tags_group.index(flow_tag_group)
-                )
-            )
+            self.assembly_groups_multi_tool_box.removeItem(self.actve_groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
         elif flow_tag_group.group == Group.LASER_CUT_PART:
-            self.laser_cut_parts_groups_multi_tool_box.removeItem(
-                self.actve_groups_multi_tool_box.getWidget(
-                    self.workspace_settings.flow_tags_group.index(flow_tag_group)
-                )
-            )
+            self.laser_cut_parts_groups_multi_tool_box.removeItem(self.actve_groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
         elif flow_tag_group.group == Group.COMPONENT:
-            self.components_groups_multi_tool_box.removeItem(
-                self.actve_groups_multi_tool_box.getWidget(
-                    self.workspace_settings.flow_tags_group.index(flow_tag_group)
-                )
-            )
+            self.components_groups_multi_tool_box.removeItem(self.actve_groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
         self.workspace_settings.delete_group(flow_tag_group)
         del self.flow_tag_tables[flow_tag_group]
 
     def duplicate_group(self, flow_tag_group: Flowtags):
-        new_group = self.workspace_settings.create_group(
-            f"{flow_tag_group.name} - Copy"
-        )
+        new_group = self.workspace_settings.create_group(f"{flow_tag_group.name} - Copy")
         if self.tabWidget.currentIndex() == 0:
             new_group.group = Group.ASSEMBLY
         elif self.tabWidget.currentIndex() == 1:
@@ -586,9 +488,7 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
         self.clear_layout(self.laser_cut_parts_flow_tag_layout)
         self.clear_layout(self.components_flow_tag_layout)
         self.assemblies_flow_tag_layout.addWidget(self.assembly_groups_multi_tool_box)
-        self.laser_cut_parts_flow_tag_layout.addWidget(
-            self.laser_cut_parts_groups_multi_tool_box
-        )
+        self.laser_cut_parts_flow_tag_layout.addWidget(self.laser_cut_parts_groups_multi_tool_box)
         self.components_flow_tag_layout.addWidget(self.components_groups_multi_tool_box)
         for flow_tag_group in self.workspace_settings.flow_tags_group:
             self.add_group(flow_tag_group)
@@ -628,9 +528,7 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
                 widget.update_tag_selections()
 
     def rename_tag(self):
-        current_tag = self.workspace_settings.get_tag(
-            self.listWidget_select_tag.currentItem().text()
-        )
+        current_tag = self.workspace_settings.get_tag(self.listWidget_select_tag.currentItem().text())
         new_name, ok = QInputDialog.getText(
             self,
             "Rename tag",
@@ -680,20 +578,14 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
                         checkbox_moves_tag_forward,
                     )
                 )
-                self.tableWidget_statuses.setCellWidget(
-                    row, 1, checkbox_moves_tag_forward
-                )
-                self.status_table_items[status].update(
-                    {"checkbox_move_tag_forward": checkbox_moves_tag_forward}
-                )
+                self.tableWidget_statuses.setCellWidget(row, 1, checkbox_moves_tag_forward)
+                self.status_table_items[status].update({"checkbox_move_tag_forward": checkbox_moves_tag_forward})
 
                 checkbox_starts_timer = QCheckBox("Starts Timer", self)
                 checkbox_starts_timer.setChecked(status.start_timer)
                 checkbox_starts_timer.stateChanged.connect(self.status_table_changed)
                 self.tableWidget_statuses.setCellWidget(row, 2, checkbox_starts_timer)
-                self.status_table_items[status].update(
-                    {"checkbox_starts_timer": checkbox_starts_timer}
-                )
+                self.status_table_items[status].update({"checkbox_starts_timer": checkbox_starts_timer})
 
                 def delete_status(status_to_delete: TagStatus):
                     selected_tag.delete_status(status_to_delete)
@@ -731,28 +623,20 @@ class EditWorkspaceSettings(QDialog, Ui_Form):
 
     def default_expected_time_to_complete_changed(self):
         if selected_tag := self.get_selected_tag():
-            selected_tag.attributes.expected_time_to_complete = (
-                self.time_spin_box.value()
-            )
+            selected_tag.attributes.expected_time_to_complete = self.time_spin_box.value()
 
     def next_flow_tag_message_changed(self):
         if selected_tag := self.get_selected_tag():
-            selected_tag.attributes.next_flow_tag_message = (
-                self.plainTextEdit_next_flow_tag_message.toPlainText()
-            )
+            selected_tag.attributes.next_flow_tag_message = self.plainTextEdit_next_flow_tag_message.toPlainText()
 
     def load_attributes(self):
         if selected_tag := self.get_selected_tag():
             self.groupBox_5.setTitle(f"Attributes for {selected_tag.name}")
             self.plainTextEdit_next_flow_tag_message.blockSignals(True)
-            self.plainTextEdit_next_flow_tag_message.setPlainText(
-                selected_tag.attributes.next_flow_tag_message
-            )
+            self.plainTextEdit_next_flow_tag_message.setPlainText(selected_tag.attributes.next_flow_tag_message)
             self.plainTextEdit_next_flow_tag_message.blockSignals(False)
             self.time_spin_box.blockSignals(True)
-            self.time_spin_box.setValue(
-                selected_tag.attributes.expected_time_to_complete
-            )
+            self.time_spin_box.setValue(selected_tag.attributes.expected_time_to_complete)
             self.time_spin_box.blockSignals(False)
 
     def notes_changed(self):

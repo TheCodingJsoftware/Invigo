@@ -39,19 +39,9 @@ class AssemblyPaintWidget(QWidget):
         self.setLayout(layout)
 
         self.paint_settings_widget.widget_primer.setVisible(self.assembly.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(
-            self.assembly.uses_paint
-        )
-        self.paint_settings_widget.widget_powder_coating.setVisible(
-            self.assembly.uses_powder
-        )
-        self.paint_settings_widget.not_painted_label.setVisible(
-            not (
-                self.assembly.uses_primer
-                or self.assembly.uses_paint
-                or self.assembly.uses_powder
-            )
-        )
+        self.paint_settings_widget.widget_paint_color.setVisible(self.assembly.uses_paint)
+        self.paint_settings_widget.widget_powder_coating.setVisible(self.assembly.uses_powder)
+        self.paint_settings_widget.not_painted_label.setVisible(not (self.assembly.uses_primer or self.assembly.uses_paint or self.assembly.uses_powder))
 
     def update_paint(self):
         self.assembly.uses_primer = self.checkbox_primer.isChecked()
@@ -59,18 +49,8 @@ class AssemblyPaintWidget(QWidget):
         self.assembly.uses_powder = self.checkbox_powder.isChecked()
 
         self.paint_settings_widget.widget_primer.setVisible(self.assembly.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(
-            self.assembly.uses_paint
-        )
-        self.paint_settings_widget.widget_powder_coating.setVisible(
-            self.assembly.uses_powder
-        )
-        self.paint_settings_widget.not_painted_label.setVisible(
-            not (
-                self.assembly.uses_primer
-                or self.assembly.uses_paint
-                or self.assembly.uses_powder
-            )
-        )
+        self.paint_settings_widget.widget_paint_color.setVisible(self.assembly.uses_paint)
+        self.paint_settings_widget.widget_powder_coating.setVisible(self.assembly.uses_powder)
+        self.paint_settings_widget.not_painted_label.setVisible(not (self.assembly.uses_primer or self.assembly.uses_paint or self.assembly.uses_powder))
 
         self.settingsChanged.emit()

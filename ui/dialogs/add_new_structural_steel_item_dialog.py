@@ -14,7 +14,9 @@ from utils.inventory.flat_bar import FlatBar
 from utils.inventory.pipe import Pipe
 from utils.inventory.dom_round_tube import DOMRoundTube
 from utils.inventory.structural_steel_inventory import StructuralSteelInventory
-from utils.structural_steel_settings.structural_steel_settings import StructuralSteelSettings
+from utils.structural_steel_settings.structural_steel_settings import (
+    StructuralSteelSettings,
+)
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
@@ -52,9 +54,7 @@ class AddStructuralSteelItemDialog(QDialog, Ui_Form):
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-        self.comboBox_categories.addItems(
-            [category.name for category in self.structural_steel_inventory.get_categories()]
-        )
+        self.comboBox_categories.addItems([category.name for category in self.structural_steel_inventory.get_categories()])
         if self.category:
             self.comboBox_categories.setCurrentText(self.category.name)
 
@@ -272,5 +272,3 @@ class AddStructuralSteelItemDialog(QDialog, Ui_Form):
         item.add_to_category(self.structural_steel_inventory.get_category(self.comboBox_categories.currentText()))
 
         return item
-
-

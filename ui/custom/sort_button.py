@@ -9,9 +9,7 @@ from utils.workspace.workspace_filter import SortingMethod
 
 
 class DropDownWidget(QWidget):
-    sorting_method_selected = pyqtSignal(
-        SortingMethod
-    )  # Signal for the selected sorting method
+    sorting_method_selected = pyqtSignal(SortingMethod)  # Signal for the selected sorting method
 
     def __init__(self):
         super().__init__()

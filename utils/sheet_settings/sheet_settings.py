@@ -50,9 +50,7 @@ class SheetSettings:
         thickness_to_remove = self.thicknesses.get(thickness_name)
         self.thicknesses.remove_item(thickness_to_remove)
         for material in self.materials:
-            self.pounds_per_square_foot.remove_square_foot_object(
-                material, thickness_to_remove
-            )
+            self.pounds_per_square_foot.remove_square_foot_object(material, thickness_to_remove)
 
     def set_price_per_pound(self, material_name: str, new_price: float):
         if material := self.materials.get(material_name):
@@ -68,27 +66,22 @@ class SheetSettings:
                 return price_per_pound
         return 0.0
 
+    def get_sheet_cost(self, material: str, thickness: str, length: float, width: float) -> float:
+        pounds_per_square_foot = self.get_pounds_per_square_foot(material, thickness)
+        pounds_per_sheet = ((length * width) / 144) * pounds_per_square_foot
+        price_per_pound = self.get_price_per_pound(material)
+        return pounds_per_sheet * price_per_pound
+
     def get_cost_for_laser(self, material: str) -> float:
-        return (
-            self.cost_for_laser["Nitrogen"]
-            if material in {"304 SS", "409 SS", "Aluminium"}
-            else self.cost_for_laser["CO2"]
-        )
+        return self.cost_for_laser["Nitrogen"] if material in {"304 SS", "409 SS", "Aluminium"} else self.cost_for_laser["CO2"]
 
     def get_laser_cost(self, cutting_method: str) -> float:
         return self.cost_for_laser[cutting_method]
 
-    def get_pounds_per_square_foot(
-        self, material_name: str, thickness_name: str
-    ) -> float:
+    def get_pounds_per_square_foot(self, material_name: str, thickness_name: str) -> float:
         if material := self.materials.get(material_name):
             if thickness := self.thicknesses.get(thickness_name):
-                if (
-                    pounds_per_square_foot
-                    := self.pounds_per_square_foot.get_pounds_per_square_foot(
-                        material, thickness
-                    )
-                ):
+                if pounds_per_square_foot := self.pounds_per_square_foot.get_pounds_per_square_foot(material, thickness):
                     return pounds_per_square_foot
         return 0.0
 
@@ -102,9 +95,7 @@ class SheetSettings:
 
         self.cost_for_laser.clear()
         for cutting_method in data["cost_for_laser"]:
-            self.cost_for_laser.update(
-                {cutting_method: data["cost_for_laser"][cutting_method]}
-            )
+            self.cost_for_laser.update({cutting_method: data["cost_for_laser"][cutting_method]})
 
         self.materials.clear()
         for material in data["materials"]:
@@ -117,25 +108,15 @@ class SheetSettings:
         self.pounds_per_square_foot.clear()
         for material in self.materials:
             for thickness in self.thicknesses:
-                square_foot_object = self.pounds_per_square_foot.add_square_foot_object(
-                    material, thickness
-                )
-                square_foot_object.pounds_per_square_foot = data[
-                    "pounds_per_square_foot"
-                ][material.name][thickness.name]["pounds_per_square_foot"]
-                square_foot_object.latest_change = data["pounds_per_square_foot"][
-                    material.name
-                ][thickness.name]["latest_change"]
+                square_foot_object = self.pounds_per_square_foot.add_square_foot_object(material, thickness)
+                square_foot_object.pounds_per_square_foot = data["pounds_per_square_foot"][material.name][thickness.name]["pounds_per_square_foot"]
+                square_foot_object.latest_change = data["pounds_per_square_foot"][material.name][thickness.name]["latest_change"]
 
         self.price_per_pound.clear()
         for material in self.materials:
             price_per_pound_object = self.price_per_pound.add_price_per_pound(material)
-            price_per_pound_object.price_per_pound = data["price_per_pound"][
-                material.name
-            ]["price_per_pound"]
-            price_per_pound_object.latest_change = data["price_per_pound"][
-                material.name
-            ]["latest_change"]
+            price_per_pound_object.price_per_pound = data["price_per_pound"][material.name]["price_per_pound"]
+            price_per_pound_object.latest_change = data["price_per_pound"][material.name]["latest_change"]
 
         self.material_id.clear()
         self.material_id.update({"cutting_methods": {}, "thickness_ids": {}})

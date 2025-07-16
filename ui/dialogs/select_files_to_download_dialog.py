@@ -33,12 +33,8 @@ class SelectFilesToDownloadDialog(QDialog, Ui_Form):
         self.pushButton_download.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-        self.lineEdit_download_path.setText(
-            os.path.join(Environment.DATA_PATH, "data", "workspace")
-        )
-        self.lineEdit_download_path.textChanged.connect(
-            self.lineEdit_download_path_changed
-        )
+        self.lineEdit_download_path.setText(os.path.join(Environment.DATA_PATH, "data", "workspace"))
+        self.lineEdit_download_path.textChanged.connect(self.lineEdit_download_path_changed)
 
         self.pushButton_selected_directory.clicked.connect(self.select_directory)
         self.pushButton_selected_directory.setIcon(Icons.open_folder_icon)

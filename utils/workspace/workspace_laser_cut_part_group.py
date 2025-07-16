@@ -7,7 +7,7 @@ from utils.workspace.tag import Tag
 
 
 class WorkspaceLaserCutPartGroup:
-    def __init__(self):
+    def __init__(self) -> None:
         self.laser_cut_parts: list[LaserCutPart] = []
         self.base_part: LaserCutPart | None = None
 
@@ -52,9 +52,7 @@ class WorkspaceLaserCutPartGroup:
     def get_parts_list(self) -> str:
         text = ""
         for laser_cut_part in self:
-            text += (
-                f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_flow_string()}\n"
-            )
+            text += f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_flow_string()}\n"
         return text
 
     def get_ids(self) -> str:
@@ -67,18 +65,14 @@ class WorkspaceLaserCutPartGroup:
         elif isinstance(raw_data, (bytes, bytearray, str)):
             json_data = msgspec.json.decode(raw_data)
         else:
-            raise TypeError(
-                f"Unsupported data type for entry_data['data']: {type(raw_data)}"
-            )
+            raise TypeError(f"Unsupported data type for entry_data['data']: {type(raw_data)}")
         for laser_cut_part in self:
             if laser_cut_part.id == entry_data["id"]:
                 laser_cut_part.load_data(json_data)
                 return laser_cut_part
         return None
 
-    def update_all_entries(
-        self, entries_data: list[dict]
-    ) -> "WorkspaceLaserCutPartGroup":
+    def update_all_entries(self, entries_data: list[dict]) -> "WorkspaceLaserCutPartGroup":
         for entry_data in entries_data:
             self.update_entry(entry_data)
         return self
@@ -90,9 +84,7 @@ class WorkspaceLaserCutPartGroup:
 
         for i in range(quantity):
             self.laser_cut_parts[i].timer.stop(self.get_current_tag())
-            self.laser_cut_parts[i].current_flow_tag_index = self.laser_cut_parts[
-                i
-            ].get_first_tag_index_with_similar_keyword(
+            self.laser_cut_parts[i].current_flow_tag_index = self.laser_cut_parts[i].get_first_tag_index_with_similar_keyword(
                 ["powder", "coating", "liquid", "paint", "gloss", "prime"]
             )
             self.laser_cut_parts[i].current_flow_tag_status_index = 0
@@ -122,11 +114,22 @@ class WorkspaceLaserCutPartGroup:
             self.move_to_next_process()
 
     def get_current_tag(self) -> Optional[Tag]:
-        return self.base_part.get_current_tag()
+        if self.base_part:
+            return self.base_part.get_current_tag()
+        return None
 
     def set_flow_tag_status_index(self, status_index: int):
         for laser_cut_part in self:
             laser_cut_part.current_flow_tag_status_index = status_index
+
+    def check_update_quantity_tags(self):
+        if not self.base_part:
+            return
+        if current_tag := self.get_current_tag():
+            if self.base_part.flowtag.add_quantity_tag and current_tag.name == self.base_part.flowtag.add_quantity_tag.name:
+                self.base_part.laser_cut_inventory.add_or_update_laser_cut_parts(self.laser_cut_parts, f"workspace tag: {current_tag.name}")
+            if self.base_part.flowtag.remove_quantity_tag and current_tag.name == self.base_part.flowtag.remove_quantity_tag.name:
+                self.base_part.laser_cut_inventory.remove_laser_cut_parts_quantity(self.laser_cut_parts, f"workspace tag: {current_tag.name}")
 
     def move_to_next_process(self, quantity: Optional[int] = None):
         max_quantity = len(self.laser_cut_parts)
@@ -135,6 +138,7 @@ class WorkspaceLaserCutPartGroup:
 
         for i in range(quantity):
             self.laser_cut_parts[i].move_to_next_process()
+        self.check_update_quantity_tags()
 
     def get_process_status(self) -> str:
         try:

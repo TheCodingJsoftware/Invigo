@@ -30,9 +30,7 @@ class MaterialDensities:
     def get_density(self, material: Material) -> float:
         return self.data[material].density
 
-    def set_density(
-        self, material: Material, density: float
-    ):
+    def set_density(self, material: Material, density: float):
         if material in self.data in self.data[material]:
             self.data[material].density = density
 

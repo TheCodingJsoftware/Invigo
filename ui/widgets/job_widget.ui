@@ -317,6 +317,9 @@
               <height>25</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="toolTip">
              <string>Reload current job
 
@@ -415,8 +418,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>282</width>
-              <height>847</height>
+              <width>309</width>
+              <height>939</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1138,8 +1141,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1177</width>
-            <height>821</height>
+            <width>1154</width>
+            <height>773</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1296,12 +1299,12 @@ QPushButton#pushButton_reload_job:flat:hover {
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>238</x>
-     <y>134</y>
+     <x>250</x>
+     <y>1098</y>
     </hint>
     <hint type="destinationlabel">
-     <x>238</x>
-     <y>221</y>
+     <x>250</x>
+     <y>1158</y>
     </hint>
    </hints>
   </connection>
@@ -1312,12 +1315,12 @@ QPushButton#pushButton_reload_job:flat:hover {
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>238</x>
-     <y>307</y>
+     <x>250</x>
+     <y>970</y>
     </hint>
     <hint type="destinationlabel">
-     <x>238</x>
-     <y>393</y>
+     <x>250</x>
+     <y>1056</y>
     </hint>
    </hints>
   </connection>
@@ -1328,12 +1331,12 @@ QPushButton#pushButton_reload_job:flat:hover {
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>202</x>
-     <y>191</y>
+     <x>214</x>
+     <y>844</y>
     </hint>
     <hint type="destinationlabel">
-     <x>202</x>
-     <y>246</y>
+     <x>214</x>
+     <y>928</y>
     </hint>
    </hints>
   </connection>
@@ -1344,12 +1347,12 @@ QPushButton#pushButton_reload_job:flat:hover {
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
-     <y>122</y>
+     <x>207</x>
+     <y>303</y>
     </hint>
     <hint type="destinationlabel">
-     <x>195</x>
-     <y>205</y>
+     <x>207</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -1360,12 +1363,12 @@ QPushButton#pushButton_reload_job:flat:hover {
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
-     <y>294</y>
+     <x>207</x>
+     <y>565</y>
     </hint>
     <hint type="destinationlabel">
-     <x>195</x>
-     <y>350</y>
+     <x>207</x>
+     <y>802</y>
     </hint>
    </hints>
   </connection>

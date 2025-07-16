@@ -24,23 +24,13 @@ class EditUserWorkspaceSettingsDialog(QDialog, Ui_Dialog):
 
         self.lineEdit_username.setText(os.getlogin())
 
-        self.pushButton_view_parts.setChecked(
-            self.settings_file.get_value("user_workspace_settings").get(
-                "view_parts", True
-            )
-        )
-        self.pushButton_view_assemblies.setChecked(
-            self.settings_file.get_value("user_workspace_settings").get(
-                "view_assemblies", True
-            )
-        )
+        self.pushButton_view_parts.setChecked(self.settings_file.get_value("user_workspace_settings").get("view_parts", True))
+        self.pushButton_view_assemblies.setChecked(self.settings_file.get_value("user_workspace_settings").get("view_assemblies", True))
 
         self.listWidget_process_tags.addItems(self.workspace_settings.get_all_tags())
         for row in range(self.listWidget_process_tags.count()):
             item = self.listWidget_process_tags.item(row)
-            if item.text() in self.settings_file.get_value(
-                "user_workspace_settings"
-            ).get("visible_process_tags", []):
+            if item.text() in self.settings_file.get_value("user_workspace_settings").get("visible_process_tags", []):
                 item.setSelected(True)
 
         self.pushButton_apply.clicked.connect(self.save_and_apply)
@@ -53,10 +43,7 @@ class EditUserWorkspaceSettingsDialog(QDialog, Ui_Dialog):
             if item.isSelected():
                 selected_tags.append(item.text())
 
-        if not (
-            self.pushButton_view_parts.isChecked()
-            or self.pushButton_view_assemblies.isChecked()
-        ):
+        if not (self.pushButton_view_parts.isChecked() or self.pushButton_view_assemblies.isChecked()):
             msg = QMessageBox(
                 QMessageBox.Icon.Information,
                 "Workspace User Settings",

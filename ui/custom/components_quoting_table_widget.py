@@ -92,12 +92,13 @@ class ComponentsQuotingTableWidget(CustomTableWidget):
             original_height = image.height()
 
             new_height = self.row_height
-            new_width = int(original_width * (new_height / original_height))
+            try:
+                new_width = int(original_width * (new_height / original_height))
+            except ZeroDivisionError:
+                new_width = original_width
 
-            pixmap = QPixmap.fromImage(image).scaled(
-                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
-            )
-            image_path = f'images/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
+            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+            image_path = f"images/{datetime.now().strftime('%Y%m%d%H%M%S%f')}.png"
             pixmap.save(image_path)
 
             item.setData(Qt.ItemDataRole.DecorationRole, pixmap)

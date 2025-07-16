@@ -5,13 +5,9 @@ class Categories:
     def __init__(self):
         self.categories: list[Category] = []
 
-    def get_category(self, category_name: str) -> Category:
+    def get_category(self, category_name: str) -> Category | None:
         return next(
-            (
-                category
-                for category in self.categories
-                if category.name == category_name
-            ),
+            (category for category in self.categories if category.name == category_name),
             None,
         )
 

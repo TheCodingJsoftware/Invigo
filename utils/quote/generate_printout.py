@@ -107,12 +107,8 @@ class SheetsTable:
         sheets_table_html += "</tr>"
         sheets_table_html += '<tbody id="table-body">'
         for nest in self.nests:
-            single_hours, single_minutes, single_seconds = (
-                self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            )
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(
-                nest.get_machining_time()
-            )
+            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
+            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
             self.grand_total_cut_time += nest.get_machining_time()
             sheets_table_html += f"""<tr>
             <td>{nest.name}</td>
@@ -125,9 +121,7 @@ class SheetsTable:
             <td>{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
             </tr>"""
 
-        grand_total_hours, grand_total_minutes, grand_total_seconds = (
-            self.get_hours_minutes_seconds(self.grand_total_cut_time)
-        )
+        grand_total_hours, grand_total_minutes, grand_total_seconds = self.get_hours_minutes_seconds(self.grand_total_cut_time)
         sheets_table_html += f"""<tr>
         <td>Total:</td>
         <td></td>
@@ -204,7 +198,7 @@ class LaserCutPartsTable:
                 is_visible = "hidden"
             elif self.title == "Workorder" and header in ["Unit Price", "Price"]:
                 is_visible = "hidden"
-            html += f'<th data-priority="{i+1}" class="ui-table-cell-{is_visible}">{header}</th>'
+            html += f'<th data-priority="{i + 1}" class="ui-table-cell-{is_visible}">{header}</th>'
         html += "</tr>"
         html += "</thead>"
         html += '<tbody id="table-body">'
@@ -220,10 +214,10 @@ class LaserCutPartsTable:
             <td class="ui-table-cell-visible">{laser_cut_part.material}</td>
             <td class="ui-table-cell-visible">{laser_cut_part.gauge}</td>
             <td class="ui-table-cell-visible">{laser_cut_part.quantity}</td>
-            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}">{laser_cut_part.flowtag.get_flow_string()}</td>
-            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}">{laser_cut_part.shelf_number}</td>
-            <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">${laser_cut_part.price:,.2f}</td>
-            <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>
+            <td class="ui-table-cell-{"visible" if self.title == "Workorder" else "hidden"}">{laser_cut_part.flowtag.get_flow_string()}</td>
+            <td class="ui-table-cell-{"visible" if self.title == "Workorder" else "hidden"}">{laser_cut_part.shelf_number}</td>
+            <td class="ui-table-cell-{"visible" if self.title == "Quote" else "hidden"}">${laser_cut_part.price:,.2f}</td>
+            <td class="ui-table-cell-{"visible" if self.title == "Quote" else "hidden"}">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>
             </tr>"""
         html += f"""<tr>
             <td></td>
@@ -231,10 +225,10 @@ class LaserCutPartsTable:
             <td></td>
             <td></td>
             <td></td>
-            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}"></td>
-            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}"></td>
-            <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}"></td>
-            <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">Total: ${self.get_total_cost():,.2f}</td>
+            <td class="ui-table-cell-{"visible" if self.title == "Workorder" else "hidden"}"></td>
+            <td class="ui-table-cell-{"visible" if self.title == "Workorder" else "hidden"}"></td>
+            <td class="ui-table-cell-{"visible" if self.title == "Quote" else "hidden"}"></td>
+            <td class="ui-table-cell-{"visible" if self.title == "Quote" else "hidden"}">Total: ${self.get_total_cost():,.2f}</td>
             </tr>"""
         html += "</tbody></table>"
         return html + self.generate_laser_cut_part_popups()
@@ -297,7 +291,7 @@ class ComponentsTable:
             is_visible = "visible"
             if header == "Shelf #":
                 is_visible = "hidden"
-            html += f'<th data-priority="{i+1}" class="ui-table-cell-{is_visible}">{header}</th>'
+            html += f'<th data-priority="{i + 1}" class="ui-table-cell-{is_visible}">{header}</th>'
         html += "</tr>"
         html += "</thead>"
         html += '<tbody id="table-body">'
@@ -354,9 +348,7 @@ class QuotePrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable(
-                "Quote", self.quote.grouped_laser_cut_parts
-            )
+            laser_cut_parts_table = LaserCutPartsTable("Quote", self.quote.grouped_laser_cut_parts)
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'
@@ -398,9 +390,7 @@ class WorkorderPrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable(
-                "Workorder", self.quote.grouped_laser_cut_parts
-            )
+            laser_cut_parts_table = LaserCutPartsTable("Workorder", self.quote.grouped_laser_cut_parts)
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'
@@ -442,9 +432,7 @@ class PackingSlipPrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable(
-                "Packing Slip", self.quote.grouped_laser_cut_parts
-            )
+            laser_cut_parts_table = LaserCutPartsTable("Packing Slip", self.quote.grouped_laser_cut_parts)
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'

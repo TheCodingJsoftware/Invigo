@@ -1,3 +1,5 @@
+import os
+
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
@@ -13,10 +15,11 @@ class SendReportThread(QThread):
         self.SERVER_PORT: int = get_server_port()
         self.command_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/command"
         self.data = {"command": "send_sheet_report"}
+        self.headers = {"X-Client-Name": os.getlogin()}
 
     def run(self):
         try:
-            response = requests.post(self.command_url, data=self.data)
+            response = requests.post(self.command_url, data=self.data, headers=self.headers, timeout=10)
 
             if response.status_code == 200:
                 # Process the received response

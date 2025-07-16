@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class JobFlowtagTimelineWidget(QWidget):
     def __init__(self, flowtag_timeline: JobFlowtagTimeline, parent=None):
         super().__init__(parent)
-        self.parent: JobWidget = parent
+        self._parent_widget: JobWidget = parent
 
         self.flowtag_timeline = flowtag_timeline
         self.grid_layout = QGridLayout()
@@ -33,12 +33,8 @@ class JobFlowtagTimelineWidget(QWidget):
         self.sliders.clear()
         self.flowtag_timeline.load_data(self.flowtag_timeline.to_dict())
 
-        job_start_date = datetime.strptime(
-            self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p"
-        )
-        job_end_date = datetime.strptime(
-            self.flowtag_timeline.job.ending_date, "%Y-%m-%d %I:%M %p"
-        )
+        job_start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
+        job_end_date = datetime.strptime(self.flowtag_timeline.job.ending_date, "%Y-%m-%d %I:%M %p")
         job_duration = (job_end_date - job_start_date).days
 
         row = 0
@@ -47,20 +43,14 @@ class JobFlowtagTimelineWidget(QWidget):
             slider.setTickPosition(QSlider.TickPosition.NoTicks)
             slider.setMaximum(job_duration)
             try:
-                tag_start_date = datetime.strptime(
-                    tag_data["starting_date"], "%Y-%m-%d %I:%M %p"
-                )
-                tag_end_date = datetime.strptime(
-                    tag_data["ending_date"], "%Y-%m-%d %I:%M %p"
-                )
+                tag_start_date = datetime.strptime(tag_data["starting_date"], "%Y-%m-%d %I:%M %p")
+                tag_end_date = datetime.strptime(tag_data["ending_date"], "%Y-%m-%d %I:%M %p")
             except ValueError:  # For when it was never initialized
                 tag_start_date = job_start_date
                 tag_end_date = job_end_date
 
             start_value = (tag_start_date - job_start_date).days
-            end_value = (
-                start_value + (tag_end_date - tag_start_date).days
-            )  # Adjusted to be relative to the start_value
+            end_value = start_value + (tag_end_date - tag_start_date).days  # Adjusted to be relative to the start_value
 
             tag_name_label = QLabel(f"{tag.name} ({end_value - start_value} days)")
 
@@ -70,12 +60,7 @@ class JobFlowtagTimelineWidget(QWidget):
             slider.setValue((start_value, end_value))
 
             slider.valueChanged.connect(
-                lambda value,
-                tag=tag,
-                slider=slider,
-                start_label=start_label,
-                end_label=end_label,
-                tag_name_label=tag_name_label: self.update_labels(
+                lambda value, tag=tag, slider=slider, start_label=start_label, end_label=end_label, tag_name_label=tag_name_label: self.update_labels(
                     value, tag, slider, start_label, end_label, tag_name_label
                 )
             )
@@ -108,27 +93,21 @@ class JobFlowtagTimelineWidget(QWidget):
         start_label.setText(str(value[0]))
         end_label.setText(str(value[1]))
 
-        job_start_date = datetime.strptime(
-            self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p"
-        )
+        job_start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
 
         tag_start_date = job_start_date + timedelta(days=value[0])
         tag_end_date = tag_start_date + timedelta(days=(value[1] - value[0]))
 
-        self.flowtag_timeline.tags_data[tag]["starting_date"] = tag_start_date.strftime(
-            "%Y-%m-%d %I:%M %p"
-        )
-        self.flowtag_timeline.tags_data[tag]["ending_date"] = tag_end_date.strftime(
-            "%Y-%m-%d %I:%M %p"
-        )
+        self.flowtag_timeline.tags_data[tag]["starting_date"] = tag_start_date.strftime("%Y-%m-%d %I:%M %p")
+        self.flowtag_timeline.tags_data[tag]["ending_date"] = tag_end_date.strftime("%Y-%m-%d %I:%M %p")
 
         tag_name_label.setText(f"{tag.name} ({value[1] - value[0]} days)")
         self.changes_made()
 
     def changes_made(self):
-        self.parent.parent.job_changed(self.parent.job)
-        self.parent.update_nest_parts_assemblies()
-        self.parent.update_prices()
+        self._parent_widget._parent_widget.job_changed(self._parent_widget.job)
+        self._parent_widget.update_nest_parts_assemblies()
+        self._parent_widget.update_prices()
 
     def clear_layout(self, layout: QGridLayout):
         with contextlib.suppress(AttributeError):

@@ -10,3 +10,4 @@ class Environment:
         raise RuntimeError("Environment is a static class and cannot be instantiated.")
 
     DATA_PATH = os.getcwd()
+    APP_ENV = os.environ.get("APP_ENV", "production")

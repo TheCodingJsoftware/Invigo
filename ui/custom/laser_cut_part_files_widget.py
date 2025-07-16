@@ -2,7 +2,7 @@ import os
 from functools import partial
 from typing import Literal, Optional, Union
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QThreadPool
 from PyQt6.QtWidgets import QHBoxLayout, QMessageBox, QScrollArea, QWidget
 
 from config.environments import Environment
@@ -10,7 +10,7 @@ from ui.custom.file_button import FileButton
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.workers.workspace.download_file import WorkspaceDownloadWorker
 from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
@@ -74,9 +74,7 @@ class LaserCutPartFilesWidget(QWidget):
         file_path: str,
     ):
         file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
-        file_button.buttonClicked.connect(
-            partial(self.laser_cut_part_file_clicked, file_path)
-        )
+        file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, file_path))
         file_name = os.path.basename(file_path)
         file_ext = file_name.split(".")[-1].upper()
         file_button.setText(file_ext)
@@ -85,25 +83,26 @@ class LaserCutPartFilesWidget(QWidget):
         files_layout.addWidget(file_button)
 
     def laser_cut_part_file_clicked(self, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
-        self.download_file_thread.wait()
-        if file_path.lower().endswith(".pdf"):
-            if isinstance(self.item, WorkspaceLaserCutPartGroup):
-                self.open_pdf(
-                    self.item.get_all_files_with_ext(".pdf"),
-                    file_path,
-                )
-            elif isinstance(self.item, WorkspaceAssemblyGroup):
-                self.open_pdf(
-                    self.item.get_files(".pdf"),
-                    file_path,
-                )
+        def open_pdf(files: list[str]):
+            if file_path.lower().endswith(".pdf"):
+                if isinstance(self.item, WorkspaceLaserCutPartGroup):
+                    self.open_pdf(
+                        self.item.get_all_files_with_ext(".pdf"),
+                        file_path,
+                    )
+                elif isinstance(self.item, WorkspaceAssemblyGroup):
+                    self.open_pdf(
+                        self.item.get_files(".pdf"),
+                        file_path,
+                    )
 
-    def file_downloaded(
-        self, file_ext: Optional[str], file_name: str, open_when_done: bool
-    ):
+        self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
+        self.download_file_thread.signals.success.connect(self.file_downloaded)
+        self.download_file_thread.signals.success.connect(open_pdf)
+        QThreadPool.globalInstance().start(self.download_file_thread)
+
+    def file_downloaded(self, response: tuple[str, str, bool]):
+        file_ext, file_name, open_when_done = response
         if file_ext is None:
             msg = QMessageBox(
                 QMessageBox.Icon.Critical,

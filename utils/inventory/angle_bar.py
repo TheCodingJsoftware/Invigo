@@ -18,14 +18,10 @@ class AngleBar(StructuralProfile):
         return f"{self.material} {self.PROFILE_TYPE.value} {self.leg_a:,.3f} x {self.leg_b:,.3f} x {self.wall_thickness:,.3f}"
 
     def tooltip(self) -> str:
-        return f'Length: {self.length:,.3f} in\nLeg A: {self.leg_a:,.3f} in\nLeg B: {self.leg_b:,.3f} in\nWall Thickness: {self.wall_thickness:,.3f} in'
+        return f"Length: {self.length:,.3f} in\nLeg A: {self.leg_a:,.3f} in\nLeg B: {self.leg_b:,.3f} in\nWall Thickness: {self.wall_thickness:,.3f} in"
 
     def get_volume(self) -> float:
-        return (
-            (self.leg_a * self.wall_thickness)
-            + (self.leg_b * self.wall_thickness)
-            - math.pow(self.wall_thickness, 2) * self.length
-        )
+        return (self.leg_a * self.wall_thickness) + (self.leg_b * self.wall_thickness) - math.pow(self.wall_thickness, 2) * self.length
 
     def get_weight(self) -> float:
         return self.get_volume() * self.get_density()

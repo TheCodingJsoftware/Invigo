@@ -39,21 +39,22 @@ from ui.dialogs.update_component_order_pending_dialog import (
 from ui.icons import Icons
 from ui.theme import theme_var
 from ui.widgets.structural_steel_tab_UI import Ui_Form
-from utils.inventory.category import Category
-from utils.inventory.order import Order
-from utils.inventory.structural_profile import ProfilesTypes
-from utils.inventory.structural_steel_inventory import StructuralSteelInventory
 from utils.inventory.angle_bar import AngleBar
+from utils.inventory.category import Category
 from utils.inventory.dom_round_tube import DOMRoundTube
 from utils.inventory.flat_bar import FlatBar
+from utils.inventory.order import Order, OrderDict
 from utils.inventory.pipe import Pipe
 from utils.inventory.rectangular_bar import RectangularBar
 from utils.inventory.rectangular_tube import RectangularTube
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
 from utils.inventory.structural_profile import ProfilesTypes, StructuralProfile
+from utils.inventory.structural_steel_inventory import StructuralSteelInventory
 from utils.settings import Settings
-from utils.structural_steel_settings.structural_steel_settings import StructuralSteelSettings
+from utils.structural_steel_settings.structural_steel_settings import (
+    StructuralSteelSettings,
+)
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
@@ -81,7 +82,7 @@ class StructuralSteelTableWidget(CustomTableWidget):
             "Orders",
             "Notes",
             "Modified Date",
-            "Edit"
+            "Edit",
         ]
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
@@ -96,7 +97,11 @@ class OrderWidget(QWidget):
     orderOpened = pyqtSignal()
     orderClosed = pyqtSignal()
 
-    def __init__(self, item: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar, parent: "StructuralSteelInventoryTab"):
+    def __init__(
+        self,
+        item: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar,
+        parent: "StructuralSteelInventoryTab",
+    ):
         super().__init__(parent)
         self.parent: "StructuralSteelInventoryTab" = parent
         self.item = item
@@ -130,9 +135,7 @@ class OrderWidget(QWidget):
             order_status_button.setText(f"Order Pending ({int(order.quantity)})")
             order_status_button.setToolTip(str(order))
             order_status_button.setChecked(True)
-            order_status_button.clicked.connect(
-                partial(self.order_button_pressed, order, order_status_button)
-            )
+            order_status_button.clicked.connect(partial(self.order_button_pressed, order, order_status_button))
 
             year, month, day = map(int, order.expected_arrival_time.split("-"))
             date = QDate(year, month, day)
@@ -145,19 +148,13 @@ class OrderWidget(QWidget):
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
-            arrival_date.dateChanged.connect(
-                partial(self.date_changed, order, arrival_date)
-            )
+            arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
 
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
             self.orders_layout.addLayout(v_layout)
-        self.parent.category_tables[self.parent.category].setColumnWidth(
-            7, 400
-        )  # Widgets don't like being resized with columns
-        self.parent.update_item_row_color(
-            self.parent.category_tables[self.parent.category], self.item
-        )
+        self.parent.category_tables[self.parent.category].setColumnWidth(7, 400)  # Widgets don't like being resized with columns
+        self.parent.update_item_row_color(self.parent.category_tables[self.parent.category], self.item)
 
     def create_order(self):
         select_date_dialog = SetComponentOrderPendingDialog(
@@ -165,27 +162,23 @@ class OrderWidget(QWidget):
             self,
         )
         if select_date_dialog.exec():
-            new_order = Order(
-                {
-                    "expected_arrival_time": select_date_dialog.get_selected_date(),
-                    "order_pending_quantity": select_date_dialog.get_order_quantity(),
-                    "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
-                    "notes": select_date_dialog.get_notes(),
-                }
-            )
+            data: OrderDict = {
+                "purchase_order_id": -1,
+                "expected_arrival_time": select_date_dialog.get_selected_date(),
+                "order_pending_quantity": select_date_dialog.get_order_quantity(),
+                "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
+                "notes": select_date_dialog.get_notes(),
+            }
+            new_order = Order(data)
             self.item.add_order(new_order)
             self.parent.structural_steel_inventory.save()
             self.parent.sync_changes()
             self.parent.load_table()
             self.load_ui()
 
-    def order_button_pressed(
-        self, order: Order, order_status_button: OrderStatusButton
-    ):
+    def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
         self.orderOpened.emit()
-        dialog = UpdateComponentOrderPendingDialog(
-            order, f"Update order for {self.item.get_name()}", self
-        )
+        dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.item.get_name()}", self)
         if dialog.exec():
             if dialog.action == "CANCEL_ORDER":
                 self.item.remove_order(order)
@@ -199,7 +192,9 @@ class OrderWidget(QWidget):
                 new_quantity = old_quantity + quantity_to_add
                 self.item.quantity = new_quantity
                 self.item.has_sent_warning = False
-                self.item.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                self.item.latest_change_quantity = (
+                    f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                )
                 order.quantity = remaining_quantity
                 if remaining_quantity <= 0:
                     msg = QMessageBox(
@@ -229,7 +224,7 @@ class OrderWidget(QWidget):
         self.parent.structural_steel_inventory.save()
         self.parent.sync_changes()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget):
+    def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -246,9 +241,7 @@ class PopoutWidget(QWidget):
         super().__init__(parent)
         self.parent: MainWindow = parent
         self.original_layout = layout_to_popout
-        self.original_layout_parent: "StructuralSteelInventoryTab" = (
-            self.original_layout.parentWidget()
-        )
+        self.original_layout_parent: "StructuralSteelInventoryTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Sheets In Inventory Tab")
         self.setLayout(self.original_layout)
@@ -259,9 +252,7 @@ class PopoutWidget(QWidget):
             self.original_layout_parent.setLayout(self.original_layout)
             self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
             self.original_layout_parent.pushButton_popout.clicked.disconnect()
-            self.original_layout_parent.pushButton_popout.clicked.connect(
-                self.original_layout_parent.popout
-            )
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
         super().closeEvent(event)
 
 
@@ -282,7 +273,11 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         self.finished_loading: bool = False
         self.category_tables: dict[Category, StructuralSteelTableWidget] = {}
         self.table_structural_steel_item_widgets: dict[
-            RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar, dict[str, QTableWidgetItem | HumbleDoubleSpinBox | QComboBox | NotesPlainTextEdit]
+            RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar,
+            dict[
+                str,
+                QTableWidgetItem | HumbleDoubleSpinBox | QComboBox | NotesPlainTextEdit,
+            ],
         ] = {}
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
@@ -295,34 +290,22 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
 
     def load_ui(self):
         self.tables_font = QFont()
-        self.tables_font.setFamily(
-            self.settings_file.get_value("tables_font")["family"]
-        )
-        self.tables_font.setPointSize(
-            self.settings_file.get_value("tables_font")["pointSize"]
-        )
-        self.tables_font.setWeight(
-            self.settings_file.get_value("tables_font")["weight"]
-        )
-        self.tables_font.setItalic(
-            self.settings_file.get_value("tables_font")["italic"]
-        )
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
         self.pushButton_add_new_structural_item.clicked.connect(self.add_structural_steel_item)
         self.pushButton_add_new_structural_item.setIcon(Icons.plus_circle_icon)
 
         self.verticalLayout_10.addWidget(self.tab_widget)
 
-        self.pushButton_popout.setStyleSheet(
-            "background-color: transparent; border: none;"
-        )
+        self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
         self.pushButton_popout.setIcon(Icons.dock_icon)
 
     def add_category(self):
-        new_category_name, ok = QInputDialog.getText(
-            self, "New Category", "Enter a name for a category:"
-        )
+        new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
         if new_category_name and ok:
             new_category = Category(new_category_name)
             self.structural_steel_inventory.add_category(new_category)
@@ -344,9 +327,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         )
         if category_to_remove and ok:
             category = self.structural_steel_inventory.delete_category(category_to_remove)
-            tab_index_to_remove = self.tab_widget.get_tab_order().index(
-                category_to_remove
-            )
+            tab_index_to_remove = self.tab_widget.get_tab_order().index(category_to_remove)
             self.tab_widget.removeTab(tab_index_to_remove)
             self.clear_layout(self.category_tables[category])
             del self.category_tables[category]
@@ -369,15 +350,11 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
                 new_name = input_text
                 if new_name == self.category.name:
                     new_name += " - Copy"
-                new_category = self.structural_steel_inventory.duplicate_category(
-                    self.category, new_name
-                )
+                new_category = self.structural_steel_inventory.duplicate_category(self.category, new_name)
                 # self.sheets_inventory.add_category(new_category)
                 table = StructuralSteelTableWidget(self.tab_widget)
                 self.category_tables.update({new_category: table})
-                self.tab_widget.insertTab(
-                    self.tab_widget.currentIndex() + 1, table, new_category.name
-                )
+                self.tab_widget.insertTab(self.tab_widget.currentIndex() + 1, table, new_category.name)
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
                 self.structural_steel_inventory.save()
@@ -405,13 +382,9 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         self.settings_file.load_data()
         self.tab_widget.clear()
         self.category_tables.clear()
-        all_categories = [
-            category.name for category in self.structural_steel_inventory.get_categories()
-        ]
+        all_categories = [category.name for category in self.structural_steel_inventory.get_categories()]
         try:
-            tab_order: list[str] = self.settings_file.get_value("category_tabs_order")[
-                "Structural Steel Inventory"
-            ]
+            tab_order: list[str] = self.settings_file.get_value("category_tabs_order")["Structural Steel Inventory"]
         except KeyError:
             tab_order = []
 
@@ -427,9 +400,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
                 self.tab_widget.addTab(table, category.name)
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
-                table.verticalScrollBar().valueChanged.connect(
-                    self.save_scroll_position
-                )
+                table.verticalScrollBar().valueChanged.connect(self.save_scroll_position)
         self.tab_widget.currentChanged.connect(self.load_table)
         self.tab_widget.tabOrderChanged.connect(self.save_category_tabs_order)
         self.tab_widget.tabOrderChanged.connect(self.save_current_tab)
@@ -438,9 +409,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         self.tab_widget.removeCategory.connect(self.remove_category)
 
     def load_table(self):
-        self.category = self.structural_steel_inventory.get_category(
-            self.tab_widget.tabText(self.tab_widget.currentIndex())
-        )
+        self.category = self.structural_steel_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex()))
         if not self.category:
             return
         current_table = self.category_tables[self.category]
@@ -449,9 +418,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         current_table.setRowCount(0)
         self.table_structural_steel_item_widgets.clear()
         row_index = 0
-        for group in self.structural_steel_inventory.get_items_by_profile_type(
-            self.structural_steel_inventory.get_items_by_category(self.category)
-        ):
+        for group in self.structural_steel_inventory.get_items_by_profile_type(self.structural_steel_inventory.get_items_by_category(self.category)):
             current_table.insertRow(row_index)
             group_table_item = QTableWidgetItem(group.value)
             group_table_item.setTextAlignment(4)  # Align text center
@@ -461,9 +428,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
             group_table_item.setFont(font)
             current_table.setItem(row_index, 0, group_table_item)
             current_table.setSpan(row_index, 0, 1, current_table.columnCount())
-            self.set_table_row_color(
-                current_table, row_index, f"{theme_var('background')}"
-            )
+            self.set_table_row_color(current_table, row_index, f"{theme_var('background')}")
             row_index += 1
 
             for structural_steel_item in self.structural_steel_inventory.get_items_by_category(self.category):
@@ -493,43 +458,29 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
 
                 # LENGTH
                 table_item_length = QTableWidgetItem(f"{structural_steel_item.length:,.3f} in")
-                tooltip_conversion = f"{(structural_steel_item.length/12):,.3f} ft\n{(structural_steel_item.length*0.0254):,.3f} m"
+                tooltip_conversion = f"{(structural_steel_item.length / 12):,.3f} ft\n{(structural_steel_item.length * 0.0254):,.3f} m"
                 table_item_length.setToolTip(tooltip_conversion)
                 current_table.setItem(row_index, col_index, table_item_length)
-                current_table.item(row_index, col_index).setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
+                current_table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 current_table.item(row_index, col_index).setFont(self.tables_font)
-                self.table_structural_steel_item_widgets[structural_steel_item].update(
-                    {"length": table_item_length}
-                )
+                self.table_structural_steel_item_widgets[structural_steel_item].update({"length": table_item_length})
                 col_index += 1
 
                 # CURRENT QUANTITY
                 table_item_quantity = QTableWidgetItem(f"{structural_steel_item.quantity:,.0f}")
                 current_table.setItem(row_index, col_index, table_item_quantity)
-                current_table.item(row_index, col_index).setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
+                current_table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 current_table.item(row_index, col_index).setFont(self.tables_font)
-                self.table_structural_steel_item_widgets[structural_steel_item].update(
-                    {"quantity": table_item_quantity}
-                )
+                self.table_structural_steel_item_widgets[structural_steel_item].update({"quantity": table_item_quantity})
                 col_index += 1
 
                 # COST IN STOCK
                 total_cost_in_stock = structural_steel_item.get_cost() * structural_steel_item.quantity
-                table_item_cost_in_stock = QTableWidgetItem(
-                    f"${total_cost_in_stock:,.2f}"
-                )
+                table_item_cost_in_stock = QTableWidgetItem(f"${total_cost_in_stock:,.2f}")
                 current_table.setItem(row_index, col_index, table_item_cost_in_stock)
-                current_table.item(row_index, col_index).setTextAlignment(
-                    Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter
-                )
+                current_table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 current_table.item(row_index, col_index).setFont(self.tables_font)
-                self.table_structural_steel_item_widgets[structural_steel_item].update(
-                    {"total_cost_in_stock": table_item_cost_in_stock}
-                )
+                self.table_structural_steel_item_widgets[structural_steel_item].update({"total_cost_in_stock": table_item_cost_in_stock})
                 col_index += 1
 
                 # ORDERS
@@ -541,34 +492,24 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
 
                 # NOTES
                 notes_widget = NotesPlainTextEdit(self, structural_steel_item.notes, structural_steel_item.tooltip())
-                notes_widget.textChanged.connect(
-                    partial(self.table_changed, row_index)
-                )
+                notes_widget.textChanged.connect(partial(self.table_changed, row_index))
                 current_table.setCellWidget(row_index, col_index, notes_widget)
-                self.table_structural_steel_item_widgets[structural_steel_item].update(
-                    {"notes": notes_widget}
-                )
+                self.table_structural_steel_item_widgets[structural_steel_item].update({"notes": notes_widget})
                 col_index += 1
 
                 # MODIFIED DATE
-                table_item_modified_date = QTableWidgetItem(
-                    structural_steel_item.latest_change_quantity
-                )
+                table_item_modified_date = QTableWidgetItem(structural_steel_item.latest_change_quantity)
                 table_item_modified_date.setToolTip(structural_steel_item.latest_change_quantity)
                 current_table.setItem(row_index, col_index, table_item_modified_date)
                 current_table.item(row_index, col_index).setFont(self.tables_font)
-                self.table_structural_steel_item_widgets[structural_steel_item].update(
-                    {"modified_date": table_item_modified_date}
-                )
+                self.table_structural_steel_item_widgets[structural_steel_item].update({"modified_date": table_item_modified_date})
                 col_index += 1
 
                 # EDIT BUTTON
                 edit_button = QPushButton("", self)
                 edit_button.setFlat(True)
                 edit_button.setIcon(Icons.edit_icon)
-                edit_button.clicked.connect(
-                    partial(self.edit_structural_steel_item, structural_steel_item)
-                )
+                edit_button.clicked.connect(partial(self.edit_structural_steel_item, structural_steel_item))
                 current_table.setCellWidget(row_index, col_index, edit_button)
                 self.table_structural_steel_item_widgets[structural_steel_item].update({"edit_button": edit_button})
 
@@ -608,19 +549,25 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
             action.triggered.connect(delete_selected_items)
             menu.addAction(action)
 
-            current_table.customContextMenuRequested.connect(
-                partial(self.open_group_menu, menu)
-            )
+            current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
-        current_table.setColumnWidth(
-            7, 400
-        )  # Widgets don't like being resized with columns
+        current_table.setColumnWidth(7, 400)  # Widgets don't like being resized with columns
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
 
-    def edit_structural_steel_item(self, item_to_edit: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar):
-        edit_dialog = EditStructuralSteelItemDialog(self.category, self.structural_steel_inventory, self.structural_steel_settings, self.workspace_settings, item_to_edit, self)
+    def edit_structural_steel_item(
+        self,
+        item_to_edit: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar,
+    ):
+        edit_dialog = EditStructuralSteelItemDialog(
+            self.category,
+            self.structural_steel_inventory,
+            self.structural_steel_settings,
+            self.workspace_settings,
+            item_to_edit,
+            self,
+        )
         if edit_dialog.exec():
             new_item = edit_dialog.get_item()
             item_to_edit.load_data(new_item.to_dict())
@@ -641,11 +588,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
 
     def table_changed(self, row: int):
         item = next(
-            (
-                sheet
-                for sheet, table_data in self.table_structural_steel_item_widgets.items()
-                if table_data["row"] == row
-            ),
+            (sheet for sheet, table_data in self.table_structural_steel_item_widgets.items() if table_data["row"] == row),
             None,
         )
         if not item:
@@ -653,25 +596,20 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         old_quantity = item.quantity
         item.quantity = float(
             sympy.sympify(
-                self.table_structural_steel_item_widgets[item]["quantity"]
-                .text()
-                .strip()
-                .replace(",", ""),
+                self.table_structural_steel_item_widgets[item]["quantity"].text().strip().replace(",", ""),
                 evaluate=True,
             )
         )
         if old_quantity != item.quantity:
             item.has_sent_warning = False
-            item.latest_change_quantity = f'{os.getlogin().title()} - Manually set to {item.quantity} from {old_quantity} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
+            item.latest_change_quantity = (
+                f"{os.getlogin().title()} - Manually set to {item.quantity} from {old_quantity} quantity at {str(datetime.now().strftime('%B %d %A %Y %I:%M:%S %p'))}"
+            )
         item.notes = self.table_structural_steel_item_widgets[item]["notes"].toPlainText()
         item.part_number = self.table_structural_steel_item_widgets[item]["part_number"].text()
         item.length = float(
             sympy.sympify(
-                self.table_structural_steel_item_widgets[item]["length"]
-                .text()
-                .replace("in", "")
-                .strip()
-                .replace(",", ""),
+                self.table_structural_steel_item_widgets[item]["length"].text().replace("in", "").strip().replace(",", ""),
                 evaluate=True,
             )
         )
@@ -680,18 +618,21 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         self.category_tables[self.category].blockSignals(True)
         self.table_structural_steel_item_widgets[item]["total_cost_in_stock"].setText(f"${(item.get_cost() * item.quantity):,.2f}")
         self.table_structural_steel_item_widgets[item]["length"].setText(f"{item.length:,.3f} in")
-        tooltip_conversion = f"{(item.length/12):,.3f} ft\n{(item.length*0.0254):,.3f} m"
+        tooltip_conversion = f"{(item.length / 12):,.3f} ft\n{(item.length * 0.0254):,.3f} m"
         self.table_structural_steel_item_widgets[item]["length"].setToolTip(tooltip_conversion)
         self.table_structural_steel_item_widgets[item]["quantity"].setText(f"{item.quantity:,.0f}")
-        self.table_structural_steel_item_widgets[item]["modified_date"].setText(
-            item.latest_change_quantity
-        )
+        self.table_structural_steel_item_widgets[item]["modified_date"].setText(item.latest_change_quantity)
         self.category_tables[self.category].blockSignals(False)
         self.update_item_row_color(self.category_tables[self.category], item)
 
     def add_structural_steel_item(self):
         add_item_dialog = AddStructuralSteelItemDialog(
-            self.category, self.structural_steel_inventory, self.structural_steel_settings, self.workspace_settings, None, self
+            self.category,
+            self.structural_steel_inventory,
+            self.structural_steel_settings,
+            self.workspace_settings,
+            None,
+            self,
         )
 
         if add_item_dialog.exec():
@@ -720,9 +661,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
     def set_custom_quantity_limit(self):
         current_table = self.category_tables[self.category]
         if sheets := self.get_selected_structural_steel_items():
-            sheets_string = "".join(
-                f"    {i + 1}. {sheet.get_name()}\n" for i, sheet in enumerate(sheets)
-            )
+            sheets_string = "".join(f"    {i + 1}. {sheet.get_name()}\n" for i, sheet in enumerate(sheets))
             set_custom_limit_dialog = SetCustomLimitDialog(
                 self,
                 f"Set a custom red and yellow quantity limit for each of the {len(sheets)} selected sheets:\n{sheets_string}",
@@ -732,9 +671,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
             if set_custom_limit_dialog.exec():
                 for sheet in sheets:
                     sheet.red_quantity_limit = set_custom_limit_dialog.get_red_limit()
-                    sheet.yellow_quantity_limit = (
-                        set_custom_limit_dialog.get_yellow_limit()
-                    )
+                    sheet.yellow_quantity_limit = set_custom_limit_dialog.get_yellow_limit()
                     self.update_item_row_color(current_table, sheet)
                 self.structural_steel_inventory.save()
                 self.sync_changes()
@@ -744,32 +681,31 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
         for sheet, table_items in self.table_structural_steel_item_widgets.items():
             if sheet.name == self.last_selected_sheet:
                 current_table.selectRow(table_items["row"])
-                current_table.scrollTo(
-                    current_table.model().index(table_items["row"], 0)
-                )
+                current_table.scrollTo(current_table.model().index(table_items["row"], 0))
 
-    def get_selected_structural_steel_items(self) -> list[RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar]:
+    def get_selected_structural_steel_items(
+        self,
+    ) -> list[RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar]:
         selected_sheets: list[RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar] = []
         selected_rows = self.get_selected_rows()
-        selected_sheets.extend(
-            sheet
-            for sheet, table_items in self.table_structural_steel_item_widgets.items()
-            if table_items["row"] in selected_rows
-        )
+        selected_sheets.extend(sheet for sheet, table_items in self.table_structural_steel_item_widgets.items() if table_items["row"] in selected_rows)
         return selected_sheets
 
-    def get_selected_item(self) -> RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar:
+    def get_selected_item(
+        self,
+    ) -> RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar:
         selected_row = self.get_selected_row()
-        for structural_steel_item, table_items in self.table_structural_steel_item_widgets.items():
+        for (
+            structural_steel_item,
+            table_items,
+        ) in self.table_structural_steel_item_widgets.items():
             if table_items["row"] == selected_row:
                 self.last_selected_index = selected_row
                 self.last_selected_sheet = structural_steel_item.name
                 return structural_steel_item
 
     def get_selected_rows(self) -> list[int]:
-        rows: set[int] = {
-            item.row() for item in self.category_tables[self.category].selectedItems()
-        }
+        rows: set[int] = {item.row() for item in self.category_tables[self.category].selectedItems()}
         return list(rows)
 
     def get_selected_row(self) -> int:
@@ -811,7 +747,11 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
                 f.write(html)
             self.parent.open_print_selected_parts()
 
-    def update_item_row_color(self, table, item: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar):
+    def update_item_row_color(
+        self,
+        table,
+        item: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar,
+    ):
         if item.orders:
             self.set_table_row_color(
                 table,
@@ -851,20 +791,13 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
 
     def save_current_tab(self):
         if self.finished_loading:
-            self.parent.structural_steel_inventory_tab_widget_last_selected_tab_index = (
-                self.tab_widget.currentIndex()
-            )
+            self.parent.structural_steel_inventory_tab_widget_last_selected_tab_index = self.tab_widget.currentIndex()
 
     def restore_last_selected_tab(self):
-        if (
-            self.tab_widget.currentIndex()
-            == self.parent.structural_steel_inventory_tab_widget_last_selected_tab_index
-        ):
+        if self.tab_widget.currentIndex() == self.parent.structural_steel_inventory_tab_widget_last_selected_tab_index:
             self.sort_items()  # * This happens when the last selected tab is the first tab
         else:
-            self.tab_widget.setCurrentIndex(
-                self.parent.structural_steel_inventory_tab_widget_last_selected_tab_index
-            )
+            self.tab_widget.setCurrentIndex(self.parent.structural_steel_inventory_tab_widget_last_selected_tab_index)
 
     def save_category_tabs_order(self):
         self.settings_file.load_data()
@@ -874,15 +807,11 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
 
     def save_scroll_position(self):
         if self.finished_loading:
-            self.parent.save_scroll_position(
-                self.category, self.category_tables[self.category]
-            )
+            self.parent.save_scroll_position(self.category, self.category_tables[self.category])
 
     def restore_scroll_position(self):
         if scroll_position := self.parent.get_scroll_position(self.category):
-            self.category_tables[self.category].verticalScrollBar().setValue(
-                scroll_position
-            )
+            self.category_tables[self.category].verticalScrollBar().setValue(scroll_position)
 
     def popout(self):
         self.popout_widget = PopoutWidget(self.layout(), self.parent)
@@ -897,7 +826,7 @@ class StructuralSteelInventoryTab(QWidget, Ui_Form):
     def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget):
+    def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

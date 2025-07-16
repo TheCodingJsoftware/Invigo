@@ -31,9 +31,7 @@ class AddSheetDialog(QDialog, Ui_Form):
 
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
-        self.comboBox_categories.addItems(
-            [category.name for category in self.sheets_inventory.get_categories()]
-        )
+        self.comboBox_categories.addItems([category.name for category in self.sheets_inventory.get_categories()])
         if category:
             self.comboBox_categories.setCurrentText(category.name)
         self.lineEdit_material.addItems(self.sheet_settings.get_materials())

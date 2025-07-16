@@ -30,7 +30,7 @@ from ui.icons import Icons
 from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
-from utils.inventory.order import Order
+from utils.inventory.order import Order, OrderDict
 from utils.settings import Settings
 
 if TYPE_CHECKING:
@@ -62,9 +62,7 @@ class OrderWidget(QWidget):
     orderOpened = pyqtSignal()
     orderClosed = pyqtSignal()
 
-    def __init__(
-        self, component: Component, components_tab: "ComponentsTab", parent=None
-    ):
+    def __init__(self, component: Component, components_tab: "ComponentsTab", parent=None):
         super().__init__(parent)
         self.components_tab: "ComponentsTab" = components_tab
         self.component = component
@@ -98,9 +96,7 @@ class OrderWidget(QWidget):
             order_status_button.setText(f"Order Pending ({int(order.quantity)})")
             order_status_button.setToolTip(str(order))
             order_status_button.setChecked(True)
-            order_status_button.clicked.connect(
-                partial(self.order_button_pressed, order, order_status_button)
-            )
+            order_status_button.clicked.connect(partial(self.order_button_pressed, order, order_status_button))
 
             year, month, day = map(int, order.expected_arrival_time.split("-"))
             date = QDate(year, month, day)
@@ -113,9 +109,7 @@ class OrderWidget(QWidget):
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
-            arrival_date.dateChanged.connect(
-                partial(self.date_changed, order, arrival_date)
-            )
+            arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
 
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
@@ -123,32 +117,28 @@ class OrderWidget(QWidget):
         # self.parent.category_tables[self.parent.category].setColumnWidth(12, 400)  # Widgets don't like being resized with columns
         # self.parent.update_component_row_color(self.parent.category_tables[self.parent.category], self.component)
 
-    def create_order(self):
+    def create_order(self) -> None:
         select_date_dialog = SetComponentOrderPendingDialog(
             f'Set an expected arrival time for "{self.component.part_name}," the number of parts ordered, and notes.',
             self,
         )
         if select_date_dialog.exec():
-            new_order = Order(
-                {
-                    "expected_arrival_time": select_date_dialog.get_selected_date(),
-                    "order_pending_quantity": select_date_dialog.get_order_quantity(),
-                    "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
-                    "notes": select_date_dialog.get_notes(),
-                }
-            )
+            data: OrderDict = {
+                "purchase_order_id": -1,
+                "expected_arrival_time": select_date_dialog.get_selected_date(),
+                "order_pending_quantity": select_date_dialog.get_order_quantity(),
+                "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
+                "notes": select_date_dialog.get_notes(),
+            }
+            new_order = Order(data)
             self.component.add_order(new_order)
-            self.components_tab.components_inventory.save()
+            self.components_tab.components_inventory.save_local_copy()
             self.components_tab.sync_changes()
             self.load_ui()
 
-    def order_button_pressed(
-        self, order: Order, order_status_button: OrderStatusButton
-    ):
+    def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
         self.orderOpened.emit()
-        dialog = UpdateComponentOrderPendingDialog(
-            order, f"Update order for {self.component.part_name}", self
-        )
+        dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.component.part_name}", self)
         if dialog.exec():
             if dialog.action == "CANCEL_ORDER":
                 self.component.remove_order(order)
@@ -161,7 +151,9 @@ class OrderWidget(QWidget):
                 old_quantity = self.component.quantity
                 new_quantity = old_quantity + quantity_to_add
                 self.component.quantity = new_quantity
-                self.component.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                self.component.latest_change_quantity = (
+                    f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                )
                 order.quantity = remaining_quantity
                 if remaining_quantity <= 0:
                     msg = QMessageBox(
@@ -177,7 +169,7 @@ class OrderWidget(QWidget):
                 order_status_button.setChecked(True)
                 self.orderClosed.emit()
                 return
-            self.components_tab.components_inventory.save()
+            self.components_tab.components_inventory.save_local_copy()
             self.components_tab.sync_changes()
             self.components_tab.sort_components()
             self.components_tab.select_last_selected_item()
@@ -188,10 +180,10 @@ class OrderWidget(QWidget):
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
-        self.components_tab.components_inventory.save()
+        self.components_tab.components_inventory.save_local_copy()
         self.components_tab.sync_changes()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget):
+    def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -251,9 +243,7 @@ class CurrencyComboBoxDelegate(QStyledItemDelegate):
             if idx >= 0:
                 editor.setCurrentIndex(idx)
 
-    def setModelData(
-        self, editor: QComboBox, model: "ComponentsTableModel", index: QModelIndex
-    ):
+    def setModelData(self, editor: QComboBox, model: "ComponentsTableModel", index: QModelIndex):
         model.setData(index, editor.currentText(), Qt.ItemDataRole.EditRole)
 
 
@@ -275,9 +265,7 @@ class PriorityComboBoxDelegate(QStyledItemDelegate):
         if current_index is not None:
             editor.setCurrentIndex(int(current_index))
 
-    def setModelData(
-        self, editor: QComboBox, model: "ComponentsTableModel", index: QModelIndex
-    ):
+    def setModelData(self, editor: QComboBox, model: "ComponentsTableModel", index: QModelIndex):
         model.setData(index, editor.currentIndex(), Qt.ItemDataRole.EditRole)
 
     def displayText(self, value, locale):
@@ -306,9 +294,7 @@ class NotesPlainTextDelegate(QStyledItemDelegate):
         if text:
             editor.setPlainText(text)
 
-    def setModelData(
-        self, editor: NotesPlainTextEdit, model: "ComponentsTableModel", index
-    ):
+    def setModelData(self, editor: NotesPlainTextEdit, model: "ComponentsTableModel", index):
         text = editor.toPlainText()
         model.setData(index, text, Qt.ItemDataRole.EditRole)
 
@@ -317,9 +303,7 @@ class NotesPlainTextDelegate(QStyledItemDelegate):
 
 
 class ComponentsTableModel(QAbstractTableModel):
-    def __init__(
-        self, components_inventory: ComponentsInventory, category, parent=None
-    ):
+    def __init__(self, components_inventory: ComponentsInventory, category, parent=None):
         super().__init__(parent)
         self.parent: "ComponentsTab" = parent
         self.components_inventory = components_inventory
@@ -327,18 +311,10 @@ class ComponentsTableModel(QAbstractTableModel):
 
         self.settings_file = Settings()
         self.tables_font = QFont()
-        self.tables_font.setFamily(
-            self.settings_file.get_value("tables_font")["family"]
-        )
-        self.tables_font.setPointSize(
-            self.settings_file.get_value("tables_font")["pointSize"]
-        )
-        self.tables_font.setWeight(
-            self.settings_file.get_value("tables_font")["weight"]
-        )
-        self.tables_font.setItalic(
-            self.settings_file.get_value("tables_font")["italic"]
-        )
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
         self.headers = {
             "Part Name": ComponentsTableColumns.PART_NAME.value,
@@ -357,13 +333,7 @@ class ComponentsTableModel(QAbstractTableModel):
         }
 
     def rowCount(self, parent=QModelIndex()):
-        return len(
-            [
-                comp
-                for comp in self.components_inventory.components
-                if self.category in comp.categories
-            ]
-        )
+        return len([comp for comp in self.components_inventory.components if self.category in comp.categories])
 
     def columnCount(self, parent=QModelIndex()):
         return len(self.headers)
@@ -372,11 +342,7 @@ class ComponentsTableModel(QAbstractTableModel):
         if not index.isValid():
             return None
 
-        components_in_category = [
-            comp
-            for comp in self.components_inventory.components
-            if self.category in comp.categories
-        ]
+        components_in_category = [comp for comp in self.components_inventory.components if self.category in comp.categories]
 
         if index.row() >= len(components_in_category):
             return None
@@ -393,7 +359,7 @@ class ComponentsTableModel(QAbstractTableModel):
             elif column == ComponentsTableColumns.QUANTITY_IN_STOCK.value:
                 return f"{component.quantity:,.2f}"
             elif column == ComponentsTableColumns.ITEM_PRICE.value:
-                return f'${component.price:,.2f} {"USD" if component.use_exchange_rate else "CAD"}'
+                return f"${component.price:,.2f} {'USD' if component.use_exchange_rate else 'CAD'}"
             elif column == ComponentsTableColumns.USD_CAD.value:
                 return "USD" if component.use_exchange_rate else "CAD"
             elif column == ComponentsTableColumns.TOTAL_COST_IN_STOCK.value:
@@ -424,28 +390,18 @@ class ComponentsTableModel(QAbstractTableModel):
 
         elif role == Qt.ItemDataRole.ToolTipRole:
             if index.column() == ComponentsTableColumns.ITEM_PRICE.value:
-                converted_price = (
-                    component.price * self.get_exchange_rate()
-                    if component.use_exchange_rate
-                    else component.price / self.get_exchange_rate()
-                )
-                return f'${converted_price:,.2f} {"CAD" if component.use_exchange_rate else "USD"}\n{component.latest_change_price}'
+                converted_price = component.price * self.get_exchange_rate() if component.use_exchange_rate else component.price / self.get_exchange_rate()
+                return f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}\n{component.latest_change_price}"
             elif index.column() == ComponentsTableColumns.QUANTITY_PER_UNIT.value:
                 return f"Unit quantities:\n{component.print_category_quantities()}"
 
-        elif (
-            role == Qt.ItemDataRole.UserRole
-            and index.column() == ComponentsTableColumns.ORDERS.value
-        ):
+        elif role == Qt.ItemDataRole.UserRole and index.column() == ComponentsTableColumns.ORDERS.value:
             return component
 
         return None
 
     def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
-        if (
-            orientation == Qt.Orientation.Horizontal
-            and role == Qt.ItemDataRole.DisplayRole
-        ):
+        if orientation == Qt.Orientation.Horizontal and role == Qt.ItemDataRole.DisplayRole:
             return list(self.headers.keys())[section]
         return None
 
@@ -453,11 +409,7 @@ class ComponentsTableModel(QAbstractTableModel):
         if not index.isValid():
             return False
 
-        components_in_category = [
-            comp
-            for comp in self.components_inventory.components
-            if self.category in comp.categories
-        ]
+        components_in_category = [comp for comp in self.components_inventory.components if self.category in comp.categories]
 
         if index.row() >= len(components_in_category):
             return None
@@ -497,11 +449,7 @@ class ComponentsTableModel(QAbstractTableModel):
                 try:
                     new_price = float(
                         sympy.sympify(
-                            value.replace("USD", "")
-                            .replace("CAD", "")
-                            .strip()
-                            .replace(",", "")
-                            .replace("$", ""),
+                            value.replace("USD", "").replace("CAD", "").strip().replace(",", "").replace("$", ""),
                             evaluate=True,
                         )
                     )
@@ -518,7 +466,7 @@ class ComponentsTableModel(QAbstractTableModel):
             elif column == ComponentsTableColumns.NOTES.value:
                 component.notes = value
             print(f"{component.name}")
-            self.components_inventory.save()
+            self.components_inventory.save_local_copy()
             self.dataChanged.emit(index, index)
             return True
 
@@ -527,40 +475,30 @@ class ComponentsTableModel(QAbstractTableModel):
     def flags(self, index):
         if not index.isValid():
             return Qt.ItemFlag.NoItemFlags
-        return (
-            Qt.ItemFlag.ItemIsEditable
-            | Qt.ItemFlag.ItemIsSelectable
-            | Qt.ItemFlag.ItemIsEnabled
-        )
+        return Qt.ItemFlag.ItemIsEditable | Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
 
     def update_price_based_on_exchange_rate(self, component: Component):
         if component.use_exchange_rate:
             converted_price = component.price * self.get_exchange_rate()
         else:
             converted_price = component.price / self.get_exchange_rate()
-        tooltip_text = f'${converted_price:,.2f} {"CAD" if component.use_exchange_rate else "USD"}\n{component.latest_change_price}'
+        tooltip_text = f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}\n{component.latest_change_price}"
         row = self.components_inventory.components.index(component)
         index = self.index(row, ComponentsTableColumns.ITEM_PRICE.value)
         self.setData(index, tooltip_text, Qt.ItemDataRole.ToolTipRole)
         self.setData(
             index,
-            f'${component.price:,.2f} {"USD" if component.use_exchange_rate else "CAD"}',
+            f"${component.price:,.2f} {'USD' if component.use_exchange_rate else 'CAD'}",
             Qt.ItemDataRole.DisplayRole,
         )
 
     def get_exchange_rate(self) -> float:
         return self.settings_file.get_value(setting_name="exchange_rate")
 
-    def get_selected_components(
-        self, selected_indexes: list[QModelIndex]
-    ) -> list[Component]:
+    def get_selected_components(self, selected_indexes: list[QModelIndex]) -> list[Component]:
         selected_components: list[Component] = []
 
-        components_in_category = [
-            comp
-            for comp in self.components_inventory.components
-            if self.category in comp.categories
-        ]
+        components_in_category = [comp for comp in self.components_inventory.components if self.category in comp.categories]
 
         for index in selected_indexes:
             if index.isValid():

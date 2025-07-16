@@ -16,7 +16,7 @@ class FlatBar(StructuralProfile):
         return f"{self.material} {self.PROFILE_TYPE.value} {self.width:,.3f} x {self.length:,.3f} x {self.wall_thickness:,.3f}"
 
     def tooltip(self) -> str:
-        return f'Length: {self.length:,.3f} in\nWidth: {self.width:,.3f} in\nWall Thickness: {self.wall_thickness:,.3f} in'
+        return f"Length: {self.length:,.3f} in\nWidth: {self.width:,.3f} in\nWall Thickness: {self.wall_thickness:,.3f} in"
 
     def get_volume(self) -> float:
         return self.width * self.wall_thickness * self.length

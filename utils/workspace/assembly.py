@@ -1,5 +1,5 @@
 import copy
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional
 
 from ui.theme import theme_var
 from utils.inventory.angle_bar import AngleBar
@@ -30,6 +30,7 @@ class Assembly:
     def __init__(self, assembly_data: dict[str, object], job):
         self.job: Job = job
 
+        self.id = -1
         self.name = ""
         self.color = ""
         self.paint_inventory = self.job.job_manager.paint_inventory
@@ -73,7 +74,6 @@ class Assembly:
         self.flowtag_data: FlowtagData = None
 
         # NOTE Non serializable variables
-        self.id = -1
         self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
 
         self.load_data(assembly_data)
@@ -121,11 +121,11 @@ class Assembly:
     def get_all_paints(self) -> str:
         name = ""
         if self.uses_primer and self.primer_item:
-            name += f"{self.primer_item.name}\n"
+            name += f"{self.primer_item.part_name}\n"
         if self.uses_paint and self.paint_item:
-            name += f"{self.paint_item.name}\n"
+            name += f"{self.paint_item.part_name}\n"
         if self.uses_powder and self.powder_item:
-            name += f"{self.powder_item.name}\n"
+            name += f"{self.powder_item.part_name}\n"
         return name
 
     def get_weight(self) -> float:
@@ -147,17 +147,14 @@ class Assembly:
 
     def remove_sub_assembly(self, assembly) -> "Assembly":
         self.sub_assemblies.remove(assembly)
+        return assembly
 
     def get_sub_assemblies(self) -> list["Assembly"]:
         return self.sub_assemblies
 
-    def get_sub_assembly(self, assembly_name: str) -> "Assembly":
+    def get_sub_assembly(self, assembly_name: str) -> "Assembly | None":
         return next(
-            (
-                sub_assembly
-                for sub_assembly in self.sub_assemblies
-                if sub_assembly.name == assembly_name
-            ),
+            (sub_assembly for sub_assembly in self.sub_assemblies if sub_assembly.name == assembly_name),
             None,
         )
 
@@ -172,41 +169,28 @@ class Assembly:
         return assemblies
 
     def get_all_laser_cut_parts(self) -> list[LaserCutPart]:
-        return self.laser_cut_parts + [
-            part
-            for sub_assembly in self.get_all_sub_assemblies()
-            for part in sub_assembly.laser_cut_parts
-        ]
+        return self.laser_cut_parts + [part for sub_assembly in self.get_all_sub_assemblies() for part in sub_assembly.laser_cut_parts]
 
     def get_expected_time_to_complete(self) -> int:
         total_time: int = 0
         for laser_cut_part in self.laser_cut_parts:
-            total_time += (
-                laser_cut_part.get_expected_time_to_complete() * laser_cut_part.quantity
-            )
+            total_time += laser_cut_part.get_expected_time_to_complete() * laser_cut_part.quantity
         for tag in self.flowtag_data.tags_data:
-            total_time += self.flowtag_data.get_tag_data(
-                tag, "expected_time_to_complete"
-            )
+            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
         for sub_assembly in self.sub_assemblies:
             total_time += sub_assembly.get_expected_time_to_complete()
         return total_time * self.quantity
 
-    def load_settings(self, data: dict[str, Union[float, bool, str, dict]]):
+    def load_settings(self, data):
         assembly_data = data.get("assembly_data", {})
+        self.id = assembly_data.get("id", -1)
         self.name = assembly_data.get("name", "Assembly")
         self.starting_date = assembly_data.get("starting_date", "")
-        self.expected_time_to_complete = assembly_data.get(
-            "expected_time_to_complete", 0
-        )
+        self.expected_time_to_complete = assembly_data.get("expected_time_to_complete", 0)
         self.ending_date = assembly_data.get("ending_date", "")
-        self.flowtag = Flowtag(
-            assembly_data.get("flow_tag", {}), self.workspace_settings
-        )
+        self.flowtag = Flowtag(assembly_data.get("flow_tag", {}), self.workspace_settings)
         self.current_flow_tag_index = assembly_data.get("current_flow_tag_index", 0)
-        self.current_flow_tag_status_index = assembly_data.get(
-            "current_flow_tag_status_index", 0
-        )
+        self.current_flow_tag_status_index = assembly_data.get("current_flow_tag_status_index", 0)
         self.assembly_image = assembly_data.get("assembly_image")
         self.assembly_files = assembly_data.get("assembly_files", [])
         self.quantity = assembly_data.get("quantity", 1)
@@ -215,9 +199,7 @@ class Assembly:
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
-        self.timer = FlowtagTimer(
-            copy.deepcopy(assembly_data.get("timer", {})), self.flowtag
-        )
+        self.timer = FlowtagTimer(copy.deepcopy(assembly_data.get("timer", {})), self.flowtag)
         self.flowtag_data = FlowtagData(self.flowtag)
         self.flowtag_data.load_data(assembly_data.get("flow_tag_data", {}))
 
@@ -237,14 +219,12 @@ class Assembly:
 
         self.uses_powder = assembly_data.get("uses_powder_coating", False)
         self.powder_name = assembly_data.get("powder_name")
-        self.powder_transfer_efficiency = assembly_data.get(
-            "powder_transfer_efficiency", 66.67
-        )
+        self.powder_transfer_efficiency = assembly_data.get("powder_transfer_efficiency", 66.67)
         if self.uses_powder and self.powder_name:
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = assembly_data.get("cost_for_powder_coating", 0.0)
 
-    def load_data(self, data: dict[str, Union[float, bool, str, dict]]):
+    def load_data(self, data):
         self.load_settings(data)
 
         self.laser_cut_parts.clear()
@@ -315,9 +295,10 @@ class Assembly:
             sub_assembly = Assembly(sub_assembly_data, self.job)
             self.sub_assemblies.append(sub_assembly)
 
-    def to_dict(self) -> dict[str, dict[str, Union[list[dict[str, object]], object]]]:
+    def to_dict(self):
         return {
             "assembly_data": {
+                "id": self.id,
                 "name": self.name,
                 "color": self.color,
                 "starting_date": self.starting_date,
@@ -345,15 +326,8 @@ class Assembly:
                 "timer": self.timer.to_dict(),
                 "flow_tag_data": self.flowtag_data.to_dict(),
             },
-            "laser_cut_parts": [
-                laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts
-            ],
+            "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
             "components": [component.to_dict() for component in self.components],
-            "structural_steel_components": [
-                structural_steel_component.to_dict()
-                for structural_steel_component in self.structural_steel_items
-            ],
-            "sub_assemblies": [
-                sub_assembly.to_dict() for sub_assembly in self.sub_assemblies
-            ],
+            "structural_steel_components": [structural_steel_component.to_dict() for structural_steel_component in self.structural_steel_items],
+            "sub_assemblies": [sub_assembly.to_dict() for sub_assembly in self.sub_assemblies],
         }

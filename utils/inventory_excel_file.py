@@ -63,9 +63,7 @@ class ExcelFile:
         )
         for category in list(data.keys()):
             worksheet = self.workbook.add_worksheet(category.title())
-            worksheet.set_header(
-                f'&L{datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}&C&25{category.title()}&RPiney Manufacturing Inventory'
-            )
+            worksheet.set_header(f"&L{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}&C&25{category.title()}&RPiney Manufacturing Inventory")
             worksheet.hide_gridlines(2)
             worksheet.set_margins(0.25, 0.25, 0.8, 0.25)
             # worksheet.freeze_panes("A2")
@@ -101,20 +99,16 @@ class ExcelFile:
                         grouped_category[group][item]["current_quantity"],
                         text_format,
                     )
-                    worksheet.write(
-                        row, 4, grouped_category[group][item]["price"], money_format
-                    )
+                    worksheet.write(row, 4, grouped_category[group][item]["price"], money_format)
                     worksheet.set_row(row, 50)
 
                     row += 1
                 worksheet.add_table(
-                    f"A{starting_row+1}:E{row}",
+                    f"A{starting_row + 1}:E{row}",
                     {
                         "style": "TableStyleLight8",
                         "first_column": False,
-                        "columns": [
-                            {"header": header} for header in self.table_headers
-                        ],
+                        "columns": [{"header": header} for header in self.table_headers],
                     },
                 )
                 row += 1
@@ -125,9 +119,7 @@ class ExcelFile:
             worksheet.write(
                 row - 1,
                 4,
-                self.inventory.get_total_unit_cost(
-                    category, self.__get_exchange_rate()
-                ),
+                self.inventory.get_total_unit_cost(category, self.__get_exchange_rate()),
                 total_format_right,
             )
             worksheet.print_area(f"A1:E{row}")

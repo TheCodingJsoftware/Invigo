@@ -17,15 +17,13 @@ class Inventory:
             self._reset_file()
 
     def _reset_file(self):
-        with open(
-            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
-        ) as file:
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
             file.write("{}")
 
     def get_categories(self) -> list[Category]:
         return self.categories.categories
 
-    def get_category(self, category_name: str) -> Category:
+    def get_category(self, category_name: str) -> Category | None:
         return self.categories.get_category(category_name)
 
     def add_category(self, category: str | Category):

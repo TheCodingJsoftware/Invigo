@@ -378,3 +378,19 @@ def get_contrast_text_color(hex_color: str) -> str:
     b = int(hex_color[4:6], 16)
     luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
     return "black" if luminance > 0.5 else "white"
+
+
+def get_on_color_from_primary(hex_color: str) -> str:
+    red, green, blue = hex_to_rgb(hex_color)
+    hue, luminance, saturation = rgb2hls(red / 255.0, green / 255.0, blue / 255.0)
+
+    # Approximate tone threshold
+    if luminance > 0.4:
+        # If primary is light, create dark on-color
+        target_luminance = 0.1  # very dark
+    else:
+        # If primary is dark, create light on-color
+        target_luminance = 0.95  # very light
+
+    r_on, g_on, b_on = hls2rgb(hue, target_luminance, saturation)
+    return rgb2hex(int(r_on * 255), int(g_on * 255), int(b_on * 255))

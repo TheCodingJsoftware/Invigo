@@ -2,13 +2,13 @@ import os
 from functools import partial
 
 from natsort import natsorted
-from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtCore import Qt, QThreadPool, QUrl
 from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWidgets import QMainWindow, QMessageBox, QPushButton
 
 from ui.icons import Icons
 from ui.windows.pdf_viewer_UI import Ui_MainWindow
-from utils.threads.workspace.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.workers.workspace.download_file import WorkspaceDownloadWorker
 
 
 class PDFViewer(QMainWindow, Ui_MainWindow):
@@ -18,33 +18,17 @@ class PDFViewer(QMainWindow, Ui_MainWindow):
 
         self.files = pdf_files
         self.buttons: list[QPushButton] = []
-        self.download_file_thread: WorkspaceDownloadFile = None
+        self.download_file_thread: WorkspaceDownloadWorker = None
 
         self.webView = QWebEngineView(self)
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.PluginsEnabled, True
-        )
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.PdfViewerEnabled, True
-        )
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.AllowRunningInsecureContent, True
-        )
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.AutoLoadImages, True
-        )
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.ErrorPageEnabled, True
-        )
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.FullScreenSupportEnabled, True
-        )
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.PrintElementBackgrounds, True
-        )
-        self.webView.settings().setAttribute(
-            self.webView.settings().WebAttribute.WebGLEnabled, True
-        )
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PluginsEnabled, True)
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PdfViewerEnabled, True)
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.AllowRunningInsecureContent, True)
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.AutoLoadImages, True)
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.ErrorPageEnabled, True)
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.FullScreenSupportEnabled, True)
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PrintElementBackgrounds, True)
+        self.webView.settings().setAttribute(self.webView.settings().WebAttribute.WebGLEnabled, True)
         self.webView.printRequested.connect(self.print_pdf)
         # self.webView.page().loadFinished.connect(self.hide_thumbnails)
 
@@ -80,18 +64,17 @@ class PDFViewer(QMainWindow, Ui_MainWindow):
         self.current_pdf_file = path
 
     def get_pdf_files(self) -> list[str]:
-        pdf_files: set[str] = {
-            file for file in self.files if file.lower().endswith(".pdf")
-        }
+        pdf_files: set[str] = {file for file in self.files if file.lower().endswith(".pdf")}
         return list(pdf_files)
 
     def load_pdf_file(self, file_path: str):
         self.current_pdf_file = file_path
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
+        self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
+        self.download_file_thread.signals.success.connect(self.file_downloaded)
+        QThreadPool.globalInstance().start(self.download_file_thread)
 
-    def file_downloaded(self, file_ext: str, file_name: str, open_when_done: bool):
+    def file_downloaded(self, response: tuple[str, str, bool]):
+        file_ext, file_name, open_when_done = response
         if file_ext is None:
             msg = QMessageBox(
                 QMessageBox.Icon.Critical,

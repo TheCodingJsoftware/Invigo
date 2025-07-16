@@ -38,12 +38,8 @@ class Flowtag:
         self.name = data.get("name", "")
         self.group = Group(data.get("group", 0))
 
-        self.add_quantity_tag = self.workspace_settings.get_tag(
-            data.get("add_quantity_tag")
-        )
-        self.remove_quantity_tag = self.workspace_settings.get_tag(
-            data.get("remove_quantity_tag")
-        )
+        self.add_quantity_tag = self.workspace_settings.get_tag(data.get("add_quantity_tag"))
+        self.remove_quantity_tag = self.workspace_settings.get_tag(data.get("remove_quantity_tag"))
 
         self.tags.clear()
         tags = data.get("tags", [])
@@ -87,24 +83,16 @@ class Flowtag:
             return {
                 "name": self.name,
                 "group": self.group.value,
-                "add_quantity_tag": self.add_quantity_tag.name
-                if self.add_quantity_tag
-                else None,
-                "remove_quantity_tag": self.remove_quantity_tag.name
-                if self.remove_quantity_tag
-                else None,
+                "add_quantity_tag": self.add_quantity_tag.name if self.add_quantity_tag else None,
+                "remove_quantity_tag": self.remove_quantity_tag.name if self.remove_quantity_tag else None,
                 "tags": [tag.name for tag in self.tags],
             }
         except AttributeError:  # no flow tag
             return {
                 "name": "",
                 "group": self.group.value,
-                "add_quantity_tag": self.add_quantity_tag.name
-                if self.add_quantity_tag
-                else None,
-                "remove_quantity_tag": self.remove_quantity_tag.name
-                if self.remove_quantity_tag
-                else None,
+                "add_quantity_tag": self.add_quantity_tag.name if self.add_quantity_tag else None,
+                "remove_quantity_tag": self.remove_quantity_tag.name if self.remove_quantity_tag else None,
                 "tags": [],
             }
 

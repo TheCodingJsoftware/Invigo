@@ -84,7 +84,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="components_tab">
        <layout class="QVBoxLayout" name="verticalLayout_41">
@@ -298,6 +298,16 @@
                <number>9</number>
               </property>
               <item>
+               <widget class="QPushButton" name="pushButton_job_generator">
+                <property name="text">
+                 <string>Job Generator</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QTabWidget" name="tabWidget_3">
                 <property name="currentIndex">
                  <number>0</number>
@@ -326,8 +336,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1398</width>
-                       <height>683</height>
+                       <width>1412</width>
+                       <height>624</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -367,8 +377,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>68</width>
-                       <height>16</height>
+                       <width>1412</width>
+                       <height>624</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -722,8 +732,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
-                     <height>16</height>
+                     <width>96</width>
+                     <height>26</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -776,8 +786,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
-                     <height>16</height>
+                     <width>96</width>
+                     <height>26</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -1134,8 +1144,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
-                        <height>16</height>
+                        <width>96</width>
+                        <height>26</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1206,8 +1216,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
-                        <height>16</height>
+                        <width>96</width>
+                        <height>26</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1518,7 +1528,7 @@
      <x>0</x>
      <y>0</y>
      <width>1458</width>
-     <height>33</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1595,12 +1605,35 @@
     <property name="title">
      <string>Purchase Orders</string>
     </property>
-    <addaction name="actionAdd_Purchase_Order"/>
-    <addaction name="actionRemove_Purchase_Order"/>
+    <widget class="QMenu" name="menuPurchase_Orders_2">
+     <property name="title">
+      <string>Purchase Orders</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menuEdit_Vendors">
+     <property name="title">
+      <string>Edit Vendors</string>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menuEdit_Shiping_Addresses">
+     <property name="title">
+      <string>Edit Shipping Addresses</string>
+     </property>
+    </widget>
+    <addaction name="actionCreate_New_Purchase_Order"/>
+    <addaction name="actionOpen_Latest_Purchase_Order"/>
+    <addaction name="menuPurchase_Orders_2"/>
     <addaction name="separator"/>
-    <addaction name="actionOpen_Purchase_Order"/>
+    <addaction name="actionAdd_New_Vendor"/>
+    <addaction name="actionDelete_Vendor"/>
+    <addaction name="menuEdit_Vendors"/>
     <addaction name="separator"/>
-    <addaction name="actionOpen_Folder"/>
+    <addaction name="menuEdit_Shiping_Addresses"/>
+    <addaction name="actionAdd_New_Shipping_Address"/>
+    <addaction name="actionDelete_Shipping_Address"/>
+    <addaction name="separator"/>
+    <addaction name="actionEdit_Contact_Info"/>
+    <addaction name="actionEdit_Business_Info"/>
    </widget>
    <widget class="QMenu" name="menuQuote_Generator">
     <property name="title">
@@ -2151,6 +2184,71 @@
   <action name="actionDark">
    <property name="text">
     <string>Dark</string>
+   </property>
+  </action>
+  <action name="actionCreate_Purchase_Order">
+   <property name="text">
+    <string>Create Purchase Order</string>
+   </property>
+  </action>
+  <action name="actionRecent_Purchase_Orders">
+   <property name="text">
+    <string>Recent Purchase Orders</string>
+   </property>
+  </action>
+  <action name="actionCreate_New_Purchase_Order">
+   <property name="text">
+    <string>Create New Purchase Order</string>
+   </property>
+  </action>
+  <action name="actionOpen_Latest_Purchase_Order">
+   <property name="text">
+    <string>Open Latest Purchase Order</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_Vendor">
+   <property name="text">
+    <string>Add New Vendor</string>
+   </property>
+  </action>
+  <action name="actionDelete_Vendor">
+   <property name="text">
+    <string>Delete Vendor</string>
+   </property>
+  </action>
+  <action name="actiontest">
+   <property name="text">
+    <string>test</string>
+   </property>
+  </action>
+  <action name="actionsa">
+   <property name="text">
+    <string>sa</string>
+   </property>
+  </action>
+  <action name="actionEdit_Contact_Info">
+   <property name="text">
+    <string>Edit Contact Info</string>
+   </property>
+  </action>
+  <action name="actionEdit_Business_Info">
+   <property name="text">
+    <string>Edit Business Info</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_Shipping_Address">
+   <property name="text">
+    <string>Add New Shipping Address</string>
+   </property>
+  </action>
+  <action name="actionDelete_Shipping_Address">
+   <property name="text">
+    <string>Delete Shipping Address</string>
+   </property>
+  </action>
+  <action name="actions">
+   <property name="text">
+    <string>s</string>
    </property>
   </action>
  </widget>

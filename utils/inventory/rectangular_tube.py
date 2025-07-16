@@ -20,13 +20,7 @@ class RectangularTube(StructuralProfile):
         return f"Length: {self.length:,.3f} in\nOuter Width: {self.outer_width:,.3f} in\nOuter Height: {self.outer_height:,.3f} in\nWall Thickness: {self.wall_thickness:,.3f} in"
 
     def get_volume(self) -> float:
-        return (
-            (self.outer_width * self.outer_height)
-            - (
-                (self.outer_width - (2 * self.wall_thickness))
-                * (self.outer_height - (2 * self.wall_thickness))
-            )
-        ) * self.length
+        return ((self.outer_width * self.outer_height) - ((self.outer_width - (2 * self.wall_thickness)) * (self.outer_height - (2 * self.wall_thickness)))) * self.length
 
     def get_weight(self) -> float:
         print(self.get_volume())
@@ -35,9 +29,7 @@ class RectangularTube(StructuralProfile):
         return self.get_volume() * self.get_density()
 
     def get_cost(self) -> float:
-        return self.get_weight() * self.structural_steel_settings.get_price_per_pound(
-            self.material
-        )
+        return self.get_weight() * self.structural_steel_settings.get_price_per_pound(self.material)
 
     def load_data(self, data: dict[str, Union[float, str]]):
         super().load_data(data)

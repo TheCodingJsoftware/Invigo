@@ -13,13 +13,18 @@ from utils.inventory.rectangular_tube import RectangularTube
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
 from utils.inventory.structural_profile import ProfilesTypes, StructuralProfile
-from utils.structural_steel_settings.structural_steel_settings import \
-    StructuralSteelSettings
+from utils.structural_steel_settings.structural_steel_settings import (
+    StructuralSteelSettings,
+)
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class StructuralSteelInventory(Inventory):
-    def __init__(self, structural_steel_settings: StructuralSteelSettings, workspace_settings: WorkspaceSettings):
+    def __init__(
+        self,
+        structural_steel_settings: StructuralSteelSettings,
+        workspace_settings: WorkspaceSettings,
+    ):
         super().__init__("structural_steel_inventory")
         self.structural_steel_settings = structural_steel_settings
         self.workspace_settings = workspace_settings
@@ -34,9 +39,7 @@ class StructuralSteelInventory(Inventory):
         self.pipes: list[Pipe] = []
         self.load_data()
 
-    def duplicate_category(
-        self, category_to_duplicate: Category, new_category_name: str
-    ) -> Category:
+    def duplicate_category(self, category_to_duplicate: Category, new_category_name: str) -> Category:
         new_category = Category(new_category_name)
         super().add_category(new_category)
         for sheet in self.get_items_by_category(category_to_duplicate):
@@ -49,7 +52,10 @@ class StructuralSteelInventory(Inventory):
             item.remove_from_category(deleted_category)
         return deleted_category
 
-    def get_items_by_profile_type(self, items: list[RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar]) -> list[ProfilesTypes]:
+    def get_items_by_profile_type(
+        self,
+        items: list[RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar],
+    ) -> list[ProfilesTypes]:
         profile_types: set[ProfilesTypes] = set()
         for item in items:
             profile_types.add(item.PROFILE_TYPE)
@@ -162,7 +168,10 @@ class StructuralSteelInventory(Inventory):
     def remove_pipe(self, item: Pipe):
         self.pipes.remove(item)
 
-    def remove_item(self, item: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar):
+    def remove_item(
+        self,
+        item: RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar,
+    ):
         if isinstance(item, RoundBar):
             self.remove_round_bar(item)
         elif isinstance(item, RectangularBar):
@@ -180,14 +189,14 @@ class StructuralSteelInventory(Inventory):
         elif isinstance(item, FlatBar):
             self.remove_flat_bar(item)
 
-    def get_all_items(self) -> list[RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar]:
+    def get_all_items(
+        self,
+    ) -> list[RoundBar | RectangularBar | AngleBar | RectangularTube | RoundTube | DOMRoundTube | Pipe | FlatBar]:
         return self.angle_bars + self.flat_bars + self.rectangular_bars + self.rectangular_tubes + self.round_bars + self.round_tubes + self.DOM_round_tubes + self.pipes
 
     def load_data(self):
         try:
-            with open(
-                f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8"
-            ) as file:
+            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
                 data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
             self.categories.from_list(data["categories"])
             self.angle_bars.clear()

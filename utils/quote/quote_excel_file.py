@@ -152,14 +152,8 @@ class ExcelFile:
         if number_format is None:
             cell_format = self.workbook.add_format({"font_name": self.FONT_NAME})
         else:
-            cell_format = self.workbook.add_format(
-                {"num_format": number_format, "font_name": self.FONT_NAME}
-            )
-        if (
-            "Payment" not in str(item)
-            and "Received" not in str(item)
-            and "__" not in str(item)
-        ):
+            cell_format = self.workbook.add_format({"num_format": number_format, "font_name": self.FONT_NAME})
+        if "Payment" not in str(item) and "Received" not in str(item) and "__" not in str(item):
             if "Sheet Count:" not in str(item):
                 cell_format.set_align("center")
                 cell_format.set_align("vcenter")
@@ -177,11 +171,7 @@ class ExcelFile:
             cell_format.set_bold()
         if col == "G" and row > 2 and "Tax" not in str(item):
             cell_format.set_right(1)
-        if (
-            col == "E"
-            and not (self.generate_quote or self.should_generate_packing_slip)
-            and row > 4
-        ):
+        if col == "E" and not (self.generate_quote or self.should_generate_packing_slip) and row > 4:
             cell_format.set_right(1)
         if totals:
             cell_format.set_top(6)
@@ -241,9 +231,7 @@ class ExcelFile:
             formula (str): the location of where the list is located such as: "A1:C1"
         """
         col, row = self.parse_cell(cell=cell)
-        self.worksheet.data_validation(
-            f"${col}${row}", {"validate": type, "source": location}
-        )
+        self.worksheet.data_validation(f"${col}${row}", {"validate": type, "source": location})
 
     def add_table(self, display_name: str, theme: str, location: str, headers: list):
         """Add a table to the excel sheet
@@ -305,16 +293,10 @@ class ExcelFile:
 
     def save(self):
         """Save excel file."""
-        merge_format = self.workbook.add_format(
-            {"align": "top", "valign": "right", "font_name": self.FONT_NAME}
-        )
+        merge_format = self.workbook.add_format({"align": "top", "valign": "right", "font_name": self.FONT_NAME})
         merge_format.set_text_wrap()
-        self.worksheet.merge_range(
-            "F1:G1", f"{datetime.now().strftime('%B %d, %A, %Y')}", merge_format
-        )
-        merge_format = self.workbook.add_format(
-            {"align": "center", "valign": "center", "font_name": self.FONT_NAME}
-        )
+        self.worksheet.merge_range("F1:G1", f"{datetime.now().strftime('%B %d, %A, %Y')}", merge_format)
+        merge_format = self.workbook.add_format({"align": "center", "valign": "center", "font_name": self.FONT_NAME})
         merge_format.set_bold()
         merge_format.set_font_size(18)
         merge_format.set_bottom(1)

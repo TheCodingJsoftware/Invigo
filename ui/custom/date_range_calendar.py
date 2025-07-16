@@ -11,9 +11,7 @@ class DateRangeCalendar(QCalendarWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setObjectName("select_range_calendar")
-        self.setVerticalHeaderFormat(
-            QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader
-        )
+        self.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
         self.from_date: QDate = QDate.currentDate()
         self.to_date: QDate = None
 
@@ -69,10 +67,7 @@ class DateRangeCalendar(QCalendarWidget):
         self.clear_highlight()
 
         # check if a keyboard modifer is pressed
-        if (
-            QApplication.keyboardModifiers() & Qt.KeyboardModifier.ShiftModifier
-            and self.from_date
-        ):
+        if QApplication.keyboardModifiers() & Qt.KeyboardModifier.ShiftModifier and self.from_date:
             self.to_date = date_value
             if self.to_date < self.from_date:
                 self.to_date, self.from_date = self.from_date, self.to_date

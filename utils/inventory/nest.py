@@ -15,6 +15,7 @@ class Nest:
         sheet_settings: SheetSettings,
         laser_cut_inventory: LaserCutInventory,
     ):
+        self.id: int = -1
         self.name: str = ""
         self.cutting_method: str = "CO2"
         self.notes: str = ""
@@ -46,24 +47,16 @@ class Nest:
         sheet_surface_area = self.sheet.length * self.sheet.width
         total_laser_cut_part_surface_area = 0.0
         for laser_cut_part in self.laser_cut_parts:
-            total_laser_cut_part_surface_area += (
-                laser_cut_part.surface_area * laser_cut_part.quantity
-            )
+            total_laser_cut_part_surface_area += laser_cut_part.surface_area * laser_cut_part.quantity
         try:
             return (1 - (total_laser_cut_part_surface_area / sheet_surface_area)) * 100
         except ZeroDivisionError:
             return 0.0
 
     def get_sheet_cost(self) -> float:
-        if price_per_pound := self.sheet_settings.get_price_per_pound(
-            self.sheet.material
-        ):
-            if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(
-                self.sheet.material, self.sheet.thickness
-            ):
-                pounds_per_sheet = (
-                    (self.sheet.length * self.sheet.width) / 144
-                ) * pounds_per_square_foot
+        if price_per_pound := self.sheet_settings.get_price_per_pound(self.sheet.material):
+            if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(self.sheet.material, self.sheet.thickness):
+                pounds_per_sheet = ((self.sheet.length * self.sheet.width) / 144) * pounds_per_square_foot
                 return price_per_pound * pounds_per_sheet
         return 0.0
 
@@ -77,9 +70,7 @@ class Nest:
         return f"{self.sheet.thickness} {self.sheet.material} {self.get_sheet_dimension()} {self.name}"
 
     def sort_laser_cut_parts(self):
-        self.laser_cut_parts = natsorted(
-            self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.part_number
-        )
+        self.laser_cut_parts = natsorted(self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.part_number)
 
     def get_nest_recut_part_summary(self) -> str:
         summary = ""
@@ -92,6 +83,7 @@ class Nest:
         return summary
 
     def load_data(self, data: dict[str, float | int | str | dict[str, float | str]]):
+        self.id = data.get("id", -1)
         self.name = data.get("name", "")
         self.cutting_method = data.get("cutting_method", "CO2")
         self.notes = data.get("notes", "")
@@ -102,9 +94,7 @@ class Nest:
         self.laser_cut_parts.clear()
         for laser_cut_part_data in data.get("laser_cut_parts", []):
             try:
-                laser_cut_part = LaserCutPart(
-                    laser_cut_part_data, self.laser_cut_inventory
-                )
+                laser_cut_part = LaserCutPart(laser_cut_part_data, self.laser_cut_inventory)
             except AttributeError:  # Old inventory format
                 laser_cut_part = LaserCutPart(
                     data["laser_cut_parts"][laser_cut_part_data],
@@ -130,6 +120,7 @@ class Nest:
 
     def to_dict(self) -> dict[str, Union[float, int, str]]:
         return {
+            "id": self.id,
             "name": self.name,
             "cutting_method": self.cutting_method,
             "sheet_count": self.sheet_count,
@@ -137,8 +128,6 @@ class Nest:
             "sheet_cut_time": self.sheet_cut_time,
             "image_path": self.image_path,
             "notes": self.notes,
-            "laser_cut_parts": [
-                laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts
-            ],
+            "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
             "sheet": self.sheet.to_dict(),
         }

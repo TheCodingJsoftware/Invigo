@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Union
 
 from natsort import natsorted
 
+from ui.icons import Icons
 from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -26,6 +27,32 @@ class JobStatus(Enum):
     ARCHIVE = auto()
 
 
+class JobIcon(Enum):
+    PLANNING = JobStatus.PLANNING
+    QUOTING = JobStatus.QUOTING
+    QUOTED = JobStatus.QUOTED
+    QUOTE_CONFIRMED = JobStatus.QUOTE_CONFIRMED
+    TEMPLATE = JobStatus.TEMPLATE
+    WORKSPACE = JobStatus.WORKSPACE
+    ARCHIVE = JobStatus.ARCHIVE
+
+    @classmethod
+    def get_icon(cls, job_status: JobStatus):
+        icon_map = {
+            cls.PLANNING: Icons.job_planning_icon,
+            cls.QUOTING: Icons.job_quoting_icon,
+            cls.QUOTED: Icons.job_quoted_icon,
+            cls.QUOTE_CONFIRMED: Icons.job_quote_confirmed_icon,
+            cls.TEMPLATE: Icons.job_template_icon,
+            cls.WORKSPACE: Icons.job_workspace_icon,
+            cls.ARCHIVE: Icons.job_archive_icon,
+        }
+        for member in cls:
+            if member.value == job_status:
+                return icon_map.get(member)
+        return None
+
+
 class JobColor(Enum):
     PLANNING = (theme_var("job-planning"), JobStatus.PLANNING)
     QUOTING = (theme_var("job-quoting"), JobStatus.QUOTING)
@@ -37,29 +64,27 @@ class JobColor(Enum):
 
     @classmethod
     def get_color(cls, job_status: JobStatus):
-        return next(
-            (color.value[0] for color in cls if color.value[1] == job_status), None
-        )
+        return next((color.value[0] for color in cls if color.value[1] == job_status), "red")
 
 
 class Job:
     def __init__(self, data: dict, job_manager):
+        self.id = -1
         self.name: str = ""
         self.order_number: float = 0.0
         self.PO_number: float = 0.0
         self.ship_to: str = ""
         self.starting_date: str = ""
         self.ending_date: str = ""
-        self.color: str = theme_var("job-planning")  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
         self.moved_job_to_workspace = False
 
         self.job_manager: JobManager = job_manager
         self.status = JobStatus.PLANNING
+        self.color: str = JobColor.get_color(self.status)
 
         # NOTE Non serialized variables
-        self.id = -1
         self.grouped_components: list[Component] = []
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
         self.sheet_settings = self.job_manager.sheet_settings
@@ -68,9 +93,7 @@ class Job:
         self.laser_cut_inventory = self.job_manager.laser_cut_inventory
         self.paint_inventory = self.job_manager.paint_inventory
         self.structural_steel_inventory = self.job_manager.structural_steel_inventory
-        self.price_calculator = JobPriceCalculator(
-            self, self.sheet_settings, self.paint_inventory, {}
-        )
+        self.price_calculator = JobPriceCalculator(self, self.sheet_settings, self.paint_inventory, {})
 
         self.unsaved_changes = False
         self.downloaded_from_server = False
@@ -119,17 +142,11 @@ class Job:
         for assembly in self.get_all_assemblies():
             for assembly_laser_cut_part in assembly.laser_cut_parts:
                 unit_quantity = assembly_laser_cut_part.quantity
-                new_laser_cut_part = LaserCutPart(
-                    assembly_laser_cut_part.to_dict(), self.laser_cut_inventory
-                )
+                new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
                 new_laser_cut_part.quantity = unit_quantity * assembly.quantity
-                new_laser_cut_part.matched_to_sheet_cost_price = (
-                    assembly_laser_cut_part.matched_to_sheet_cost_price
-                )
+                new_laser_cut_part.matched_to_sheet_cost_price = assembly_laser_cut_part.matched_to_sheet_cost_price
 
-                if existing_component := laser_cut_part_dict.get(
-                    new_laser_cut_part.name
-                ):
+                if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
                     existing_component.quantity += new_laser_cut_part.quantity
                 else:
                     laser_cut_part_dict[new_laser_cut_part.name] = new_laser_cut_part
@@ -145,9 +162,7 @@ class Job:
         for assembly in self.get_all_assemblies():
             for assembly_component in assembly.components:
                 unit_quantity = assembly_component.quantity
-                new_component = Component(
-                    assembly_component.to_dict(), self.components_inventory
-                )
+                new_component = Component(assembly_component.to_dict(), self.components_inventory)
                 new_component.quantity = unit_quantity * assembly.quantity
                 if existing_component := components_dict.get(new_component.name):
                     existing_component.quantity += new_component.quantity
@@ -162,22 +177,16 @@ class Job:
         self.nests = natsorted(self.nests, key=lambda nest: nest.name)
 
     def sort_laser_cut_parts(self):
-        self.grouped_laser_cut_parts = natsorted(
-            self.grouped_laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.name
-        )
+        self.grouped_laser_cut_parts = natsorted(self.grouped_laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.name)
 
     def sort_components(self):
-        self.grouped_components = natsorted(
-            self.grouped_components, key=lambda laser_cut_part: laser_cut_part.name
-        )
+        self.grouped_components = natsorted(self.grouped_components, key=lambda laser_cut_part: laser_cut_part.name)
 
     def get_net_weight(self) -> float:
         total_weight = 0.0
         for assembly in self.get_all_assemblies():
             for laser_cut_part in assembly.laser_cut_parts:
-                total_weight += (
-                    laser_cut_part.weight * laser_cut_part.quantity * assembly.quantity
-                )
+                total_weight += laser_cut_part.weight * laser_cut_part.quantity * assembly.quantity
         return total_weight
 
     def get_all_assemblies(self) -> list[Assembly]:
@@ -218,34 +227,29 @@ class Job:
     def get_workspace_name(self) -> str:
         return f"{self.id}. {self.name} #{self.order_number}: {self.starting_date} - {self.ending_date}"
 
-    def load_settings(self, data: dict[str, dict[str, object]]):
+    def load_settings(self, data):
         job_data = data.get("job_data", {})
+        self.id = job_data.get("id", -1)
         self.name = job_data.get("name", "")
         self.order_number = job_data.get("order_number", 0)
         self.PO_number = job_data.get("PO_number", 0)
         self.ship_to = job_data.get("ship_to", "")
         self.starting_date = job_data.get("starting_date", "")
         self.ending_date = job_data.get("ending_date", "")
-        self.status = JobStatus(
-            int(job_data.get("type", 1))
-        )  # We cast just in case, trust me
+        self.status = JobStatus(int(job_data.get("type", 1)))  # We cast just in case, trust me
         self.color = JobColor.get_color(self.status)
         self.moved_job_to_workspace = job_data.get("moved_job_to_workspace", False)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
 
     def update_inventory_items_data(self):
+        laser_cut_parts_to_update = []
         for laser_cut_part in self.get_all_laser_cut_parts():
-            if (
-                inventory_laser_cut_part
-                := self.laser_cut_inventory.get_laser_cut_part_by_name(
-                    laser_cut_part.name
-                )
-            ):
+            if inventory_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
+                inventory_laser_cut_part.image_index = laser_cut_part.image_index
+
                 inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
                 inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
-                inventory_laser_cut_part.cnc_milling_files = (
-                    laser_cut_part.cnc_milling_files
-                )
+                inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
                 inventory_laser_cut_part.flowtag = laser_cut_part.flowtag
                 inventory_laser_cut_part.flowtag_data = laser_cut_part.flowtag_data
 
@@ -257,24 +261,20 @@ class Job:
                 inventory_laser_cut_part.paint_name = laser_cut_part.paint_name
                 inventory_laser_cut_part.powder_name = laser_cut_part.powder_name
 
-                inventory_laser_cut_part.primer_overspray = (
-                    laser_cut_part.primer_overspray
-                )
-                inventory_laser_cut_part.paint_overspray = (
-                    laser_cut_part.paint_overspray
-                )
-                inventory_laser_cut_part.powder_transfer_efficiency = (
-                    laser_cut_part.powder_transfer_efficiency
-                )
+                inventory_laser_cut_part.primer_overspray = laser_cut_part.primer_overspray
+                inventory_laser_cut_part.paint_overspray = laser_cut_part.paint_overspray
+                inventory_laser_cut_part.powder_transfer_efficiency = laser_cut_part.powder_transfer_efficiency
+                laser_cut_parts_to_update.append(inventory_laser_cut_part)
 
-        self.laser_cut_inventory.save()
+        self.laser_cut_inventory.save_laser_cut_parts(laser_cut_parts_to_update)
 
+        components_to_save = []
         for component in self.get_all_components():
-            if inventory_component := self.components_inventory.get_component_by_name(
-                component.name
-            ):
+            if inventory_component := self.components_inventory.get_component_by_name(component.name):
                 inventory_component.image_path = component.image_path
-        self.components_inventory.save()
+                components_to_save.append(inventory_component)
+        # self.components_inventory.save_local_copy()
+        self.components_inventory.save_components(components_to_save)
 
     def is_valid(self) -> tuple[bool, str]:
         for assembly in self.get_all_assemblies():
@@ -309,14 +309,13 @@ class Job:
             self.add_assembly(assembly)
 
         # Because we need laser cut parts
-        self.flowtag_timeline.load_data(
-            data.get("job_data", {}).get("flowtag_timeline", {})
-        )
+        self.flowtag_timeline.load_data(data.get("job_data", {}).get("flowtag_timeline", {}))
 
-    def to_dict(self) -> dict[str, dict[str, Union[list[dict[str, object]], object]]]:
+    def to_dict(self):
         self.unsaved_changes = False
         return {
             "job_data": {
+                "id": self.id,
                 "name": self.name,
                 "type": self.status.value,
                 "order_number": int(self.order_number),  # Just in case

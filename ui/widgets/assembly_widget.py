@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Optional, Union
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
 from PyQt6.QtWidgets import (
+    QHBoxLayout,
     QMenu,
     QPushButton,
     QTableWidget,
@@ -20,7 +21,7 @@ from ui.theme import theme_var
 from ui.widgets.assembly_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
-from utils.colors import get_contrast_text_color, lighten_color
+from utils.colors import get_on_color_from_primary, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.job_preferences import JobPreferences
 
@@ -33,16 +34,16 @@ class AssemblyWidget(QWidget, Ui_Form):
     def __init__(self, assembly: Assembly, parent):
         super().__init__(parent)
         self.setupUi(self)
-        self.parent: Union["AssemblyWidget", JobWidget] = parent
+        self._parent_widget: Union["AssemblyWidget", JobWidget] = parent
 
         self.assembly = assembly
-        self.job_preferences: JobPreferences = self.parent.job_preferences
+        self.job_preferences: JobPreferences = self._parent_widget.job_preferences
         self.sheet_settings = self.assembly.job.sheet_settings
         self.workspace_settings = self.assembly.job.workspace_settings
         self.components_inventory = self.assembly.job.components_inventory
         self.laser_cut_inventory = self.assembly.job.laser_cut_inventory
-        self.price_calculator = self.parent.price_calculator
-        self.job_tab: JobTab = self.parent.parent
+        self.price_calculator = self._parent_widget.price_calculator
+        self.job_tab: JobTab = self._parent_widget._parent_widget
 
         self.assembly_widget.setStyleSheet(
             f"""
@@ -52,7 +53,7 @@ border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
 border-top-right-radius: 0px;
 border-top-left-radius: 0px;
-background-color: {theme_var('surface')};
+background-color: {theme_var("surface")};
 }}"""
             % {"base_color": self.assembly.color}
         )
@@ -61,63 +62,51 @@ background-color: {theme_var('surface')};
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_10.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_15.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_laser_cut_parts, self.laser_cut_widget
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_components, self.component_widget
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_structural_steel_items, self.structural_steel_items_widget
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_sub_assemblies, self.sub_assemblies_widget
-        )
-        self.doubleSpinBox_quantity.wheelEvent = lambda event: self.parent.wheelEvent(
-            event
-        )
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_structural_steel_items, self.structural_steel_items_widget)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
+        self.doubleSpinBox_quantity.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.checkBox_not_part_of_process.setChecked(self.assembly.not_part_of_process)
         self.checkBox_not_part_of_process.clicked.connect(self.changes_made)
 
-        self.pushButton_show_parts_list_summary.clicked.connect(
-            self.show_parts_list_summary
-        )
+        self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color
         hover_color = lighten_color(base_color)
-        font_color = get_contrast_text_color(base_color)
+        font_color = get_on_color_from_primary(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
             f"""
             QPushButton#assembly_button_drop_menu {{
-                border: 1px solid {theme_var('surface')};
-                background-color: {theme_var('surface')};
-                border-radius: {theme_var('border-radius')};
+                border: 1px solid {theme_var("surface")};
+                background-color: {theme_var("surface")};
+                border-radius: {theme_var("border-radius")};
                 text-align: left;
             }}
             /* CLOSED */
             QPushButton:!checked#assembly_button_drop_menu {{
-                color: {theme_var('on-surface')};
-                border: 1px solid {theme_var('outline')};
+                color: {theme_var("on-surface")};
+                border: 1px solid {theme_var("outline")};
             }}
 
             QPushButton:!checked:hover#assembly_button_drop_menu {{
-                background-color: {theme_var('outline-variant')};
+                background-color: {theme_var("outline-variant")};
             }}
             QPushButton:!checked:pressed#assembly_button_drop_menu{{
-                color: {theme_var('on-surface')};
-                background-color: {theme_var('surface')};
+                color: {theme_var("on-surface")};
+                background-color: {theme_var("surface")};
             }}
             /* OPENED */
             QPushButton:checked#assembly_button_drop_menu {{
                 color: {font_color};
                 border-color: {base_color};
                 background-color: {base_color};
-                border-top-left-radius: {theme_var('border-radius')};
-                border-top-right-radius: {theme_var('border-radius')};
+                border-top-left-radius: {theme_var("border-radius")};
+                border-top-right-radius: {theme_var("border-radius")};
                 border-bottom-left-radius: 0px;
                 border-bottom-right-radius: 0px;
             }}
@@ -138,7 +127,7 @@ background-color: {theme_var('surface')};
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            background-color: {theme_var('background')};
+            background-color: {theme_var("background")};
             }}"""
         )
 
@@ -175,15 +164,13 @@ background-color: {theme_var('surface')};
         return None
 
     def update_context_menu(self):
-        self.parent.update_context_menu()
+        self._parent_widget.update_context_menu()
 
     def changes_made(self):
-        self.assembly.not_part_of_process = (
-            self.checkBox_not_part_of_process.isChecked()
-        )
-        self.parent.changes_made()
+        self.assembly.not_part_of_process = self.checkBox_not_part_of_process.isChecked()
+        self._parent_widget.changes_made()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget):
+    def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

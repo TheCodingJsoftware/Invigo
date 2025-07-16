@@ -42,18 +42,10 @@ class SendJobsToWorkspaceDialog(QDialog, Ui_Form):
 
         self.settings_file = Settings()
         self.tables_font = QFont()
-        self.tables_font.setFamily(
-            self.settings_file.get_value("tables_font")["family"]
-        )
-        self.tables_font.setPointSize(
-            self.settings_file.get_value("tables_font")["pointSize"]
-        )
-        self.tables_font.setWeight(
-            self.settings_file.get_value("tables_font")["weight"]
-        )
-        self.tables_font.setItalic(
-            self.settings_file.get_value("tables_font")["italic"]
-        )
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
         self.job_tree_widget = QTreeWidget(self)
         self.job_tree_widget.setUniformRowHeights(True)
@@ -104,15 +96,13 @@ class SendJobsToWorkspaceDialog(QDialog, Ui_Form):
             item = QTreeWidgetItem(
                 [
                     job_name,
-                    f"#{int(job_data["order_number"])}",
+                    f"#{int(job_data['order_number'])}",
                 ]
             )
             item.setFont(0, self.tables_font)
             item.setFont(1, self.tables_font)
             item.setFont(2, self.tables_font)
-            item.setCheckState(
-                0, Qt.CheckState.Unchecked
-            )  # Add checkbox to the first column
+            item.setCheckState(0, Qt.CheckState.Unchecked)  # Add checkbox to the first column
             item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
             parent_item.addChild(item)
 
