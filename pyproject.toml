@@ -1,6 +1,6 @@
 [project]
 name = "Invigo"
-version = "0.1.0"
+version = "4.0.0"
 description = "A state-of-the-art assembly-based Inventory Manager, designed to streamline the process of component tracking, quoting and management."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -26,7 +26,7 @@ dependencies = [
     "distro",
     "easydev",
     "et-xmlfile",
-    "ezdxf>=1.4.2",
+    "ezdxf,
     "Flask",
     "fonttools",
     "forex-python",
@@ -48,7 +48,7 @@ dependencies = [
     "mypy",
     "mypy-extensions",
     "natsort",
-    "networkx>=3.5",
+    "networkx,
     "numpy",
     "openpyxl",
     "packaging",
@@ -60,7 +60,7 @@ dependencies = [
     "platformdirs",
     "pluggy",
     "ptyprocess",
-    "pyglet==1.5.27",
+    "pyglet",
     "Pygments",
     "pyinstaller",
     "pyinstaller-hooks-contrib",
@@ -72,7 +72,7 @@ dependencies = [
     "PyQt6-sip",
     "PyQt6-WebEngine",
     "PyQt6-WebEngine-Qt6",
-    "pyqtgraph>=0.13.7",
+    "pyqtgraph,
     "pyreadline3",
     "PySide6_Addons",
     "PySide6_Essentials",
@@ -85,11 +85,11 @@ dependencies = [
     "QtRangeSlider",
     "requests",
     "rich",
-    "rtree>=1.4.0",
+    "rtree,
     "ruff",
     "schedule",
     "setuptools",
-    "shapely>=2.1.1",
+    "shapely,
     "shiboken6",
     "simplejson",
     "six",
@@ -99,8 +99,8 @@ dependencies = [
     "tabula-py",
     "tabulate",
     "tornado",
-    "trimesh>=4.6.12",
-    "types-requests>=2.32.4.20250611",
+    "trimesh,
+    "types-requests,
     "typing_extensions",
     "tzdata",
     "ujson",
