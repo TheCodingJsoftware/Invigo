@@ -539,8 +539,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self.comboBox_vendor.setCurrentText(self.purchase_order.meta_data.vendor.name)
             self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
             self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
+        else:
+            self.doubleSpinBox_po_number.setValue(self.purchase_order.meta_data.purchase_order_number)
 
-        self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
         self.doubleSpinBox_po_number.valueChanged.connect(self.meta_data_changed)
         status_list = list(Status)
         self.comboBox_status.addItems([status.name.replace("_", " ").title() for status in status_list])

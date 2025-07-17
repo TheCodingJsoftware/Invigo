@@ -2962,7 +2962,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             AttributeError,
             RuntimeError,
         ) as e:  # It might be the case that ComponentsTab is not loaded
-            self.components_tab_widget.label_exchange_price.setText(f"{e}")
+            self.status_button.setText(f"{e}", "red")
 
     def send_sheet_report(self):
         thread = SendReportThread()
