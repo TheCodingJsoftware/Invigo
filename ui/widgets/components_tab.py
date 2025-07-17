@@ -705,6 +705,10 @@ class ComponentsTab(QWidget, Ui_Form):
         self.save_category_tabs_order()
         self.restore_scroll_position()
 
+    def add_to_active_purchase_order(self):
+        if selected_components := self.get_selected_components():
+            self._parent_widget.add_components_to_purchase_order(selected_components)
+
     def set_vendor(self):
         selected_components = self.get_selected_components()
 
@@ -954,7 +958,7 @@ class ComponentsTab(QWidget, Ui_Form):
                     msg.exec()
                     return
                 self.components_inventory.save_component(selected_component)
-                # selected_component.quantity = new_quantity_in_stock
+                selected_component.quantity = new_quantity_in_stock
                 # self.components_inventory.save_local_copy()
                 # self.sync_changes()
                 self.sort_components()
@@ -1075,6 +1079,10 @@ class ComponentsTab(QWidget, Ui_Form):
         action = QAction("Set Vendor", self)
         action.setIcon(Icons.add_file_icon)
         action.triggered.connect(self.set_vendor)
+        menu.addAction(action)
+
+        action = QAction("Add to Active Purchase Order", self)
+        action.triggered.connect(self.add_to_active_purchase_order)
         menu.addAction(action)
 
         menu.addSeparator()

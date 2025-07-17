@@ -96,11 +96,13 @@ from ui.widgets.sheet_settings_tab import SheetSettingsTab
 from ui.widgets.sheets_in_inventory_tab import SheetsInInventoryTab
 from ui.widgets.structural_steel_settings_tab import StructuralSteelSettingsTab
 from ui.widgets.structural_steel_tab import StructuralSteelInventoryTab
-from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
+
+# from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
 from ui.windows.main_window_UI import Ui_MainWindow
 from utils.colors import lighten_color
 from utils.dialog_buttons import DialogButtons
 from utils.inventory.category import Category
+from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -292,7 +294,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sheets_inventory_tab_widget_last_selected_tab_index = 0  # * Used inside sheets_in_inventory_tab.py
         self.structural_steel_inventory_tab_widget_last_selected_tab_index = 0  # * Used inside sheets_in_inventory_tab.py
         self.laser_cut_tab_widget_last_selected_tab_index = 0  # * Used inside laser_cut_tab.py
-        self.workspace_tab_widget_last_selected_tab = ""
+        # self.workspace_tab_widget_last_selected_tab = ""
 
         self.should_update_components_in_inventory_tab = False
         self.should_update_laser_cut_inventory_tab = False
@@ -516,7 +518,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
         self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
 
-        self.splitter_4.setSizes([1, 0])
+        # self.splitter_4.setSizes([1, 0])
         self.splitter_4.setStretchFactor(0, 1)
         self.splitter_4.setStretchFactor(1, 0)
 
@@ -594,15 +596,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.structural_steel_tab_widget = StructuralSteelInventoryTab(self)
         self.structural_steel_layout.addWidget(self.structural_steel_tab_widget)
 
-        self.clear_layout(self.workspace_layout)
-        self.workspace_tab_widget = WorkspaceTabWidget(self)
-        self.workspace_tab_widget_last_selected_tab = self.workspace_tab_widget.tag_buttons[0].text()
-        self.workspace_tab_widget.get_all_workspace_jobs_thread()
+        # self.clear_layout(self.workspace_layout)
+        # self.workspace_tab_widget = WorkspaceTabWidget(self)
+        # self.workspace_tab_widget_last_selected_tab = self.workspace_tab_widget.tag_buttons[0].text()
+        # self.workspace_tab_widget.get_all_workspace_jobs_thread()
 
-        with contextlib.suppress(AttributeError):  # There are no visible process tags
-            self.workspace_tab_changed(self.workspace_tab_widget_last_selected_tab)
-        self.workspace_tab_widget.tabChanged.connect(self.workspace_tab_changed)
-        self.workspace_layout.addWidget(self.workspace_tab_widget)
+        # with contextlib.suppress(AttributeError):  # There are no visible process tags
+        # self.workspace_tab_changed(self.workspace_tab_widget_last_selected_tab)
+        # self.workspace_tab_widget.tabChanged.connect(self.workspace_tab_changed)
+        # self.workspace_layout.addWidget(self.workspace_tab_widget)
 
         # Tool Box
         self.stackedWidget.currentChanged.connect(self.tool_box_menu_changed)
@@ -727,8 +729,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionChange_tables_font.setIcon(Icons.font_icon)
         self.actionSet_Order_Number.triggered.connect(self.set_order_number)
         self.actionSet_Order_Number.setIcon(Icons.edit_icon)
-        self.action_Set_User_Workspace.triggered.connect(self.open_edit_user_workspace_settings)
-        self.action_Set_User_Workspace.setIcon(Icons.edit_user_icon)
+        # self.action_Set_User_Workspace.triggered.connect(self.open_edit_user_workspace_settings)
+        # self.action_Set_User_Workspace.setIcon(Icons.edit_user_icon)
 
         self.menuVisible_Tabs.setIcon(Icons.eye_icon)
         self.actionComponents.triggered.connect(partial(self.toggle_tab_visibility, self.actionComponents))
@@ -1037,9 +1039,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.load_tree_widget_cuttoff_drop_down(self.treeWidget_cutoff_sheets_2)
             self.refresh_nest_directories()
             if self.should_update_workspace_tab:
-                self.workspace_tab_widget.load_tags()
-                self.workspace_tab_widget.load_menu_buttons()
-                self.workspace_tab_widget.load_sort_button()
+                # self.workspace_tab_widget.load_tags()
+                # self.workspace_tab_widget.load_menu_buttons()
+                # self.workspace_tab_widget.load_sort_button()
                 self.should_update_workspace_tab = False
 
         # self.loading_screen.hide()
@@ -1194,13 +1196,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
                 return
 
-    def workspace_tab_changed(self, tab_name: str):
-        self.workspace_tab_widget_last_selected_tab = tab_name
-        if any(keyword in tab_name.lower() for keyword in ["laser"]):
-            self.splitter_4.setSizes([1, 1])
-            self.workspace_tab_widget.workspace_widget.get_all_recut_parts_thread()
-        else:
-            self.splitter_4.setSizes([1, 0])
+    # def workspace_tab_changed(self, tab_name: str):
+    #     # self.workspace_tab_widget_last_selected_tab = tab_name
+    #     if any(keyword in tab_name.lower() for keyword in ["laser"]):
+    #         self.splitter_4.setSizes([1, 1])
+    #         # # self.workspace_tab_widget.workspace_widget.get_all_recut_parts_thread()
+    #     else:
+    #         self.splitter_4.setSizes([1, 0])
 
     # * /\ SLOTS & SIGNALS /\
 
@@ -1429,6 +1431,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.purchase_order_dialog.closed.connect(self.load_po_menus)
         self.purchase_order_dialog.show()
 
+    def add_components_to_purchase_order(self, components: list[Component]):
+        if not hasattr(self, "purchase_order_dialog"):
+            self.create_purchase_order()
+        if self.purchase_order_dialog:
+            self.purchase_order_dialog.purchase_order.components.extend(components)
+            self.purchase_order_dialog.load_components_table()
+        else:
+            self.create_purchase_order()
+            self.purchase_order_dialog.add_components(components)
+            self.purchase_order_dialog.load_components_table()
+
+    def add_sheets_to_purchase_order(self, sheets: list[Sheet]):
+        if not hasattr(self, "purchase_order_dialog"):
+            self.create_purchase_order()
+        if self.purchase_order_dialog:
+            self.purchase_order_dialog.purchase_order.sheets.extend(sheets)
+            self.purchase_order_dialog.load_sheets_table()
+        else:
+            self.create_purchase_order()
+            self.purchase_order_dialog.add_sheets(sheets)
+            self.purchase_order_dialog.load_sheets_table()
+
     def create_purchase_order(self, vendor: Vendor | None = None):
         new_purchase_order = PurchaseOrder(self.components_inventory, self.sheets_inventory)
         if vendor:
@@ -1497,11 +1521,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.purchase_order_manager.delete_shipping_address(shipping_address, on_finished=self.load_po_menus)
                     break
 
-    def open_edit_user_workspace_settings(self):
-        edit_user_workspace_dialog = EditUserWorkspaceSettingsDialog(self.workspace_settings, self)
-        if edit_user_workspace_dialog.exec():
-            with contextlib.suppress(AttributeError):
-                self.workspace_tab_widget.user_workspace_settings_changed()
+    # def open_edit_user_workspace_settings(self):
+    #     edit_user_workspace_dialog = EditUserWorkspaceSettingsDialog(self.workspace_settings, self)
+    #     if edit_user_workspace_dialog.exec():
+    #         with contextlib.suppress(AttributeError):
+    #             self.workspace_tab_widget.user_workspace_settings_changed()
 
     def show_about_dialog(self):
         dialog = AboutDialog(
@@ -1772,9 +1796,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             #         # f"{self.laser_cut_parts_inventory.filename}.json",
             #     ]
             # )
-            self.workspace_tab_widget.load_tags()
-            self.workspace_tab_widget.get_all_workspace_jobs_thread()
-            self.workspace_tab_widget.set_current_tab(self.workspace_tab_widget_last_selected_tab)
+            # self.workspace_tab_widget.load_tags()
+            # self.workspace_tab_widget.get_all_workspace_jobs_thread()
+            # self.workspace_tab_widget.set_current_tab(self.workspace_tab_widget_last_selected_tab)
 
     def set_order_number(self):
         self.get_order_number_thread()
@@ -1807,8 +1831,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.job_planner_widget.workspace_settings_changed()
             if self.job_quote_widget:
                 self.job_quote_widget.workspace_settings_changed()
-            if self.workspace_tab_widget:
-                self.workspace_tab_widget.workspace_settings_changed()
+            # if self.workspace_tab_widget:
+            # self.workspace_tab_widget.workspace_settings_changed()
 
     # * /\ Dialogs /\
 
@@ -1941,9 +1965,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.toolbox_workspace_nest_directories_list_widgets.clear()
         self.settings_file.load_data()
         nest_directories: list[str] = self.settings_file.get_value("quote_nest_directories")
-        toolbox_1 = QToolBox(self)
-        toolbox_1.setLineWidth(0)
-        toolbox_1.layout().setSpacing(0)
         toolbox_2 = QToolBox(self)
         toolbox_2.setLineWidth(0)
         toolbox_2.layout().setSpacing(0)
@@ -1994,55 +2015,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     # * /\ CHECKERS /\
 
-    # * \/ Purchase Order \/
-    def open_po(self, po_name: str | None = None):
-        if po_name is None:
-            input_dialog = SelectItemDialog(
-                DialogButtons.open_cancel,
-                "Open PO",
-                "Select a PO to open",
-                get_all_po(),
-                self,
-            )
-            if input_dialog.exec():
-                response = input_dialog.get_response()
-                if response == DialogButtons.open:
-                    try:
-                        po_template = POTemplate(f"{os.path.abspath(Environment.DATA_PATH)}/PO's/templates/{input_dialog.get_selected_item()}.xlsx")
-                        po_template.generate()
-                        os.startfile(po_template.get_output_path())
-                    except AttributeError:
-                        return
-                elif response == DialogButtons.cancel:
-                    return
-        else:
-            po_template = POTemplate(f"{os.path.abspath(Environment.DATA_PATH)}/PO's/templates/{po_name}.xlsx")
-            po_template.generate()
-            os.startfile(po_template.get_output_path())
-
-    def delete_po(self):
-        input_dialog = SelectItemDialog(
-            DialogButtons.discard_cancel,
-            "Delete PO",
-            "Select a PO to delete.\n\nThis cannot be undone.",
-            get_all_po(),
-            self,
-        )
-        if input_dialog.exec():
-            response = input_dialog.get_response()
-            if response == DialogButtons.discard:
-                try:
-                    os.remove(f"PO's/templates/{input_dialog.get_selected_item()}.xlsx")
-                    msg = QMessageBox(self)
-                    msg.setIcon(QMessageBox.Icon.Information)
-                    msg.setWindowTitle("Success")
-                    msg.setText("Successfully removed template.")
-                    msg.exec()
-                except AttributeError:
-                    return
-            elif response == DialogButtons.cancel:
-                return
-
     def copy_file_with_overwrite(self, source: str, target: str, retry_interval=1, max_retries=10):
         source = source.replace("/", "\\")
         target = target.replace("/", "\\")
@@ -2051,9 +2023,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         retries = 0
         while retries < max_retries:
             try:
-                if os.path.exists(target):
-                    if os.path.samefile(source, target):
-                        os.remove(target)
+                if os.path.exists(target) and os.path.samefile(source, target):
+                    os.remove(target)
                 shutil.copyfile(source, target)
                 return
             except shutil.SameFileError:
@@ -2069,64 +2040,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     raise
         raise PermissionError(f"Failed to copy file {source} to {target} after {max_retries} retries.")
 
-    def add_po_templates(self, po_file_paths: list[str], open_select_file_dialog: bool = False):
-        if open_select_file_dialog:
-            po_file_paths, check = QFileDialog.getOpenFileNames(None, "Add Purchase Order Template", "", "Excel Files (*.xlsx)")
-            if not po_file_paths:
-                return
-            for po_file_path in po_file_paths:
-                try:
-                    po_file: POTemplate = POTemplate(po_file_path)
-                except Exception as error:
-                    msg = QMessageBox(self)
-                    msg.setIcon(QMessageBox.Icon.Critical)
-                    msg.setWindowTitle("Error")
-                    msg.setText(
-                        f"An error occurred while parsing the Excel file you provided. Kindly verify that the order number and vendor cell positions are accurate. Alternatively, please forward the Excel file to me for further review.\n\nError Details: {error}\n\nPO File Path:{po_file_path}"
-                    )
-                    msg.exec()
-                    return
-                new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.', '')}.xlsx"
-                self.copy_file_with_overwrite(po_file_path, new_file_path)
-            check_po_directories()
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("Success")
-            msg.setText("Successfully added new Purchase Order template.")
-            msg.exec()
-        if not open_select_file_dialog:
-            for po_file_path in po_file_paths:
-                try:
-                    po_file: POTemplate = POTemplate(po_file_path)
-                except Exception as error:
-                    msg = QMessageBox(self)
-                    msg.setIcon(QMessageBox.Icon.Critical)
-                    msg.setWindowTitle("Error")
-                    msg.setText(
-                        f"An error occurred while parsing the Excel file you provided. Kindly verify that the order number and vendor cell positions are accurate. Alternatively, please forward the Excel file to me for further review.\n\nError Details: {error}"
-                    )
-                    msg.exec()
-                    return
-                new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.', '')}.xlsx"
-                self.copy_file_with_overwrite(po_file_path, new_file_path)
-            check_po_directories()
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("Success")
-            msg.setText("Successfully added new Purchase Order template.")
-            msg.exec()
-
-        self.reload_po_menu()
-
-    def reload_po_menu(self):
-        with contextlib.suppress(Exception, RuntimeError):
-            for po_button in self.components_tab_widget.po_buttons:
-                po_menu = QMenu(self)
-                for po in get_all_po():
-                    po_menu.addAction(po, partial(self.open_po, po))
-                po_button.setMenu(po_menu)
-
-    # * /\ Purchase Order /\
     # * \/ External Actions \/
     def open_print_selected_parts(self):
         webbrowser.open("print_selected_parts.html", new=0)
@@ -2173,12 +2086,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def open_workorder(self, folder: str):
         webbrowser.open(
             f"http://{get_server_ip_address()}:{get_server_port()}/workorder_printout/{folder}",
-            new=0,
-        )
-
-    def open_quote(self, folder: str):
-        webbrowser.open(
-            f"http://{get_server_ip_address()}:{get_server_port()}/load_quote/{folder}",
             new=0,
         )
 
@@ -2475,7 +2382,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif "workspace/get_entry" in first_resp and tab_name == "workspace_tab":
             entry_id = extract_last(first_resp)
             worker = GetWorkspaceEntryWorker(entry_id)
-            worker.signals.success.connect(self.get_workspace_entry_response)
+            # worker.signals.success.connect(self.get_workspace_entry_response)
             QThreadPool.globalInstance().start(worker)
 
         elif "sheets_inventory/get_sheet" in first_resp:
@@ -2507,7 +2414,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for resp in responses:
                 job_id, entry_name = extract_job_id_and_name(resp)
                 worker = GetWorkspaceEntriesByNameWorker(job_id, entry_name)
-                worker.signals.success.connect(self.get_workspace_entries_response)
+                # worker.signals.success.connect(self.get_workspace_entries_response)
                 QThreadPool.globalInstance().start(worker)
 
         else:
@@ -2516,17 +2423,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         set_status(f"Synced: {first_resp}")
         logging.info(f"Synced: {responses}")
 
-    def get_workspace_entry_response(self, entry_data: dict, status_code: int):
-        if status_code == 200:
-            self.workspace_tab_widget.update_entry(entry_data)
+    # def get_workspace_entry_response(self, entry_data: dict, status_code: int):
+    #     if status_code == 200:
+    #         # self.workspace_tab_widget.update_entry(entry_data)
 
-            if "laser" in self.workspace_tab_widget.workspace_filter.current_tag.lower():
-                self.workspace_tab_widget.get_all_recut_parts_thread()
-        else:
-            self.status_button.setText(f"Error: {entry_data}", "red")
+    #         # if "laser" in self.workspace_tab_widget.workspace_filter.current_tag.lower():
+    #             # self.workspace_tab_widget.get_all_recut_parts_thread()
+    #     else:
+    #         self.status_button.setText(f"Error: {entry_data}", "red")
 
-    def get_workspace_entries_response(self, entries_data: list[dict]):
-        self.workspace_tab_widget.update_entries(entries_data)
+    # def get_workspace_entries_response(self, entries_data: list[dict]):
+    # self.workspace_tab_widget.update_entries(entries_data)
 
     def get_sheet_response(self, sheet_data: dict):
         try:
@@ -2634,8 +2541,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.job_planner_widget.workspace_settings_changed()
                 with contextlib.suppress(AttributeError):
                     self.job_quote_widget.workspace_settings_changed()
-                with contextlib.suppress(AttributeError):
-                    self.workspace_tab_widget.workspace_settings_changed()
+                # with contextlib.suppress(AttributeError):
+                # self.workspace_tab_widget.workspace_settings_changed()
 
             # if (
             #     f"{self.components_inventory.filename}.json"
@@ -2693,8 +2600,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.load_saved_quoted_thread()
                 self.load_cuttoff_drop_down()
             elif self.tab_text(self.stackedWidget.currentIndex()) == "workspace_tab" or self.should_update_workspace_tab:
-                self.workspace_tab_widget.load_tags()
-                self.workspace_tab_widget.set_current_tab(self.workspace_tab_widget_last_selected_tab)
+                # self.workspace_tab_widget.load_tags()
+                # self.workspace_tab_widget.set_current_tab(self.workspace_tab_widget_last_selected_tab)
                 self.should_update_workspace_tab = False
             self.downloading_changes = False
 
@@ -3153,10 +3060,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if generate_workorder_dialog.should_open_printout():
                     self.open_workorder(folder_name)
 
-            self.workspace_tab_widget.workspace_widget.get_all_workspace_jobs_thread()
-            # self.workspace_tab_widget.workspace_widget.load_parts_table()
-            # self.workspace_tab_widget.workspace_widget.load_parts_tree()
-            # self.workspace_tab_widget.workspace_widget.load_assembly_tree()
+            # self.workspace_tab_widget.workspace_widget.get_all_workspace_jobs_thread()
+            # # self.workspace_tab_widget.workspace_widget.load_parts_table()
+            # # self.workspace_tab_widget.workspace_widget.load_parts_tree()
+            # # self.workspace_tab_widget.workspace_widget.load_assembly_tree()
 
     def workorder_update_nest_parts_data(
         self,
@@ -3574,19 +3481,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def dragLeaveEvent(self, event: QDragLeaveEvent):
         pass
-
-    def dropEvent(self, event: QDropEvent):
-        if self.tab_text(self.stackedWidget.currentIndex()) == "workspace_tab":
-            return
-        if event.mimeData().hasUrls:
-            event.setDropAction(Qt.DropAction.CopyAction)
-            event.accept()
-            for url in event.mimeData().urls():
-                if str(url.toLocalFile()).endswith(".xlsx") and self.tab_text(self.stackedWidget.currentIndex()) == "components_tab":
-                    files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
-                    self.add_po_templates(files)
-                    break
-            event.ignore()
 
     def closeEvent(self, event):
         self.save_geometry()

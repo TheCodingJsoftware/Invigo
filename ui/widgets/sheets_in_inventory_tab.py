@@ -628,6 +628,10 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             action.triggered.connect(self.set_vendor)
             menu.addAction(action)
 
+            action = QAction("Add to Active Purchase Order", self)
+            action.triggered.connect(self.add_to_active_purchase_order)
+            menu.addAction(action)
+
             menu.addSeparator()
 
             action = QAction("View Quantity History", self)
@@ -658,6 +662,10 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
+
+    def add_to_active_purchase_order(self):
+        if selected_sheets := self.get_selected_sheets():
+            self._parent_widget.add_sheets_to_purchase_order(selected_sheets)
 
     def set_vendor(self):
         selected_sheets = self.get_selected_sheets()

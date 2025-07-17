@@ -84,7 +84,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>8</number>
       </property>
       <widget class="QWidget" name="components_tab">
        <layout class="QVBoxLayout" name="verticalLayout_41">
@@ -941,7 +941,26 @@
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <widget class="QWidget" name="verticalLayoutWidget">
-           <layout class="QVBoxLayout" name="workspace_layout"/>
+           <layout class="QVBoxLayout" name="workspace_layout">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Workspace is being moved to the web.
+
+invi.go/workspace
+
+This tab will be used for Workorders and processing nests.
+This page will show all parts in workspace that are in Laser Cutting. However, all changes will have to be made on the website.</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
           <widget class="QWidget" name="verticalLayoutWidget_6">
            <layout class="QVBoxLayout" name="verticalLayout_5">

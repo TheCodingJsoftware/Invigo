@@ -11,7 +11,6 @@ from ui.custom.sort_button import SortButton
 from ui.custom_widgets import TabButton
 from ui.icons import Icons
 from ui.widgets.workspace_tab_widget_UI import Ui_Form
-from ui.widgets.workspace_widget import WorkspaceWidget
 from utils.settings import Settings
 from utils.workspace.workspace_filter import SortingMethod
 
@@ -70,8 +69,8 @@ class WorkspaceTabWidget(QWidget, Ui_Form):
         self.pushButton_reload.clicked.connect(self.get_all_workspace_jobs_thread)
         self.pushButton_reload.setIcon(Icons.refresh_icon)
 
-        self.workspace_widget = WorkspaceWidget(self)
-        self.workspace_layout.addWidget(self.workspace_widget)
+        # self.workspace_widget = WorkspaceWidget(self)
+        # self.workspace_layout.addWidget(self.workspace_widget)
 
         self.load_tags()
         self.load_menu_buttons()

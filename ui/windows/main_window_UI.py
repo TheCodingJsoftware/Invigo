@@ -436,6 +436,11 @@ class Ui_MainWindow(object):
         self.workspace_layout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.workspace_layout.setContentsMargins(0, 0, 0, 0)
         self.workspace_layout.setObjectName("workspace_layout")
+        self.label_5 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_5.setWordWrap(True)
+        self.label_5.setObjectName("label_5")
+        self.workspace_layout.addWidget(self.label_5)
         self.verticalLayoutWidget_6 = QtWidgets.QWidget(parent=self.splitter_4)
         self.verticalLayoutWidget_6.setObjectName("verticalLayoutWidget_6")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_6)
@@ -854,7 +859,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(8)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)
         self.tabWidget_5.setCurrentIndex(0)
@@ -896,6 +901,12 @@ class Ui_MainWindow(object):
         self.pushButton_send_to_production_planner_2.setText(_translate("MainWindow", "Send Jobs to Production Planner"))
         self.pushButton_send_to_workspace_2.setToolTip(_translate("MainWindow", "Will be prompted to select jobs to send jobs directly to workspace skipping production planner"))
         self.pushButton_send_to_workspace_2.setText(_translate("MainWindow", "Send Jobs to Workspace"))
+        self.label_5.setText(_translate("MainWindow", "Workspace is being moved to the web.\n"
+"\n"
+"invi.go/workspace\n"
+"\n"
+"This tab will be used for Workorders and processing nests.\n"
+"This page will show all parts in workspace that are in Laser Cutting. However, all changes will have to be made on the website."))
         self.pushButton_toggle_cutoff_2.setText(_translate("MainWindow", "Cutoff Sheets"))
         self.treeWidget_cutoff_sheets_2.headerItem().setText(0, _translate("MainWindow", "Sheets"))
         self.pushButton_clear_selections_3.setText(_translate("MainWindow", "Clear All Selections"))
