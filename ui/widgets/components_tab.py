@@ -956,7 +956,7 @@ class ComponentsTab(QWidget, Ui_Form):
                 self.components_inventory.save_component(selected_component)
                 # selected_component.quantity = new_quantity_in_stock
                 # self.components_inventory.save_local_copy()
-                self.sync_changes()
+                # self.sync_changes()
                 self.sort_components()
 
         action = QAction("Rename Part Name", self)

@@ -689,7 +689,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_refresh_directories_3.setIcon(Icons.refresh_icon)
 
         # Jobs
-        self.tabWidget_3.setCornerWidget(self.pushButton_job_generator, Qt.Corner.TopRightCorner)
+        # self.tabWidget_3.setCornerWidget(self.pushButton_job_generator, Qt.Corner.TopRightCorner)
         self.pushButton_job_generator.clicked.connect(self.job_generator)
         self.pushButton_job_generator.setIcon(Icons.merge_icon)
 
