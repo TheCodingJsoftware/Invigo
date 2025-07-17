@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/structural_steel_tab.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/structural_steel_tab.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -28,12 +28,7 @@ class Ui_Form(object):
         self.verticalLayout_23.setObjectName("verticalLayout_23")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.pushButton_popout = QtWidgets.QPushButton(parent=Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -46,23 +41,14 @@ class Ui_Form(object):
         self.pushButton_popout.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_popout.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(
-            QtGui.QPixmap("/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"),
-            QtGui.QIcon.Mode.Normal,
-            QtGui.QIcon.State.Off,
-        )
+        icon.addPixmap(QtGui.QPixmap("/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton_popout.setIcon(icon)
         self.pushButton_popout.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_popout.setFlat(True)
         self.pushButton_popout.setObjectName("pushButton_popout")
         self.horizontalLayout_2.addWidget(self.pushButton_popout)
         self.verticalLayout_23.addLayout(self.horizontalLayout_2)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            20,
-            40,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_23.addItem(spacerItem1)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")

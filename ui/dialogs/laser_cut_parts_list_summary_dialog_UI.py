@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/laser_cut_parts_list_summary_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/laser_cut_parts_list_summary_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #

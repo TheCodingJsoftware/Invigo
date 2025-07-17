@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/view_assembly_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/view_assembly_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -63,10 +63,7 @@ class Ui_Form(object):
         self.pushButton_laser_cut_parts.setObjectName("pushButton_laser_cut_parts")
         self.verticalLayout_laser_cut_parts.addWidget(self.pushButton_laser_cut_parts)
         self.widget_laser_cut_parts = QtWidgets.QWidget(parent=self.scrollAreaWidgetContents)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred,
-            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget_laser_cut_parts.sizePolicy().hasHeightForWidth())
@@ -145,10 +142,7 @@ class Ui_Form(object):
         self.pushButton_components.setObjectName("pushButton_components")
         self.verticalLayout_components.addWidget(self.pushButton_components)
         self.widget_components = QtWidgets.QWidget(parent=self.scrollAreaWidgetContents)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred,
-            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget_components.sizePolicy().hasHeightForWidth())
@@ -184,9 +178,9 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.widget)
 
         self.retranslateUi(Form)
-        self.pushButton_laser_cut_parts.clicked["bool"].connect(self.widget_laser_cut_parts.setVisible)  # type: ignore
-        self.pushButton_components.clicked["bool"].connect(self.widget_components.setVisible)  # type: ignore
-        self.pushButton_structural_steel_items.clicked["bool"].connect(self.widget_structural_steel_items.setVisible)  # type: ignore
+        self.pushButton_laser_cut_parts.clicked['bool'].connect(self.widget_laser_cut_parts.setVisible) # type: ignore
+        self.pushButton_components.clicked['bool'].connect(self.widget_components.setVisible) # type: ignore
+        self.pushButton_structural_steel_items.clicked['bool'].connect(self.widget_structural_steel_items.setVisible) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):

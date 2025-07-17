@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/structural_steel_settings_tab.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/structural_steel_settings_tab.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -52,12 +52,7 @@ class Ui_Form(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem)
         self.pushButton_popout = QtWidgets.QPushButton(parent=Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -70,11 +65,7 @@ class Ui_Form(object):
         self.pushButton_popout.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_popout.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(
-            QtGui.QPixmap("/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"),
-            QtGui.QIcon.Mode.Normal,
-            QtGui.QIcon.State.Off,
-        )
+        icon.addPixmap(QtGui.QPixmap("/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton_popout.setIcon(icon)
         self.pushButton_popout.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_popout.setFlat(True)
@@ -116,14 +107,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.price_per_pound_tab),
-            _translate("Form", "Price Per Pound"),
-        )
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.pounds_per_cubic_foot_tab),
-            _translate("Form", "Pounds Per Cubic Foot"),
-        )
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.price_per_pound_tab), _translate("Form", "Price Per Pound"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.pounds_per_cubic_foot_tab), _translate("Form", "Pounds Per Cubic Foot"))
         self.groupBox_2.setTitle(_translate("Form", "Materials"))
         self.pushButton_add_material.setText(_translate("Form", "Add"))
         self.pushButton_remove_material.setText(_translate("Form", "Remove"))

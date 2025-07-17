@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/run/media/jared/SafeHaven/Forge/Inventory Manager/ui/dialogs/update_component_order_pending_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/update_component_order_pending_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #

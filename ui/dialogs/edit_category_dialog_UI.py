@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/edit_category_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/edit_category_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -46,7 +46,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
@@ -65,12 +65,7 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.buttonsLayout.addItem(spacerItem)
         self.pushButton_delete = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_delete.setMaximumSize(QtCore.QSize(16777215, 16777215))

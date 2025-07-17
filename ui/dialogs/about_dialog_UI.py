@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/about_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/about_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -33,12 +33,7 @@ class Ui_Form(object):
         self.lblIcon.setText("")
         self.lblIcon.setObjectName("lblIcon")
         self.verticalLayout_2.addWidget(self.lblIcon)
-        spacerItem = QtWidgets.QSpacerItem(
-            20,
-            40,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-        )
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_2.addItem(spacerItem)
         self.horizontalLayout_4.addLayout(self.verticalLayout_2)
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -54,7 +49,7 @@ class Ui_Form(object):
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
         self.lblTitle = QtWidgets.QLabel(parent=self.widget)
-        self.lblTitle.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom | QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.lblTitle.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
         self.lblTitle.setObjectName("lblTitle")
         self.horizontalLayout_2.addWidget(self.lblTitle)
         self.horizontalLayout_2.setStretch(0, 1)
@@ -84,7 +79,7 @@ class Ui_Form(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.lblLicense = QtWidgets.QLabel(parent=self.scrollAreaWidgetContents)
         self.lblLicense.setText("")
-        self.lblLicense.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.lblLicense.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.lblLicense.setObjectName("lblLicense")
         self.horizontalLayout_3.addWidget(self.lblLicense)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
@@ -92,12 +87,7 @@ class Ui_Form(object):
         self.verticalLayout_3.addWidget(self.groupBox)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        spacerItem1 = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_5.addItem(spacerItem1)
         self.btnClose = QtWidgets.QPushButton(parent=self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)

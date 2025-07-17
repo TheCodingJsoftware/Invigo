@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/job_plan_widget.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/job_plan_widget.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -101,12 +101,7 @@ class Ui_Form(object):
         self.comboBox_job_status.setItemText(2, _translate("Form", "Quoted"))
         self.comboBox_job_status.setItemText(3, _translate("Form", "Quote Confirmed"))
         self.comboBox_job_status.setItemText(4, _translate("Form", "Template"))
-        self.pushButton_load_job.setToolTip(
-            _translate(
-                "Form",
-                "Loads the selected job into a new tab for detailed viewing and editing.",
-            )
-        )
+        self.pushButton_load_job.setToolTip(_translate("Form", "Loads the selected job into a new tab for detailed viewing and editing."))
         self.pushButton_load_job.setText(_translate("Form", "Load Job"))
         self.pushButton_open_in_browser.setToolTip(_translate("Form", "Will open up the printout in your default web browser."))
         self.label_modified_date.setText(_translate("Form", "TextLabel"))

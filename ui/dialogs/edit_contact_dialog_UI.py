@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/run/media/jared/SafeHaven/Forge/Inventory Manager/ui/dialogs/edit_contact_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/edit_contact_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #

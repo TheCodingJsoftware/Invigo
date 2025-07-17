@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/sheets_in_inventory_tab.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/sheets_in_inventory_tab.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -28,12 +28,7 @@ class Ui_Form(object):
         self.verticalLayout_23.setObjectName("verticalLayout_23")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.pushButton_popout = QtWidgets.QPushButton(parent=Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -46,11 +41,7 @@ class Ui_Form(object):
         self.pushButton_popout.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.pushButton_popout.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(
-            QtGui.QPixmap("/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"),
-            QtGui.QIcon.Mode.Normal,
-            QtGui.QIcon.State.Off,
-        )
+        icon.addPixmap(QtGui.QPixmap("/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/../../icons/open_in_new.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton_popout.setIcon(icon)
         self.pushButton_popout.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_popout.setFlat(True)
@@ -80,12 +71,7 @@ class Ui_Form(object):
         self.gridLayout_sheet_prices.setVerticalSpacing(6)
         self.gridLayout_sheet_prices.setObjectName("gridLayout_sheet_prices")
         self.verticalLayout_14.addLayout(self.gridLayout_sheet_prices)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            20,
-            40,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_14.addItem(spacerItem1)
         self.verticalLayout_16.addLayout(self.verticalLayout_14)
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
@@ -94,12 +80,7 @@ class Ui_Form(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem2 = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem2)
         self.checkBox_edit_sheets = QtWidgets.QCheckBox(parent=Form)
         self.checkBox_edit_sheets.setObjectName("checkBox_edit_sheets")

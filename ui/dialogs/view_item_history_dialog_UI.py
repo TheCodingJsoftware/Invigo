@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/view_item_history_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/view_item_history_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -36,7 +36,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_item_name.sizePolicy().hasHeightForWidth())
         self.label_item_name.setSizePolicy(sizePolicy)
-        self.label_item_name.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.label_item_name.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.label_item_name.setWordWrap(True)
         self.label_item_name.setObjectName("label_item_name")
         self.horizontalLayout_4.addWidget(self.label_item_name)
@@ -80,12 +80,7 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.tabWidget)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.buttonsLayout.addItem(spacerItem)
         self.pushButton_cancel = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_cancel.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -97,7 +92,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         self.tabWidget.setCurrentIndex(1)
-        self.pushButton_cancel.clicked.connect(Form.close)  # type: ignore
+        self.pushButton_cancel.clicked.connect(Form.close) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -106,8 +101,5 @@ class Ui_Form(object):
         self.label_item_name.setText(_translate("Form", "ITEM NAME"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Form", "Quantity History"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Form", "Price History"))
-        self.tabWidget.setTabText(
-            self.tabWidget.indexOf(self.tab_3),
-            _translate("Form", "Order Pending History"),
-        )
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("Form", "Order Pending History"))
         self.pushButton_cancel.setText(_translate("Form", "Close"))

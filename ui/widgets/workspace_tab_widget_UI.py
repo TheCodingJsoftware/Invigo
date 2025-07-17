@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/widgets/workspace_tab_widget.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/widgets/workspace_tab_widget.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -18,12 +18,7 @@ class Ui_Form(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
         self.pushButton_view_parts = QtWidgets.QPushButton(parent=Form)
         self.pushButton_view_parts.setEnabled(False)
@@ -59,46 +54,34 @@ class Ui_Form(object):
         self.pushButton_view_assemblies.setFlat(True)
         self.pushButton_view_assemblies.setObjectName("pushButton_view_assemblies")
         self.horizontalLayout_3.addWidget(self.pushButton_view_assemblies)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem1)
         self.pushButton_reload = QtWidgets.QPushButton(parent=Form)
         self.pushButton_reload.setMaximumSize(QtCore.QSize(25, 25))
         self.pushButton_reload.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
-        self.pushButton_reload.setStyleSheet(
-            "\n"
-            "QPushButton#pushButton_reload:flat {\n"
-            "    background-color: transparent;\n"
-            "    border: 1px solid transparent;\n"
-            "    border-radius: 12px;\n"
-            "    padding: 5px 10px;\n"
-            "    color: #EAE9FC;\n"
-            "}\n"
-            "\n"
-            "QPushButton#pushButton_reload:flat:pressed {\n"
-            "    background-color: #8dcdff;\n"
-            "    color: #171717;\n"
-            "}\n"
-            "\n"
-            "QPushButton#pushButton_reload:flat:hover {\n"
-            "    background-color: rgba(76, 76, 76, 0.6);\n"
-            "}"
-        )
+        self.pushButton_reload.setStyleSheet("\n"
+"QPushButton#pushButton_reload:flat {\n"
+"    background-color: transparent;\n"
+"    border: 1px solid transparent;\n"
+"    border-radius: 12px;\n"
+"    padding: 5px 10px;\n"
+"    color: #EAE9FC;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_reload:flat:pressed {\n"
+"    background-color: #8dcdff;\n"
+"    color: #171717;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_reload:flat:hover {\n"
+"    background-color: rgba(76, 76, 76, 0.6);\n"
+"}")
         self.pushButton_reload.setText("")
         self.pushButton_reload.setFlat(True)
         self.pushButton_reload.setObjectName("pushButton_reload")
         self.horizontalLayout_3.addWidget(self.pushButton_reload)
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
-        spacerItem2 = QtWidgets.QSpacerItem(
-            20,
-            6,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-            QtWidgets.QSizePolicy.Policy.Fixed,
-        )
+        spacerItem2 = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         self.verticalLayout_2.addItem(spacerItem2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, 0, -1, 0)
@@ -113,7 +96,10 @@ class Ui_Form(object):
         self.pushButton_search = QtWidgets.QPushButton(parent=Form)
         self.pushButton_search.setMinimumSize(QtCore.QSize(30, 30))
         self.pushButton_search.setMaximumSize(QtCore.QSize(30, 30))
-        self.pushButton_search.setStyleSheet("QPushButton#pushButton_search{\n    border-bottom-right-radius: 0px;\n    border-top-right-radius: 0px;\n}")
+        self.pushButton_search.setStyleSheet("QPushButton#pushButton_search{\n"
+"    border-bottom-right-radius: 0px;\n"
+"    border-top-right-radius: 0px;\n"
+"}")
         self.pushButton_search.setText("")
         icon = QtGui.QIcon.fromTheme("edit-find")
         self.pushButton_search.setIcon(icon)
@@ -123,20 +109,21 @@ class Ui_Form(object):
         self.lineEdit_search = QtWidgets.QLineEdit(parent=Form)
         self.lineEdit_search.setMinimumSize(QtCore.QSize(200, 30))
         self.lineEdit_search.setMaximumSize(QtCore.QSize(300, 30))
-        self.lineEdit_search.setStyleSheet(
-            "QLineEdit#lineEdit_search{\n"
-            "    border-top-left-radius: 0px;\n"
-            "    border-top-right-radius: 0px;\n"
-            "    border-bottom-right-radius: 0px;\n"
-            "    border-bottom-left-radius: 0px;\n"
-            "}"
-        )
+        self.lineEdit_search.setStyleSheet("QLineEdit#lineEdit_search{\n"
+"    border-top-left-radius: 0px;\n"
+"    border-top-right-radius: 0px;\n"
+"    border-bottom-right-radius: 0px;\n"
+"    border-bottom-left-radius: 0px;\n"
+"}")
         self.lineEdit_search.setObjectName("lineEdit_search")
         self.horizontalLayout_4.addWidget(self.lineEdit_search)
         self.pushButton_clear_search = QtWidgets.QPushButton(parent=Form)
         self.pushButton_clear_search.setMinimumSize(QtCore.QSize(30, 30))
         self.pushButton_clear_search.setMaximumSize(QtCore.QSize(30, 30))
-        self.pushButton_clear_search.setStyleSheet("QPushButton#pushButton_clear_search{\n    border-bottom-left-radius: 0px;\n    border-top-left-radius: 0px;\n}")
+        self.pushButton_clear_search.setStyleSheet("QPushButton#pushButton_clear_search{\n"
+"    border-bottom-left-radius: 0px;\n"
+"    border-top-left-radius: 0px;\n"
+"}")
         self.pushButton_clear_search.setText("")
         icon = QtGui.QIcon.fromTheme("edit-clear")
         self.pushButton_clear_search.setIcon(icon)
@@ -148,27 +135,12 @@ class Ui_Form(object):
         self.menu_buttons_layout = QtWidgets.QHBoxLayout()
         self.menu_buttons_layout.setObjectName("menu_buttons_layout")
         self.horizontalLayout.addLayout(self.menu_buttons_layout)
-        spacerItem3 = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem3)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
-        spacerItem4 = QtWidgets.QSpacerItem(
-            20,
-            6,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-            QtWidgets.QSizePolicy.Policy.Fixed,
-        )
+        spacerItem4 = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         self.verticalLayout_2.addItem(spacerItem4)
-        spacerItem5 = QtWidgets.QSpacerItem(
-            20,
-            6,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-            QtWidgets.QSizePolicy.Policy.Fixed,
-        )
+        spacerItem5 = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         self.verticalLayout_2.addItem(spacerItem5)
         self.tags_layout = QtWidgets.QHBoxLayout()
         self.tags_layout.setSpacing(0)
@@ -188,7 +160,9 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.pushButton_view_parts.setText(_translate("Form", "View Parts"))
         self.pushButton_view_assemblies.setText(_translate("Form", "View Assemblies"))
-        self.pushButton_reload.setToolTip(_translate("Form", "Reload workspace\n\nCtrl + R"))
+        self.pushButton_reload.setToolTip(_translate("Form", "Reload workspace\n"
+"\n"
+"Ctrl + R"))
         self.pushButton_reload.setShortcut(_translate("Form", "Ctrl+R"))
         self.lineEdit_search.setToolTip(_translate("Form", "Use commas ( , ) to use multiple search queries."))
         self.lineEdit_search.setPlaceholderText(_translate("Form", "Search parts..."))

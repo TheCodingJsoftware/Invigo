@@ -57,143 +57,6 @@ from ui.theme import theme_var
 from utils.colors import get_on_color_from_primary, lighten_color
 
 
-class PreviousQuoteItem(QGroupBox):
-    load_quote = pyqtSignal()
-    open_webpage = pyqtSignal()
-    delete_quote = pyqtSignal()
-
-    def __init__(self, file_info: dict[str, str], parent: QWidget):
-        super().__init__(parent)
-        quote_name = file_info.get("name")
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
-
-        self.setTitle(quote_name)
-
-        modified = QLabel(f"Saved: {modified_date}")
-        modified.setWordWrap(True)
-        load_quote_button = QPushButton("Load Quote", self)
-        load_quote_button.clicked.connect(self.load_quote.emit)
-        load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
-
-        open_external = QPushButton(self)
-        open_external.setObjectName("pushButton_open_in_browser")
-        open_external.setStyleSheet(
-            """
-QPushButton#pushButton_open_in_browser:flat {
-    background-color: transparent;
-	border-color: transparent;
-}
-"""
-        )
-        open_external.setFlat(True)
-        open_external.setCursor(Qt.CursorShape.PointingHandCursor)
-        open_external.setFixedSize(25, 25)
-        open_external.setIcon(QIcon("icons/website.png"))
-        open_external.clicked.connect(self.open_webpage.emit)
-        open_external.setToolTip("Will open up the printout in your default web browser.")
-
-        delete_button = DeletePushButton(
-            self,
-            f"Permanently delete {quote_name}.\nThis action is irreversible.\nPlease exercise caution.",
-        )
-        delete_button.setFixedWidth(25)
-        delete_button.clicked.connect(self.delete_quote.emit)
-
-        layout = QVBoxLayout(self)
-
-        h_layout_1 = QHBoxLayout()
-        h_layout_1.addWidget(load_quote_button)
-        h_layout_1.addWidget(open_external)
-
-        h_layout_2 = QHBoxLayout()
-        h_layout_2.addWidget(modified)
-        h_layout_2.addWidget(delete_button)
-
-        layout.addLayout(h_layout_1)
-        layout.addLayout(h_layout_2)
-
-        self.setLayout(layout)
-        self.setStyleSheet(f"QGroupBox{{border: 1px solid {theme_var('outline')};}}")
-
-
-class SavedQuoteItem(QGroupBox):
-    load_quote = pyqtSignal()
-    open_webpage = pyqtSignal()
-    delete_quote = pyqtSignal()
-    status_changed = pyqtSignal()
-
-    def __init__(self, file_info: dict[str, str], parent: QWidget):
-        super().__init__(parent)
-        quote_name = file_info.get("name")
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
-        order_number = file_info.get("order_number")
-        status = file_info.get("status")
-
-        self.setTitle(quote_name)
-
-        order_number = QLabel(f"Order #: {int(order_number)}", self)
-        quote_status = QLabel("Status:", self)
-        quote_status.setFixedWidth(50)
-
-        self.status_combobox = QComboBox(self)
-        self.status_combobox.addItems(["In progress", "Need more info", "Quoted", "Confirmed"])
-        self.status_combobox.setCurrentText(status)
-        self.status_combobox.currentTextChanged.connect(self.status_changed.emit)
-
-        modified = QLabel(f"Modified: {modified_date}")
-        modified.setWordWrap(True)
-
-        load_quote_button = QPushButton("Load Quote", self)
-        load_quote_button.clicked.connect(self.load_quote.emit)
-        load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
-
-        open_external = QPushButton(self)
-        open_external.setCursor(Qt.CursorShape.PointingHandCursor)
-        open_external.setObjectName("pushButton_open_in_browser")
-        open_external.setStyleSheet(
-            """
-QPushButton#pushButton_open_in_browser:flat {
-    background-color: transparent;
-	border-color: transparent;
-}
-"""
-        )
-        open_external.setFlat(True)
-        open_external.setFixedSize(25, 25)
-        open_external.setIcon(QIcon("icons/website.png"))
-        open_external.clicked.connect(self.open_webpage.emit)
-        open_external.setToolTip("Will open up the printout in your default web browser.")
-
-        delete_button = DeletePushButton(
-            self,
-            f"Permanently delete {quote_name}.\nThis action is irreversible.\nPlease exercise caution.",
-        )
-        delete_button.setFixedSize(25, 25)
-        delete_button.clicked.connect(self.delete_quote.emit)
-
-        layout = QVBoxLayout(self)
-
-        h_layout_1 = QHBoxLayout()
-        h_layout_1.addWidget(order_number)
-        h_layout_1.addWidget(quote_status)
-        h_layout_1.addWidget(self.status_combobox)
-
-        h_layout_2 = QHBoxLayout()
-        h_layout_2.addWidget(load_quote_button)
-        h_layout_2.addWidget(open_external)
-
-        h_layout_3 = QHBoxLayout()
-        h_layout_3.addWidget(modified)
-        h_layout_3.addWidget(delete_button)
-
-        layout.addLayout(h_layout_1)
-        layout.addLayout(h_layout_2)
-        layout.addLayout(h_layout_3)
-
-        self.setLayout(layout)
-        self.setStyleSheet(f"QGroupBox{{border: 1px solid {theme_var('outline')};}}")
-
-
 class FilterButton(QPushButton):
     def __init__(self, name: str, parent=None):
         super().__init__(parent)
@@ -1189,8 +1052,8 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         return filename.lower().endswith(".pdf")
 
     def directoryContainsPdf(self, directory):
-        if self.path not in directory:
-            return False
+        # if self.path not in directory:
+        # return False
         return any(any(file.lower().endswith(".pdf") for file in files) for root, dirs, files in os.walk(directory))
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):
@@ -1210,7 +1073,6 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
 class PdfTreeView(QTreeView):
     def __init__(self, path: str, parent=None):
         super().__init__(parent)
-        print(path)
         self._parent_widget = parent
         self.file_system_model = QFileSystemModel(self._parent_widget)
         self.file_system_model.setRootPath(path)

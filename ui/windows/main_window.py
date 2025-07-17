@@ -63,9 +63,7 @@ from ui.custom_widgets import (
     MainTabButton,
     MultiToolBox,
     PdfTreeView,
-    PreviousQuoteItem,
     RichTextPushButton,
-    SavedQuoteItem,
     ScrollPositionManager,
 )
 from ui.dialogs.about_dialog import AboutDialog
@@ -83,7 +81,6 @@ from ui.dialogs.message_dialog import MessageDialog
 from ui.dialogs.nest_editor_dialog import NestEditorDialog
 from ui.dialogs.nest_sheet_verification import NestSheetVerification
 from ui.dialogs.purchase_order_dialog import PurchaseOrderDialog
-from ui.dialogs.save_quote_dialog import SaveQuoteDialog
 from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.send_jobs_to_workspace_dialog import SendJobsToWorkspaceDialog
 from ui.dialogs.view_removed_quantities_history_dialog import (
@@ -119,8 +116,6 @@ from utils.purchase_order.purchase_order import PurchaseOrder
 from utils.purchase_order.purchase_order_manager import PurchaseOrderManager
 from utils.purchase_order.shipping_address import ShippingAddress
 from utils.purchase_order.vendor import Vendor
-from utils.quote.generate_printout import GeneratePrintout
-from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.structural_steel_settings.structural_steel_settings import (
@@ -135,14 +130,12 @@ from utils.threads.delete_quote_thread import DeleteQuoteThread
 from utils.threads.download_quote_thread import DownloadQuoteThread
 from utils.threads.download_thread import DownloadThread
 from utils.threads.exchange_rate import ExchangeRate
-from utils.threads.generate_quote_thread import GenerateQuoteThread
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
 from utils.threads.get_saved_quotes_thread import GetSavedQuotesThread
 from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
 from utils.threads.update_quote_settings import UpdateQuoteSettings
-from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.threads.upload_workorder_thread import UploadWorkorderThread
 from utils.workers.auth.connect import ConnectWorker
@@ -329,7 +322,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tabs: dict[Category, CustomTableWidget] = {}
         self.parts_in_inventory_name_lookup: dict[str, int] = {}
         self.last_selected_menu_tab: str = self.settings_file.get_value("last_toolbox_tab")
-        self.toolbox_quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.toolbox_job_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.toolbox_workspace_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_nest_information = {}
@@ -359,10 +351,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             "Structural Steel Inventory": {
                 "icon": "ph.package-fill",
                 "object_name": "structural_steel_tab",
-            },
-            "Quote Generator": {
-                "icon": "ph.calculator-fill",
-                "object_name": "quote_generator_tab",
             },
             "Job Planner": {
                 "icon": "ph.calendar-blank-fill",
@@ -525,9 +513,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.splitter.setStretchFactor(0, 1)  # Job Planner
         self.splitter.setStretchFactor(1, 0)  # Job Planner
 
-        self.splitter_3.setStretchFactor(0, 3)  # Quote Generator
-        self.splitter_3.setStretchFactor(1, 2)  # Quote Generator
-
         self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
         self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
 
@@ -555,7 +540,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.set_tab_visibility("Structural Steel Settings", False)
             self.set_tab_visibility("Job Planner", False)
             self.set_tab_visibility("Job Quoter", False)
-            self.set_tab_visibility("Quote Generator", False)
 
             self.menuHistory.setEnabled(False)
             self.menuJobSorter.setEnabled(False)
@@ -576,7 +560,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.actionSheet_Settings.setEnabled(False)
             self.actionJob_Planner.setEnabled(False)
             self.actionJob_Quoter.setEnabled(False)
-            self.actionQuote_Generator.setEnabled(False)
             self.actionWorkspace.setEnabled(False)
             for tab in self.settings_file.get_value("tabs_order"):
                 if tab == "workspace_tab":
@@ -624,28 +607,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Tool Box
         self.stackedWidget.currentChanged.connect(self.tool_box_menu_changed)
 
-        # Load Nests
-        self.saved_quotes_tool_box = MultiToolBox(self)
-        self.saved_quotes_tool_box_opened_menus: dict[int, bool] = {
-            0: False,
-            1: False,
-            2: False,
-        }
-        self.verticalLayout_4.addWidget(self.saved_quotes_tool_box)
-
-        self.pushButton_refresh_saved_nests.clicked.connect(self.load_saved_quoted_thread)
-        self.pushButton_refresh_saved_nests.setIcon(Icons.refresh_icon)
-
-        self.previous_quotes_tool_box = MultiToolBox(self)
-        self.previous_quotes_tool_box_opened_menus: dict[int, bool] = {
-            0: False,
-            1: False,
-            2: False,
-        }
-        self.verticalLayout_28.addWidget(self.previous_quotes_tool_box)
-        self.pushButton_refresh_previous_nests.clicked.connect(self.load_previous_quotes_thread)
-        self.pushButton_refresh_previous_nests.setIcon(Icons.refresh_icon)
-
         # WORKSPACE
         self.treeWidget_cutoff_sheets.doubleClicked.connect(self.tree_widget_cutoff_sheet_double_clicked)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_toggle_cutoff, self.cutoff_widget)
@@ -667,22 +628,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # NEST RELATED
         # self.pushButton_generate_quote.clicked.connect(self.generate_printout)
 
-        self.pushButton_load_nests.clicked.connect(self.process_selected_nests)
-        self.pushButton_load_nests.setIcon(Icons.import_icon)
         self.pushButton_load_nests_2.clicked.connect(self.process_selected_nests_to_job)
         self.pushButton_load_nests_2.setIcon(Icons.import_icon)
         self.pushButton_load_nests_3.clicked.connect(self.workspace_process_selected_nests)
         self.pushButton_load_nests_3.setIcon(Icons.import_icon)
 
-        self.pushButton_clear_selections.clicked.connect(self.clear_nest_selections)
-        self.pushButton_clear_selections.setIcon(Icons.clear_icon)
         self.pushButton_clear_selections_2.clicked.connect(self.clear_job_quote_selections)
         self.pushButton_clear_selections_2.setIcon(Icons.clear_icon)
         self.pushButton_clear_selections_3.clicked.connect(self.clear_workspace_nest_selections)
         self.pushButton_clear_selections_3.setIcon(Icons.clear_icon)
 
-        self.pushButton_refresh_directories.clicked.connect(self.refresh_nest_directories)
-        self.pushButton_refresh_directories.setIcon(Icons.refresh_icon)
         self.pushButton_refresh_directories_2.clicked.connect(self.refresh_nest_directories)
         self.pushButton_refresh_directories_2.setIcon(Icons.refresh_icon)
         self.pushButton_refresh_directories_3.clicked.connect(self.refresh_nest_directories)
@@ -697,12 +652,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton_refresh_jobs.setIcon(Icons.refresh_icon)
         self.pushButton_refresh_jobs_2.clicked.connect(self.load_jobs_worker)
         self.pushButton_refresh_jobs_2.setIcon(Icons.refresh_icon)
-
-        self.pushButton_save.clicked.connect(partial(self.save_quote, None))
-        self.pushButton_save.setIcon(Icons.save_icon)
-
-        self.pushButton_save_as.clicked.connect(partial(self.save_quote_as, None))
-        self.pushButton_save_as.setIcon(Icons.save_as_icon)
 
         self.pushButton_save_job.clicked.connect(partial(self.save_job, None))
         self.pushButton_save_job.setIcon(Icons.save_icon)
@@ -811,9 +760,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionJob_Quoter.triggered.connect(partial(self.toggle_tab_visibility, self.actionJob_Quoter))
         self.actionJob_Quoter.setChecked(self.settings_file.get_value("tab_visibility").get("Job Quoter", True))
         self.actionJob_Quoter.setIcon(Icons.calculator_icon)
-        self.actionQuote_Generator.triggered.connect(partial(self.toggle_tab_visibility, self.actionQuote_Generator))
-        self.actionQuote_Generator.setChecked(self.settings_file.get_value("tab_visibility").get("Quote Generator", True))
-        self.actionQuote_Generator.setIcon(Icons.calculator_icon)
         self.actionWorkspace.triggered.connect(partial(self.toggle_tab_visibility, self.actionWorkspace))
         self.actionWorkspace.setChecked(self.settings_file.get_value("tab_visibility").get("Workspace", True))
         self.actionWorkspace.setIcon(Icons.action_workspace_icon)
@@ -1381,10 +1327,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 table.setItem(row_index, j, item)
             item.setForeground(QColor(color))
 
-    def clear_nest_selections(self):
-        for tree_view in self.toolbox_quote_nest_directories_list_widgets.values():
-            tree_view.clearSelection()
-
     def clear_job_quote_selections(self):
         for tree_view in self.toolbox_job_nest_directories_list_widgets.values():
             tree_view.clearSelection()
@@ -1392,15 +1334,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def clear_workspace_nest_selections(self):
         for tree_view in self.toolbox_workspace_nest_directories_list_widgets.values():
             tree_view.clearSelection()
-
-    def nest_directory_item_selected(self):
-        # self.process_selected_nests()
-        selected_nests = len(self.get_all_selected_nests())
-        if selected_nests == 0:
-            self.pushButton_load_nests.setEnabled(False)
-        else:
-            self.pushButton_load_nests.setEnabled(True)
-        self.pushButton_load_nests.setText(f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
     def job_quote_directory_item_selected(self):
         # self.process_selected_nests()
@@ -1433,12 +1366,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_exchange_rate(self) -> float:
         return self.settings_file.get_value(setting_name="exchange_rate")
-
-    def get_all_selected_nests(self) -> list[str]:
-        selected_nests = []
-        for tree_view in self.toolbox_quote_nest_directories_list_widgets.values():
-            selected_nests.extend(tree_view.full_paths)
-        return list(set(selected_nests))
 
     def get_all_selected_job_quotes(self) -> list[str]:
         selected_nests = []
@@ -1849,120 +1776,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.workspace_tab_widget.get_all_workspace_jobs_thread()
             self.workspace_tab_widget.set_current_tab(self.workspace_tab_widget_last_selected_tab)
 
-    def save_quote(self, quote: Quote):
-        if quote is None:
-            quote = self.quote_generator_tab_widget.current_quote
-        if not quote.downloaded_from_server:
-            self.save_quote_as(quote)
-            return
-        quote.group_laser_cut_parts()
-        generate_quote = GeneratePrintout("Quote", quote)
-        html_file = generate_quote.generate()
-
-        folder = f"saved_quotes/quotes/{quote.name}"
-        self.upload_nest_images(quote)
-        self.upload_quote_thread(folder, quote, html_file)
-        self.status_button.setText(f"Saved {quote.name}", "lime")
-        quote.unsaved_changes = False
-        self.quote_generator_tab_widget.update_quote_save_status(quote)
-
-    def save_quote_as(self, quote: Quote):
-        if quote is None:
-            quote = self.quote_generator_tab_widget.current_quote
-        dialog = SaveQuoteDialog(quote, self)
-        if dialog.exec():
-            quote.name = dialog.get_name()
-            quote.status = dialog.get_status()
-            quote.order_number = dialog.get_order_number()
-            quote.date_shipped = dialog.get_date_shipped()
-            quote.date_expected = dialog.get_date_expected()
-            quote.ship_to = dialog.get_ship_to()
-
-            quote_type = dialog.get_type()
-
-            quote.group_laser_cut_parts()
-            generate_quote = GeneratePrintout(quote_type, quote)
-            html_file = generate_quote.generate()
-            folder = f"saved_quotes/{quote_type.lower().replace(' ', '_')}s/{quote.name}"
-            self.upload_nest_images(quote)
-            self.upload_quote_thread(folder, quote, html_file)
-            self.status_button.setText(f"Saved {quote.name}", "lime")
-            quote.unsaved_changes = False
-            quote.downloaded_from_server = True
-            self.quote_generator_tab_widget.update_quote_save_status(quote)
-
-    # TODO
-    # def generate_printout(self):
-    #     select_item_dialog = GenerateQuoteDialog(self)
-    #     if select_item_dialog.exec():
-    #         (
-    #             should_generate_quote,
-    #             should_generate_workorder,
-    #             should_update_inventory,
-    #             should_generate_packing_slip,
-    #             should_group_items,
-    #             should_remove_sheet_quantities,
-    #         ) = select_item_dialog.get_selected_item()
-
-    #         quote = self.quote_generator_tab_widget.current_quote
-
-    #         # TODO if not should_group_items:
-    #         quote.group_laser_cut_parts()
-
-    #         self.settings_file.load_data()
-
-    #         if should_generate_quote:
-    #             self.generate_quote(
-    #                 "Quote",
-    #                 quote,
-    #                 "previous_quotes/quotes/",
-    #                 "open_quote_when_generated",
-    #             )
-    #         if should_generate_workorder:
-    #             self.generate_quote(
-    #                 "Workorder",
-    #                 quote,
-    #                 "previous_quotes/workorders/",
-    #                 "open_workorder_when_generated",
-    #             )
-    #         if should_generate_packing_slip:
-    #             self.generate_packing_slip(quote)
-    #         self.status_button.setText("Generated printouts", "lime")
-
-    #         if should_update_inventory:
-    #             self.add_quantities_to_laser_cut_inventory_from_quote(quote)
-
-    #         if should_remove_sheet_quantities:
-    #             self.remove_sheet_quantities_from_quote(quote)
-
-    #         self.load_previous_quotes_thread()
-    #         self.quote_generator_tab_widget.quotes[
-    #             self.quote_generator_tab_widget.tab_widget.currentIndex()
-    #         ].update_sheet_statuses()
-
-    # def generate_packing_slip(self, quote: Quote):
-    #     self.get_order_number_thread()
-    #     loop = QEventLoop()
-    #     QTimer.singleShot(200, loop.quit)
-    #     loop.exec()
-    #     self.set_order_number_thread(self.order_number + 1)
-    #     self.generate_quote(
-    #         "Packing Slip",
-    #         quote,
-    #         "previous_quotes/packing_slips/",
-    #         "open_workorder_when_generated",
-    #     )
-
-    # def generate_quote(
-    #     self, quote_type: str, quote: Quote, folder: str, open_file_settings: str
-    # ):
-    #     generate_quote = GeneratePrintout(quote_type, quote)
-    #     html_file = generate_quote.generate()
-    #     folder = f"{folder}{quote.name} - {datetime.now().strftime('%Y%m%d%H%M%S')}"
-    #     self.upload_quote_thread(folder, quote, html_file)
-    #     if self.settings_file.get_value(open_file_settings):
-    #         self.open_quote(folder)
-
     def set_order_number(self):
         self.get_order_number_thread()
         loop = QEventLoop()
@@ -2027,74 +1840,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 parent_item.addChild(sheet_item)
             tree_widget.addTopLevelItem(parent_item)
         tree_widget.expandAll()
-
-    def load_previous_quotes(self, data: dict[str, dict[str, Any]]):
-        sorted_data = dict(
-            natsorted(
-                data.items(),
-                key=lambda item: item[1]["modified_date"],
-                reverse=True,
-                alg=ns.FLOAT,
-            )
-        )
-        with contextlib.suppress(IndexError):  # Not loaded yet
-            self.previous_quotes_tool_box_opened_menus[0] = not self.previous_quotes_tool_box.buttons[0].isChecked()
-            self.previous_quotes_tool_box_opened_menus[1] = not self.previous_quotes_tool_box.buttons[1].isChecked()
-            self.previous_quotes_tool_box_opened_menus[2] = not self.previous_quotes_tool_box.buttons[2].isChecked()
-
-        self.previous_quotes_tool_box.clear()
-
-        quote_widget = QWidget(self.previous_quotes_tool_box)
-        quote_layout = QVBoxLayout(quote_widget)
-        self.previous_quotes_tool_box.addItem(quote_widget, "Quotes")
-
-        workorders_widget = QWidget(self.previous_quotes_tool_box)
-        workorders_layout = QVBoxLayout(workorders_widget)
-        self.previous_quotes_tool_box.addItem(workorders_widget, "Workorders")
-
-        packing_slips_widget = QWidget(self.previous_quotes_tool_box)
-        packing_slips_layout = QVBoxLayout(packing_slips_widget)
-        self.previous_quotes_tool_box.addItem(packing_slips_widget, "Packing Slips")
-        self.previous_quotes_tool_box.close_all()
-        self.previous_quotes_tool_box.set_widgets_visibility(self.previous_quotes_tool_box_opened_menus)
-
-        for folder_path, file_info in sorted_data.items():
-            folder_path = folder_path.replace("\\", "/")
-            folder_name = folder_path.split("/")[0]
-            if folder_name == "quotes":
-                quote_item = PreviousQuoteItem(file_info, quote_widget)
-                quote_item.load_quote.connect(
-                    partial(
-                        self.download_quote_data_thread,
-                        f"previous_quotes/{folder_path}",
-                    )
-                )
-                quote_item.open_webpage.connect(partial(self.open_quote, f"previous_quotes/{folder_path}"))
-                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"previous_quotes/{folder_path}"))
-                quote_layout.addWidget(quote_item)
-            elif folder_name == "workorders":
-                quote_item = PreviousQuoteItem(file_info, workorders_widget)
-                quote_item.load_quote.connect(
-                    partial(
-                        self.download_quote_data_thread,
-                        f"previous_quotes/{folder_path}",
-                    )
-                )
-                quote_item.open_webpage.connect(partial(self.open_quote, f"previous_quotes/{folder_path}"))
-                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"previous_quotes/{folder_path}"))
-                workorders_layout.addWidget(quote_item)
-            elif folder_name == "packing_slips":
-                quote_item = PreviousQuoteItem(file_info, packing_slips_widget)
-                quote_item.load_quote.connect(
-                    partial(
-                        self.download_quote_data_thread,
-                        f"previous_quotes/{folder_path}",
-                    )
-                )
-                quote_item.open_webpage.connect(partial(self.open_quote, f"previous_quotes/{folder_path}"))
-                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"previous_quotes/{folder_path}"))
-                packing_slips_layout.addWidget(quote_item)
-        self.status_button.setText("Refreshed", "lime")
 
     def load_planning_jobs(self, data: list[dict[str, dict[str, Any]]]):
         self.saved_planning_job_items_last_opened = self.saved_jobs_multitoolbox.get_widget_visibility()
@@ -2189,89 +1934,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.saved_jobs_multitoolbox_2.set_widgets_visibility(self.saved_planning_job_items_last_opened_2)
         self.templates_jobs_multitoolbox_2.set_widgets_visibility(self.templates_job_items_last_opened_2)
 
-    def load_saved_quotes(self, data: dict[str, dict[str, Any]]):
-        sorted_data = dict(
-            natsorted(
-                data.items(),
-                key=lambda x: x[1]["order_number"],
-                alg=ns.FLOAT,
-                reverse=True,
-            )
-        )
-
-        with contextlib.suppress(IndexError):  # Not loaded yet
-            self.saved_quotes_tool_box_opened_menus[0] = not self.saved_quotes_tool_box.buttons[0].isChecked()
-            self.saved_quotes_tool_box_opened_menus[1] = not self.saved_quotes_tool_box.buttons[1].isChecked()
-            self.saved_quotes_tool_box_opened_menus[2] = not self.saved_quotes_tool_box.buttons[2].isChecked()
-
-        self.saved_quotes_tool_box.clear()
-
-        quote_widget = QWidget(self.saved_quotes_tool_box)
-        quote_layout = QVBoxLayout(quote_widget)
-        self.saved_quotes_tool_box.addItem(quote_widget, "Quotes")
-
-        workorders_widget = QWidget(self.saved_quotes_tool_box)
-        workorders_layout = QVBoxLayout(workorders_widget)
-        self.saved_quotes_tool_box.addItem(workorders_widget, "Workorders")
-
-        packing_slips_widget = QWidget(self.saved_quotes_tool_box)
-        packing_slips_layout = QVBoxLayout(packing_slips_widget)
-        self.saved_quotes_tool_box.addItem(packing_slips_widget, "Packing Slips")
-        self.saved_quotes_tool_box.close_all()
-        self.saved_quotes_tool_box.set_widgets_visibility(self.saved_quotes_tool_box_opened_menus)
-
-        for folder_path, file_info in sorted_data.items():
-            folder_path = folder_path.replace("\\", "/")
-            folder_name = folder_path.split("/")[0]
-            if folder_name == "quotes":
-                quote_item = SavedQuoteItem(file_info, quote_widget)
-                quote_item.load_quote.connect(partial(self.download_quote_data_thread, f"saved_quotes/{folder_path}"))
-                quote_item.open_webpage.connect(partial(self.open_quote, f"saved_quotes/{folder_path}"))
-                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"saved_quotes/{folder_path}"))
-                quote_item.status_changed.connect(
-                    partial(
-                        self.change_quote_thread,
-                        f"saved_quotes/{folder_path}",
-                        "status",
-                        quote_item.status_combobox,
-                    )
-                )
-                quote_layout.addWidget(quote_item)
-            elif folder_name == "workorders":
-                quote_item = SavedQuoteItem(file_info, workorders_widget)
-                quote_item.load_quote.connect(partial(self.download_quote_data_thread, f"saved_quotes/{folder_path}"))
-                quote_item.open_webpage.connect(partial(self.open_quote, f"saved_quotes/{folder_path}"))
-                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"saved_quotes/{folder_path}"))
-                quote_item.status_changed.connect(
-                    partial(
-                        self.change_quote_thread,
-                        f"saved_quotes/{folder_path}",
-                        "status",
-                        quote_item.status_combobox,
-                    )
-                )
-                workorders_layout.addWidget(quote_item)
-            elif folder_name == "packing_slips":
-                quote_item = SavedQuoteItem(file_info, packing_slips_widget)
-                quote_item.load_quote.connect(partial(self.download_quote_data_thread, f"saved_quotes/{folder_path}"))
-                quote_item.open_webpage.connect(partial(self.open_quote, f"saved_quotes/{folder_path}"))
-                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"saved_quotes/{folder_path}"))
-                quote_item.status_changed.connect(
-                    partial(
-                        self.change_quote_thread,
-                        f"saved_quotes/{folder_path}",
-                        "status",
-                        quote_item.status_combobox,
-                    )
-                )
-                packing_slips_layout.addWidget(quote_item)
-        self.status_button.setText("Refreshed", "lime")
-
     def refresh_nest_directories(self):
-        self.clear_layout(self.verticalLayout_24)
         self.clear_layout(self.verticalLayout_33)
         self.clear_layout(self.verticalLayout_37)
-        self.toolbox_quote_nest_directories_list_widgets.clear()
         self.toolbox_job_nest_directories_list_widgets.clear()
         self.toolbox_workspace_nest_directories_list_widgets.clear()
         self.settings_file.load_data()
@@ -2285,27 +1950,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         toolbox_3 = QToolBox(self)
         toolbox_3.setLineWidth(0)
         toolbox_3.layout().setSpacing(0)
-        self.verticalLayout_24.addWidget(toolbox_1)  # Quote Generator
         self.verticalLayout_33.addWidget(toolbox_2)  # Job Quoter
         self.verticalLayout_37.addWidget(toolbox_3)
         for i, nest_directory in enumerate(nest_directories):
             nest_directory_name: str = nest_directory.split("/")[-1]
-            tree_view_1 = PdfTreeView(nest_directory, self)
-            tree_view_1.selectionModel().selectionChanged.connect(self.nest_directory_item_selected)
             tree_view_2 = PdfTreeView(nest_directory, self)
             tree_view_2.selectionModel().selectionChanged.connect(self.job_quote_directory_item_selected)
             tree_view_3 = PdfTreeView(nest_directory, self)
             tree_view_3.selectionModel().selectionChanged.connect(self.workspace_directory_item_selected)
-            self.toolbox_quote_nest_directories_list_widgets[nest_directory] = tree_view_1
             self.toolbox_job_nest_directories_list_widgets[nest_directory] = tree_view_2
             self.toolbox_workspace_nest_directories_list_widgets[nest_directory] = tree_view_3
-            toolbox_1.addItem(tree_view_1, nest_directory_name)
-            toolbox_1.setItemIcon(i, Icons.folder_icon)
             toolbox_2.addItem(tree_view_2, nest_directory_name)
             toolbox_2.setItemIcon(i, Icons.folder_icon)
             toolbox_3.addItem(tree_view_3, nest_directory_name)
             toolbox_3.setItemIcon(i, Icons.folder_icon)
-        self.nest_directory_item_selected()
         self.job_quote_directory_item_selected()
         self.workspace_directory_item_selected()
 
@@ -2681,30 +2339,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_parts_inventory.add_laser_cut_part(laser_cut_part_to_add)
 
-    def add_quantities_to_laser_cut_inventory_from_quote(self, quote: Quote):
-        quote.group_laser_cut_parts()
-        for laser_cut_part in quote.grouped_laser_cut_parts:
-            self.add_laser_cut_part_to_inventory(laser_cut_part, quote.name)
-        # self.laser_cut_parts_inventory.save_local_copy()
-        self.laser_cut_parts_inventory.save_laser_cut_parts(quote.grouped_laser_cut_parts)
-        # self.sync_changes()
-
-    def remove_sheet_quantities_from_quote(self, quote: Quote):
-        for nest in quote.nests:
-            if sheet := self.sheets_inventory.get_sheet_by_name(nest.sheet.get_name()):
-                old_quantity = sheet.quantity
-                sheet.quantity -= nest.sheet_count
-                sheet.latest_change_quantity = (
-                    f"{os.getlogin().title()} - Removed {nest.sheet_count} sheets from {quote.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                )
-                if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning and "Cutoff" not in sheet.get_categories():
-                    sheet.has_sent_warning = True
-                    self.generate_single_sheet_report(sheet, old_quantity)
-                if "Cutoff" in sheet.get_categories() and sheet.quantity <= 0:
-                    self.sheets_inventory.remove_sheet(sheet)
-        self.sheets_inventory.save_local_copy()
-        self.sync_changes()
-
     # TODO Group sheets together with quantity: e.g. 5, 10, 1 should be total 16 of the same sheets in different nests
     def remove_sheet_quantities_from_nests(self, nests: list[Nest]):
         for nest in nests:
@@ -2777,17 +2411,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.status_button.setText(f"Error: {response}", "red")
 
-    def upload_nest_images(self, data: Quote | list[Nest]):
+    def upload_nest_images(self, nests: list[Nest]):
         images_to_upload: list[str] = []
-        if isinstance(data, Quote):
-            data.group_laser_cut_parts()
-            images_to_upload.extend(laser_cut_part.image_index for laser_cut_part in data.grouped_laser_cut_parts)
-            images_to_upload.extend(component.image_path for component in data.components)
-            images_to_upload.extend(nest.image_path for nest in data.nests)
-        elif isinstance(data, list):
-            for nest in data:
-                images_to_upload.extend(laser_cut_part.image_index for laser_cut_part in nest.laser_cut_parts)
-                images_to_upload.extend(nest.image_path for nest in data)
+        for nest in nests:
+            images_to_upload.extend(laser_cut_part.image_index for laser_cut_part in nest.laser_cut_parts)
+            images_to_upload.extend(nest.image_path for nest in nests)
 
         images = set(images_to_upload)
         self.upload_files(list(images))
@@ -3578,97 +3206,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             laser_cut_parts_to_update.append(new_part)
                         break
         self.laser_cut_parts_inventory.add_or_update_laser_cut_parts(laser_cut_parts_to_update, "workorder nest overflow")
-
-    def generate_quote_thread(self, nests: list[str]):
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        self.status_button.setText("Processing nests", "yellow")
-        self.pushButton_load_nests.setEnabled(False)
-        load_nest_thread = GenerateQuoteThread(
-            self,
-            nests,
-            self.components_inventory,
-            self.laser_cut_parts_inventory,
-            self.sheet_settings,
-        )
-        self.threads.append(load_nest_thread)
-        load_nest_thread.signal.connect(self.generate_quote_response)
-        load_nest_thread.start()
-
-    def generate_quote_response(self, data: Quote | str):
-        if isinstance(data, str):
-            self.status_button.setText("Encountered error processing nests", "red")
-            self.pushButton_load_nests.setEnabled(True)
-            QApplication.restoreOverrideCursor()
-            msg = QMessageBox(
-                QMessageBox.Icon.Critical,
-                "PDF error",
-                f"{data}",
-                QMessageBox.StandardButton.Ok,
-                self,
-            )
-            msg.exec()
-            return
-        self.pushButton_load_nests.setEnabled(True)
-
-        self.upload_nest_images(data)
-
-        QApplication.restoreOverrideCursor()
-
-        settings_text = "".join(f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(data.nests))
-        select_item_dialog = NestSheetVerification(
-            f"The nests sheet settings from pdf are:\n{settings_text}",
-            data.nests[0].sheet.thickness,
-            data.nests[0].sheet.material,
-            self.sheet_settings,
-            self,
-        )
-
-        if select_item_dialog.exec():
-            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-            self.status_button.setText("Loading quote", "yellow")
-            if select_item_dialog.response == DialogButtons.set:
-                for nest in data.nests:
-                    nest.sheet.material = select_item_dialog.get_selected_material()
-                    nest.sheet.thickness = select_item_dialog.get_selected_thickness()
-                    for laser_cut_part in nest.laser_cut_parts:
-                        laser_cut_part.material = select_item_dialog.get_selected_material()
-                        laser_cut_part.gauge = select_item_dialog.get_selected_thickness()
-
-            current_tab_index = self.quote_generator_tab_widget.tab_widget.currentIndex()
-            self.quote_generator_tab_widget.set_quote(current_tab_index, data)
-            current_quote_widget = self.quote_generator_tab_widget.quotes[current_tab_index]
-            current_quote_widget.comboBox_global_sheet_material_2.blockSignals(True)
-            current_quote_widget.comboBox_global_sheet_material_2.setCurrentText(select_item_dialog.get_selected_material())
-            current_quote_widget.comboBox_global_sheet_material_2.blockSignals(False)
-            current_quote_widget.comboBox_global_sheet_thickness_2.blockSignals(True)
-            current_quote_widget.comboBox_global_sheet_thickness_2.setCurrentText(select_item_dialog.get_selected_thickness())
-            current_quote_widget.comboBox_global_sheet_thickness_2.blockSignals(False)
-            self.status_button.setText(
-                f"Successfully loaded {len(self.get_all_selected_nests())} nests into {self.quote_generator_tab_widget.tab_widget.tabText(current_tab_index)}",
-                "lime",
-            )
-        else:
-            self.status_button.setText("Loading nests aborted", "lime")
-        QApplication.restoreOverrideCursor()
-
-    def upload_quote_thread(self, folder: str, quote: Quote, html_file_contents: str):
-        upload_batch = UploadQuote(folder, quote, html_file_contents)
-        upload_batch.signal.connect(self.upload_quote_response)
-        self.threads.append(upload_batch)
-        self.status_button.setText(f"Uploading {quote.name}", "yellow")
-        upload_batch.start()
-
-    def upload_quote_response(self, response: str):
-        if response == "Quote sent successfully":
-            self.status_button.setText("Quote was sent successfully", "lime")
-            self.load_saved_quoted_thread()
-        else:
-            self.status_button.setText("Quote failed to send", "red")
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Upload error")
-            msg.setText(f"{response}")
-            msg.exec()
 
     def set_order_number_thread(self, order_number: float):
         self.order_number = order_number

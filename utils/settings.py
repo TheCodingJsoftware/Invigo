@@ -50,7 +50,6 @@ class Settings:
                 "Job Planner": True,
                 "Job Quoter": True,
                 "Laser Cut Inventory": True,
-                "Quote Generator": False,
                 "Sheet Settings": True,
                 "Sheets In Inventory": True,
                 "Structural Steel Inventory": True,
@@ -101,7 +100,6 @@ class Settings:
                 "Structural Steel Settings",
                 "Job Planner",
                 "Job Quoter",
-                "Quote Generator",
                 "Workspace",
             ],
         )

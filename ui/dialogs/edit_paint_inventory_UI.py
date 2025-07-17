@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/edit_paint_inventory.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/edit_paint_inventory.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -35,7 +35,7 @@ class Ui_Form(object):
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
         self.lblMessage.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout.addWidget(self.lblMessage)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
@@ -75,11 +75,11 @@ class Ui_Form(object):
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName("gridLayout")
         self.label = QtWidgets.QLabel(parent=self.widget)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.label_5 = QtWidgets.QLabel(parent=self.widget)
-        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.gridLayout.addWidget(self.label_5, 5, 0, 1, 1)
         self.pushButton_set_color = QtWidgets.QPushButton(parent=self.widget)
@@ -137,12 +137,7 @@ class Ui_Form(object):
         self.verticalLayout_8.addLayout(self.gridLayout)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem)
         self.pushButton_add = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_add.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -175,12 +170,11 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lblMessage.setText(
-            _translate(
-                "Form",
-                "Adding a new paint item.\n\nSelect a paint item to edit.\n\nDouble click to delete.",
-            )
-        )
+        self.lblMessage.setText(_translate("Form", "Adding a new paint item.\n"
+"\n"
+"Select a paint item to edit.\n"
+"\n"
+"Double click to delete."))
         self.groupBox.setTitle(_translate("Form", "Primers"))
         self.groupBox_2.setTitle(_translate("Form", "Paints"))
         self.groupBox_3.setTitle(_translate("Form", "Powders"))

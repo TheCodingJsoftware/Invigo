@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/add_sheet_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/add_sheet_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -46,7 +46,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
@@ -66,7 +66,7 @@ class Ui_Form(object):
         self.lineEdit_material.setObjectName("lineEdit_material")
         self.gridLayout.addWidget(self.lineEdit_material, 2, 1, 1, 1)
         self.label = QtWidgets.QLabel(parent=self.widget)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label.setObjectName("label")
         self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
         self.comboBox_thickness = QtWidgets.QComboBox(parent=self.widget)
@@ -116,12 +116,7 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
-        spacerItem = QtWidgets.QSpacerItem(
-            40,
-            20,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-            QtWidgets.QSizePolicy.Policy.Minimum,
-        )
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.buttonsLayout.addItem(spacerItem)
         self.pushButton_add = QtWidgets.QPushButton(parent=self.widget)
         self.pushButton_add.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -154,7 +149,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lblMessage.setText(_translate("Form", "Press 'Add' when finished."))
+        self.lblMessage.setText(_translate("Form", "Press \'Add\' when finished."))
         self.label_10.setText(_translate("Form", "Thickness:"))
         self.label_6.setText(_translate("Form", "Material:"))
         self.label.setText(_translate("Form", "Sheet Dimension (len x wid):"))

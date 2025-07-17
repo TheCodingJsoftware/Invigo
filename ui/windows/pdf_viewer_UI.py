@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/windows/pdf_viewer.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/windows/pdf_viewer.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -49,10 +49,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(0, 1)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
         self.scrollArea = QtWidgets.QScrollArea(parent=self.verticalLayoutWidget_2)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred,
-            QtWidgets.QSizePolicy.Policy.Expanding,
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())

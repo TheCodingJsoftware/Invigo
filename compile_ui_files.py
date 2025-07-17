@@ -89,7 +89,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     directories_to_watch = [
-        f"{Environment.DATA_PATH}/ui/dialogs",
+        f"{Environment.DATA_PATH}/ui",
     ]
 
     if args.watch:

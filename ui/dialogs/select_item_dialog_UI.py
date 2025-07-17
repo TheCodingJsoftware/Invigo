@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '/mnt/60F41785F4175C9A/Forge/Inventory Manager/ui/dialogs/select_item_dialog.ui'
+# Form implementation generated from reading ui file '/mnt/SafeHaven/Forge/Inventory Manager/ui/dialogs/select_item_dialog.ui'
 #
 # Created by: PyQt6 UI code generator 6.9.1
 #
@@ -34,7 +34,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
         self.lblMessage.setSizePolicy(sizePolicy)
-        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.lblMessage.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout.addWidget(self.lblMessage)
