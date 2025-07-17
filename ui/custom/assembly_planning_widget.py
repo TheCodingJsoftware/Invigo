@@ -45,6 +45,7 @@ from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.theme import theme_var
 from ui.widgets.assembly_widget import AssemblyWidget
+from utils.dxf_analyzer import DxfAnalyzer
 from utils.get_bend_hits import get_bend_hits
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -1129,55 +1130,101 @@ class AssemblyPlanningWidget(AssemblyWidget):
             file_ext = file_path.split(".")[-1].upper()
             file_name = os.path.basename(file_path)
 
-            if "dxf" in file_ext.lower():
+            if "dxf" in file_ext.lower() and file_category == "cnc_milling_files":
                 laser_cut_part.file_name = file_name.split(".")[0]
+                dxf_analyzer = DxfAnalyzer(file_path)
+                dxf_analyzer.save_preview_image(f"images/{laser_cut_part.file_name}.jpeg")
+                laser_cut_part.image_index = f"{laser_cut_part.file_name}.jpeg"
+                self.upload_images([laser_cut_part.image_index])
+                are_you_sure = QMessageBox(
+                    QMessageBox.Icon.Question,
+                    "Are you sure?",
+                    f"The following information is extracted from the DXF file:\n{dxf_analyzer}\n\nDo you want to use these settings?",
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+                    self,
+                )
+                if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
+                    laser_cut_part.load_dxf_settings(dxf_analyzer)
+
                 if existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.file_name):
-                    print("Found part in inventory")
-                    # self.laser_cut_part_table_items[laser_cut_part]["material"].setCurrentText(existing_laser_cut_part.material)
-                    # self.laser_cut_part_table_items[laser_cut_part]["thickness"].setCurrentText(existing_laser_cut_part.gauge)
-                    laser_cut_part.material = existing_laser_cut_part.material
-                    laser_cut_part.gauge = existing_laser_cut_part.gauge
-                    laser_cut_part.machine_time = existing_laser_cut_part.machine_time
-                    laser_cut_part.weight = existing_laser_cut_part.weight
-                    laser_cut_part.surface_area = existing_laser_cut_part.surface_area
-                    laser_cut_part.cutting_length = existing_laser_cut_part.cutting_length
-                    laser_cut_part.piercing_time = existing_laser_cut_part.piercing_time
-                    laser_cut_part.piercing_points = existing_laser_cut_part.piercing_points
-                    laser_cut_part.shelf_number = existing_laser_cut_part.shelf_number
-                    laser_cut_part.sheet_dim = existing_laser_cut_part.sheet_dim
-                    laser_cut_part.part_dim = existing_laser_cut_part.part_dim
-                    laser_cut_part.geofile_name = existing_laser_cut_part.geofile_name
-                    laser_cut_part.modified_date = existing_laser_cut_part.modified_date
-                    laser_cut_part.notes = existing_laser_cut_part.notes
-                    laser_cut_part.price = existing_laser_cut_part.price
-                    laser_cut_part.cost_of_goods = existing_laser_cut_part.cost_of_goods
-                    laser_cut_part.bend_cost = existing_laser_cut_part.bend_cost
-                    laser_cut_part.labor_cost = existing_laser_cut_part.labor_cost
-                    laser_cut_part.uses_primer = existing_laser_cut_part.uses_primer
-                    laser_cut_part.primer_name = existing_laser_cut_part.primer_name
-                    laser_cut_part.primer_overspray = existing_laser_cut_part.primer_overspray
-                    laser_cut_part.cost_for_primer = existing_laser_cut_part.cost_for_primer
-                    laser_cut_part.uses_paint = existing_laser_cut_part.uses_paint
-                    laser_cut_part.paint_name = existing_laser_cut_part.paint_name
-                    laser_cut_part.paint_overspray = existing_laser_cut_part.paint_overspray
-                    laser_cut_part.cost_for_paint = existing_laser_cut_part.cost_for_paint
-                    laser_cut_part.uses_powder = existing_laser_cut_part.uses_powder
-                    laser_cut_part.powder_name = existing_laser_cut_part.powder_name
-                    laser_cut_part.powder_transfer_efficiency = existing_laser_cut_part.powder_transfer_efficiency
-                    laser_cut_part.cost_for_powder_coating = existing_laser_cut_part.cost_for_powder_coating
-                    # with contextlib.suppress(KeyError):
-                    self.laser_cut_part_table_items[laser_cut_part]["painting_widget"].update_checkboxes()
-                    self.laser_cut_part_table_items[laser_cut_part]["painting_settings_widget"].update_inputs()
-                    self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
-                    # laser_cut_part.bending_files = existing_laser_cut_part.bending_files
-                    # laser_cut_part.welding_files = existing_laser_cut_part.welding_files
-                    # laser_cut_part.cnc_milling_files = existing_laser_cut_part.cnc_milling_files
+                    are_you_sure = QMessageBox(
+                        QMessageBox.Icon.Question,
+                        "Are you sure?",
+                        f"The laser cut part '{existing_laser_cut_part.name}' already exists in the inventory. Do you want to use the settings from the existing laser cut part?",
+                        QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+                        self,
+                    )
+                    if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
+                        # self.laser_cut_part_table_items[laser_cut_part]["material"].setCurrentText(existing_laser_cut_part.material)
+                        # self.laser_cut_part_table_items[laser_cut_part]["thickness"].setCurrentText(existing_laser_cut_part.gauge)
+                        laser_cut_part.material = existing_laser_cut_part.material
+                        laser_cut_part.gauge = existing_laser_cut_part.gauge
+                        laser_cut_part.machine_time = existing_laser_cut_part.machine_time
+                        laser_cut_part.weight = existing_laser_cut_part.weight
+                        laser_cut_part.surface_area = existing_laser_cut_part.surface_area
+                        laser_cut_part.cutting_length = existing_laser_cut_part.cutting_length
+                        laser_cut_part.piercing_time = existing_laser_cut_part.piercing_time
+                        laser_cut_part.piercing_points = existing_laser_cut_part.piercing_points
+                        laser_cut_part.shelf_number = existing_laser_cut_part.shelf_number
+                        laser_cut_part.sheet_dim = existing_laser_cut_part.sheet_dim
+                        laser_cut_part.part_dim = existing_laser_cut_part.part_dim
+                        laser_cut_part.geofile_name = existing_laser_cut_part.geofile_name
+                        laser_cut_part.modified_date = existing_laser_cut_part.modified_date
+                        laser_cut_part.notes = existing_laser_cut_part.notes
+                        laser_cut_part.price = existing_laser_cut_part.price
+                        laser_cut_part.cost_of_goods = existing_laser_cut_part.cost_of_goods
+                        laser_cut_part.bend_cost = existing_laser_cut_part.bend_cost
+                        laser_cut_part.labor_cost = existing_laser_cut_part.labor_cost
+                        laser_cut_part.uses_primer = existing_laser_cut_part.uses_primer
+                        laser_cut_part.primer_name = existing_laser_cut_part.primer_name
+                        laser_cut_part.primer_overspray = existing_laser_cut_part.primer_overspray
+                        laser_cut_part.cost_for_primer = existing_laser_cut_part.cost_for_primer
+                        laser_cut_part.uses_paint = existing_laser_cut_part.uses_paint
+                        laser_cut_part.paint_name = existing_laser_cut_part.paint_name
+                        laser_cut_part.paint_overspray = existing_laser_cut_part.paint_overspray
+                        laser_cut_part.cost_for_paint = existing_laser_cut_part.cost_for_paint
+                        laser_cut_part.uses_powder = existing_laser_cut_part.uses_powder
+                        laser_cut_part.powder_name = existing_laser_cut_part.powder_name
+                        laser_cut_part.powder_transfer_efficiency = existing_laser_cut_part.powder_transfer_efficiency
+                        laser_cut_part.cost_for_powder_coating = existing_laser_cut_part.cost_for_powder_coating
+                        # with contextlib.suppress(KeyError):
+                        self.laser_cut_part_table_items[laser_cut_part]["painting_widget"].update_checkboxes()
+                        self.laser_cut_part_table_items[laser_cut_part]["painting_settings_widget"].update_inputs()
+                        self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
+                        # laser_cut_part.bending_files = existing_laser_cut_part.bending_files
+                        # laser_cut_part.welding_files = existing_laser_cut_part.welding_files
+                        # laser_cut_part.cnc_milling_files = existing_laser_cut_part.cnc_milling_files
 
                 current_row = self.laser_cut_part_table_items[laser_cut_part]["row"]
+
+                image_item = QTableWidgetItem()
+                try:
+                    if "images" not in laser_cut_part.image_index:
+                        laser_cut_part.image_index = "images/" + laser_cut_part.image_index
+                    if not laser_cut_part.image_index.endswith(".jpeg"):
+                        laser_cut_part.image_index += ".jpeg"
+                    image = QPixmap(laser_cut_part.image_index)
+                    if image.isNull():
+                        image = QPixmap("images/404.jpeg")
+                    original_width = image.width()
+                    original_height = image.height()
+                    new_height = self.laser_cut_parts_table.row_height
+                    try:
+                        new_width = int(original_width * (new_height / original_height))
+                    except ZeroDivisionError:
+                        new_width = original_width
+                    pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+                    image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
+                except Exception as e:
+                    image_item.setText(f"Error: {e}")
+
+                self.laser_cut_parts_table.setRowHeight(current_row, new_height)
+                self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PICTURE.value, image_item)
                 self.laser_cut_parts_table.item(current_row, LaserCutTableColumns.PART_NAME.value).setText(laser_cut_part.file_name)
             elif "pdf" in file_ext.lower() and file_category == "bending_files":
                 laser_cut_part.bend_hits = get_bend_hits(file_path)
-            target_dir = f"data\\workspace\\{file_ext}"
+
+            target_dir = os.path.join("data", "workspace", file_ext)
             target_path = os.path.join(target_dir, file_name)
 
             if not os.path.exists(target_dir):

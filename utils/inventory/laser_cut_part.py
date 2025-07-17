@@ -1,6 +1,7 @@
 import copy
 from typing import TYPE_CHECKING, Optional, Union
 
+from utils.dxf_analyzer import DxfAnalyzer
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.paint import Paint
@@ -288,6 +289,13 @@ class LaserCutPart(InventoryItem):
         for category in self.laser_cut_inventory.get_categories():
             if category.name in categories:
                 self.categories.append(category)
+
+    def load_dxf_settings(self, dxf_analyzer: DxfAnalyzer):
+        self.machine_time = float(dxf_analyzer.get_machinging_time_minutes())
+        self.surface_area = float(dxf_analyzer.get_cutting_area())
+        self.cutting_length = float(dxf_analyzer.get_cutting_length())
+        self.piercing_time = float(dxf_analyzer.get_piercing_time())
+        self.piercing_points = int(dxf_analyzer.get_piercing_points())
 
     def load_part_data(self, data: dict):
         """Only updates part information from nest files."""
