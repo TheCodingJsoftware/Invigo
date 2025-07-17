@@ -528,7 +528,7 @@ class ViewItemHistoryDialog(QDialog, Ui_Form):
             rel = f"{days_ago} days ago"
 
         # Format date: Month day, year (Weekday) at HH:MM AM/PM
-        formatted = dt.strftime("%B %-d, %Y (%A) at %-I:%M %p")
+        formatted = dt.strftime("%B %d, %Y (%A) at %I:%M %p")
         return f"{formatted} ({rel})"
 
     def clean_datetime_string(self, date_str: str) -> str:
