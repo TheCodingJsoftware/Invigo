@@ -1725,8 +1725,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if should_update_components:
                 self.subtract_component_quantity_from_job(job)
             new_job = self.workspace.deep_split_job_copy(job)
-            for laser_cut_part in new_job.get_all_laser_cut_parts():
-                laser_cut_part.timer.start_timer()
+            # for laser_cut_part in new_job.get_all_laser_cut_parts():
+            #     laser_cut_part.timer.start_timer()
             self.add_job_to_workspace_thread(new_job)
 
     def send_job_to_workspace(self):
