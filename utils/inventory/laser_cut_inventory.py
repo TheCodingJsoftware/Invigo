@@ -313,7 +313,7 @@ class LaserCutInventory(Inventory):
         for component_data in response:
             component = LaserCutPart(component_data, self)
             self.laser_cut_parts.append(component)
-        self.save_local_copy()
+        # self.save_local_copy()
         next_step()
 
     def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:

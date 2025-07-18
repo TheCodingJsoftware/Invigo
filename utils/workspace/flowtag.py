@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Iterator, Optional, Union
+from typing import TYPE_CHECKING, Iterator, Optional, TypedDict, Union
 
 from utils.workspace.tag import Tag
 
@@ -14,14 +14,22 @@ if TYPE_CHECKING:
     from utils.workspace.workspace_settings import WorkspaceSettings
 
 
+class FlowtagDict(TypedDict):
+    name: str
+    group: int
+    add_quantity_tag: str | None
+    remove_quantity_tag: str | None
+    tags: list[str]
+
+
 class Flowtag:
-    def __init__(self, data: dict[str, Union[str, list[str]]], workspace_settings):
+    def __init__(self, data: FlowtagDict, workspace_settings):
         self.name = ""
         self.tags: list[Tag] = []
         self.group: Group = Group.LASER_CUT_PART
         self.workspace_settings: WorkspaceSettings = workspace_settings
-        self.add_quantity_tag: Tag = None
-        self.remove_quantity_tag: Tag = None
+        self.add_quantity_tag: Tag | None = None
+        self.remove_quantity_tag: Tag | None = None
 
         self.load_data(data)
 
@@ -32,7 +40,7 @@ class Flowtag:
         except Exception:  # Tag does not exist
             return "Tag name not found"
 
-    def load_data(self, data: dict[str, Union[str, list[str]]]):
+    def load_data(self, data: FlowtagDict):
         if not data:
             return
         self.name = data.get("name", "")
@@ -44,8 +52,8 @@ class Flowtag:
         self.tags.clear()
         tags = data.get("tags", [])
         for tag in tags:
-            tag = self.workspace_settings.get_tag(tag)
-            self.add_tag(tag)
+            if tag := self.workspace_settings.get_tag(tag):
+                self.add_tag(tag)
 
     def has_tag(self, tag_name: str) -> bool:
         return any(tag.name.lower() == tag_name.lower() for tag in self.tags)
@@ -58,10 +66,10 @@ class Flowtag:
         return False
 
     def get_tag_with_similar_name(self, tag_name: str) -> Optional[Tag]:
-        for tag in self.tags:
-            if tag_name.lower() in tag.name.lower():
-                return tag
-        return None
+        return next(
+            (tag for tag in self.tags if tag_name.lower() in tag.name.lower()),
+            None,
+        )
 
     def add_tag(self, tag: Tag):
         self.tags.append(tag)
@@ -78,7 +86,7 @@ class Flowtag:
     def __iter__(self) -> Iterator[Tag]:
         return iter(self.tags)
 
-    def to_dict(self) -> dict[str]:
+    def to_dict(self) -> FlowtagDict:
         try:
             return {
                 "name": self.name,
