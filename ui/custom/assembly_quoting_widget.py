@@ -634,7 +634,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
 
-        part_dim_item = QTableWidgetItem(f"{laser_cut_part.part_dim}\n{laser_cut_part.surface_area} in²")
+        part_dim_item = QTableWidgetItem(f"{laser_cut_part.part_dim}\n{laser_cut_part.surface_area:,.2f} in²")
         part_dim_item.setFont(self.tables_font)
         part_dim_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_DIM.value, part_dim_item)
@@ -791,6 +791,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items[changed_laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
         changed_laser_cut_part.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
         changed_laser_cut_part.gauge = self.laser_cut_part_table_items[changed_laser_cut_part]["thickness"].currentText()
+        changed_laser_cut_part.weight = changed_laser_cut_part.calculate_weight()
         with contextlib.suppress(ValueError):
             changed_laser_cut_part.quantity = float(self.laser_cut_part_table_items[changed_laser_cut_part]["unit_quantity"].text())
         with contextlib.suppress(ValueError):

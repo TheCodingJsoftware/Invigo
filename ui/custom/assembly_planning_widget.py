@@ -768,6 +768,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_part_table_items[changed_laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
         changed_laser_cut_part.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
         changed_laser_cut_part.gauge = self.laser_cut_part_table_items[changed_laser_cut_part]["thickness"].currentText()
+        changed_laser_cut_part.weight = changed_laser_cut_part.calculate_weight()
         with contextlib.suppress(ValueError):
             changed_laser_cut_part.quantity = float(self.laser_cut_part_table_items[changed_laser_cut_part]["unit_quantity"].text())
         changed_laser_cut_part.notes = self.laser_cut_part_table_items[changed_laser_cut_part]["notes"].text()
