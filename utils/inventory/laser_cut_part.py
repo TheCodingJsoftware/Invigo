@@ -294,12 +294,13 @@ class LaserCutPart(InventoryItem):
         laser_cut_inventory: "LaserCutInventory",
     ):
         super().__init__()
+        self.id = data.get("id", -1)
 
         self.laser_cut_inventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
         self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
         self.sheet_settings: SheetSettings = self.laser_cut_inventory.sheet_settings
-        self.id = data.get("id", -1)
+
         self.inventory_data = InventoryData(data.get("inventory_data", {}), self.laser_cut_inventory)
         self.meta_data = MetaData(data.get("meta_data", {}))
         self.prices = Prices(data.get("prices", {}))
@@ -498,28 +499,3 @@ class LaserCutPart(InventoryItem):
             "powder_data": self.powder_data.to_dict(),
             "workspace_data": self.workspace_data.to_dict(),
         }
-
-
-if __name__ == "__main__":
-    from typing import get_type_hints
-
-    def generate_properties(cls_name: str, source_attr: str):
-        cls = globals()[cls_name]
-        annotations = get_type_hints(cls)
-        result = []
-        for name, typ in annotations.items():
-            result.extend(
-                (
-                    f"    @property\n    def {name}(self) -> {typ.__name__}:\n        return self.{source_attr}.{name}\n",
-                    f"    @{name}.setter\n    def {name}(self, value: {typ.__name__}):\n        self.{source_attr}.{name} = value\n",
-                )
-            )
-        return "\n".join(result)
-
-    print(generate_properties("InventoryData", "inventory_data"))
-    print(generate_properties("MetaData", "meta_data"))
-    print(generate_properties("Prices", "prices"))
-    print(generate_properties("PaintData", "paint_data"))
-    print(generate_properties("PrimerData", "primer_data"))
-    print(generate_properties("PowderData", "powder_data"))
-    print(generate_properties("WorkspaceData", "workspace_data"))
