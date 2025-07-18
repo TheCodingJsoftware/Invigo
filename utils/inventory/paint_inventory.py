@@ -30,10 +30,7 @@ class PaintInventory(Inventory):
             self.primers.remove(primer)
 
     def get_primer(self, name: str) -> Optional[CoatingItem]:
-        for primer in self.primers:
-            if primer.part_name == name:
-                return primer
-        return None
+        return next((primer for primer in self.primers if primer.part_name == name), None)
 
     def get_all_primers(self) -> list[str]:
         return [primer.part_name for primer in self.primers]
@@ -56,10 +53,7 @@ class PaintInventory(Inventory):
             self.paints.remove(paint)
 
     def get_paint(self, name: str) -> Optional[CoatingItem]:
-        for paint in self.paints:
-            if paint.part_name == name:
-                return paint
-        return None
+        return next((paint for paint in self.paints if paint.part_name == name), None)
 
     def get_all_paints(self) -> list[str]:
         return [paint.part_name for paint in self.paints]
@@ -82,10 +76,7 @@ class PaintInventory(Inventory):
             self.powders.remove(powder)
 
     def get_powder(self, name: str) -> Optional[CoatingItem]:
-        for powder in self.powders:
-            if powder.part_name == name:
-                return powder
-        return None
+        return next((powder for powder in self.powders if powder.part_name == name), None)
 
     def get_all_powders(self) -> list[str]:
         return [powder.part_name for powder in self.powders]
