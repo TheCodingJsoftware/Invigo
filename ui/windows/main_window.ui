@@ -84,7 +84,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>8</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="components_tab">
        <layout class="QVBoxLayout" name="verticalLayout_41">
@@ -336,8 +336,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1412</width>
-                       <height>624</height>
+                       <width>100</width>
+                       <height>30</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -377,8 +377,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1412</width>
-                       <height>624</height>
+                       <width>100</width>
+                       <height>30</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -732,8 +732,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>63</width>
-                     <height>16</height>
+                     <width>96</width>
+                     <height>26</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -786,8 +786,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>63</width>
-                     <height>16</height>
+                     <width>96</width>
+                     <height>26</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">

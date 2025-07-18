@@ -12,15 +12,11 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(517, 331)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.widget = QtWidgets.QWidget(parent=Form)
-        self.widget.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.ActionsContextMenu)
-        self.widget.setAutoFillBackground(False)
-        self.widget.setStyleSheet("")
         self.widget.setObjectName("widget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -68,7 +64,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 489, 83))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 600, 249))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -100,6 +96,7 @@ class Ui_Form(object):
         self.pushButton_cancel.setObjectName("pushButton_cancel")
         self.horizontalLayout_5.addWidget(self.pushButton_cancel)
         self.verticalLayout_3.addLayout(self.horizontalLayout_5)
+        self.verticalLayout_3.setStretch(1, 1)
         self.horizontalLayout.addWidget(self.widget)
 
         self.retranslateUi(Form)

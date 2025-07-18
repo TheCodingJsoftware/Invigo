@@ -14,7 +14,6 @@ class UpdateDialog(QDialog, Ui_Form):
 
         self.setWindowTitle("New Update Available")
         self.setWindowIcon(QIcon(Icons.invigo_icon))
-        self.setFixedSize(600, 500)
 
         pixmap = QPixmap(Icons.invigo_icon)
         scaled_pixmap = pixmap.scaled(self.label_icon.size(), Qt.AspectRatioMode.KeepAspectRatio)
