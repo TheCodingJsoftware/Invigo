@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class Powder(CoatingItem):
     def __init__(self, data: dict[str, str | float], paint_inventory):
-        super().__init__(paint_inventory)
+        super().__init__(data, paint_inventory)
         self.paint_inventory: PaintInventory = paint_inventory
         self.COATING_TYPE = CoatingTypes.POWDER
         self.gravity: float = 2.0
