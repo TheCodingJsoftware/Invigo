@@ -14,15 +14,15 @@ class DxfAnalyzer:
         return sum(entity.length(self.shape.vertices) for entity in self.shape.entities)
 
     def get_cutting_area(self) -> float:
-        return self.shape.area
+        return float(self.shape.area)
 
     def get_units(self) -> str:
-        return self.shape.units
+        return str(self.shape.units)
 
     def get_dimensions(self) -> dict[str, float]:
         bounds = self.shape.bounds
-        length = bounds[1][0] - bounds[0][0]
-        width = bounds[1][1] - bounds[0][1]
+        length = float(bounds[1][0] - bounds[0][0])
+        width = float(bounds[1][1] - bounds[0][1])
         return {
             "length": round(length, 3),
             "width": round(width, 3),
