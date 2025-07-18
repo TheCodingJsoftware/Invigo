@@ -10,6 +10,7 @@ from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint_inventory import PaintInventory
+from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workers.laser_cut_parts_inventory.add_laser_cut_parts import (
     AddLaserCutPartsWorker,
 )
@@ -36,10 +37,11 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class LaserCutInventory(Inventory):
-    def __init__(self, paint_inventory: PaintInventory, workspace_settings: WorkspaceSettings):
+    def __init__(self, paint_inventory: PaintInventory, workspace_settings: WorkspaceSettings, sheet_settings: SheetSettings):
         super().__init__("laser_cut_inventory")
         self.paint_inventory = paint_inventory
         self.workspace_settings = workspace_settings
+        self.sheet_settings = sheet_settings
 
         self.laser_cut_parts: list[LaserCutPart] = []
         self.recut_parts: list[LaserCutPart] = []

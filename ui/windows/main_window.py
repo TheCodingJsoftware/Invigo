@@ -83,6 +83,7 @@ from ui.dialogs.nest_sheet_verification import NestSheetVerification
 from ui.dialogs.purchase_order_dialog import PurchaseOrderDialog
 from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.send_jobs_to_workspace_dialog import SendJobsToWorkspaceDialog
+from ui.dialogs.update_dialog import UpdateDialog
 from ui.dialogs.view_removed_quantities_history_dialog import (
     ViewRemovedQuantitiesHistoryDialog,
 )
@@ -413,7 +414,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.structural_steel_inventory = StructuralSteelInventory(self.structural_steel_settings, self.workspace_settings)
         self.components_inventory = ComponentsInventory()
         self.paint_inventory = PaintInventory(self.components_inventory)
-        self.laser_cut_parts_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings)
+        self.laser_cut_parts_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings, self.sheet_settings)
 
         self.job_manager = JobManager(
             self.sheet_settings,
@@ -3374,24 +3375,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.threads.append(check_for_updates_thread)
         check_for_updates_thread.start()
 
-    def update_available_thread_response(self, version: str, update_message: str):
+    def update_available_thread_response(self, new_version: str, update_message: str):
         if not self.ignore_update:
             self.ignore_update = True
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("New Update Available")
-            if update_message:
-                msg.setText(
-                    f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.\n\nUpdate Notes:\n{update_message}\n\nWould you like to update?"
-                )
-            else:
-                msg.setText(
-                    f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.\n\nWould you like to update?"
-                )
-            msg.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
-            msg.setDefaultButton(QMessageBox.StandardButton.Yes)
-            response = msg.exec()
-            if response == QMessageBox.StandardButton.Yes:
+            msg = UpdateDialog(self, __version__, new_version, update_message)
+            if msg.exec():
                 subprocess.Popen("start update.exe", shell=True)
 
     # * /\ THREADS /\
