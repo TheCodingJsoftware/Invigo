@@ -27,13 +27,13 @@ class WorkspaceLaserCutPartGroup:
     def get_all_files_with_ext(self, file_ext: str) -> list[str]:
         all_files: set[str] = set()
         for laser_cut_part in self:
-            for bending_file in laser_cut_part.bending_files:
+            for bending_file in laser_cut_part.workspace_data.bending_files:
                 if bending_file.lower().endswith(file_ext):
                     all_files.add(bending_file)
-            for welding_file in laser_cut_part.welding_files:
+            for welding_file in laser_cut_part.workspace_data.welding_files:
                 if welding_file.lower().endswith(file_ext):
                     all_files.add(welding_file)
-            for cnc_milling_file in laser_cut_part.cnc_milling_files:
+            for cnc_milling_file in laser_cut_part.workspace_data.cnc_milling_files:
                 if cnc_milling_file.lower().endswith(file_ext):
                     all_files.add(cnc_milling_file)
         return list(all_files)
@@ -41,18 +41,18 @@ class WorkspaceLaserCutPartGroup:
     def get_all_files(self) -> list[str]:
         all_files: set[str] = set()
         for laser_cut_part in self:
-            for bending_file in laser_cut_part.bending_files:
+            for bending_file in laser_cut_part.workspace_data.bending_files:
                 all_files.add(bending_file)
-            for welding_file in laser_cut_part.welding_files:
+            for welding_file in laser_cut_part.workspace_data.welding_files:
                 all_files.add(welding_file)
-            for cnc_milling_file in laser_cut_part.cnc_milling_files:
+            for cnc_milling_file in laser_cut_part.workspace_data.cnc_milling_files:
                 all_files.add(cnc_milling_file)
         return list(all_files)
 
     def get_parts_list(self) -> str:
         text = ""
         for laser_cut_part in self:
-            text += f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_flow_string()}\n"
+            text += f"{laser_cut_part.name}: {laser_cut_part.workspace_data.flowtag.get_flow_string()}\n"
         return text
 
     def get_ids(self) -> str:
@@ -126,9 +126,9 @@ class WorkspaceLaserCutPartGroup:
         if not self.base_part:
             return
         if current_tag := self.get_current_tag():
-            if self.base_part.flowtag.add_quantity_tag and current_tag.name == self.base_part.flowtag.add_quantity_tag.name:
+            if self.base_part.workspace_data.flowtag.add_quantity_tag and current_tag.name == self.base_part.workspace_data.flowtag.add_quantity_tag.name:
                 self.base_part.laser_cut_inventory.add_or_update_laser_cut_parts(self.laser_cut_parts, f"workspace tag: {current_tag.name}")
-            if self.base_part.flowtag.remove_quantity_tag and current_tag.name == self.base_part.flowtag.remove_quantity_tag.name:
+            if self.base_part.workspace_data.flowtag.remove_quantity_tag and current_tag.name == self.base_part.workspace_data.flowtag.remove_quantity_tag.name:
                 self.base_part.laser_cut_inventory.remove_laser_cut_parts_quantity(self.laser_cut_parts, f"workspace tag: {current_tag.name}")
 
     def move_to_next_process(self, quantity: Optional[int] = None):
@@ -163,7 +163,7 @@ class WorkspaceLaserCutPartGroup:
     def get_quantity(self) -> int:
         quantity = 0
         for laser_cut_part in self:
-            quantity += laser_cut_part.quantity
+            quantity += laser_cut_part.inventory_data.quantity
         return quantity
 
     def __iter__(self) -> Iterator[LaserCutPart]:

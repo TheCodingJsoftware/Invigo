@@ -558,11 +558,11 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         image_item = QTableWidgetItem()
         try:
-            if "images" not in laser_cut_part.image_index:
-                laser_cut_part.image_index = f"images/{laser_cut_part.image_index}"
-            if not laser_cut_part.image_index.endswith(".jpeg"):
-                laser_cut_part.image_index += ".jpeg"
-            image = QPixmap(laser_cut_part.image_index)
+            if "images" not in laser_cut_part.meta_data.image_index:
+                laser_cut_part.meta_data.image_index = f"images/{laser_cut_part.meta_data.image_index}"
+            if not laser_cut_part.meta_data.image_index.endswith(".jpeg"):
+                laser_cut_part.meta_data.image_index += ".jpeg"
+            image = QPixmap(laser_cut_part.meta_data.image_index)
             if image.isNull():
                 image = QPixmap("images/404.jpeg")
             original_width = image.width()
@@ -583,9 +583,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         part_name_item = QTableWidgetItem(laser_cut_part.name)
         part_name_item.setFont(self.tables_font)
         if does_exist_in_inventory:
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory.\nProcess: {laser_cut_part.flowtag.get_flow_string()}"
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory.\nProcess: {laser_cut_part.workspace_data.flowtag.get_flow_string()}"
         else:
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory.\nProcess: {laser_cut_part.flowtag.get_flow_string()}"
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory.\nProcess: {laser_cut_part.workspace_data.flowtag.get_flow_string()}"
 
         part_name_item.setToolTip(laser_cut_part_inventory_status)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_NAME.value, part_name_item)
@@ -604,7 +604,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         materials_combobox.setStyleSheet("border-radius: 0px;")
         materials_combobox.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         materials_combobox.addItems(self.sheet_settings.get_materials())
-        materials_combobox.setCurrentText(laser_cut_part.material)
+        materials_combobox.setCurrentText(laser_cut_part.meta_data.material)
         materials_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.MATERIAL.value, materials_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"material": materials_combobox})
@@ -613,7 +613,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         thicknesses_combobox.setStyleSheet("border-radius: 0px;")
         thicknesses_combobox.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         thicknesses_combobox.addItems(self.sheet_settings.get_thicknesses())
-        thicknesses_combobox.setCurrentText(laser_cut_part.gauge)
+        thicknesses_combobox.setCurrentText(laser_cut_part.meta_data.gauge)
         thicknesses_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
         self.laser_cut_parts_table.setCellWidget(
             current_row,
@@ -622,19 +622,19 @@ class AssemblyQuotingWidget(AssemblyWidget):
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"thickness": thicknesses_combobox})
 
-        unit_quantity_item = QTableWidgetItem(str(laser_cut_part.quantity))
+        unit_quantity_item = QTableWidgetItem(str(laser_cut_part.inventory_data.quantity))
         unit_quantity_item.setFont(self.tables_font)
         unit_quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"unit_quantity": unit_quantity_item})
 
-        quantity_item = QTableWidgetItem(str(laser_cut_part.quantity * self.assembly.quantity))
+        quantity_item = QTableWidgetItem(str(laser_cut_part.inventory_data.quantity * self.assembly.quantity))
         quantity_item.setFont(self.tables_font)
         quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
 
-        part_dim_item = QTableWidgetItem(f"{laser_cut_part.part_dim}\n{laser_cut_part.surface_area:,.2f} in²")
+        part_dim_item = QTableWidgetItem(f"{laser_cut_part.meta_data.part_dim}\n{laser_cut_part.meta_data.surface_area:,.2f} in²")
         part_dim_item.setFont(self.tables_font)
         part_dim_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_DIM.value, part_dim_item)
@@ -713,7 +713,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"unit_price": table_widget_item_unit_price})
 
         # Price
-        table_widget_item_price = QTableWidgetItem(f"${(unit_price * laser_cut_part.quantity * self.assembly.quantity):.2f}")
+        table_widget_item_price = QTableWidgetItem(f"${(unit_price * laser_cut_part.inventory_data.quantity * self.assembly.quantity):.2f}")
         table_widget_item_price.setFont(self.tables_font)
         table_widget_item_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         self.laser_cut_parts_table.setItem(
@@ -723,7 +723,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"price": table_widget_item_price})
 
-        shelf_number_item = QTableWidgetItem(laser_cut_part.shelf_number)
+        shelf_number_item = QTableWidgetItem(laser_cut_part.meta_data.shelf_number)
         shelf_number_item.setFont(self.tables_font)
         self.laser_cut_parts_table.setItem(
             current_row,
@@ -746,7 +746,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def update_laser_cut_parts_table_quantity(self):
         self.laser_cut_parts_table.blockSignals(True)
         for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
-            table_data["quantity"].setText(str(laser_cut_part.quantity * self.assembly.quantity))
+            table_data["quantity"].setText(str(laser_cut_part.inventory_data.quantity * self.assembly.quantity))
         self.laser_cut_parts_table.blockSignals(False)
 
     def update_laser_cut_parts_table_prices(self):
@@ -763,7 +763,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["labor_cost"].setText(f"${laser_cut_part.labor_cost:,.2f}")
             table_data["bend_cost"].setText(f"${laser_cut_part.bend_cost:,.2f}")
             table_data["unit_price"].setText(f"${unit_price:,.2f}")
-            table_data["price"].setText(f"${(unit_price * laser_cut_part.quantity * self.assembly.quantity):,.2f}")
+            table_data["price"].setText(f"${(unit_price * laser_cut_part.inventory_data.quantity * self.assembly.quantity):,.2f}")
         self.laser_cut_parts_table.blockSignals(False)
 
     def laser_cut_parts_table_changed(self, row: int):
@@ -789,16 +789,16 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 f"{theme_var('table-red-quantity')}",
             )
         self.laser_cut_part_table_items[changed_laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
-        changed_laser_cut_part.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
-        changed_laser_cut_part.gauge = self.laser_cut_part_table_items[changed_laser_cut_part]["thickness"].currentText()
-        changed_laser_cut_part.weight = changed_laser_cut_part.calculate_weight()
+        changed_laser_cut_part.meta_data.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
+        changed_laser_cut_part.meta_data.gauge = self.laser_cut_part_table_items[changed_laser_cut_part]["thickness"].currentText()
+        changed_laser_cut_part.meta_data.weight = changed_laser_cut_part.calculate_weight()
         with contextlib.suppress(ValueError):
-            changed_laser_cut_part.quantity = float(self.laser_cut_part_table_items[changed_laser_cut_part]["unit_quantity"].text())
+            changed_laser_cut_part.inventory_data.quantity = float(self.laser_cut_part_table_items[changed_laser_cut_part]["unit_quantity"].text())
         with contextlib.suppress(ValueError):
             changed_laser_cut_part.bend_cost = float(self.laser_cut_part_table_items[changed_laser_cut_part]["bend_cost"].text())
         with contextlib.suppress(ValueError):
             changed_laser_cut_part.labor_cost = float(self.laser_cut_part_table_items[changed_laser_cut_part]["labor_cost"].text())
-        changed_laser_cut_part.shelf_number = self.laser_cut_part_table_items[changed_laser_cut_part]["shelf_number"].text()
+        changed_laser_cut_part.meta_data.shelf_number = self.laser_cut_part_table_items[changed_laser_cut_part]["shelf_number"].text()
         self.update_laser_cut_parts_table_quantity()
         self.changes_made()
 
@@ -830,13 +830,13 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
     def laser_cut_part_get_all_file_types(self, laser_cut_part: LaserCutPart, file_ext: str) -> list[str]:
         files: set[str] = set()
-        for bending_file in laser_cut_part.bending_files:
+        for bending_file in laser_cut_part.workspace_data.bending_files:
             if bending_file.lower().endswith(file_ext):
                 files.add(bending_file)
-        for welding_file in laser_cut_part.welding_files:
+        for welding_file in laser_cut_part.workspace_data.welding_files:
             if welding_file.lower().endswith(file_ext):
                 files.add(welding_file)
-        for cnc_milling_file in laser_cut_part.cnc_milling_files:
+        for cnc_milling_file in laser_cut_part.workspace_data.cnc_milling_files:
             if cnc_milling_file.lower().endswith(file_ext):
                 files.add(cnc_milling_file)
         return list(files)
@@ -862,12 +862,12 @@ class AssemblyQuotingWidget(AssemblyWidget):
                         laser_cut_part.to_dict(),
                         self.laser_cut_inventory,
                     )
-                    new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                    new_laser_cut_part.inventory_data.quantity = add_item_dialog.get_current_quantity()
                     self.assembly.add_laser_cut_part(new_laser_cut_part)
                     self.add_laser_cut_part_to_table(new_laser_cut_part)
             else:
                 new_laser_cut_part = LaserCutPart({"name": add_item_dialog.get_name()}, self.laser_cut_inventory)
-                new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                new_laser_cut_part.inventory_data.quantity = add_item_dialog.get_current_quantity()
                 self.assembly.add_laser_cut_part(new_laser_cut_part)
                 self.add_laser_cut_part_to_table(new_laser_cut_part)
 
@@ -885,31 +885,31 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 existing_recut_part.recut_count += 1
                 new_recut_part.recut_count = existing_recut_part.recut_count
                 new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
-            new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            new_recut_part.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.add_recut_part(new_recut_part)
             self.laser_cut_inventory.save_laser_cut_part(existing_recut_part)
         elif existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
-            existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
-            existing_laser_cut_part.material = laser_cut_part_to_add.material
-            existing_laser_cut_part.gauge = laser_cut_part_to_add.gauge
-            existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
-            existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
-            existing_laser_cut_part.uses_paint = laser_cut_part_to_add.uses_paint
-            existing_laser_cut_part.paint_name = laser_cut_part_to_add.paint_name
-            existing_laser_cut_part.uses_powder = laser_cut_part_to_add.uses_powder
-            existing_laser_cut_part.powder_name = laser_cut_part_to_add.powder_name
-            existing_laser_cut_part.primer_overspray = laser_cut_part_to_add.primer_overspray
-            existing_laser_cut_part.paint_overspray = laser_cut_part_to_add.paint_overspray
-            existing_laser_cut_part.modified_date = (
-                f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            )
+            existing_laser_cut_part.inventory_data.quantity += laser_cut_part_to_add.inventory_data.quantity
+            existing_laser_cut_part.meta_data.material = laser_cut_part_to_add.meta_data.material
+            existing_laser_cut_part.meta_data.gauge = laser_cut_part_to_add.meta_data.gauge
+            existing_laser_cut_part.primer_data.uses_primer = laser_cut_part_to_add.primer_data.uses_primer
+            existing_laser_cut_part.primer_data.primer_name = laser_cut_part_to_add.primer_data.primer_name
+            existing_laser_cut_part.paint_data.uses_paint = laser_cut_part_to_add.paint_data.uses_paint
+            existing_laser_cut_part.paint_data.paint_name = laser_cut_part_to_add.paint_data.paint_name
+            existing_laser_cut_part.powder_data.uses_powder = laser_cut_part_to_add.powder_data.uses_powder
+            existing_laser_cut_part.powder_data.powder_name = laser_cut_part_to_add.powder_data.powder_name
+            existing_laser_cut_part.primer_data.primer_overspray = laser_cut_part_to_add.primer_data.primer_overspray
+            existing_laser_cut_part.paint_data.paint_overspray = laser_cut_part_to_add.paint_data.paint_overspray
+            existing_laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.inventory_data.quantity} quantities from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.save_laser_cut_part(existing_laser_cut_part)
         else:
             if not (category := self.laser_cut_inventory.get_category("Uncategorized")):
                 category = Category("Uncategorized")
                 self.laser_cut_inventory.add_category(category)
             laser_cut_part_to_add.add_to_category(category)
-            laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            laser_cut_part_to_add.meta_data.modified_date = (
+                f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            )
             self.laser_cut_inventory.add_laser_cut_part(laser_cut_part_to_add)
         # self.laser_cut_inventory.save_local_copy()
         # self.sync_changes()
@@ -1033,17 +1033,17 @@ class AssemblyQuotingWidget(AssemblyWidget):
             return
         for laser_cut_part in selected_laser_cut_parts:
             if ACTION == "SET_MATERIAL":
-                laser_cut_part.material = selection
+                laser_cut_part.meta_data.material = selection
             elif ACTION == "SET_THICKNESS":
-                laser_cut_part.gauge = selection
+                laser_cut_part.meta_data.gauge = selection
             elif ACTION == "SET_QUANTITY":
-                laser_cut_part.quantity = float(selection)
+                laser_cut_part.inventory_data.quantity = float(selection)
             elif ACTION == "ADD_PART_TO_ASSEMBLY":
                 should_update_assembly_widget_tables = True
                 assmebly_widget: AssemblyQuotingWidget = selection
                 assembly: Assembly = assmebly_widget.assembly
                 new_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
-                new_part.quantity = laser_cut_part.quantity
+                new_part.inventory_data.quantity = laser_cut_part.inventory_data.quantity
                 assembly.add_laser_cut_part(new_part)
             elif ACTION == "MOVE_PART_TO_ASSEMBLY":
                 should_update_assembly_widget_tables = True
@@ -1119,11 +1119,11 @@ class AssemblyQuotingWidget(AssemblyWidget):
         file_button: FileButton,
     ):
         if file_category == "bending_files":
-            laser_cut_part.bending_files.remove(file_path)
+            laser_cut_part.workspace_data.bending_files.remove(file_path)
         elif file_category == "welding_files":
-            laser_cut_part.welding_files.remove(file_path)
+            laser_cut_part.workspace_data.welding_files.remove(file_path)
         elif file_category == "cnc_milling_files":
-            laser_cut_part.cnc_milling_files.remove(file_path)
+            laser_cut_part.workspace_data.cnc_milling_files.remove(file_path)
         file_button.deleteLater()
         self.changes_made()
 

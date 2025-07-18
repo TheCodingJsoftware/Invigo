@@ -141,7 +141,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         self.parts_table_items.clear()
         self.parts_table.setRowCount(0)
         self.parts_table.blockSignals(True)
-        sorted_parts = sorted(self.nest.laser_cut_parts, key=lambda part: part.part_number)
+        sorted_parts = sorted(self.nest.laser_cut_parts, key=lambda part: part.meta_data.part_number)
 
         for laser_cut_part in sorted_parts:
             self.add_laser_cut_part(laser_cut_part)
@@ -161,8 +161,8 @@ class NestEditorWidget(QWidget, Ui_Form):
         self.parts_table.setRowHeight(current_row, self.parts_table.row_height)
 
         image_item = QTableWidgetItem("")
-        if laser_cut_part.image_index:
-            image = QPixmap(laser_cut_part.image_index)
+        if laser_cut_part.meta_data.image_index:
+            image = QPixmap(laser_cut_part.meta_data.image_index)
             if image.isNull():
                 image = QPixmap("images/404.jpeg")
 
@@ -188,7 +188,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         combobox_material.setStyleSheet("border-radius: 0px;")
         combobox_material.wheelEvent = lambda event: self.parent.wheelEvent(event)
         combobox_material.addItems(self.sheet_settings.get_materials())
-        combobox_material.setCurrentText(laser_cut_part.material)
+        combobox_material.setCurrentText(laser_cut_part.meta_data.material)
         combobox_material.currentTextChanged.connect(partial(self.part_material_changed, current_row))
         self.parts_table.setCellWidget(current_row, NestEditorPartsTableColumns.MATERIAL.value, combobox_material)
         self.parts_table_items[laser_cut_part].update({"material": combobox_material})
@@ -197,12 +197,12 @@ class NestEditorWidget(QWidget, Ui_Form):
         combobox_thickness.setStyleSheet("border-radius: 0px;")
         combobox_thickness.wheelEvent = lambda event: self.parent.wheelEvent(event)
         combobox_thickness.addItems(self.sheet_settings.get_thicknesses())
-        combobox_thickness.setCurrentText(laser_cut_part.gauge)
+        combobox_thickness.setCurrentText(laser_cut_part.meta_data.gauge)
         combobox_thickness.currentTextChanged.connect(partial(self.part_thickness_changed, current_row))
         self.parts_table.setCellWidget(current_row, NestEditorPartsTableColumns.THICKNESS.value, combobox_thickness)
         self.parts_table_items[laser_cut_part].update({"thickness": combobox_thickness})
 
-        sheet_quantity_item = QTableWidgetItem(f"{laser_cut_part.quantity_on_sheet:,.0f}")
+        sheet_quantity_item = QTableWidgetItem(f"{laser_cut_part.meta_data.quantity_on_sheet:,.0f}")
         sheet_quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         sheet_quantity_item.setFont(self.tables_font)
         self.parts_table.setItem(
@@ -212,7 +212,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
         self.parts_table_items[laser_cut_part].update({"sheet_quantity": sheet_quantity_item})
 
-        total_quantity_item = QTableWidgetItem(f"{(laser_cut_part.quantity_on_sheet * self.nest.sheet_count):,.0f}")
+        total_quantity_item = QTableWidgetItem(f"{(laser_cut_part.meta_data.quantity_on_sheet * self.nest.sheet_count):,.0f}")
         total_quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         total_quantity_item.setFont(self.tables_font)
         self.parts_table.setItem(
@@ -222,7 +222,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
         self.parts_table_items[laser_cut_part].update({"total_quantity": total_quantity_item})
 
-        part_dim_item = QTableWidgetItem(f"{laser_cut_part.part_dim}\n\n{laser_cut_part.surface_area:,.2f} in²")
+        part_dim_item = QTableWidgetItem(f"{laser_cut_part.meta_data.part_dim}\n\n{laser_cut_part.meta_data.surface_area:,.2f} in²")
         part_dim_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         part_dim_item.setFont(self.tables_font)
         self.parts_table.setItem(current_row, NestEditorPartsTableColumns.PART_DIMENSION.value, part_dim_item)
@@ -236,7 +236,7 @@ class NestEditorWidget(QWidget, Ui_Form):
 
     def recut_pressed(self, recut_part: LaserCutPart, button: RecutButton):
         if button.isChecked():
-            recut_dialog = RecutDialog("How many are Recut?", recut_part.quantity, self)
+            recut_dialog = RecutDialog("How many are Recut?", recut_part.inventory_data.quantity, self)
             if recut_dialog.exec() and recut_dialog.get_quantity() >= 1:
                 recut_part.recut = button.isChecked()
                 recut_count = recut_dialog.get_quantity()
@@ -269,8 +269,8 @@ class NestEditorWidget(QWidget, Ui_Form):
             if selected_laser_cut_parts := add_item_dialog.get_selected_laser_cut_parts():
                 for laser_cut_part in selected_laser_cut_parts:
                     new_laser_cut_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
-                    new_laser_cut_part.quantity_on_sheet = 1
-                    new_laser_cut_part.quantity = laser_cut_part.quantity_on_sheet * self.nest.sheet_count
+                    new_laser_cut_part.meta_data.quantity_on_sheet = 1
+                    new_laser_cut_part.inventory_data.quantity = laser_cut_part.meta_data.quantity_on_sheet * self.nest.sheet_count
                     self.nest.add_laser_cut_part(new_laser_cut_part)
             self.load_parts_table()
             self.update_sheet_scrap_percentage()
@@ -287,8 +287,8 @@ class NestEditorWidget(QWidget, Ui_Form):
 
         sheet_quantity = int(self.parts_table_items[current_laser_cut_part]["sheet_quantity"].text().strip().replace(",", ""))
 
-        current_laser_cut_part.quantity_on_sheet = sheet_quantity
-        current_laser_cut_part.quantity = sheet_quantity * self.nest.sheet_count
+        current_laser_cut_part.meta_data.quantity_on_sheet = sheet_quantity
+        current_laser_cut_part.inventory_data.quantity = sheet_quantity * self.nest.sheet_count
 
         self.parts_table_items[current_laser_cut_part]["sheet_quantity"].setText(f"{sheet_quantity:,.0f}")
         self.parts_table_items[current_laser_cut_part]["total_quantity"].setText(f"{(self.nest.sheet_count * sheet_quantity):,.0f}")
@@ -303,7 +303,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
         if not current_laser_cut_part:
             return
-        current_laser_cut_part.material = new_material
+        current_laser_cut_part.meta_data.material = new_material
 
     def part_thickness_changed(self, row: int, new_thickness: str):
         current_laser_cut_part = next(
@@ -312,7 +312,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         )
         if not current_laser_cut_part:
             return
-        current_laser_cut_part.gauge = new_thickness
+        current_laser_cut_part.meta_data.gauge = new_thickness
         self.parts_table.blockSignals(True)
         self.parts_table_items[current_laser_cut_part]["thickness"].setCurrentText(new_thickness)
         self.parts_table.blockSignals(False)
@@ -339,7 +339,7 @@ class NestEditorWidget(QWidget, Ui_Form):
     def sheet_material_changed(self, new_material: str):
         self.nest.sheet.material = new_material
         for laser_cut_part in self.nest.laser_cut_parts:
-            laser_cut_part.material = new_material
+            laser_cut_part.meta_data.material = new_material
             self.parts_table.blockSignals(True)
             self.parts_table_items[laser_cut_part]["material"].setCurrentText(new_material)
             self.parts_table.blockSignals(False)
@@ -349,7 +349,7 @@ class NestEditorWidget(QWidget, Ui_Form):
     def sheet_thickness_changed(self, new_thickness: str):
         self.nest.sheet.thickness = new_thickness
         for laser_cut_part in self.nest.laser_cut_parts:
-            laser_cut_part.gauge = new_thickness
+            laser_cut_part.meta_data.gauge = new_thickness
             self.parts_table.blockSignals(True)
             self.parts_table_items[laser_cut_part]["thickness"].setCurrentText(new_thickness)
             self.parts_table.blockSignals(False)
@@ -374,7 +374,7 @@ class NestEditorWidget(QWidget, Ui_Form):
         for laser_cut_part, table_data in self.parts_table_items.items():
             sheet_quantity = int(table_data["sheet_quantity"].text().strip().replace(",", ""))
             table_data["total_quantity"].setText(f"{(new_sheet_count * sheet_quantity):,.0f}")
-            laser_cut_part.quantity = sheet_quantity * new_sheet_count
+            laser_cut_part.inventory_data.quantity = sheet_quantity * new_sheet_count
         self.parts_table.blockSignals(False)
         self.update_total_nest_cut_time()
 
@@ -394,9 +394,9 @@ class NestEditorWidget(QWidget, Ui_Form):
         for laser_cut_part, table_item_data in self.parts_table_items.items():
             if table_item_data["row"] in selected_rows:
                 if setting_name == "material":
-                    laser_cut_part.material = new_value
+                    laser_cut_part.meta_data.material = new_value
                 elif setting_name == "thickness":
-                    laser_cut_part.gauge = new_value
+                    laser_cut_part.meta_data.gauge = new_value
                 table_item_data[setting_name].blockSignals(True)
                 table_item_data[setting_name].setCurrentText(new_value)
                 table_item_data[setting_name].blockSignals(False)
@@ -452,8 +452,8 @@ class NestEditorWidget(QWidget, Ui_Form):
             self.doubleSpinBox_sheet_length.setValue(new_sheet.length)
             self.doubleSpinBox_sheet_width.setValue(new_sheet.width)
             for laser_cut_part in self.nest.laser_cut_parts:
-                laser_cut_part.gauge = new_sheet.thickness
-                laser_cut_part.material = new_sheet.material
+                laser_cut_part.meta_data.gauge = new_sheet.thickness
+                laser_cut_part.meta_data.material = new_sheet.material
             self.sheets_inventory.add_sheet(new_sheet, on_finished=self.update_sheet_status)
             # self.sheets_inventory.save_local_copy()
             # self.sync_changes()

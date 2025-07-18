@@ -197,12 +197,12 @@ class PaintSettingsWidget(QWidget):
         self.combobox_primer = QComboBox(self.widget_primer)
         self.combobox_primer.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.combobox_primer.addItems(["None"] + self.paint_inventory.get_all_primers())
-        if self.laser_cut_part.primer_name:
-            self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
+        if self.laser_cut_part.primer_data.primer_name:
+            self.combobox_primer.setCurrentText(self.laser_cut_part.primer_data.primer_name)
         self.combobox_primer.currentTextChanged.connect(self.update_paint_settings)
         self.primer_layout.addWidget(QLabel("Primer:", self.widget_primer), 0, 0)
         self.primer_layout.addWidget(self.combobox_primer, 1, 0)
-        self.widget_primer.setVisible(self.laser_cut_part.uses_primer)
+        self.widget_primer.setVisible(self.laser_cut_part.primer_data.uses_primer)
         self.paint_settings_layout.addWidget(self.widget_primer)
 
         # PAINT COLOR
@@ -215,12 +215,12 @@ class PaintSettingsWidget(QWidget):
         self.combobox_paint_color = QComboBox(self.widget_paint_color)
         self.combobox_paint_color.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.combobox_paint_color.addItems(["None"] + self.paint_inventory.get_all_paints())
-        if self.laser_cut_part.paint_name:
-            self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
+        if self.laser_cut_part.paint_data.paint_name:
+            self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_data.paint_name)
         self.combobox_paint_color.currentTextChanged.connect(self.update_paint_settings)
         self.paint_color_layout.addWidget(QLabel("Paint color:", self.widget_paint_color), 0, 0)
         self.paint_color_layout.addWidget(self.combobox_paint_color, 1, 0)
-        self.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
+        self.widget_paint_color.setVisible(self.laser_cut_part.paint_data.uses_paint)
         self.paint_settings_layout.addWidget(self.widget_paint_color)
 
         # POWDER COATING COLOR
@@ -233,20 +233,20 @@ class PaintSettingsWidget(QWidget):
         self.combobox_powder_coating_color = QComboBox(self.widget_powder_coating)
         self.combobox_powder_coating_color.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.combobox_powder_coating_color.addItems(["None"] + self.paint_inventory.get_all_powders())
-        if self.laser_cut_part.powder_name:
-            self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_name)
+        if self.laser_cut_part.powder_data.powder_name:
+            self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_data.powder_name)
         self.combobox_powder_coating_color.currentTextChanged.connect(self.update_paint_settings)
         self.powder_coating_layout.addWidget(QLabel("Powder color:", self.widget_powder_coating), 0, 0)
         self.powder_coating_layout.addWidget(self.combobox_powder_coating_color, 1, 0)
-        self.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
+        self.widget_powder_coating.setVisible(self.laser_cut_part.powder_data.uses_powder)
         self.paint_settings_layout.addWidget(self.widget_powder_coating)
 
         self.setLayout(self.paint_settings_layout)
 
     def update_paint_settings(self):
-        self.laser_cut_part.paint_name = self.combobox_paint_color.currentText()
-        self.laser_cut_part.primer_name = self.combobox_primer.currentText()
-        self.laser_cut_part.powder_name = self.combobox_powder_coating_color.currentText()
+        self.laser_cut_part.paint_data.paint_name = self.combobox_paint_color.currentText()
+        self.laser_cut_part.primer_data.primer_name = self.combobox_primer.currentText()
+        self.laser_cut_part.powder_data.powder_name = self.combobox_powder_coating_color.currentText()
 
         self._parent_widget.resizeColumnsToContents()
         if not self.signals_blocked:
@@ -254,9 +254,9 @@ class PaintSettingsWidget(QWidget):
         # self._parent_widget.parent.parent.sync_changes()
 
     def update_widgets(self):
-        self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
-        self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
-        self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_name)
+        self.combobox_primer.setCurrentText(self.laser_cut_part.primer_data.primer_name)
+        self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_data.paint_name)
+        self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_data.powder_name)
         self.update_paint_settings()
 
     def block_signals(self, block: bool):
@@ -283,13 +283,13 @@ class PaintWidget(QWidget):
         layout = QVBoxLayout(self)
 
         self.checkbox_primer = QCheckBox("Primer", self)
-        self.checkbox_primer.setChecked(self.laser_cut_part.uses_primer)
+        self.checkbox_primer.setChecked(self.laser_cut_part.primer_data.uses_primer)
         self.checkbox_primer.checkStateChanged.connect(self.update_paint)
         self.checkbox_paint = QCheckBox("Paint", self)
-        self.checkbox_paint.setChecked(self.laser_cut_part.uses_paint)
+        self.checkbox_paint.setChecked(self.laser_cut_part.paint_data.uses_paint)
         self.checkbox_paint.checkStateChanged.connect(self.update_paint)
         self.checkbox_powder = QCheckBox("Powder", self)
-        self.checkbox_powder.setChecked(self.laser_cut_part.uses_powder)
+        self.checkbox_powder.setChecked(self.laser_cut_part.powder_data.uses_powder)
         self.checkbox_powder.checkStateChanged.connect(self.update_paint)
 
         layout.addWidget(self.checkbox_primer)
@@ -298,22 +298,26 @@ class PaintWidget(QWidget):
 
         self.setLayout(layout)
 
-        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.laser_cut_part.uses_primer or self.laser_cut_part.uses_paint or self.laser_cut_part.uses_powder))
+        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.primer_data.uses_primer)
+        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.paint_data.uses_paint)
+        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.powder_data.uses_powder)
+        self.paint_settings_widget.not_painted_label.setVisible(
+            not (self.laser_cut_part.primer_data.uses_primer or self.laser_cut_part.paint_data.uses_paint or self.laser_cut_part.powder_data.uses_powder)
+        )
 
         self._parent_widget.resizeColumnsToContents()
 
     def update_paint(self):
-        self.laser_cut_part.uses_primer = self.checkbox_primer.isChecked()
-        self.laser_cut_part.uses_paint = self.checkbox_paint.isChecked()
-        self.laser_cut_part.uses_powder = self.checkbox_powder.isChecked()
+        self.laser_cut_part.primer_data.uses_primer = self.checkbox_primer.isChecked()
+        self.laser_cut_part.paint_data.uses_paint = self.checkbox_paint.isChecked()
+        self.laser_cut_part.powder_data.uses_powder = self.checkbox_powder.isChecked()
 
-        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.laser_cut_part.uses_primer or self.laser_cut_part.uses_paint or self.laser_cut_part.uses_powder))
+        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.primer_data.uses_primer)
+        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.paint_data.uses_paint)
+        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.powder_data.uses_powder)
+        self.paint_settings_widget.not_painted_label.setVisible(
+            not (self.laser_cut_part.primer_data.uses_primer or self.laser_cut_part.paint_data.uses_paint or self.laser_cut_part.powder_data.uses_powder)
+        )
 
         self._parent_widget.resizeColumnsToContents()
         if not self.signals_blocked:
@@ -321,9 +325,9 @@ class PaintWidget(QWidget):
         # self._parent_widget.parent.parent.sync_changes()
 
     def update_widgets(self):
-        self.checkbox_primer.setChecked(self.laser_cut_part.uses_primer)
-        self.checkbox_paint.setChecked(self.laser_cut_part.uses_paint)
-        self.checkbox_powder.setChecked(self.laser_cut_part.uses_powder)
+        self.checkbox_primer.setChecked(self.laser_cut_part.primer_data.uses_primer)
+        self.checkbox_paint.setChecked(self.laser_cut_part.paint_data.uses_paint)
+        self.checkbox_powder.setChecked(self.laser_cut_part.powder_data.uses_powder)
         self.update_paint()
 
     def block_signals(self, block: bool):
@@ -588,13 +592,13 @@ class LaserCutTab(QWidget, Ui_Form):
 
     def update_laser_cut_part_table(self, current_table: LaserCutPartsTableWidget, laser_cut_part: LaserCutPart):
         self.table_laser_cut_parts_widgets[laser_cut_part]["name"].setText(laser_cut_part.name)
-        self.table_laser_cut_parts_widgets[laser_cut_part]["price"].setText(f"${laser_cut_part.price:,.2f}")
+        self.table_laser_cut_parts_widgets[laser_cut_part]["price"].setText(f"${laser_cut_part.prices.price:,.2f}")
         self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setText(f"{laser_cut_part.get_category_quantity(self.category):,.2f}")
         self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
-        self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].setText(f"{laser_cut_part.quantity:,.2f}")
-        self.table_laser_cut_parts_widgets[laser_cut_part]["total_cost"].setText(f"${(laser_cut_part.price * laser_cut_part.quantity):,.2f}")
-        self.table_laser_cut_parts_widgets[laser_cut_part]["shelf_number"].setText(laser_cut_part.shelf_number)
-        self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(laser_cut_part.modified_date)
+        self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].setText(f"{laser_cut_part.inventory_data.quantity:,.2f}")
+        self.table_laser_cut_parts_widgets[laser_cut_part]["total_cost"].setText(f"${(laser_cut_part.prices.price * laser_cut_part.inventory_data.quantity):,.2f}")
+        self.table_laser_cut_parts_widgets[laser_cut_part]["shelf_number"].setText(laser_cut_part.meta_data.shelf_number)
+        self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(laser_cut_part.meta_data.modified_date)
 
         self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].block_signals(True)
         self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].update_widgets()
@@ -622,9 +626,9 @@ class LaserCutTab(QWidget, Ui_Form):
 
         table_item_name = QTableWidgetItem(laser_cut_part.name)
         table_item_name.setFont(self.tables_font)
-        image_path = f"images/{laser_cut_part.image_index}"
+        image_path = f"images/{laser_cut_part.meta_data.image_index}"
         tooltip_html = f"""
-        <b>{laser_cut_part.geofile_name}</b><br>
+        <b>{laser_cut_part.meta_data.geofile_name}</b><br>
         <img src="{image_path}" width="150"><br>
         <p>Laser cut part is present in:<br>{laser_cut_part.print_categories()}</p>
         """
@@ -634,7 +638,7 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"name": table_item_name})
 
         # PRICE
-        table_item_price = QTableWidgetItem(f"${laser_cut_part.price:,.2f}")
+        table_item_price = QTableWidgetItem(f"${laser_cut_part.prices.price:,.2f}")
         table_item_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         table_item_price.setFont(self.tables_font)
         current_table.setItem(row_index, current_table.price_column, table_item_price)
@@ -653,14 +657,14 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"unit_quantity": table_item_category_quantity})
 
         # QUANTITY
-        table_item_quantity = QTableWidgetItem(f"{laser_cut_part.quantity:,.2f}")
+        table_item_quantity = QTableWidgetItem(f"{laser_cut_part.inventory_data.quantity:,.2f}")
         table_item_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         table_item_quantity.setFont(self.tables_font)
         current_table.setItem(row_index, current_table.quantity_column, table_item_quantity)
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"quantity": table_item_quantity})
 
         # TOTAL COST
-        table_item_total_cost = QTableWidgetItem(f"${(laser_cut_part.price * laser_cut_part.quantity):,.2f}")
+        table_item_total_cost = QTableWidgetItem(f"${(laser_cut_part.prices.price * laser_cut_part.inventory_data.quantity):,.2f}")
         table_item_total_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         table_item_total_cost.setFont(self.tables_font)
         current_table.setItem(
@@ -687,7 +691,7 @@ class LaserCutTab(QWidget, Ui_Form):
         )
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"paint_widget": paint_widget})
         # SHELF NUMBER
-        table_item_shelf_number = QTableWidgetItem(laser_cut_part.shelf_number)
+        table_item_shelf_number = QTableWidgetItem(laser_cut_part.meta_data.shelf_number)
         table_item_shelf_number.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         table_item_shelf_number.setFont(self.tables_font)
         current_table.setItem(
@@ -698,7 +702,7 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"shelf_number": table_item_shelf_number})
 
         # MODFIED DATE
-        table_item_modified_date = QTableWidgetItem(laser_cut_part.modified_date)
+        table_item_modified_date = QTableWidgetItem(laser_cut_part.meta_data.modified_date)
         table_item_modified_date.setFont(self.tables_font)
         current_table.setItem(
             row_index,
@@ -708,13 +712,13 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"modified_date": table_item_modified_date})
 
         if self.category.name != "Recut":
-            if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
+            if laser_cut_part.inventory_data.quantity <= laser_cut_part.inventory_data.red_quantity_limit:
                 self.set_table_row_color(
                     current_table,
                     row_index,
                     f"{theme_var('table-red-quantity')}",
                 )
-            elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
+            elif laser_cut_part.inventory_data.quantity <= laser_cut_part.inventory_data.yellow_quantity_limit:
                 self.set_table_row_color(
                     current_table,
                     row_index,
@@ -768,11 +772,11 @@ class LaserCutTab(QWidget, Ui_Form):
                 if self.lineEdit_search_parts_in_inventory.text() not in laser_cut_part.name:
                     continue
                 if selected_materials := [button.text() for button in self.laser_cut_parts_filter["materials"] if button.isChecked()]:
-                    if laser_cut_part.material not in selected_materials:
+                    if laser_cut_part.meta_data.material not in selected_materials:
                         continue
 
                 if selected_thicknesses := [button.text() for button in self.laser_cut_parts_filter["thicknesses"] if button.isChecked()]:
-                    if laser_cut_part.gauge not in selected_thicknesses:
+                    if laser_cut_part.meta_data.gauge not in selected_thicknesses:
                         continue
 
                 self.add_laser_cut_part_to_table(current_table, row_index, laser_cut_part)
@@ -864,7 +868,7 @@ class LaserCutTab(QWidget, Ui_Form):
                 self.category_tables[self.category].blockSignals(True)
                 self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
                 self.table_laser_cut_parts_widgets[laser_cut_part]["name"].setToolTip(
-                    f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}"
+                    f"{laser_cut_part.meta_data.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}"
                 )
                 self.category_tables[self.category].blockSignals(False)
             self.laser_cut_parts_inventory.save_laser_cut_parts(laser_cut_parts_to_save)
@@ -912,7 +916,7 @@ class LaserCutTab(QWidget, Ui_Form):
                 self.category_tables[self.category].blockSignals(True)
                 self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
                 self.table_laser_cut_parts_widgets[laser_cut_part]["name"].setToolTip(
-                    f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}"
+                    f"{laser_cut_part.meta_data.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}"
                 )
                 self.category_tables[self.category].blockSignals(False)
             self.laser_cut_parts_inventory.save_laser_cut_parts(laser_cut_parts_to_save)
@@ -981,7 +985,7 @@ class LaserCutTab(QWidget, Ui_Form):
         def reset_selected_parts_quantity():
             if selected_laser_cut_parts := self.get_selected_laser_cut_parts():
                 for laser_cut_part in selected_laser_cut_parts:
-                    laser_cut_part.quantity = 0
+                    laser_cut_part.inventory_data.quantity = 0
                 self.laser_cut_parts_inventory.save_laser_cut_parts(selected_laser_cut_parts)
                 # self.sync_changes()
                 self.sort_laser_cut_parts()
@@ -1055,7 +1059,7 @@ class LaserCutTab(QWidget, Ui_Form):
         )
         if not laser_cut_part:
             return
-        old_quantity = laser_cut_part.quantity
+        old_quantity = laser_cut_part.inventory_data.quantity
         laser_cut_part.name = self.table_laser_cut_parts_widgets[laser_cut_part]["name"].text()
         laser_cut_part.set_category_quantity(
             self.category,
@@ -1066,33 +1070,33 @@ class LaserCutTab(QWidget, Ui_Form):
                 )
             ),
         )
-        laser_cut_part.quantity = float(
+        laser_cut_part.inventory_data.quantity = float(
             sympy.sympify(
                 self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].text().strip().replace(",", ""),
                 evaluate=True,
             )
         )
-        laser_cut_part.shelf_number = self.table_laser_cut_parts_widgets[laser_cut_part]["shelf_number"].text()
-        if old_quantity != laser_cut_part.quantity:
-            laser_cut_part.modified_date = (
-                f"{os.getlogin().title()} - Manually set to {laser_cut_part.quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+        laser_cut_part.meta_data.shelf_number = self.table_laser_cut_parts_widgets[laser_cut_part]["shelf_number"].text()
+        if old_quantity != laser_cut_part.inventory_data.quantity:
+            laser_cut_part.meta_data.modified_date = (
+                f"{os.getlogin().title()} - Manually set to {laser_cut_part.inventory_data.quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             )
         self.laser_cut_parts_inventory.save_laser_cut_part(laser_cut_part)
         # self.sync_changes()
         self.category_tables[self.category].blockSignals(True)
         self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setText(f"{laser_cut_part.get_category_quantity(self.category):,.2f}")
         self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
-        self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].setText(f"{laser_cut_part.quantity:,.2f}")
-        self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(laser_cut_part.modified_date)
+        self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].setText(f"{laser_cut_part.inventory_data.quantity:,.2f}")
+        self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(laser_cut_part.meta_data.modified_date)
         self.category_tables[self.category].blockSignals(False)
         self.update_category_total_stock_costs()
         self.update_laser_cut_prices()
 
     def update_all_laser_cut_parts_costs(self):
         for laser_cut_part in self.laser_cut_parts_inventory.laser_cut_parts:
-            price_per_pound: float = self.sheet_settings.get_price_per_pound(laser_cut_part.material)
-            cost_for_laser: float = self.sheet_settings.get_cost_for_laser(laser_cut_part.material)
-            laser_cut_part.price = float((laser_cut_part.machine_time * (cost_for_laser / 60)) + (laser_cut_part.weight * price_per_pound))
+            price_per_pound: float = self.sheet_settings.get_price_per_pound(laser_cut_part.meta_data.material)
+            cost_for_laser: float = self.sheet_settings.get_cost_for_laser(laser_cut_part.meta_data.material)
+            laser_cut_part.prices.price = float((laser_cut_part.meta_data.machine_time * (cost_for_laser / 60)) + (laser_cut_part.meta_data.weight * price_per_pound))
         self.laser_cut_parts_inventory.save_laser_cut_parts(self.laser_cut_parts_inventory.laser_cut_parts)
         # self.laser_cut_parts_inventory.save_local_copy()
         # self.sync_changes()
@@ -1100,8 +1104,8 @@ class LaserCutTab(QWidget, Ui_Form):
     def update_laser_cut_prices(self):
         self.category_tables[self.category].blockSignals(True)
         for laser_cut_part, table_items in self.table_laser_cut_parts_widgets.items():
-            table_items["price"].setText(f"${laser_cut_part.price:,.2f}")
-            table_items["total_cost"].setText(f"${laser_cut_part.price * laser_cut_part.quantity:,.2f}")
+            table_items["price"].setText(f"${laser_cut_part.prices.price:,.2f}")
+            table_items["total_cost"].setText(f"${laser_cut_part.prices.price * laser_cut_part.inventory_data.quantity:,.2f}")
         self.category_tables[self.category].blockSignals(False)
 
     def update_category_total_stock_costs(self):
@@ -1125,13 +1129,13 @@ class LaserCutTab(QWidget, Ui_Form):
             set_custom_limit_dialog = SetCustomLimitDialog(
                 self,
                 f"Set a custom red and yellow quantity limit for each of the {len(laser_cut_parts)} selected laser parts:\n{laser_cut_parts_string}",
-                laser_cut_parts[0].red_quantity_limit,
-                laser_cut_parts[0].yellow_quantity_limit,
+                laser_cut_parts[0].inventory_data.red_quantity_limit,
+                laser_cut_parts[0].inventory_data.yellow_quantity_limit,
             )
             if set_custom_limit_dialog.exec():
                 for laser_cut_part in laser_cut_parts:
-                    laser_cut_part.red_quantity_limit = set_custom_limit_dialog.get_red_limit()
-                    laser_cut_part.yellow_quantity_limit = set_custom_limit_dialog.get_yellow_limit()
+                    laser_cut_part.inventory_data.red_quantity_limit = set_custom_limit_dialog.get_red_limit()
+                    laser_cut_part.inventory_data.yellow_quantity_limit = set_custom_limit_dialog.get_yellow_limit()
                     self.update_laser_cut_part_row_color(current_table, laser_cut_part)
                 self.laser_cut_parts_inventory.save_laser_cut_parts(laser_cut_parts)
                 # self.laser_cut_parts_inventory.save_local_copy()
@@ -1151,14 +1155,14 @@ class LaserCutTab(QWidget, Ui_Form):
                     tables_item,
                 ) in self.table_laser_cut_parts_widgets.items():
                     if add_or_remove == "ADD":
-                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: All Items in Category - add quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity + (laser_cut_part.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        laser_cut_part.quantity = laser_cut_part.quantity + (multiplier * laser_cut_part.get_category_quantity(self.category))
+                        laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} Used: All Items in Category - add quantity. Changed from {laser_cut_part.inventory_data.quantity} to {laser_cut_part.inventory_data.quantity + (laser_cut_part.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        laser_cut_part.inventory_data.quantity = laser_cut_part.inventory_data.quantity + (multiplier * laser_cut_part.get_category_quantity(self.category))
                     elif add_or_remove == "REMOVE":
-                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: All Items in Category - remove quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity - (laser_cut_part.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        laser_cut_part.quantity = laser_cut_part.quantity - (multiplier * laser_cut_part.get_category_quantity(self.category))
+                        laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} Used: All Items in Category - remove quantity. Changed from {laser_cut_part.inventory_data.quantity} to {laser_cut_part.inventory_data.quantity - (laser_cut_part.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        laser_cut_part.inventory_data.quantity = laser_cut_part.inventory_data.quantity - (multiplier * laser_cut_part.get_category_quantity(self.category))
                     laser_cut_parts_to_update.append(laser_cut_part)
-                    tables_item["quantity"].setText(str(laser_cut_part.quantity))
-                    tables_item["quantity"].setToolTip(laser_cut_part.modified_date)
+                    tables_item["quantity"].setText(str(laser_cut_part.inventory_data.quantity))
+                    tables_item["quantity"].setToolTip(laser_cut_part.meta_data.modified_date)
                 self.category_tables[self.category].blockSignals(False)
                 # self.laser_cut_parts_inventory.save_local_copy()
                 self.laser_cut_parts_inventory.save_laser_cut_parts(laser_cut_parts_to_update)
@@ -1168,11 +1172,11 @@ class LaserCutTab(QWidget, Ui_Form):
             elif option == "Item":
                 for laser_cut_part in selected_laser_cut_parts:
                     if add_or_remove == "ADD":
-                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: Selected Item - add quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity + multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        laser_cut_part.quantity += multiplier
+                        laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} Used: Selected Item - add quantity. Changed from {laser_cut_part.inventory_data.quantity} to {laser_cut_part.inventory_data.quantity + multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        laser_cut_part.inventory_data.quantity += multiplier
                     elif add_or_remove == "REMOVE":
-                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: Selected Item - remove quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity - multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        laser_cut_part.quantity -= multiplier
+                        laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} Used: Selected Item - remove quantity. Changed from {laser_cut_part.inventory_data.quantity} to {laser_cut_part.inventory_data.quantity - multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        laser_cut_part.inventory_data.quantity -= multiplier
                 self.laser_cut_parts_inventory.save_laser_cut_parts(selected_laser_cut_parts)
                 # self.laser_cut_parts_inventory.save_local_copy()
                 # self.sync_changes()
@@ -1257,35 +1261,35 @@ class LaserCutTab(QWidget, Ui_Form):
             html += "<tbody>"
             for laser_cut_part in laser_cut_parts:
                 paint_message = ""
-                if laser_cut_part.uses_primer:
-                    paint_message += f"Primer: {laser_cut_part.primer_name}\n"
-                if laser_cut_part.uses_paint:
-                    paint_message += f"Paint: {laser_cut_part.paint_name}\n"
-                if laser_cut_part.uses_powder:
-                    paint_message += f"Powder: {laser_cut_part.powder_name}\n"
-                if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
+                if laser_cut_part.primer_data.uses_primer:
+                    paint_message += f"Primer: {laser_cut_part.primer_data.primer_name}\n"
+                if laser_cut_part.paint_data.uses_paint:
+                    paint_message += f"Paint: {laser_cut_part.paint_data.paint_name}\n"
+                if laser_cut_part.powder_data.uses_powder:
+                    paint_message += f"Powder: {laser_cut_part.powder_data.powder_name}\n"
+                if not (laser_cut_part.primer_data.uses_primer or laser_cut_part.paint_data.uses_paint or laser_cut_part.powder_data.uses_powder):
                     paint_message = "Not painted"
                 html += f"""<tr style="border-bottom: 1px solid black;">
-                <td><img src="images/{laser_cut_part.image_index}.jpeg" width="150"></td>
+                <td><img src="images/{laser_cut_part.meta_data.image_index}.jpeg" width="150"></td>
                 <td>{laser_cut_part.name}</td>
                 <td>{laser_cut_part.get_category_quantity(self.category)}</td>
-                <td>{laser_cut_part.quantity}</td>
+                <td>{laser_cut_part.inventory_data.quantity}</td>
                 <td>{paint_message.replace("\n", "<br>")}</td>
-                <td>{laser_cut_part.shelf_number}</td>
-                <td>{laser_cut_part.modified_date.replace("\n", "<br>")}</td></tr>"""
+                <td>{laser_cut_part.meta_data.shelf_number}</td>
+                <td>{laser_cut_part.meta_data.modified_date.replace("\n", "<br>")}</td></tr>"""
             html += "</tbody></table><body><html>"
             with open("print_selected_parts.html", "w", encoding="utf-8") as f:
                 f.write(html)
             self.parent.open_print_selected_parts()
 
     def update_laser_cut_part_row_color(self, current_table, laser_cut_part: LaserCutPart):
-        if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
+        if laser_cut_part.inventory_data.quantity <= laser_cut_part.inventory_data.red_quantity_limit:
             self.set_table_row_color(
                 current_table,
                 self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
                 f"{theme_var('table-red-quantity')}",
             )
-        elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
+        elif laser_cut_part.inventory_data.quantity <= laser_cut_part.inventory_data.yellow_quantity_limit:
             self.set_table_row_color(
                 current_table,
                 self.table_laser_cut_parts_widgets[laser_cut_part]["row"],

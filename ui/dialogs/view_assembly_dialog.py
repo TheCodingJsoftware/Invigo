@@ -159,8 +159,8 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.tableWidget_laser_cut_parts.insertRow(current_row)
         # PICTURE
         image_item = QTableWidgetItem("")
-        if laser_cut_part_group.base_part.image_index:
-            image = QPixmap(laser_cut_part_group.base_part.image_index)
+        if laser_cut_part_group.base_part.meta_data.image_index:
+            image = QPixmap(laser_cut_part_group.base_part.meta_data.image_index)
             original_width = image.width()
             original_height = image.height()
             try:
@@ -177,7 +177,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.tableWidget_laser_cut_parts.setItem(
             current_row,
             2,
-            QTableWidgetItem(f"{laser_cut_part_group.base_part.gauge} {laser_cut_part_group.base_part.material}"),
+            QTableWidgetItem(f"{laser_cut_part_group.base_part.meta_data.gauge} {laser_cut_part_group.base_part.meta_data.material}"),
         )
         # FILES
         self.tableWidget_laser_cut_parts.setItem(current_row, 3, QTableWidgetItem("TODO: FILES_WIDGET"))
@@ -186,7 +186,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.tableWidget_laser_cut_parts.item(current_row, 4).setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         # QUANTITY IN STOCK
         if inventory_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part_group.base_part.name):
-            quantity_in_stock = inventory_part.quantity
+            quantity_in_stock = inventory_part.inventory_data.quantity
         else:
             quantity_in_stock = 0
         self.tableWidget_laser_cut_parts.setItem(current_row, 5, QTableWidgetItem(f"{quantity_in_stock}"))
@@ -206,7 +206,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.tableWidget_laser_cut_parts.setItem(
             current_row,
             6,
-            QTableWidgetItem(f"{laser_cut_part_group.base_part.flowtag.get_flow_string()}\n\n{current_process}"),
+            QTableWidgetItem(f"{laser_cut_part_group.base_part.workspace_data.flowtag.get_flow_string()}\n\n{current_process}"),
         )
         # RECUT BUTTON
         self.tableWidget_laser_cut_parts.setItem(current_row, 7, QTableWidgetItem("TODO: RECUT_BUTTON"))

@@ -88,9 +88,9 @@ class Workspace:
 
     def copy_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart], assembly: Assembly):
         for part in laser_cut_parts:
-            for _ in range(int(part.quantity)):
+            for _ in range(int(part.inventory_data.quantity)):
                 new_part = LaserCutPart(part.to_dict(), self.laser_cut_inventory)
-                new_part.quantity = 1
+                new_part.inventory_data.quantity = 1
                 assembly.add_laser_cut_part(new_part)
 
     def add_job(self, job: Job) -> Job:
@@ -214,12 +214,12 @@ class Workspace:
     def is_material_match(self, part: LaserCutPart) -> bool:
         if not any(self.workspace_filter.material_filter.values()):
             return True
-        return self.workspace_filter.material_filter.get(part.material, False)
+        return self.workspace_filter.material_filter.get(part.meta_data.material, False)
 
     def is_thickness_match(self, part: LaserCutPart) -> bool:
         if not any(self.workspace_filter.thickness_filter.values()):
             return True
-        return self.workspace_filter.thickness_filter.get(part.gauge, False)
+        return self.workspace_filter.thickness_filter.get(part.meta_data.gauge, False)
 
     def is_paint_match(self, part: LaserCutPart) -> bool:
         if not any(self.workspace_filter.paint_filter.values()):
@@ -233,7 +233,7 @@ class Workspace:
 
         queries = [q.strip() for q in text.split(",")]
         name = part.name.lower()
-        material = f"{part.gauge} {part.material}".lower()
+        material = f"{part.meta_data.gauge} {part.meta_data.material}".lower()
         paints = part.get_all_paints().lower()
 
         return any(q in name or q in material or q in paints for q in queries)
@@ -285,13 +285,13 @@ class Workspace:
         elif self.workspace_filter.sorting_method == SortingMethod.LEAST_TO_MOST:
             grouped_laser_cut_parts.sort(key=lambda group: group.get_count())
         elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_TO_LIGHT:
-            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight, reverse=True)
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.meta_data.weight, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_TO_HEAVY:
-            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight)
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.meta_data.weight)
         elif self.workspace_filter.sorting_method == SortingMethod.LARGE_TO_SMALL:
-            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area, reverse=True)
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.meta_data.surface_area, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.SMALL_TO_LARGE:
-            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area)
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.meta_data.surface_area)
 
         return grouped_laser_cut_parts
 

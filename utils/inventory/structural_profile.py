@@ -1,11 +1,12 @@
 import copy
 from enum import Enum
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, TypedDict, Union
 
+from utils.inventory import categories
 from utils.inventory.inventory_item import InventoryItem
-from utils.inventory.order import Order
-from utils.workspace.flowtag import Flowtag
-from utils.workspace.flowtag_data import FlowtagData
+from utils.inventory.order import Order, OrderDict
+from utils.workspace.flowtag import Flowtag, FlowtagDict
+from utils.workspace.flowtag_data import FlowtagData, FlowtagDataDict
 from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.workspace_settings import WorkspaceSettings
 
@@ -27,6 +28,28 @@ class ProfilesTypes(Enum):
     PIPE = "Pipe"
 
 
+class StructuralProfileDict(TypedDict):
+    name: str
+    part_number: str
+    notes: str
+    material: str
+    flow_tag: FlowtagDict
+    # timer: dict[str, object]
+    flow_tag_data: FlowtagDataDict
+    current_flow_tag_index: int
+    current_flow_tag_status_index: int
+    orders: list[OrderDict]
+    red_quantity_limit: int
+    yellow_quantity_limit: int
+    has_sent_warning: bool
+    quantity: int
+    latest_change_quantity: str
+    length: float
+    cost: float
+    latest_change_cost: str
+    categories: list[str]
+
+
 class StructuralProfile(InventoryItem):
     def __init__(self, structural_steel_inventory) -> None:
         super().__init__()
@@ -38,7 +61,7 @@ class StructuralProfile(InventoryItem):
         self.notes: str = ""
         self.material: str = ""
         self.flowtag: Flowtag | None = None
-        self.timer: FlowtagTimer | None = None
+        # self.timer: FlowtagTimer | None = None
         self.flowtag_data: FlowtagData | None = None
         self.current_flow_tag_index: int = 0
         self.current_flow_tag_status_index: int = 0
@@ -67,7 +90,7 @@ class StructuralProfile(InventoryItem):
     def remove_order(self, order: Order):
         self.orders.remove(order)
 
-    def load_data(self, data: dict[str, Union[str, int, float, bool, list]]):
+    def load_data(self, data: StructuralProfileDict):
         self.categories.clear()
         categories = data.get("categories", [])
         for category in self.structural_steel_inventory.get_categories():
@@ -82,7 +105,7 @@ class StructuralProfile(InventoryItem):
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
-        self.timer = FlowtagTimer(copy.deepcopy(data.get("timer", {})), self.flowtag)
+        # self.timer = FlowtagTimer(copy.deepcopy(data.get("timer", {})), self.flowtag)
         self.flowtag_data = FlowtagData(self.flowtag)
         self.flowtag_data.load_data(data.get("flow_tag_data", {}))
         # if tag := self.flowtag.get_tag_with_similar_name("laser"):
@@ -109,7 +132,7 @@ class StructuralProfile(InventoryItem):
         self.cost: float = data.get("cost", 0.0)
         self.latest_change_cost: str = data.get("latest_change_cost", "")
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> StructuralProfileDict:
         return {
             "name": self.name,
             "part_number": self.part_number,

@@ -585,11 +585,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         image_item = QTableWidgetItem()
         try:
-            if "images" not in laser_cut_part.image_index:
-                laser_cut_part.image_index = "images/" + laser_cut_part.image_index
-            if not laser_cut_part.image_index.endswith(".jpeg"):
-                laser_cut_part.image_index += ".jpeg"
-            image = QPixmap(laser_cut_part.image_index)
+            if "images" not in laser_cut_part.meta_data.image_index:
+                laser_cut_part.meta_data.image_index = "images/" + laser_cut_part.meta_data.image_index
+            if not laser_cut_part.meta_data.image_index.endswith(".jpeg"):
+                laser_cut_part.meta_data.image_index += ".jpeg"
+            image = QPixmap(laser_cut_part.meta_data.image_index)
             if image.isNull():
                 image = QPixmap("images/404.jpeg")
             original_width = image.width()
@@ -655,7 +655,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         materials_combobox.setStyleSheet("border-radius: 0px;")
         materials_combobox.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         materials_combobox.addItems(self.sheet_settings.get_materials())
-        materials_combobox.setCurrentText(laser_cut_part.material)
+        materials_combobox.setCurrentText(laser_cut_part.meta_data.material)
         materials_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.MATERIAL.value, materials_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"material": materials_combobox})
@@ -664,7 +664,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         thicknesses_combobox.setStyleSheet("border-radius: 0px;")
         thicknesses_combobox.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         thicknesses_combobox.addItems(self.sheet_settings.get_thicknesses())
-        thicknesses_combobox.setCurrentText(laser_cut_part.gauge)
+        thicknesses_combobox.setCurrentText(laser_cut_part.meta_data.gauge)
         thicknesses_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
         self.laser_cut_parts_table.setCellWidget(
             current_row,
@@ -673,13 +673,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"thickness": thicknesses_combobox})
 
-        unit_quantity_item = QTableWidgetItem(str(laser_cut_part.quantity))
+        unit_quantity_item = QTableWidgetItem(str(laser_cut_part.inventory_data.quantity))
         unit_quantity_item.setFont(self.tables_font)
         unit_quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"unit_quantity": unit_quantity_item})
 
-        quantity_item = QTableWidgetItem(str(laser_cut_part.quantity * self.assembly.quantity))
+        quantity_item = QTableWidgetItem(str(laser_cut_part.inventory_data.quantity * self.assembly.quantity))
         quantity_item.setFont(self.tables_font)
         quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
@@ -702,23 +702,23 @@ class AssemblyPlanningWidget(AssemblyWidget):
         flow_tag_combobox = QComboBox(self)
         flow_tag_combobox.setStyleSheet("border-radius: 0px;")
         flow_tag_combobox.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
-        if str(laser_cut_part.flowtag.name):
+        if str(laser_cut_part.workspace_data.flowtag.name):
             flow_tag_combobox.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
         else:
             flow_tag_combobox.addItems(["Select flow tag"] + [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
-        flow_tag_combobox.setCurrentText(str(laser_cut_part.flowtag))
+        flow_tag_combobox.setCurrentText(str(laser_cut_part.workspace_data.flowtag))
         flow_tag_combobox.setFixedWidth(200)
-        flow_tag_combobox.setToolTip(laser_cut_part.flowtag.get_tooltip())
+        flow_tag_combobox.setToolTip(laser_cut_part.workspace_data.flowtag.get_tooltip())
         flow_tag_combobox.currentTextChanged.connect(partial(self.laser_cut_part_flow_tag_changed, laser_cut_part, flow_tag_combobox))
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG.value, flow_tag_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"flow_tag": flow_tag_combobox})
 
-        notes_item = QTableWidgetItem(laser_cut_part.notes)
+        notes_item = QTableWidgetItem(laser_cut_part.meta_data.notes)
         notes_item.setFont(self.tables_font)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.NOTES.value, notes_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"notes": notes_item})
 
-        shelf_number_item = QTableWidgetItem(laser_cut_part.shelf_number)
+        shelf_number_item = QTableWidgetItem(laser_cut_part.meta_data.shelf_number)
         shelf_number_item.setFont(self.tables_font)
         self.laser_cut_parts_table.setItem(
             current_row,
@@ -730,17 +730,17 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.update_laser_cut_parts_table_height()
 
         flowtag_data_widget = FlowtagDataButton(laser_cut_part.flowtag_data, self)
-        if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
-        elif tag := laser_cut_part.flowtag.get_tag_with_similar_name("picking"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.weight)
+        if tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("laser"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.meta_data.machine_time * 60))
+        elif tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("picking"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG_DATA.value, flowtag_data_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"flowtag_data_button": flowtag_data_widget})
 
     def update_laser_cut_parts_table_quantity(self):
         self.laser_cut_parts_table.blockSignals(True)
         for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
-            table_data["quantity"].setText(str(laser_cut_part.quantity * self.assembly.quantity))
+            table_data["quantity"].setText(str(laser_cut_part.inventory_data.quantity * self.assembly.quantity))
         self.laser_cut_parts_table.blockSignals(False)
 
     def laser_cut_parts_table_changed(self, row: int):
@@ -766,13 +766,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 f"{theme_var('table-red-quantity')}",
             )
         self.laser_cut_part_table_items[changed_laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
-        changed_laser_cut_part.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
-        changed_laser_cut_part.gauge = self.laser_cut_part_table_items[changed_laser_cut_part]["thickness"].currentText()
-        changed_laser_cut_part.weight = changed_laser_cut_part.calculate_weight()
+        changed_laser_cut_part.meta_data.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
+        changed_laser_cut_part.meta_data.gauge = self.laser_cut_part_table_items[changed_laser_cut_part]["thickness"].currentText()
+        changed_laser_cut_part.meta_data.weight = changed_laser_cut_part.calculate_weight()
         with contextlib.suppress(ValueError):
-            changed_laser_cut_part.quantity = float(self.laser_cut_part_table_items[changed_laser_cut_part]["unit_quantity"].text())
-        changed_laser_cut_part.notes = self.laser_cut_part_table_items[changed_laser_cut_part]["notes"].text()
-        changed_laser_cut_part.shelf_number = self.laser_cut_part_table_items[changed_laser_cut_part]["shelf_number"].text()
+            changed_laser_cut_part.inventory_data.quantity = float(self.laser_cut_part_table_items[changed_laser_cut_part]["unit_quantity"].text())
+        changed_laser_cut_part.meta_data.notes = self.laser_cut_part_table_items[changed_laser_cut_part]["notes"].text()
+        changed_laser_cut_part.meta_data.shelf_number = self.laser_cut_part_table_items[changed_laser_cut_part]["shelf_number"].text()
         self.update_laser_cut_parts_table_quantity()
         self.changes_made()
 
@@ -787,17 +787,17 @@ class AssemblyPlanningWidget(AssemblyWidget):
             )
             msg.exec()
             return
-        laser_cut_part.flowtag = new_flowtag
+        laser_cut_part.workspace_data.flowtag = new_flowtag
         laser_cut_part.flowtag_data.flowtag = new_flowtag
         laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
-        if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
-        elif tag := laser_cut_part.flowtag.get_tag_with_similar_name("picking"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.weight)
+        if tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("laser"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.meta_data.machine_time * 60))
+        elif tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("picking"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
         self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
         self.laser_cut_parts_table.resizeRowsToContents()
         self.laser_cut_parts_table.resizeColumnsToContents()
-        flow_tag_combobox.setToolTip(laser_cut_part.flowtag.get_tooltip())
+        flow_tag_combobox.setToolTip(laser_cut_part.workspace_data.flowtag.get_tooltip())
         self.update_laser_cut_parts_table_height()
         self.changes_made()
 
@@ -836,12 +836,12 @@ class AssemblyPlanningWidget(AssemblyWidget):
                         laser_cut_part.to_dict(),
                         self.laser_cut_inventory,
                     )
-                    new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                    new_laser_cut_part.inventory_data.quantity = add_item_dialog.get_current_quantity()
                     self.assembly.add_laser_cut_part(new_laser_cut_part)
                     self.add_laser_cut_part_to_table(new_laser_cut_part)
             else:
                 new_laser_cut_part = LaserCutPart({"name": add_item_dialog.get_name()}, self.laser_cut_inventory)
-                new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                new_laser_cut_part.inventory_data.quantity = add_item_dialog.get_current_quantity()
                 self.assembly.add_laser_cut_part(new_laser_cut_part)
                 self.add_laser_cut_part_to_table(new_laser_cut_part)
 
@@ -853,13 +853,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
     def laser_cut_part_get_all_file_types(self, laser_cut_part: LaserCutPart, file_ext: str) -> list[str]:
         files: set[str] = set()
-        for bending_file in laser_cut_part.bending_files:
+        for bending_file in laser_cut_part.workspace_data.bending_files:
             if bending_file.lower().endswith(file_ext):
                 files.add(bending_file)
-        for welding_file in laser_cut_part.welding_files:
+        for welding_file in laser_cut_part.workspace_data.welding_files:
             if welding_file.lower().endswith(file_ext):
                 files.add(welding_file)
-        for cnc_milling_file in laser_cut_part.cnc_milling_files:
+        for cnc_milling_file in laser_cut_part.workspace_data.cnc_milling_files:
             if cnc_milling_file.lower().endswith(file_ext):
                 files.add(cnc_milling_file)
         return list(files)
@@ -1009,22 +1009,22 @@ class AssemblyPlanningWidget(AssemblyWidget):
             return
         for laser_cut_part in selected_laser_cut_parts:
             if ACTION == "SET_MATERIAL":
-                laser_cut_part.material = selection
+                laser_cut_part.meta_data.material = selection
             elif ACTION == "SET_THICKNESS":
-                laser_cut_part.gauge = selection
+                laser_cut_part.meta_data.gauge = selection
             elif ACTION == "SET_QUANTITY":
-                laser_cut_part.quantity = float(selection)
+                laser_cut_part.inventory_data.quantity = float(selection)
             elif ACTION == "SET_FLOW_TAG":
-                laser_cut_part.flowtag = self.workspace_settings.get_flow_tag_by_name(selection)
+                laser_cut_part.workspace_data.flowtag = self.workspace_settings.get_flow_tag_by_name(selection)
                 laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
-                if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
+                if tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("laser"):
                     laser_cut_part.flowtag_data.set_tag_data(
                         tag,
                         "expected_time_to_complete",
-                        int(laser_cut_part.machine_time * 60),
+                        int(laser_cut_part.meta_data.machine_time * 60),
                     )
-                elif tag := laser_cut_part.flowtag.get_tag_with_similar_name("picking"):
-                    laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.weight)
+                elif tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("picking"):
+                    laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
                 self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
                 self.laser_cut_parts_table.resizeRowsToContents()
                 self.laser_cut_parts_table.resizeColumnsToContents()
@@ -1034,7 +1034,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 assmebly_widget: AssemblyPlanningWidget = selection
                 assembly: Assembly = assmebly_widget.assembly
                 new_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
-                new_part.quantity = laser_cut_part.quantity
+                new_part.inventory_data.quantity = laser_cut_part.inventory_data.quantity
                 assembly.add_laser_cut_part(new_part)
             elif ACTION == "MOVE_PART_TO_ASSEMBLY":
                 should_update_assembly_widget_tables = True
@@ -1112,11 +1112,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
         file_button: FileButton,
     ):
         if file_category == "bending_files":
-            laser_cut_part.bending_files.remove(file_path)
+            laser_cut_part.workspace_data.bending_files.remove(file_path)
         elif file_category == "welding_files":
-            laser_cut_part.welding_files.remove(file_path)
+            laser_cut_part.workspace_data.welding_files.remove(file_path)
         elif file_category == "cnc_milling_files":
-            laser_cut_part.cnc_milling_files.remove(file_path)
+            laser_cut_part.workspace_data.cnc_milling_files.remove(file_path)
         file_button.deleteLater()
         self.changes_made()
 
@@ -1132,11 +1132,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
             file_name = os.path.basename(file_path)
 
             if "dxf" in file_ext.lower() and file_category == "cnc_milling_files":
-                laser_cut_part.file_name = file_name.split(".")[0]
+                laser_cut_part.meta_data.file_name = file_name.split(".")[0]
                 dxf_analyzer = DxfAnalyzer(file_path)
-                dxf_analyzer.save_preview_image(f"images/{laser_cut_part.file_name}.jpeg")
-                laser_cut_part.image_index = f"{laser_cut_part.file_name}.jpeg"
-                self.upload_images([laser_cut_part.image_index])
+                dxf_analyzer.save_preview_image(f"images/{laser_cut_part.meta_data.file_name}.jpeg")
+                laser_cut_part.meta_data.image_index = f"{laser_cut_part.meta_data.file_name}.jpeg"
+                self.upload_images([laser_cut_part.meta_data.image_index])
                 are_you_sure = QMessageBox(
                     QMessageBox.Icon.Question,
                     "Are you sure?",
@@ -1147,7 +1147,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
                     laser_cut_part.load_dxf_settings(dxf_analyzer)
 
-                if existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.file_name):
+                if existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.meta_data.file_name):
                     are_you_sure = QMessageBox(
                         QMessageBox.Icon.Question,
                         "Are you sure?",
@@ -1158,35 +1158,35 @@ class AssemblyPlanningWidget(AssemblyWidget):
                     if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
                         # self.laser_cut_part_table_items[laser_cut_part]["material"].setCurrentText(existing_laser_cut_part.material)
                         # self.laser_cut_part_table_items[laser_cut_part]["thickness"].setCurrentText(existing_laser_cut_part.gauge)
-                        laser_cut_part.material = existing_laser_cut_part.material
-                        laser_cut_part.gauge = existing_laser_cut_part.gauge
-                        laser_cut_part.machine_time = existing_laser_cut_part.machine_time
-                        laser_cut_part.weight = existing_laser_cut_part.weight
-                        laser_cut_part.surface_area = existing_laser_cut_part.surface_area
-                        laser_cut_part.cutting_length = existing_laser_cut_part.cutting_length
-                        laser_cut_part.piercing_time = existing_laser_cut_part.piercing_time
-                        laser_cut_part.piercing_points = existing_laser_cut_part.piercing_points
-                        laser_cut_part.shelf_number = existing_laser_cut_part.shelf_number
-                        laser_cut_part.sheet_dim = existing_laser_cut_part.sheet_dim
-                        laser_cut_part.part_dim = existing_laser_cut_part.part_dim
-                        laser_cut_part.geofile_name = existing_laser_cut_part.geofile_name
-                        laser_cut_part.modified_date = existing_laser_cut_part.modified_date
-                        laser_cut_part.notes = existing_laser_cut_part.notes
-                        laser_cut_part.price = existing_laser_cut_part.price
+                        laser_cut_part.meta_data.material = existing_laser_cut_part.meta_data.material
+                        laser_cut_part.meta_data.gauge = existing_laser_cut_part.meta_data.gauge
+                        laser_cut_part.meta_data.machine_time = existing_laser_cut_part.meta_data.machine_time
+                        laser_cut_part.meta_data.weight = existing_laser_cut_part.meta_data.weight
+                        laser_cut_part.meta_data.surface_area = existing_laser_cut_part.meta_data.surface_area
+                        laser_cut_part.meta_data.cutting_length = existing_laser_cut_part.meta_data.cutting_length
+                        laser_cut_part.meta_data.piercing_time = existing_laser_cut_part.meta_data.piercing_time
+                        laser_cut_part.meta_data.piercing_points = existing_laser_cut_part.meta_data.piercing_points
+                        laser_cut_part.meta_data.shelf_number = existing_laser_cut_part.meta_data.shelf_number
+                        laser_cut_part.meta_data.sheet_dim = existing_laser_cut_part.meta_data.sheet_dim
+                        laser_cut_part.meta_data.part_dim = existing_laser_cut_part.meta_data.part_dim
+                        laser_cut_part.meta_data.geofile_name = existing_laser_cut_part.meta_data.geofile_name
+                        laser_cut_part.meta_data.modified_date = existing_laser_cut_part.meta_data.modified_date
+                        laser_cut_part.meta_data.notes = existing_laser_cut_part.meta_data.notes
+                        laser_cut_part.prices.price = existing_laser_cut_part.prices.price
                         laser_cut_part.cost_of_goods = existing_laser_cut_part.cost_of_goods
                         laser_cut_part.bend_cost = existing_laser_cut_part.bend_cost
                         laser_cut_part.labor_cost = existing_laser_cut_part.labor_cost
-                        laser_cut_part.uses_primer = existing_laser_cut_part.uses_primer
-                        laser_cut_part.primer_name = existing_laser_cut_part.primer_name
-                        laser_cut_part.primer_overspray = existing_laser_cut_part.primer_overspray
+                        laser_cut_part.primer_data.uses_primer = existing_laser_cut_part.primer_data.uses_primer
+                        laser_cut_part.primer_data.primer_name = existing_laser_cut_part.primer_data.primer_name
+                        laser_cut_part.primer_data.primer_overspray = existing_laser_cut_part.primer_data.primer_overspray
                         laser_cut_part.cost_for_primer = existing_laser_cut_part.cost_for_primer
-                        laser_cut_part.uses_paint = existing_laser_cut_part.uses_paint
-                        laser_cut_part.paint_name = existing_laser_cut_part.paint_name
-                        laser_cut_part.paint_overspray = existing_laser_cut_part.paint_overspray
+                        laser_cut_part.paint_data.uses_paint = existing_laser_cut_part.paint_data.uses_paint
+                        laser_cut_part.paint_data.paint_name = existing_laser_cut_part.paint_data.paint_name
+                        laser_cut_part.paint_data.paint_overspray = existing_laser_cut_part.paint_data.paint_overspray
                         laser_cut_part.cost_for_paint = existing_laser_cut_part.cost_for_paint
-                        laser_cut_part.uses_powder = existing_laser_cut_part.uses_powder
-                        laser_cut_part.powder_name = existing_laser_cut_part.powder_name
-                        laser_cut_part.powder_transfer_efficiency = existing_laser_cut_part.powder_transfer_efficiency
+                        laser_cut_part.powder_data.uses_powder = existing_laser_cut_part.powder_data.uses_powder
+                        laser_cut_part.powder_data.powder_name = existing_laser_cut_part.powder_data.powder_name
+                        laser_cut_part.powder_data.powder_transfer_efficiency = existing_laser_cut_part.powder_data.powder_transfer_efficiency
                         laser_cut_part.cost_for_powder_coating = existing_laser_cut_part.cost_for_powder_coating
                         # with contextlib.suppress(KeyError):
                         self.laser_cut_part_table_items[laser_cut_part]["painting_widget"].update_checkboxes()
@@ -1200,11 +1200,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
                 image_item = QTableWidgetItem()
                 try:
-                    if "images" not in laser_cut_part.image_index:
-                        laser_cut_part.image_index = "images/" + laser_cut_part.image_index
-                    if not laser_cut_part.image_index.endswith(".jpeg"):
-                        laser_cut_part.image_index += ".jpeg"
-                    image = QPixmap(laser_cut_part.image_index)
+                    if "images" not in laser_cut_part.meta_data.image_index:
+                        laser_cut_part.meta_data.image_index = "images/" + laser_cut_part.meta_data.image_index
+                    if not laser_cut_part.meta_data.image_index.endswith(".jpeg"):
+                        laser_cut_part.meta_data.image_index += ".jpeg"
+                    image = QPixmap(laser_cut_part.meta_data.image_index)
                     if image.isNull():
                         image = QPixmap("images/404.jpeg")
                     original_width = image.width()
@@ -1221,9 +1221,9 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
                 self.laser_cut_parts_table.setRowHeight(current_row, new_height)
                 self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PICTURE.value, image_item)
-                self.laser_cut_parts_table.item(current_row, LaserCutTableColumns.PART_NAME.value).setText(laser_cut_part.file_name)
+                self.laser_cut_parts_table.item(current_row, LaserCutTableColumns.PART_NAME.value).setText(laser_cut_part.meta_data.file_name)
             elif "pdf" in file_ext.lower() and file_category == "bending_files":
-                laser_cut_part.bend_hits = get_bend_hits(file_path)
+                laser_cut_part.meta_data.bend_hits = get_bend_hits(file_path)
 
             target_dir = os.path.join("data", "workspace", file_ext)
             target_path = os.path.join(target_dir, file_name)

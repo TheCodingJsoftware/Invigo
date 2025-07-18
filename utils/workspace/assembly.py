@@ -1,12 +1,12 @@
 import copy
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, TypedDict
 
 from ui.theme import theme_var
 from utils.inventory.angle_bar import AngleBar
-from utils.inventory.component import Component
+from utils.inventory.component import Component, ComponentDict
 from utils.inventory.dom_round_tube import DOMRoundTube
 from utils.inventory.flat_bar import FlatBar
-from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.laser_cut_part import LaserCutPart, LaserCutPartDict
 from utils.inventory.paint import Paint
 from utils.inventory.pipe import Pipe
 from utils.inventory.powder import Powder
@@ -15,15 +15,53 @@ from utils.inventory.rectangular_bar import RectangularBar
 from utils.inventory.rectangular_tube import RectangularTube
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
-from utils.inventory.structural_profile import ProfilesTypes
-from utils.workspace.flowtag import Flowtag
-from utils.workspace.flowtag_data import FlowtagData
+from utils.inventory.structural_profile import ProfilesTypes, StructuralProfileDict
+from utils.workspace.flowtag import Flowtag, FlowtagDict
+from utils.workspace.flowtag_data import FlowtagData, FlowtagDataDict
 from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job
+
+
+class AssemblyDataDict(TypedDict):
+    id: int
+    name: str
+    color: str
+    starting_date: str
+    expected_time_to_complete: int
+    ending_date: str
+    assembly_files: list[str]
+    quantity: int
+    not_part_of_process: bool
+    uses_primer: bool
+    primer_name: str
+    primer_overspray: float
+    cost_for_primer: float
+    uses_paint: bool
+    paint_name: str
+    paint_overspray: float
+    cost_for_paint: float
+    uses_powder_coating: bool
+    powder_name: str
+    powder_transfer_efficiency: float
+    cost_for_powder_coating: float
+    assembly_image: str
+    current_flow_tag_index: int
+    current_flow_tag_status_index: int
+    timer: dict[str, object]
+    flow_tag: FlowtagDict
+    flow_tag_data: FlowtagDataDict
+
+
+class AssemblyDict(TypedDict):
+    assembly_data: AssemblyDataDict
+    laser_cut_parts: list[LaserCutPartDict]
+    components: list[ComponentDict]
+    structural_steel_components: list[StructuralProfileDict]
+    sub_assemblies: list["AssemblyDict"]
 
 
 class Assembly:
@@ -34,7 +72,7 @@ class Assembly:
         self.name = ""
         self.color = ""
         self.paint_inventory = self.job.job_manager.paint_inventory
-        self.parent_assembly: "Assembly" = None
+        self.parent_assembly: "Assembly | None" = None
         self.assembly_files: list[str] = []
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
@@ -65,8 +103,8 @@ class Assembly:
         self.ending_date = ""
         self.expected_time_to_complete = 0
         self.flowtag: Flowtag = None
-        self.current_flow_tag_index = 0
-        self.current_flow_tag_status_index = 0
+        # self.current_flow_tag_index = 0
+        # self.current_flow_tag_status_index = 0
         self.assembly_image: str = None
         self.quantity = 1
 
@@ -131,7 +169,7 @@ class Assembly:
     def get_weight(self) -> float:
         weight: float = 0.0
         for laser_cut_part in self.laser_cut_parts:
-            weight += laser_cut_part.weight
+            weight += laser_cut_part.meta_data.weight
         return weight
 
     def get_master_assembly(self) -> "Assembly":
@@ -174,7 +212,7 @@ class Assembly:
     def get_expected_time_to_complete(self) -> int:
         total_time: int = 0
         for laser_cut_part in self.laser_cut_parts:
-            total_time += laser_cut_part.get_expected_time_to_complete() * laser_cut_part.quantity
+            total_time += laser_cut_part.get_expected_time_to_complete() * laser_cut_part.inventory_data.quantity
         for tag in self.flowtag_data.tags_data:
             total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
         for sub_assembly in self.sub_assemblies:
@@ -295,7 +333,7 @@ class Assembly:
             sub_assembly = Assembly(sub_assembly_data, self.job)
             self.sub_assemblies.append(sub_assembly)
 
-    def to_dict(self):
+    def to_dict(self) -> AssemblyDict:
         return {
             "assembly_data": {
                 "id": self.id,

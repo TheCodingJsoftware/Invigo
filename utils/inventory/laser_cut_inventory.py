@@ -60,7 +60,7 @@ class LaserCutInventory(Inventory):
     def get_group_categories(self, laser_cut_parts: list[LaserCutPart]) -> dict[str, list[LaserCutPart]]:
         group: dict[str, list[LaserCutPart]] = {}
         for laser_cut_part in laser_cut_parts:
-            group_name = f"{laser_cut_part.material};{laser_cut_part.gauge}"
+            group_name = f"{laser_cut_part.meta_data.material};{laser_cut_part.meta_data.gauge}"
             group.setdefault(group_name, [])
             group[group_name].append(laser_cut_part)
 
@@ -69,13 +69,13 @@ class LaserCutInventory(Inventory):
     def get_category_parts_total_stock_cost(self, category: Category):
         total_stock_cost = 0.0
         for laser_cut_part in self.get_laser_cut_parts_by_category(category):
-            total_stock_cost += laser_cut_part.price * laser_cut_part.quantity
+            total_stock_cost += laser_cut_part.prices.price * laser_cut_part.inventory_data.quantity
         return total_stock_cost
 
     def get_recut_parts_total_stock_cost(self) -> float:
         total_stock_cost = 0.0
         for recut_part in self.recut_parts:
-            total_stock_cost += recut_part.price * recut_part.quantity
+            total_stock_cost += recut_part.prices.price * recut_part.inventory_data.quantity
         return total_stock_cost
 
     def add_or_update_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart], from_where: str) -> tuple[list[LaserCutPart], list[LaserCutPart], list[LaserCutPart]]:
@@ -93,36 +93,34 @@ class LaserCutInventory(Inventory):
                     existing_recut_part.recut_count += 1
                     new_recut_part.recut_count = existing_recut_part.recut_count
                     new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
-                new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                new_recut_part.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             elif existing_laser_cut_part := self.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
-                existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
+                existing_laser_cut_part.inventory_data.quantity += laser_cut_part_to_add.inventory_data.quantity
 
-                existing_laser_cut_part.flowtag = laser_cut_part_to_add.flowtag
+                existing_laser_cut_part.workspace_data.flowtag = laser_cut_part_to_add.workspace_data.flowtag
 
-                existing_laser_cut_part.shelf_number = laser_cut_part_to_add.shelf_number
+                existing_laser_cut_part.meta_data.shelf_number = laser_cut_part_to_add.meta_data.shelf_number
 
-                existing_laser_cut_part.material = laser_cut_part_to_add.material
-                existing_laser_cut_part.gauge = laser_cut_part_to_add.gauge
+                existing_laser_cut_part.meta_data.material = laser_cut_part_to_add.meta_data.material
+                existing_laser_cut_part.meta_data.gauge = laser_cut_part_to_add.meta_data.gauge
 
-                existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
-                existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
-                existing_laser_cut_part.uses_paint = laser_cut_part_to_add.uses_paint
-                existing_laser_cut_part.paint_name = laser_cut_part_to_add.paint_name
-                existing_laser_cut_part.uses_powder = laser_cut_part_to_add.uses_powder
-                existing_laser_cut_part.powder_name = laser_cut_part_to_add.powder_name
-                existing_laser_cut_part.primer_overspray = laser_cut_part_to_add.primer_overspray
-                existing_laser_cut_part.paint_overspray = laser_cut_part_to_add.paint_overspray
-                existing_laser_cut_part.powder_transfer_efficiency = laser_cut_part_to_add.powder_transfer_efficiency
-                existing_laser_cut_part.modified_date = (
-                    f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                )
+                existing_laser_cut_part.primer_data.uses_primer = laser_cut_part_to_add.primer_data.uses_primer
+                existing_laser_cut_part.primer_data.primer_name = laser_cut_part_to_add.primer_data.primer_name
+                existing_laser_cut_part.paint_data.uses_paint = laser_cut_part_to_add.paint_data.uses_paint
+                existing_laser_cut_part.paint_data.paint_name = laser_cut_part_to_add.paint_data.paint_name
+                existing_laser_cut_part.powder_data.uses_powder = laser_cut_part_to_add.powder_data.uses_powder
+                existing_laser_cut_part.powder_data.powder_name = laser_cut_part_to_add.powder_data.powder_name
+                existing_laser_cut_part.primer_data.primer_overspray = laser_cut_part_to_add.primer_data.primer_overspray
+                existing_laser_cut_part.paint_data.paint_overspray = laser_cut_part_to_add.paint_data.paint_overspray
+                existing_laser_cut_part.powder_data.powder_transfer_efficiency = laser_cut_part_to_add.powder_data.powder_transfer_efficiency
+                existing_laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.inventory_data.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_update.append(existing_laser_cut_part)
             else:
                 if not (category := self.get_category("Uncategorized")):
                     category = Category("Uncategorized")
                     self.add_category(category)
                 laser_cut_part_to_add.add_to_category(category)
-                laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                laser_cut_part_to_add.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_add.append(laser_cut_part_to_add)
         self.add_recut_parts(recut_laser_cut_parts)
         self.upsert_laser_cut_parts(laser_cut_parts_to_add + laser_cut_parts_to_update, operation="ADD")
@@ -135,18 +133,16 @@ class LaserCutInventory(Inventory):
         laser_cut_parts_to_add: list[LaserCutPart] = []
         for laser_cut_part_to_update in laser_cut_parts:
             if existing_laser_cut_part := self.get_laser_cut_part_by_name(laser_cut_part_to_update.name):
-                existing_laser_cut_part.quantity -= laser_cut_part_to_update.quantity
-                existing_laser_cut_part.modified_date = (
-                    f"{os.getlogin().title()} - Removed {laser_cut_part_to_update.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                )
+                existing_laser_cut_part.inventory_data.quantity -= laser_cut_part_to_update.inventory_data.quantity
+                existing_laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} - Removed {laser_cut_part_to_update.inventory_data.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_save.append(existing_laser_cut_part)
             else:
                 if not (category := self.get_category("Uncategorized")):
                     category = Category("Uncategorized")
                     self.add_category(category)
                 laser_cut_part_to_update.add_to_category(category)
-                laser_cut_part_to_update.quantity = 0
-                laser_cut_part_to_update.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                laser_cut_part_to_update.inventory_data.quantity = 0
+                laser_cut_part_to_update.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_add.append(laser_cut_part_to_update)
         self.upsert_laser_cut_parts(laser_cut_parts_to_save + laser_cut_parts_to_add, operation="SUBTRACT")
         # self.save_laser_cut_parts(laser_cut_parts_to_save)
@@ -279,8 +275,8 @@ class LaserCutInventory(Inventory):
         )
 
     def sort_by_quantity(self) -> list[LaserCutPart]:
-        self.laser_cut_parts = natsorted(self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.quantity)
-        self.recut_parts = natsorted(self.recut_parts, key=lambda recut_part: recut_part.quantity)
+        self.laser_cut_parts = natsorted(self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.inventory_data.quantity)
+        self.recut_parts = natsorted(self.recut_parts, key=lambda recut_part: recut_part.inventory_data.quantity)
         return self.laser_cut_parts
 
     def save_local_copy(self):

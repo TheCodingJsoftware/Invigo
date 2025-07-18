@@ -285,7 +285,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         table_items[group].update({"files": files_widget})
 
         # MATERIAL
-        material_item = QTableWidgetItem(f"{group.base_part.gauge} {group.base_part.material}")
+        material_item = QTableWidgetItem(f"{group.base_part.meta_data.gauge} {group.base_part.meta_data.material}")
         material_item.setFont(self.tables_font)
         table_widget.setItem(current_row, WorkspacePartsTableColumns.MATERIAL.value, material_item)
         table_items[group].update({"material": material_item})
@@ -307,7 +307,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
 
         # QUANTITY IN STOCK
         if inventory_part := self.laser_cut_inventory.get_laser_cut_part_by_name(group.base_part.name):
-            quantity_in_stock = inventory_part.quantity
+            quantity_in_stock = inventory_part.inventory_data.quantity
         else:
             quantity_in_stock = 0
         quantity_in_stock_item = QTableWidgetItem(f"{quantity_in_stock}")
@@ -331,10 +331,10 @@ class WorkspaceWidget(QWidget, Ui_Form):
             )
 
         # SHELF NUMBER
-        if not group.base_part.shelf_number:
+        if not group.base_part.meta_data.shelf_number:
             shelf_number_item = QTableWidgetItem("NA")
         else:
-            shelf_number_item = QTableWidgetItem(group.base_part.shelf_number)
+            shelf_number_item = QTableWidgetItem(group.base_part.meta_data.shelf_number)
         shelf_number_item.setFont(self.tables_font)
         shelf_number_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         table_widget.setItem(
@@ -345,10 +345,10 @@ class WorkspaceWidget(QWidget, Ui_Form):
         table_items[group].update({"shelf_number": shelf_number_item})
 
         # NOTES
-        if not group.base_part.notes:
+        if not group.base_part.meta_data.notes:
             notes_item = QTableWidgetItem("No notes provided")
         else:
-            notes_item = QTableWidgetItem(group.base_part.notes)
+            notes_item = QTableWidgetItem(group.base_part.meta_data.notes)
         notes_item.setFont(self.tables_font)
         table_widget.setItem(current_row, WorkspacePartsTableColumns.NOTES.value, notes_item)
         table_items[group].update({"notes": notes_item})
@@ -398,12 +398,12 @@ class WorkspaceWidget(QWidget, Ui_Form):
         part_tree_widget_item.setText(WorkspacePartsTreeColumns.PART_NAME.value, group.base_part.name)
         part_tree_widget_item.setText(
             WorkspacePartsTreeColumns.MATERIAL.value,
-            f"{group.base_part.gauge} {group.base_part.material}",
+            f"{group.base_part.meta_data.gauge} {group.base_part.meta_data.material}",
         )
         part_tree_widget_item.setText(WorkspacePartsTreeColumns.QUANTITY.value, f"{group.get_count():,.2f}")
 
         if inventory_part := self.laser_cut_inventory.get_laser_cut_part_by_name(group.base_part.name):
-            quantity_in_stock = inventory_part.quantity
+            quantity_in_stock = inventory_part.inventory_data.quantity
         else:
             quantity_in_stock = 0
 
@@ -411,10 +411,10 @@ class WorkspaceWidget(QWidget, Ui_Form):
             WorkspacePartsTreeColumns.QUANTITY_IN_STOCK.value,
             f"{quantity_in_stock:,.2f}",
         )
-        part_tree_widget_item.setText(WorkspacePartsTreeColumns.NOTES.value, f"{group.base_part.notes}")
+        part_tree_widget_item.setText(WorkspacePartsTreeColumns.NOTES.value, f"{group.base_part.meta_data.notes}")
         part_tree_widget_item.setText(
             WorkspacePartsTreeColumns.SHELF_NUMBER.value,
-            f"{group.base_part.shelf_number}",
+            f"{group.base_part.meta_data.shelf_number}",
         )
 
         # PAINT
@@ -578,7 +578,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
                         laser_cut_part_group.laser_cut_parts[i].to_dict(),
                         self.laser_cut_inventory,
                     )
-                    new_part.modified_date = f"Added from Workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                    new_part.meta_data.modified_date = f"Added from Workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     self.laser_cut_inventory.add_recut_part(new_part)
                     # self.laser_cut_inventory.save_local_copy()
                     # self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
@@ -645,13 +645,13 @@ class WorkspaceWidget(QWidget, Ui_Form):
 
     def get_paint_text(self, item: Union[Assembly, LaserCutPart]) -> str:
         text: list[str] = []
-        if item.uses_primer and item.primer_item:
-            text.append(item.primer_item.part_name)
-        if item.uses_paint and item.paint_item:
-            text.append(item.paint_item.part_name)
-        if item.uses_powder and item.powder_item:
-            text.append(item.powder_item.part_name)
-        if not (item.uses_powder or item.uses_paint or item.uses_primer):
+        if item.primer_data.uses_primer and item.primer_data.primer_item:
+            text.append(item.primer_data.primer_item.part_name)
+        if item.paint_data.uses_paint and item.paint_data.paint_item:
+            text.append(item.paint_data.paint_item.part_name)
+        if item.powder_data.uses_powder and item.powder_data.powder_item:
+            text.append(item.powder_data.powder_item.part_name)
+        if not (item.powder_data.uses_powder or item.paint_data.uses_paint or item.primer_data.uses_primer):
             return "Not painted"
         return "\n".join(text)
 
@@ -1232,7 +1232,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         else:
             try:
                 flowtag_button = QPushButton(
-                    f"Move to {item.flowtag.tags[item.current_flow_tag_index + 1].name}",
+                    f"Move to {item.workspace_data.flowtag.tags[item.current_flow_tag_index + 1].name}",
                     self,
                 )
                 flowtag_button.setIcon(Icons.arrow_right_fill_icon)

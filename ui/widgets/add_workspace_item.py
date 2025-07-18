@@ -49,8 +49,8 @@ class AddWorkspaceItem(QDialog, Ui_Form):
         self.material = ""
         for laser_cut_part in self.laser_cut_inventory.laser_cut_parts:
             if laser_cut_part.name == self.lineEdit_name.text():
-                self.thickness = laser_cut_part.gauge
-                self.material = laser_cut_part.material
+                self.thickness = laser_cut_part.meta_data.gauge
+                self.material = laser_cut_part.meta_data.material
                 break
 
     def name_changed(self):

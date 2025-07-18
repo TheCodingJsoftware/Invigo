@@ -37,11 +37,11 @@ class PaintInventory(Inventory):
 
     def get_primer_cost(self, laser_cut_part: LaserCutPart) -> float:
         with contextlib.suppress(ZeroDivisionError, AttributeError):
-            if laser_cut_part.uses_primer:
-                if primer := self.get_primer(laser_cut_part.primer_name):
+            if laser_cut_part.primer_data.uses_primer:
+                if primer := self.get_primer(laser_cut_part.primer_data.primer_name):
                     if primer.component:
                         primer_cost_per_gallon = primer.component.price
-                        gallons_used = (((laser_cut_part.surface_area * 2) / 144) / primer.average_coverage) * ((laser_cut_part.primer_overspray / 100) + 1)
+                        gallons_used = (((laser_cut_part.meta_data.surface_area * 2) / 144) / primer.average_coverage) * ((laser_cut_part.primer_data.primer_overspray / 100) + 1)
                         return primer_cost_per_gallon * gallons_used
         return 0.0
 
@@ -60,11 +60,11 @@ class PaintInventory(Inventory):
 
     def get_paint_cost(self, laser_cut_part: LaserCutPart) -> float:
         with contextlib.suppress(ZeroDivisionError, AttributeError):
-            if laser_cut_part.uses_paint:
-                if paint := self.get_paint(laser_cut_part.paint_name):
+            if laser_cut_part.paint_data.uses_paint:
+                if paint := self.get_paint(laser_cut_part.paint_data.paint_name):
                     if paint.component:
                         paint_cost_per_gallon = paint.component.price
-                        gallons_used = (((laser_cut_part.surface_area * 2) / 144) / paint.average_coverage) * ((laser_cut_part.paint_overspray / 100) + 1)
+                        gallons_used = (((laser_cut_part.meta_data.surface_area * 2) / 144) / paint.average_coverage) * ((laser_cut_part.paint_data.paint_overspray / 100) + 1)
                         return paint_cost_per_gallon * gallons_used
         return 0.0
 
@@ -83,11 +83,11 @@ class PaintInventory(Inventory):
 
     def get_powder_cost(self, laser_cut_part: LaserCutPart, mil_thickness: float) -> float:
         with contextlib.suppress(ZeroDivisionError, AttributeError):
-            if laser_cut_part.uses_powder:
-                if powder := self.get_powder(laser_cut_part.powder_name):
+            if laser_cut_part.powder_data.uses_powder:
+                if powder := self.get_powder(laser_cut_part.powder_data.powder_name):
                     if powder.component:
-                        estimated_sq_ft_coverage = (192.3 / (powder.gravity * mil_thickness)) * (laser_cut_part.powder_transfer_efficiency / 100)
-                        estimated_lbs_needed = ((laser_cut_part.surface_area * 2) / 144) / estimated_sq_ft_coverage
+                        estimated_sq_ft_coverage = (192.3 / (powder.gravity * mil_thickness)) * (laser_cut_part.powder_data.powder_transfer_efficiency / 100)
+                        estimated_lbs_needed = ((laser_cut_part.meta_data.surface_area * 2) / 144) / estimated_sq_ft_coverage
                         return estimated_lbs_needed * powder.component.price
         return 0.0
 

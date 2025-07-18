@@ -2221,30 +2221,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 existing_recut_part.recut_count += 1
                 new_recut_part.recut_count = existing_recut_part.recut_count
                 new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
-            new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            new_recut_part.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_parts_inventory.add_recut_part(new_recut_part)
         elif existing_laser_cut_part := self.laser_cut_parts_inventory.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
-            existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
-            existing_laser_cut_part.material = laser_cut_part_to_add.material
-            existing_laser_cut_part.gauge = laser_cut_part_to_add.gauge
-            existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
-            existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
-            existing_laser_cut_part.uses_paint = laser_cut_part_to_add.uses_paint
-            existing_laser_cut_part.paint_name = laser_cut_part_to_add.paint_name
-            existing_laser_cut_part.uses_powder = laser_cut_part_to_add.uses_powder
-            existing_laser_cut_part.powder_name = laser_cut_part_to_add.powder_name
-            existing_laser_cut_part.primer_overspray = laser_cut_part_to_add.primer_overspray
-            existing_laser_cut_part.paint_overspray = laser_cut_part_to_add.paint_overspray
-            existing_laser_cut_part.modified_date = (
-                f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            )
+            existing_laser_cut_part.inventory_data.quantity += laser_cut_part_to_add.inventory_data.quantity
+            existing_laser_cut_part.meta_data.material = laser_cut_part_to_add.meta_data.material
+            existing_laser_cut_part.meta_data.gauge = laser_cut_part_to_add.meta_data.gauge
+            existing_laser_cut_part.primer_data.uses_primer = laser_cut_part_to_add.primer_data.uses_primer
+            existing_laser_cut_part.primer_data.primer_name = laser_cut_part_to_add.primer_data.primer_name
+            existing_laser_cut_part.paint_data.uses_paint = laser_cut_part_to_add.paint_data.uses_paint
+            existing_laser_cut_part.paint_data.paint_name = laser_cut_part_to_add.paint_data.paint_name
+            existing_laser_cut_part.powder_data.uses_powder = laser_cut_part_to_add.powder_data.uses_powder
+            existing_laser_cut_part.powder_data.powder_name = laser_cut_part_to_add.powder_data.powder_name
+            existing_laser_cut_part.primer_data.primer_overspray = laser_cut_part_to_add.primer_data.primer_overspray
+            existing_laser_cut_part.paint_data.paint_overspray = laser_cut_part_to_add.paint_data.paint_overspray
+            existing_laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.inventory_data.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
         else:
             if not (category := self.laser_cut_parts_inventory.get_category("Uncategorized")):
                 category = Category("Uncategorized")
                 self.laser_cut_parts_inventory.add_category(category)
             laser_cut_part_to_add.add_to_category(category)
             # laser_cut_part_to_add.quantity = 1
-            laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            laser_cut_part_to_add.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_parts_inventory.add_laser_cut_part(laser_cut_part_to_add)
 
     # TODO Group sheets together with quantity: e.g. 5, 10, 1 should be total 16 of the same sheets in different nests
@@ -2322,7 +2320,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def upload_nest_images(self, nests: list[Nest]):
         images_to_upload: list[str] = []
         for nest in nests:
-            images_to_upload.extend(laser_cut_part.image_index for laser_cut_part in nest.laser_cut_parts)
+            images_to_upload.extend(laser_cut_part.meta_data.image_index for laser_cut_part in nest.laser_cut_parts)
             images_to_upload.extend(nest.image_path for nest in nests)
 
         images = set(images_to_upload)
@@ -2694,8 +2692,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     nest.sheet.material = material
                     nest.sheet.thickness = thickness
                     for laser_cut_part in nest.laser_cut_parts:
-                        laser_cut_part.material = material
-                        laser_cut_part.gauge = thickness
+                        laser_cut_part.meta_data.material = material
+                        laser_cut_part.meta_data.gauge = thickness
 
             QApplication.restoreOverrideCursor()
             nest_editor_dialog = NestEditorDialog(nests, self)
@@ -2813,10 +2811,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 part_name = laser_cut_part.name
                 if part_name not in part_dict:
                     new_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_parts_inventory)
-                    new_part.quantity = laser_cut_part.quantity_on_sheet * nest.sheet_count
+                    new_part.inventory_data.quantity = laser_cut_part.meta_data.quantity_on_sheet * nest.sheet_count
                     part_dict[part_name] = new_part
                 else:
-                    part_dict[part_name].quantity += laser_cut_part.quantity_on_sheet * nest.sheet_count
+                    part_dict[part_name].inventory_data.quantity += laser_cut_part.meta_data.quantity_on_sheet * nest.sheet_count
 
         return natsorted(part_dict.values(), key=lambda part: part.name)
 
@@ -2825,8 +2823,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             nest.sheet.material = new_material
             nest.sheet.thickness = new_thickness
             for laser_cut_part in nest.laser_cut_parts:
-                laser_cut_part.material = new_material
-                laser_cut_part.gauge = new_thickness
+                laser_cut_part.meta_data.material = new_material
+                laser_cut_part.meta_data.gauge = new_thickness
 
     def get_nested_parts_not_in_workspace(
         self,
@@ -2854,7 +2852,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for part in nested_laser_cut_parts:
             if part.name in workspace_parts_dict:
                 workspace_part = workspace_parts_dict[part.name]
-                part.flowtag = workspace_part.flowtag
+                part.workspace_data.flowtag = workspace_part.workspace_data.flowtag
                 updated_parts.append(part)
 
         return updated_parts
@@ -2866,7 +2864,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             <tr>
                 <td>{i + 1}</td>
                 <td>{part.name}</td>
-                <td>{part.quantity}</td>
+                <td>{part.inventory_data.quantity}</td>
                 <td>Laser Cut Inventory</td>
             </tr>
             """
@@ -2916,9 +2914,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             <tr>
                 <td>{i + 1}</td>
                 <td>{part.name}</td>
-                <td>{part.quantity}</td>
+                <td>{part.inventory_data.quantity}</td>
                 <td>{next_process}</td>
-                <td>{part.flowtag.get_flow_string()}</td>
+                <td>{part.workspace_data.flowtag.get_flow_string()}</td>
             </tr>
             """
 
@@ -2978,7 +2976,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                         nested_laser_cut_part_not_in_workspace.to_dict(),
                                         self.laser_cut_parts_inventory,
                                     )
-                                    new_part.quantity = nested_laser_cut_part_not_in_workspace.quantity_on_sheet * nest.sheet_count
+                                    new_part.inventory_data.quantity = nested_laser_cut_part_not_in_workspace.meta_data.quantity_on_sheet * nest.sheet_count
                                     laser_cut_parts_to_update.append(new_part)
                                     break
 
@@ -3075,19 +3073,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for nest_laser_cut_part in nest.laser_cut_parts:
                 for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
                     if workspace_laser_cut_part_group.base_part.name == nest_laser_cut_part.name:
-                        nest_laser_cut_part.flowtag = workspace_laser_cut_part_group.base_part.flowtag
+                        nest_laser_cut_part.workspace_data.flowtag = workspace_laser_cut_part_group.base_part.workspace_data.flowtag
 
-                        nest_laser_cut_part.shelf_number = workspace_laser_cut_part_group.base_part.shelf_number
+                        nest_laser_cut_part.meta_data.shelf_number = workspace_laser_cut_part_group.base_part.meta_data.shelf_number
 
-                        nest_laser_cut_part.uses_primer = workspace_laser_cut_part_group.base_part.uses_primer
-                        nest_laser_cut_part.primer_item = workspace_laser_cut_part_group.base_part.primer_item
-                        nest_laser_cut_part.primer_name = workspace_laser_cut_part_group.base_part.primer_name
-                        nest_laser_cut_part.uses_paint = workspace_laser_cut_part_group.base_part.uses_paint
-                        nest_laser_cut_part.paint_name = workspace_laser_cut_part_group.base_part.paint_name
-                        nest_laser_cut_part.paint_item = workspace_laser_cut_part_group.base_part.paint_item
-                        nest_laser_cut_part.uses_powder = workspace_laser_cut_part_group.base_part.uses_powder
-                        nest_laser_cut_part.powder_name = workspace_laser_cut_part_group.base_part.powder_name
-                        nest_laser_cut_part.powder_item = workspace_laser_cut_part_group.base_part.powder_item
+                        nest_laser_cut_part.primer_data.uses_primer = workspace_laser_cut_part_group.base_part.primer_data.uses_primer
+                        nest_laser_cut_part.primer_data.primer_item = workspace_laser_cut_part_group.base_part.primer_data.primer_item
+                        nest_laser_cut_part.primer_data.primer_name = workspace_laser_cut_part_group.base_part.primer_data.primer_name
+                        nest_laser_cut_part.paint_data.uses_paint = workspace_laser_cut_part_group.base_part.paint_data.uses_paint
+                        nest_laser_cut_part.paint_data.paint_name = workspace_laser_cut_part_group.base_part.paint_data.paint_name
+                        nest_laser_cut_part.paint_data.paint_item = workspace_laser_cut_part_group.base_part.paint_data.paint_item
+                        nest_laser_cut_part.powder_data.uses_powder = workspace_laser_cut_part_group.base_part.powder_data.uses_powder
+                        nest_laser_cut_part.powder_data.powder_name = workspace_laser_cut_part_group.base_part.powder_data.powder_name
+                        nest_laser_cut_part.powder_data.powder_item = workspace_laser_cut_part_group.base_part.powder_data.powder_item
                         break
 
     def workorder_move_to_next_process(
@@ -3102,7 +3100,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
                     if workspace_laser_cut_part_group.base_part.name == nest_laser_cut_part.name and "laser" in workspace_laser_cut_part_group.get_current_tag().name.lower():
                         workorder_quantity = workspace_laser_cut_part_group.get_count()
-                        nest_quantity = nest_laser_cut_part.quantity_on_sheet * nest.sheet_count
+                        nest_quantity = nest_laser_cut_part.meta_data.quantity_on_sheet * nest.sheet_count
                         workorder_remaining_quantity = nest_quantity - workorder_quantity
                         workspace_laser_cut_part_group.move_to_next_process(workorder_quantity)
                         if nest_quantity > workorder_quantity and should_handle_remaining_parts:
@@ -3110,7 +3108,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 nest_laser_cut_part.to_dict(),
                                 self.laser_cut_parts_inventory,
                             )
-                            new_part.quantity = workorder_remaining_quantity
+                            new_part.inventory_data.quantity = workorder_remaining_quantity
                             laser_cut_parts_to_update.append(new_part)
                         break
         self.laser_cut_parts_inventory.add_or_update_laser_cut_parts(laser_cut_parts_to_update, "workorder nest overflow")

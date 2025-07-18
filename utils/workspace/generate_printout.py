@@ -104,9 +104,9 @@ class NestRecutPartSummary:
         for part in nest.laser_cut_parts:
             if part.recut:
                 if part.recut_count_notes == 1:
-                    summary += f"<span class='small-text' id='{part.name}-summary'>{part.name} (Part #{part.part_number}) has {part.recut_count_notes} recut</span><br>"
+                    summary += f"<span class='small-text' id='{part.name}-summary'>{part.name} (Part #{part.meta_data.part_number}) has {part.recut_count_notes} recut</span><br>"
                 else:
-                    summary += f"<span class='small-text' id='{part.name}-summary'>{part.name} (Part #{part.part_number}) has {part.recut_count_notes} recuts</span><br>"
+                    summary += f"<span class='small-text' id='{part.name}-summary'>{part.name} (Part #{part.meta_data.part_number}) has {part.recut_count_notes} recuts</span><br>"
         summary += "</p>"
         return summary
 
@@ -236,7 +236,7 @@ class SheetImages:
             f"""
             <div class="overlay blur"></div>
             <dialog style="width: 30vw;" class="right" id="NEST-{self.format_filename(laser_cut_part.name)}">
-                <img src="{self.server_directory}/{laser_cut_part.image_index}" style="height: 100px; width: 100px;" >
+                <img src="{self.server_directory}/{laser_cut_part.meta_data.image_index}" style="height: 100px; width: 100px;" >
                 <h5>{laser_cut_part.name}</h5>
                 <div>{self.generate_laser_cut_part_data(laser_cut_part)}</div>
                 <nav class="right-align no-space">
@@ -265,12 +265,12 @@ class SheetImages:
                 for part in nest.laser_cut_parts:
                     parts_list += f"""
                     <a class="row padding surface-container wave" onclick="ui('#NEST-{self.format_filename(part.name)}');">
-                        <img class="round" src="{self.server_directory}/{part.image_index}">
+                        <img class="round" src="{self.server_directory}/{part.meta_data.image_index}">
                         <div class="max">
                             <h6 class="small">{part.name}</h6>
-                            <div>Quantity: {part.quantity_on_sheet:,.0f}</div>
+                            <div>Quantity: {part.meta_data.quantity_on_sheet:,.0f}</div>
                         </div>
-                        <div class="badge none">#{part.part_number}</div>
+                        <div class="badge none">#{part.meta_data.part_number}</div>
                     </a>
                     <div class="divider"></div>"""
                 parts_list += "</article>"
@@ -340,13 +340,13 @@ class NestedLaserCutParts:
             html += f"""<tr>
             <td class="min" data-label="{self.headers[0]}" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#NEST-{self.format_filename(laser_cut_part.name)}');">
-                <img class="responsive" src="{self.server_directory}/{laser_cut_part.image_index}">
+                <img class="responsive" src="{self.server_directory}/{laser_cut_part.meta_data.image_index}">
                 <span class="small-text">{laser_cut_part.name}</span>
                 </button>
             </td>
-            <td data-label="{self.headers[1]}" data-column="1" data-name="part-#"><i>tag</i><span class="small-text">{laser_cut_part.part_number}</span></td>
-            <td data-label="{self.headers[2]}" data-column="2" data-name="sheet-qty"><span class="small-text">{laser_cut_part.quantity_on_sheet:,.0f}</span></td>
-            <td data-label="{self.headers[3]}" data-column="3" data-name="qty"><span class="small-text">{laser_cut_part.quantity:,.0f}{recut_part_string}</span></td>
+            <td data-label="{self.headers[1]}" data-column="1" data-name="part-#"><i>tag</i><span class="small-text">{laser_cut_part.meta_data.part_number}</span></td>
+            <td data-label="{self.headers[2]}" data-column="2" data-name="sheet-qty"><span class="small-text">{laser_cut_part.meta_data.quantity_on_sheet:,.0f}</span></td>
+            <td data-label="{self.headers[3]}" data-column="3" data-name="qty"><span class="small-text">{laser_cut_part.inventory_data.quantity:,.0f}{recut_part_string}</span></td>
             </tr>"""
         html += """<tr>
             <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="part"></th>
@@ -415,7 +415,7 @@ class LaserCutPartsTable:
             f"""
             <div class="overlay blur"></div>
             <dialog style="width: 30vw;" class="right" id="LCP-{self.format_filename(laser_cut_part.name)}">
-                <img src="{self.server_directory}/{laser_cut_part.image_index}" style="height: 100px; width: 100px;" >
+                <img src="{self.server_directory}/{laser_cut_part.meta_data.image_index}" style="height: 100px; width: 100px;" >
                 <h5>{laser_cut_part.name}</h5>
                 <div>{self.generate_laser_cut_part_data(laser_cut_part)}</div>
                 <nav class="right-align no-space">
@@ -428,18 +428,18 @@ class LaserCutPartsTable:
     def get_total_cost(self) -> float:
         total = 0.0
         for laser_cut_part in self.laser_cut_parts:
-            total += self.job.price_calculator.get_laser_cut_part_cost(laser_cut_part) * laser_cut_part.quantity * self.assembly_quantity
+            total += self.job.price_calculator.get_laser_cut_part_cost(laser_cut_part) * laser_cut_part.inventory_data.quantity * self.assembly_quantity
         return total
 
     def get_paint(self, laser_cut_part: LaserCutPart) -> str:
         html = '<div class="no-padding small-text grid center-align">'
-        if laser_cut_part.uses_primer and laser_cut_part.primer_item:
-            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.primer_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.primer_item.part_name}</span></div>'
-        if laser_cut_part.uses_paint and laser_cut_part.paint_item:
-            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.paint_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.paint_item.part_name}</span></div>'
-        if laser_cut_part.uses_powder and laser_cut_part.powder_item:
-            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.powder_item.part_name}</span></div>'
-        if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
+        if laser_cut_part.primer_data.uses_primer and laser_cut_part.primer_data.primer_item:
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.primer_data.primer_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.primer_data.primer_item.part_name}</span></div>'
+        if laser_cut_part.paint_data.uses_paint and laser_cut_part.paint_data.paint_item:
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.paint_data.paint_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.paint_data.paint_item.part_name}</span></div>'
+        if laser_cut_part.powder_data.uses_powder and laser_cut_part.powder_data.powder_item:
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.powder_data.powder_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.powder_data.powder_item.part_name}</span></div>'
+        if not (laser_cut_part.primer_data.uses_primer or laser_cut_part.paint_data.uses_paint or laser_cut_part.powder_data.uses_powder):
             html = ""
         else:
             html += "</div>"
@@ -457,18 +457,18 @@ class LaserCutPartsTable:
             html += f"""<tr>
             <td class="min" data-label="{self.headers[0]}" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#LCP-{self.format_filename(laser_cut_part.name)}');">
-                    <img class="responsive" src="{self.server_directory}/{laser_cut_part.image_index}">
+                    <img class="responsive" src="{self.server_directory}/{laser_cut_part.meta_data.image_index}">
                     <span class="small-text">{laser_cut_part.name}</span>
                 </button>
             </td>
-            <td class="min" data-label="{self.headers[1]}" data-column="1" data-name="material"><span class="small-text">{laser_cut_part.gauge}<br>{laser_cut_part.material}</span></td>
-            <td data-label="{self.headers[2]}" data-column="2" data-name="process"><span class="small-text">{laser_cut_part.flowtag.get_flow_string()}{self.get_paint(laser_cut_part)}</span></td>
-            <td class="small-text left-align" data-label="{self.headers[3]}" data-column="3" data-name="notes"><span class="small-text">{laser_cut_part.notes}</span></td>
-            <td data-label="{self.headers[4]}" data-column="4" data-name="shelf-#"><span class="small-text">{laser_cut_part.shelf_number}</span></td>
-            <td class="min" data-label="{self.headers[5]}" data-column="5" data-name="unit-qty"><span class="small-text">{laser_cut_part.quantity:,.0f}</span></td>
-            <td class="min" data-label="{self.headers[6]}" data-column="6" data-name="qty"><span class="small-text">{(laser_cut_part.quantity * self.assembly_quantity):,.0f}</span></td>
+            <td class="min" data-label="{self.headers[1]}" data-column="1" data-name="material"><span class="small-text">{laser_cut_part.meta_data.gauge}<br>{laser_cut_part.meta_data.material}</span></td>
+            <td data-label="{self.headers[2]}" data-column="2" data-name="process"><span class="small-text">{laser_cut_part.workspace_data.flowtag.get_flow_string()}{self.get_paint(laser_cut_part)}</span></td>
+            <td class="small-text left-align" data-label="{self.headers[3]}" data-column="3" data-name="notes"><span class="small-text">{laser_cut_part.meta_data.notes}</span></td>
+            <td data-label="{self.headers[4]}" data-column="4" data-name="shelf-#"><span class="small-text">{laser_cut_part.meta_data.shelf_number}</span></td>
+            <td class="min" data-label="{self.headers[5]}" data-column="5" data-name="unit-qty"><span class="small-text">{laser_cut_part.inventory_data.quantity:,.0f}</span></td>
+            <td class="min" data-label="{self.headers[6]}" data-column="6" data-name="qty"><span class="small-text">{(laser_cut_part.inventory_data.quantity * self.assembly_quantity):,.0f}</span></td>
             <td class="min" data-label="{self.headers[7]}" data-column="7" data-name="unit-price"><span class="small-text">${unit_price:,.2f}</span></td>
-            <td data-label="{self.headers[8]}" data-column="8" data-name="price"><span class="small-text">${(unit_price * laser_cut_part.quantity * self.assembly_quantity):,.2f}</span></td>
+            <td data-label="{self.headers[8]}" data-column="8" data-name="price"><span class="small-text">${(unit_price * laser_cut_part.inventory_data.quantity * self.assembly_quantity):,.2f}</span></td>
             </tr>"""
         html += f"""<tr>
                 <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="part"></th>

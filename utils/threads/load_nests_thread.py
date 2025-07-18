@@ -124,9 +124,9 @@ class LoadNestsThread(LoadNestFileThread):
                 except FileNotFoundError:
                     nest.image_path = "images/404.jpeg"
                 for laser_cut_part in nest.laser_cut_parts:
-                    image_path: str = f"images/{laser_cut_part.image_index}.jpeg"
+                    image_path: str = f"images/{laser_cut_part.meta_data.image_index}.jpeg"
                     new_image_path = f"images/{laser_cut_part.name}.jpeg"
-                    laser_cut_part.image_index = new_image_path
+                    laser_cut_part.meta_data.image_index = new_image_path
                     shutil.move(image_path, new_image_path)
 
             self.signal.emit(self.nests)

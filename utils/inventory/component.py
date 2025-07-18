@@ -1,17 +1,41 @@
 import copy
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypedDict
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
-from utils.inventory.order import Order
+from utils.inventory.order import Order, OrderDict
 from utils.purchase_order.vendor import Vendor
 
 if TYPE_CHECKING:
     from utils.inventory.components_inventory import ComponentsInventory
 
 
+class ComponentDict(TypedDict):
+    id: int
+    name: str
+    part_number: str
+    part_name: str
+    category: str
+    quantity: float
+    price: float
+    use_exchange_rate: bool
+    priority: int
+    shelf_number: str
+    notes: str
+    image_path: str
+    latest_change_quantity: str
+    latest_change_price: str
+    red_quantity_limit: float
+    yellow_quantity_limit: float
+    quantity_to_order: int
+    vendor_ids: list[int]
+    orders: list[OrderDict]
+    categories: list[str]
+    category_quantities: dict[str, float]
+
+
 class Component(InventoryItem):
-    def __init__(self, data: dict, components_inventory):
+    def __init__(self, data: ComponentDict, components_inventory):
         super().__init__()
         self.components_inventory: ComponentsInventory = components_inventory
         self.id: int = -1
@@ -81,7 +105,7 @@ class Component(InventoryItem):
     def print_category_quantities(self) -> str:
         return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
 
-    def load_data(self, data: dict):
+    def load_data(self, data: ComponentDict):
         self.id = data.get("id", -1)
         self.part_number = data.get("part_number", "")
         self.name = self.part_number
@@ -120,7 +144,7 @@ class Component(InventoryItem):
     def get_copy(self) -> "Component":
         return copy.deepcopy(self)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> ComponentDict:
         return {
             "id": self.id,
             "name": self.name,

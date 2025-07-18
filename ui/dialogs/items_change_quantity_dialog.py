@@ -76,9 +76,9 @@ class ItemsChangeQuantityDialog(QDialog, Ui_Form):
             items_string = "\n"
             for i, item in enumerate(self.items):
                 if self.add_or_remove == "ADD":
-                    items_string += f"  {i + 1}. {item.part_name if isinstance(item, Component) else item.name}\n\twill go from {item.quantity} to {item.quantity + self.doubleSpinBox_quantity.value()}\n"
+                    items_string += f"  {i + 1}. {item.part_name if isinstance(item, Component) else item.name}\n\twill go from {item.inventory_data.quantity} to {item.inventory_data.quantity + self.doubleSpinBox_quantity.value()}\n"
                 elif self.add_or_remove == "REMOVE":
-                    items_string += f"  {i + 1}. {item.part_name if isinstance(item, Component) else item.name}\n\twill go from {item.quantity} to {item.quantity - self.doubleSpinBox_quantity.value()}\n"
+                    items_string += f"  {i + 1}. {item.part_name if isinstance(item, Component) else item.name}\n\twill go from {item.inventory_data.quantity} to {item.inventory_data.quantity - self.doubleSpinBox_quantity.value()}\n"
             self.lblMessage.setText(
                 f"Before proceeding, it is important to confirm your intention to {self.add_or_remove} quantities.\n\nFor each of the selected {len(self.items)} items {self.doubleSpinBox_quantity.value()} quantities will be {'ADDED' if self.add_or_remove == 'ADD' else 'REMOVED'}:{items_string}\nKindly ensure the accuracy of your decision."
             )

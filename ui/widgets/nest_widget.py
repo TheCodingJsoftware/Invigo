@@ -187,8 +187,8 @@ class NestWidget(QWidget, Ui_Form):
                 if self.is_part_in_assembly(assembly_name, nest_laser_cut_part.name):
                     for laser_cut_part in assembly.laser_cut_parts:
                         if laser_cut_part.name == nest_laser_cut_part.name:
-                            laser_cut_part.material = self.sheet.material
-                            laser_cut_part.gauge = self.sheet.thickness
+                            laser_cut_part.meta_data.material = self.sheet.material
+                            laser_cut_part.meta_data.gauge = self.sheet.thickness
         self.parent._parent_widget.update_tables()
         self.parent.changes_made()
         self.update_nest_cost()
@@ -259,8 +259,8 @@ class NestWidget(QWidget, Ui_Form):
             self.doubleSpinBox_length.setValue(new_sheet.length)
             self.doubleSpinBox_width.setValue(new_sheet.width)
             for laser_cut_part in self.nest.laser_cut_parts:
-                laser_cut_part.gauge = new_sheet.thickness
-                laser_cut_part.material = new_sheet.material
+                laser_cut_part.meta_data.gauge = new_sheet.thickness
+                laser_cut_part.meta_data.material = new_sheet.material
             self.updateLaserCutPartSettings.emit(self)
             self.sheets_inventory.add_sheet(new_sheet, on_finished=self.update_sheet_status)
             self.sheets_inventory.save_local_copy()
@@ -298,8 +298,8 @@ class NestWidget(QWidget, Ui_Form):
                 self.treeWidget_parts,
                 [
                     laser_cut_part.name,
-                    str(int(laser_cut_part.quantity_on_sheet)),
-                    str(int(laser_cut_part.quantity_on_sheet * self.nest.sheet_count)),
+                    str(int(laser_cut_part.meta_data.quantity_on_sheet)),
+                    str(int(laser_cut_part.meta_data.quantity_on_sheet * self.nest.sheet_count)),
                     "",
                 ],
             )  # Placeholder for the QComboBox
@@ -364,17 +364,17 @@ class NestWidget(QWidget, Ui_Form):
         if selected_parts := self.get_selected_tree_parts():
             for selected_nest_laser_cut_part in selected_parts:
                 if existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(selected_nest_laser_cut_part.name):
-                    existing_laser_cut_part.quantity += selected_nest_laser_cut_part.quantity
-                    existing_laser_cut_part.material = selected_nest_laser_cut_part.material
-                    existing_laser_cut_part.gauge = selected_nest_laser_cut_part.gauge
-                    existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {selected_nest_laser_cut_part.quantity} quantities from {self.nest.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                    existing_laser_cut_part.inventory_data.quantity += selected_nest_laser_cut_part.inventory_data.quantity
+                    existing_laser_cut_part.meta_data.material = selected_nest_laser_cut_part.meta_data.material
+                    existing_laser_cut_part.meta_data.gauge = selected_nest_laser_cut_part.meta_data.gauge
+                    existing_laser_cut_part.meta_data.modified_date = f"{os.getlogin().title()} - Added {selected_nest_laser_cut_part.inventory_data.quantity} quantities from {self.nest.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     self.laser_cut_inventory.save_laser_cut_part(existing_laser_cut_part)
                 else:
                     if not (category := self.laser_cut_inventory.get_category("Uncategorized")):
                         category = Category("Uncategorized")
                         self.laser_cut_inventory.add_category(category)
                     selected_nest_laser_cut_part.add_to_category(category)
-                    selected_nest_laser_cut_part.modified_date = (
+                    selected_nest_laser_cut_part.meta_data.modified_date = (
                         f"{os.getlogin().title()} - Part added from {self.nest.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     )
                     self.laser_cut_inventory.add_laser_cut_part(selected_nest_laser_cut_part)

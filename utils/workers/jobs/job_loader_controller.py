@@ -80,7 +80,7 @@ class JobLoaderController(QObject):
             if a.assembly_image:
                 images.add(a.assembly_image)
         for lcp in job.get_all_laser_cut_parts():
-            images.add(lcp.image_index)
+            images.add(lcp.meta_data.image_index)
         for c in job.get_all_components():
             images.add(c.image_path)
         with contextlib.suppress(KeyError):
@@ -95,7 +95,7 @@ class JobLoaderController(QObject):
                 if not f.lower().endswith((".pdf", ".jpeg", ".jpg", ".png")):
                     files.add(f)
         for lcp in job.get_all_laser_cut_parts():
-            for f in lcp.bending_files + lcp.welding_files + lcp.cnc_milling_files:
+            for f in lcp.workspace_data.bending_files + lcp.workspace_data.welding_files + lcp.workspace_data.cnc_milling_files:
                 if not f.lower().endswith((".pdf", ".jpeg", ".jpg", ".png")):
                     files.add(f)
         return list(files)

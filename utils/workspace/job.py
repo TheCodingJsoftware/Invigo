@@ -109,7 +109,7 @@ class Job:
     def get_unique_parts_flowtag_tags(self) -> list[Tag]:
         tags: dict[str, Tag] = {}
         for laser_cut_part in self.get_all_laser_cut_parts():
-            for tag in laser_cut_part.flowtag.tags:
+            for tag in laser_cut_part.workspace_data.flowtag.tags:
                 tags[tag.name] = tag
         for assembly in self.get_all_assemblies():
             for tag in assembly.flowtag.tags:
@@ -141,17 +141,17 @@ class Job:
         laser_cut_part_dict: dict[str, LaserCutPart] = {}
         for assembly in self.get_all_assemblies():
             for assembly_laser_cut_part in assembly.laser_cut_parts:
-                unit_quantity = assembly_laser_cut_part.quantity
+                unit_quantity = assembly_laser_cut_part.inventory_data.quantity
                 new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
-                new_laser_cut_part.quantity = unit_quantity * assembly.quantity
+                new_laser_cut_part.inventory_data.quantity = unit_quantity * assembly.quantity
                 new_laser_cut_part.matched_to_sheet_cost_price = assembly_laser_cut_part.matched_to_sheet_cost_price
 
                 if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
-                    existing_component.quantity += new_laser_cut_part.quantity
+                    existing_component.inventory_data.quantity += new_laser_cut_part.inventory_data.quantity
                 else:
                     laser_cut_part_dict[new_laser_cut_part.name] = new_laser_cut_part
                 # This is because we group the data, so all nest reference is lost.
-                new_laser_cut_part.quantity_on_sheet = None
+                new_laser_cut_part.meta_data.quantity_on_sheet = None
 
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()
         self.sort_laser_cut_parts()
@@ -186,7 +186,7 @@ class Job:
         total_weight = 0.0
         for assembly in self.get_all_assemblies():
             for laser_cut_part in assembly.laser_cut_parts:
-                total_weight += laser_cut_part.weight * laser_cut_part.quantity * assembly.quantity
+                total_weight += laser_cut_part.meta_data.weight * laser_cut_part.inventory_data.quantity * assembly.quantity
         return total_weight
 
     def get_all_assemblies(self) -> list[Assembly]:
@@ -245,25 +245,25 @@ class Job:
         laser_cut_parts_to_update = []
         for laser_cut_part in self.get_all_laser_cut_parts():
             if inventory_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
-                inventory_laser_cut_part.image_index = laser_cut_part.image_index
+                inventory_laser_cut_part.meta_data.image_index = laser_cut_part.meta_data.image_index
 
-                inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
-                inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
-                inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
-                inventory_laser_cut_part.flowtag = laser_cut_part.flowtag
+                inventory_laser_cut_part.workspace_data.bending_files = laser_cut_part.workspace_data.bending_files
+                inventory_laser_cut_part.workspace_data.welding_files = laser_cut_part.workspace_data.welding_files
+                inventory_laser_cut_part.workspace_data.cnc_milling_files = laser_cut_part.workspace_data.cnc_milling_files
+                inventory_laser_cut_part.workspace_data.flowtag = laser_cut_part.workspace_data.flowtag
                 inventory_laser_cut_part.flowtag_data = laser_cut_part.flowtag_data
 
-                inventory_laser_cut_part.uses_primer = laser_cut_part.uses_primer
-                inventory_laser_cut_part.uses_paint = laser_cut_part.uses_paint
-                inventory_laser_cut_part.uses_powder = laser_cut_part.uses_powder
+                inventory_laser_cut_part.primer_data.uses_primer = laser_cut_part.primer_data.uses_primer
+                inventory_laser_cut_part.paint_data.uses_paint = laser_cut_part.paint_data.uses_paint
+                inventory_laser_cut_part.powder_data.uses_powder = laser_cut_part.powder_data.uses_powder
 
-                inventory_laser_cut_part.primer_name = laser_cut_part.primer_name
-                inventory_laser_cut_part.paint_name = laser_cut_part.paint_name
-                inventory_laser_cut_part.powder_name = laser_cut_part.powder_name
+                inventory_laser_cut_part.primer_data.primer_name = laser_cut_part.primer_data.primer_name
+                inventory_laser_cut_part.paint_data.paint_name = laser_cut_part.paint_data.paint_name
+                inventory_laser_cut_part.powder_data.powder_name = laser_cut_part.powder_data.powder_name
 
-                inventory_laser_cut_part.primer_overspray = laser_cut_part.primer_overspray
-                inventory_laser_cut_part.paint_overspray = laser_cut_part.paint_overspray
-                inventory_laser_cut_part.powder_transfer_efficiency = laser_cut_part.powder_transfer_efficiency
+                inventory_laser_cut_part.primer_data.primer_overspray = laser_cut_part.primer_data.primer_overspray
+                inventory_laser_cut_part.paint_data.paint_overspray = laser_cut_part.paint_data.paint_overspray
+                inventory_laser_cut_part.powder_data.powder_transfer_efficiency = laser_cut_part.powder_data.powder_transfer_efficiency
                 laser_cut_parts_to_update.append(inventory_laser_cut_part)
 
         self.laser_cut_inventory.save_laser_cut_parts(laser_cut_parts_to_update)
@@ -281,7 +281,7 @@ class Job:
             if not assembly.flowtag:
                 return (False, assembly.name)
         for laser_cut_part in self.get_all_laser_cut_parts():
-            if not laser_cut_part.flowtag.tags:
+            if not laser_cut_part.workspace_data.flowtag.tags:
                 return (False, laser_cut_part.name)
         return (True, "")
 

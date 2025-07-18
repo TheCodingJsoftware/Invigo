@@ -60,7 +60,7 @@ class Nest:
         sheet_surface_area = self.sheet.length * self.sheet.width
         total_laser_cut_part_surface_area = 0.0
         for laser_cut_part in self.laser_cut_parts:
-            total_laser_cut_part_surface_area += laser_cut_part.surface_area * laser_cut_part.quantity
+            total_laser_cut_part_surface_area += laser_cut_part.meta_data.surface_area * laser_cut_part.inventory_data.quantity
         try:
             return (1 - (total_laser_cut_part_surface_area / sheet_surface_area)) * 100
         except ZeroDivisionError:
@@ -83,7 +83,7 @@ class Nest:
         return f"{self.sheet.thickness} {self.sheet.material} {self.get_sheet_dimension()} {self.name}"
 
     def sort_laser_cut_parts(self):
-        self.laser_cut_parts = natsorted(self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.part_number)
+        self.laser_cut_parts = natsorted(self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.meta_data.part_number)
 
     def get_nest_recut_part_summary(self) -> str:
         summary = ""

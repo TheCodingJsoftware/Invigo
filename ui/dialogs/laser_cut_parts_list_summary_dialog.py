@@ -93,11 +93,11 @@ class LaserCutPartsListSummaryDialog(QDialog, Ui_Form):
 
         image_item = QTableWidgetItem()
         try:
-            if "images" not in workspace_laser_cut_part_group.base_part.image_index:
-                workspace_laser_cut_part_group.base_part.image_index = "images/" + workspace_laser_cut_part_group.base_part.image_index
-            if not workspace_laser_cut_part_group.base_part.image_index.endswith(".jpeg"):
-                workspace_laser_cut_part_group.base_part.image_index += ".jpeg"
-            image = QPixmap(workspace_laser_cut_part_group.base_part.image_index)
+            if "images" not in workspace_laser_cut_part_group.base_part.meta_data.image_index:
+                workspace_laser_cut_part_group.base_part.meta_data.image_index = "images/" + workspace_laser_cut_part_group.base_part.meta_data.image_index
+            if not workspace_laser_cut_part_group.base_part.meta_data.image_index.endswith(".jpeg"):
+                workspace_laser_cut_part_group.base_part.meta_data.image_index += ".jpeg"
+            image = QPixmap(workspace_laser_cut_part_group.base_part.meta_data.image_index)
             if image.isNull():
                 image = QPixmap("images/404.jpeg")
             original_width = image.width()
@@ -139,16 +139,16 @@ class LaserCutPartsListSummaryDialog(QDialog, Ui_Form):
             welding_files_widget,
         )
 
-        material_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.material)
+        material_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.meta_data.material)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.MATERIAL.value, material_item)
 
-        thickness_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.gauge)
+        thickness_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.meta_data.gauge)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.THICKNESS.value, thickness_item)
 
-        notes_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.notes)
+        notes_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.meta_data.notes)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.NOTES.value, notes_item)
 
-        shelf_number_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.shelf_number)
+        shelf_number_item = QTableWidgetItem(workspace_laser_cut_part_group.base_part.meta_data.shelf_number)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.SHELF_NUMBER.value, shelf_number_item)
 
         quantity_item = QTableWidgetItem(f"{int(workspace_laser_cut_part_group.get_quantity()):,}")
