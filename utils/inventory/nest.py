@@ -1,11 +1,24 @@
-from typing import Union
+from typing import TypedDict
 
 from natsort import natsorted
 
 from utils.inventory.laser_cut_inventory import LaserCutInventory
-from utils.inventory.laser_cut_part import LaserCutPart
-from utils.inventory.sheet import Sheet
+from utils.inventory.laser_cut_part import LaserCutPart, LaserCutPartDict
+from utils.inventory.sheet import Sheet, SheetDict
 from utils.sheet_settings.sheet_settings import SheetSettings
+
+
+class NestDict(TypedDict):
+    id: int
+    name: str
+    sheet: SheetDict
+    laser_cut_parts: list[LaserCutPartDict]
+    image_path: str
+    notes: str
+    scrap_percentage: float
+    sheet_count: int
+    sheet_cut_time: float
+    cutting_method: str
 
 
 class Nest:
@@ -82,7 +95,7 @@ class Nest:
                     summary += f"{part.name} has {part.recut_count_notes} recuts\n"
         return summary
 
-    def load_data(self, data: dict[str, float | int | str | dict[str, float | str]]):
+    def load_data(self, data: NestDict):
         self.id = data.get("id", -1)
         self.name = data.get("name", "")
         self.cutting_method = data.get("cutting_method", "CO2")
@@ -118,7 +131,7 @@ class Nest:
             )
             self.sheet.name = "nest_sheet"
 
-    def to_dict(self) -> dict[str, Union[float, int, str]]:
+    def to_dict(self) -> NestDict:
         return {
             "id": self.id,
             "name": self.name,

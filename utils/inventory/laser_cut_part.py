@@ -1,5 +1,5 @@
 import copy
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Optional, TypedDict, Union
 
 from utils.dxf_analyzer import DxfAnalyzer
 from utils.inventory.category import Category
@@ -20,13 +20,59 @@ if TYPE_CHECKING:
     from utils.inventory.paint_inventory import PaintInventory
 
 
+class LaserCutPartDict(TypedDict):
+    id: int
+    name: str
+    part_number: str
+    gauge: str
+    material: str
+    part_dim: str
+    machine_time: float
+    weight: float
+    surface_area: float
+    cutting_length: float
+    piercing_time: float
+    piercing_points: int
+    shelf_number: str
+    sheet_dim: str
+    file_name: str
+    geofile_name: str
+    modified_date: str
+    notes: str
+    image_index: str
+    price: float
+    cost_of_goods: float
+    bend_cost: float
+    labor_cost: float
+    recut: bool
+    recut_count: int
+    bend_hits: int
+    welding_files: list[str]
+    cnc_milling_files: list[str]
+    categories: list[str]
+    category_quantities: dict[str, float]
+    quantity: int
+    quantity_on_sheet: int
+    red_quantity_limit: int
+    yellow_quantity_limit: int
+    flowtag: dict[str, object]
+    current_flow_tag_index: int
+    current_flow_tag_status_index: int
+    bending_files: list[str]
+    bend_hits: int
+    welding_files: list[str]
+    cnc_milling_files: list[str]
+    timer: dict[str, object]
+    flowtag_data: dict[str, object]
+
+
 class LaserCutPart(InventoryItem):
     PIERCING_TIME = 2.73157894737  # seconds per piercing point
     CUT_TIME_PER_INCH = 2.87897096597  # seconds per inch of cutting length
 
     def __init__(
         self,
-        data: dict[str, Union[str, float, int, dict[str, object], list[object]]],
+        data: LaserCutPartDict,
         laser_cut_inventory: "LaserCutInventory",
     ):
         super().__init__()
@@ -208,7 +254,7 @@ class LaserCutPart(InventoryItem):
     def print_category_quantities(self) -> str:
         return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
 
-    def load_data(self, data: dict):
+    def load_data(self, data: LaserCutPartDict):
         self.id = data.get("id", -1)
         self.name = data.get("name", "")
         self.quantity = data.get("quantity", 0)  # In the context of assemblies, quantity is unit_quantity
@@ -343,7 +389,7 @@ class LaserCutPart(InventoryItem):
     def get_copy(self) -> "LaserCutPart":
         return copy.deepcopy(self)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> LaserCutPartDict:
         return {
             "id": self.id,
             "name": self.name,

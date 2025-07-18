@@ -1,17 +1,39 @@
 import copy
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypedDict
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
-from utils.inventory.order import Order
+from utils.inventory.order import Order, OrderDict
 from utils.purchase_order.vendor import Vendor
 
 if TYPE_CHECKING:
     from utils.inventory.sheets_inventory import SheetsInventory
 
 
+class SheetDict(TypedDict):
+    id: int
+    name: str
+    quantity: int
+    price: float
+    price_per_pound: float
+    length: float
+    width: float
+    pounds_per_square_foot: float
+    thickness: str
+    material: str
+    latest_change_quantity: str
+    red_quantity_limit: int
+    yellow_quantity_limit: int
+    has_sent_warning: bool
+    notes: str
+    orders: list[OrderDict]
+    vendor_ids: list[int]
+    categories: list[str]
+    quantity_to_order: int
+
+
 class Sheet(InventoryItem):
-    def __init__(self, data: dict, sheets_inventory):
+    def __init__(self, data: SheetDict, sheets_inventory):
         super().__init__()
         self.sheets_inventory: SheetsInventory = sheets_inventory
         self.id: int = -1
@@ -57,7 +79,7 @@ class Sheet(InventoryItem):
     def get_categories(self) -> list[str]:
         return [category.name for category in self.categories]
 
-    def load_data(self, data: dict):
+    def load_data(self, data: SheetDict):
         self.id = data.get("id", -1)
         self.quantity = data.get("quantity", 0)
         self.price = data.get("price", 0.0)
@@ -91,7 +113,7 @@ class Sheet(InventoryItem):
         except AttributeError:  # Because these sheets come from utils.threads.load_nests.py
             self.categories = []
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> SheetDict:
         return {
             "id": self.id,
             "name": self.get_name(),

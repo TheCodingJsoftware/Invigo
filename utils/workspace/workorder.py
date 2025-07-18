@@ -32,6 +32,5 @@ class Workorder:
 
     def to_dict(self) -> list[dict[str, Union[float, int, str]]]:
         data: list[dict[str, Union[float, int, str]]] = []
-        for nest in self.nests:
-            data.append(nest.to_dict())
+        data.extend(nest.to_dict() for nest in self.nests)
         return data
