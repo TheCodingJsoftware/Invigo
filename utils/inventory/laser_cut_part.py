@@ -1,15 +1,19 @@
 import copy
-from typing import TYPE_CHECKING, Optional, TypedDict, Union
+from ast import In
+from dataclasses import dataclass, field, fields
+from typing import TYPE_CHECKING, Any, Optional, TypedDict, Union, cast
 
 from utils.dxf_analyzer import DxfAnalyzer
+from utils.inventory import categories, inventory
 from utils.inventory.category import Category
+from utils.inventory.coating_item import CoatingItem
 from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.workspace.flowtag import Flowtag
-from utils.workspace.flowtag_data import FlowtagData
+from utils.workspace.flowtag import Flowtag, FlowtagDict
+from utils.workspace.flowtag_data import FlowtagData, FlowtagDataDict
 from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
@@ -20,50 +24,259 @@ if TYPE_CHECKING:
     from utils.inventory.paint_inventory import PaintInventory
 
 
-class LaserCutPartDict(TypedDict):
-    id: int
-    name: str
-    part_number: str
-    gauge: str
-    material: str
-    part_dim: str
+class InventoryDataDict(TypedDict):
+    quantity: int
+    red_quantity_limit: int
+    yellow_quantity_limit: int
+
+
+@dataclass
+class InventoryData:
+    quantity: int = 0
+    red_quantity_limit: int = 4
+    yellow_quantity_limit: int = 10
+
+    def __init__(self, data: Optional[InventoryDataDict], laser_cut_inventory: "LaserCutInventory"):
+        self.laser_cut_inventory = laser_cut_inventory
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> InventoryDataDict:
+        return {
+            "quantity": self.quantity,
+            "red_quantity_limit": self.red_quantity_limit,
+            "yellow_quantity_limit": self.yellow_quantity_limit,
+        }
+
+
+class MetaDataDict(TypedDict):
     machine_time: float
     weight: float
+    part_number: str
+    image_index: str
     surface_area: float
     cutting_length: float
+    file_name: str
     piercing_time: float
     piercing_points: int
+    gauge: str
+    material: str
     shelf_number: str
     sheet_dim: str
-    file_name: str
+    part_dim: str
     geofile_name: str
     modified_date: str
+    bend_hits: int
     notes: str
-    image_index: str
+    quamtity_on_sheet: int
+
+
+@dataclass
+class MetaData:
+    machine_time: float = 0.0
+    weight: float = 0.0
+    part_number: str = ""
+    image_index: str = ""
+    surface_area: float = 0.0
+    cutting_length: float = 0.0
+    file_name: str = ""
+    piercing_time: float = 0.0
+    piercing_points: int = 0
+    gauge: str = ""
+    material: str = ""
+    shelf_number: str = ""
+    sheet_dim: str = ""
+    part_dim: str = ""
+    geofile_name: str = ""
+    modified_date: str = ""
+    bend_hits: int = 0
+    notes: str = ""
+    quantity_on_sheet: int = 0
+
+    def __init__(self, data: Optional[MetaDataDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> MetaDataDict:
+        return cast(MetaDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
+
+
+class PricesDict(TypedDict):
     price: float
     cost_of_goods: float
     bend_cost: float
     labor_cost: float
-    recut: bool
-    recut_count: int
-    bend_hits: int
+    cost_for_paint: float
+    cost_for_primer: float
+    cost_for_powder_coating: float
+    matched_to_sheet_cost_price: float
+
+
+@dataclass
+class Prices:
+    price: float = 0.0
+    cost_of_goods: float = 0.0
+    bend_cost: float = 0.0
+    labor_cost: float = 0.0
+    cost_for_paint: float = 0.0
+    cost_for_primer: float = 0.0
+    cost_for_powder_coating: float = 0.0
+    matched_to_sheet_cost_price: float = 0.0
+
+    def __init__(self, data: Optional[PricesDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> PricesDict:
+        return cast(PricesDict, {f.name: getattr(self, f.name) for f in fields(self)})
+
+
+class PaintDataDict(TypedDict):
+    uses_paint: bool
+    paint_name: str
+    paint_item: Paint | None
+    paint_overspray: float
+
+
+@dataclass
+class PaintData:
+    uses_paint: bool = False
+    paint_name: str = ""
+    paint_item: Optional[CoatingItem] = None
+    paint_overspray: float = 66.67
+
+    def __init__(self, data: Optional[PaintDataDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> PaintDataDict:
+        return cast(PaintDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
+
+
+class PrimerDataDict(TypedDict):
+    uses_primer: bool
+    primer_name: str
+    primer_item: Primer | None
+    primer_overspray: float
+
+
+@dataclass
+class PrimerData:
+    uses_primer: bool = False
+    primer_name: str = ""
+    primer_item: Optional[CoatingItem] = None
+    primer_overspray: float = 66.67
+
+    def __init__(self, data: Optional[PrimerDataDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> PrimerDataDict:
+        return cast(PrimerDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
+
+
+class PowderDataDict(TypedDict):
+    uses_powder: bool
+    powder_name: str
+    powder_item: Powder | None
+    powder_transfer_efficiency: float
+
+
+@dataclass
+class PowderData:
+    uses_powder: bool = False
+    powder_name: str = ""
+    powder_item: Optional[CoatingItem] = None
+    powder_transfer_efficiency: float = 66.67
+
+    def __init__(self, data: Optional[PowderDataDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> PowderDataDict:
+        return cast(PowderDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
+
+
+class WorkspaceDataDict(TypedDict):
+    bending_files: list[str]
     welding_files: list[str]
     cnc_milling_files: list[str]
+    flowtag: FlowtagDict
+    flow_tag_data: FlowtagDataDict
+
+
+@dataclass
+class WorkspaceData:
+    bending_files: list[str] = field(default_factory=list)
+    welding_files: list[str] = field(default_factory=list)
+    cnc_milling_files: list[str] = field(default_factory=list)
+    flowtag: Optional[Flowtag] = None
+    flowtag_data: Optional[FlowtagData] = None
+
+    def __init__(self, data: Optional[WorkspaceDataDict], workspace_settings: WorkspaceSettings):
+        self.workspace_settings = workspace_settings
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in ["flowtag", "flow_tag_data"]:
+                    continue
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+            self.flowtag = Flowtag(data.get("flowtag", {}), self.workspace_settings)
+            self.flowtag_data = FlowtagData(self.flowtag)
+            self.flowtag_data.load_data(data.get("flow_tag_data", {}))
+
+    def to_dict(self) -> WorkspaceDataDict:
+        result: dict[str, Any] = {}
+        for f in fields(self):
+            value = getattr(self, f.name)
+            result[f.name] = value.to_dict() if hasattr(value, "to_dict") else value
+        return cast(WorkspaceDataDict, result)
+
+
+class LaserCutPartDict(TypedDict):
+    id: int
+    name: str
     categories: list[str]
     category_quantities: dict[str, float]
-    quantity: int
-    quantity_on_sheet: int
-    red_quantity_limit: int
-    yellow_quantity_limit: int
-    flowtag: dict[str, object]
-    current_flow_tag_index: int
-    current_flow_tag_status_index: int
-    bending_files: list[str]
-    bend_hits: int
-    welding_files: list[str]
-    cnc_milling_files: list[str]
-    timer: dict[str, object]
-    flowtag_data: dict[str, object]
+    inventory_data: InventoryDataDict
+    meta_data: MetaDataDict
+    prices: PricesDict
+    paint_data: PaintDataDict
+    primer_data: PrimerDataDict
+    powder_data: PowderDataDict
+    workspace_data: WorkspaceDataDict
 
 
 class LaserCutPart(InventoryItem):
@@ -82,76 +295,415 @@ class LaserCutPart(InventoryItem):
         self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
         self.sheet_settings: SheetSettings = self.laser_cut_inventory.sheet_settings
 
-        self.id = -1
-        self.quantity: int = 0
-        self.red_quantity_limit: int = 10
-        self.yellow_quantity_limit: int = 20
+        self.id = data.get("id", -1)
+        self.inventory_data = InventoryData(data.get("inventory_data", {}), self.laser_cut_inventory)
+        self.meta_data = MetaData(data.get("meta_data", {}))
+        self.prices = Prices(data.get("prices", {}))
+        self.paint_data = PaintData(data.get("paint_data", {}))
+        self.primer_data = PrimerData(data.get("primer_data", {}))
+        self.powder_data = PowderData(data.get("powder_data", {}))
+        self.workspace_data = WorkspaceData(data.get("workspace_data", {}), self.workspace_settings)
+
+        category_names = set(data.get("categories", []))
+        self.categories = [category for category in self.laser_cut_inventory.get_categories() if category.name in category_names]
+
         self.category_quantities: dict[Category, float] = {}
+        for name, qty in data.get("category_quantities", {}).items():
+            if category := self.laser_cut_inventory.get_category(name):
+                self.category_quantities[category] = qty
 
-        self.machine_time: float = 0.0
-        self.weight: float = 0.0
-        self.part_number: str = ""
-        self.image_index: str = ""
-        self.surface_area: float = 0.0
-        self.cutting_length: float = 0.0
-        self.file_name: str = ""
-        self.piercing_time: float = 0.0
-        self.piercing_points: int = 0
-        self.gauge: str = ""
-        self.material: str = ""
-        self.recut: bool = False
-        self.recut_count: int = 0
-        self.shelf_number: str = ""
-        self.sheet_dim: str = ""
-        self.part_dim: str = ""
-        self.geofile_name: str = ""
-        self.modified_date: str = ""
-        self.notes: str = ""
+        self.paint_item = self.paint_inventory.get_paint(self.paint_data.paint_name)
+        self.primer_item = self.paint_inventory.get_primer(self.primer_data.primer_name)
+        self.powder_item = self.paint_inventory.get_powder(self.powder_data.powder_name)
 
-        self.price: float = 0.0
-        self.cost_of_goods: float = 0.0
-        self.bend_cost: float = 0.0
-        self.labor_cost: float = 0.0
-
-        # Paint Items
-        self.recoat: bool = False
-        self.recoat_count: int = 0
-
-        self.uses_primer: bool = False
-        self.primer_name: str = ""
-        self.primer_item: Primer | None = None
-        self.primer_overspray: float = 66.67
-        self.cost_for_primer: float = 0.0
-
-        self.uses_paint: bool = False
-        self.paint_name: str = ""
-        self.paint_item: Paint | None = None
-        self.paint_overspray: float = 66.67
-        self.cost_for_paint: float = 0.0
-
-        self.uses_powder: bool = False
-        self.powder_name: str = ""
-        self.powder_item: Powder | None = None
-        self.powder_transfer_efficiency: float = 66.67
-        self.cost_for_powder_coating: float = 0.0
-
-        self.flowtag: Flowtag | None = None
-        self.current_flow_tag_index: int = 0
-        self.current_flow_tag_status_index: int = 0
-        self.bending_files: list[str] = []
-        self.bend_hits: int = 0
-        self.welding_files: list[str] = []
-        self.cnc_milling_files: list[str] = []
-        self.timer: FlowtagTimer | None = None
-        self.flowtag_data: FlowtagData | None = None
+        if flowtag := self.flowtag:
+            if flowtag_data := self.flowtag_data:
+                if tag := flowtag.get_tag_with_similar_name("laser"):
+                    flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(self.machine_time * 60))
+                elif tag := flowtag.get_tag_with_similar_name("picking"):
+                    flowtag_data.set_tag_data(tag, "expected_time_to_complete", self.weight)
 
         # NOTE Only for Quote Generator and load_nest.py
         self.recut_count_notes: int = 0
         self.nest: Nest | None = None
-        self.quantity_on_sheet: int = 0
-        self.matched_to_sheet_cost_price: float = 0.0
 
-        self.load_data(data)
+        # self.load_data(data)
+
+    @property
+    def quantity(self) -> int:
+        return self.inventory_data.quantity
+
+    @quantity.setter
+    def quantity(self, value: int):
+        self.inventory_data.quantity = value
+
+    @property
+    def red_quantity_limit(self) -> int:
+        return self.inventory_data.red_quantity_limit
+
+    @red_quantity_limit.setter
+    def red_quantity_limit(self, value: int):
+        self.inventory_data.red_quantity_limit = value
+
+    @property
+    def yellow_quantity_limit(self) -> int:
+        return self.inventory_data.yellow_quantity_limit
+
+    @yellow_quantity_limit.setter
+    def yellow_quantity_limit(self, value: int):
+        self.inventory_data.yellow_quantity_limit = value
+
+    @property
+    def machine_time(self) -> float:
+        return self.meta_data.machine_time
+
+    @machine_time.setter
+    def machine_time(self, value: float):
+        self.meta_data.machine_time = value
+
+    @property
+    def weight(self) -> float:
+        return self.meta_data.weight
+
+    @weight.setter
+    def weight(self, value: float):
+        self.meta_data.weight = value
+
+    @property
+    def part_number(self) -> str:
+        return self.meta_data.part_number
+
+    @part_number.setter
+    def part_number(self, value: str):
+        self.meta_data.part_number = value
+
+    @property
+    def image_index(self) -> str:
+        return self.meta_data.image_index
+
+    @image_index.setter
+    def image_index(self, value: str):
+        self.meta_data.image_index = value
+
+    @property
+    def surface_area(self) -> float:
+        return self.meta_data.surface_area
+
+    @surface_area.setter
+    def surface_area(self, value: float):
+        self.meta_data.surface_area = value
+
+    @property
+    def cutting_length(self) -> float:
+        return self.meta_data.cutting_length
+
+    @cutting_length.setter
+    def cutting_length(self, value: float):
+        self.meta_data.cutting_length = value
+
+    @property
+    def file_name(self) -> str:
+        return self.meta_data.file_name
+
+    @file_name.setter
+    def file_name(self, value: str):
+        self.meta_data.file_name = value
+
+    @property
+    def piercing_time(self) -> float:
+        return self.meta_data.piercing_time
+
+    @piercing_time.setter
+    def piercing_time(self, value: float):
+        self.meta_data.piercing_time = value
+
+    @property
+    def piercing_points(self) -> int:
+        return self.meta_data.piercing_points
+
+    @piercing_points.setter
+    def piercing_points(self, value: int):
+        self.meta_data.piercing_points = value
+
+    @property
+    def gauge(self) -> str:
+        return self.meta_data.gauge
+
+    @gauge.setter
+    def gauge(self, value: str):
+        self.meta_data.gauge = value
+
+    @property
+    def material(self) -> str:
+        return self.meta_data.material
+
+    @material.setter
+    def material(self, value: str):
+        self.meta_data.material = value
+
+    @property
+    def shelf_number(self) -> str:
+        return self.meta_data.shelf_number
+
+    @shelf_number.setter
+    def shelf_number(self, value: str):
+        self.meta_data.shelf_number = value
+
+    @property
+    def sheet_dim(self) -> str:
+        return self.meta_data.sheet_dim
+
+    @sheet_dim.setter
+    def sheet_dim(self, value: str):
+        self.meta_data.sheet_dim = value
+
+    @property
+    def part_dim(self) -> str:
+        return self.meta_data.part_dim
+
+    @part_dim.setter
+    def part_dim(self, value: str):
+        self.meta_data.part_dim = value
+
+    @property
+    def geofile_name(self) -> str:
+        return self.meta_data.geofile_name
+
+    @geofile_name.setter
+    def geofile_name(self, value: str):
+        self.meta_data.geofile_name = value
+
+    @property
+    def modified_date(self) -> str:
+        return self.meta_data.modified_date
+
+    @modified_date.setter
+    def modified_date(self, value: str):
+        self.meta_data.modified_date = value
+
+    @property
+    def bend_hits(self) -> int:
+        return self.meta_data.bend_hits
+
+    @bend_hits.setter
+    def bend_hits(self, value: int):
+        self.meta_data.bend_hits = value
+
+    @property
+    def notes(self) -> str:
+        return self.meta_data.notes
+
+    @notes.setter
+    def notes(self, value: str):
+        self.meta_data.notes = value
+
+    @property
+    def quantity_on_sheet(self) -> int:
+        return self.meta_data.quantity_on_sheet
+
+    @quantity_on_sheet.setter
+    def quantity_on_sheet(self, value: int):
+        self.meta_data.quantity_on_sheet = value
+
+    @property
+    def price(self) -> float:
+        return self.prices.price
+
+    @price.setter
+    def price(self, value: float):
+        self.prices.price = value
+
+    @property
+    def cost_of_goods(self) -> float:
+        return self.prices.cost_of_goods
+
+    @cost_of_goods.setter
+    def cost_of_goods(self, value: float):
+        self.prices.cost_of_goods = value
+
+    @property
+    def bend_cost(self) -> float:
+        return self.prices.bend_cost
+
+    @bend_cost.setter
+    def bend_cost(self, value: float):
+        self.prices.bend_cost = value
+
+    @property
+    def labor_cost(self) -> float:
+        return self.prices.labor_cost
+
+    @labor_cost.setter
+    def labor_cost(self, value: float):
+        self.prices.labor_cost = value
+
+    @property
+    def cost_for_paint(self) -> float:
+        return self.prices.cost_for_paint
+
+    @cost_for_paint.setter
+    def cost_for_paint(self, value: float):
+        self.prices.cost_for_paint = value
+
+    @property
+    def cost_for_primer(self) -> float:
+        return self.prices.cost_for_primer
+
+    @cost_for_primer.setter
+    def cost_for_primer(self, value: float):
+        self.prices.cost_for_primer = value
+
+    @property
+    def cost_for_powder_coating(self) -> float:
+        return self.prices.cost_for_powder_coating
+
+    @cost_for_powder_coating.setter
+    def cost_for_powder_coating(self, value: float):
+        self.prices.cost_for_powder_coating = value
+
+    @property
+    def matched_to_sheet_cost_price(self) -> float:
+        return self.prices.matched_to_sheet_cost_price
+
+    @matched_to_sheet_cost_price.setter
+    def matched_to_sheet_cost_price(self, value: float):
+        self.prices.matched_to_sheet_cost_price = value
+
+    @property
+    def uses_paint(self) -> bool:
+        return self.paint_data.uses_paint
+
+    @uses_paint.setter
+    def uses_paint(self, value: bool):
+        self.paint_data.uses_paint = value
+
+    @property
+    def paint_name(self) -> str:
+        return self.paint_data.paint_name
+
+    @paint_name.setter
+    def paint_name(self, value: str):
+        self.paint_data.paint_name = value
+
+    @property
+    def paint_item(self) -> Optional[CoatingItem]:
+        return self.paint_data.paint_item
+
+    @paint_item.setter
+    def paint_item(self, value: Optional[CoatingItem]):
+        self.paint_data.paint_item = value
+
+    @property
+    def paint_overspray(self) -> float:
+        return self.paint_data.paint_overspray
+
+    @paint_overspray.setter
+    def paint_overspray(self, value: float):
+        self.paint_data.paint_overspray = value
+
+    @property
+    def uses_primer(self) -> bool:
+        return self.primer_data.uses_primer
+
+    @uses_primer.setter
+    def uses_primer(self, value: bool):
+        self.primer_data.uses_primer = value
+
+    @property
+    def primer_name(self) -> str:
+        return self.primer_data.primer_name
+
+    @primer_name.setter
+    def primer_name(self, value: str):
+        self.primer_data.primer_name = value
+
+    @property
+    def primer_item(self) -> Optional[CoatingItem]:
+        return self.primer_data.primer_item
+
+    @primer_item.setter
+    def primer_item(self, value: Optional[CoatingItem]):
+        self.primer_data.primer_item = value
+
+    @property
+    def primer_overspray(self) -> float:
+        return self.primer_data.primer_overspray
+
+    @primer_overspray.setter
+    def primer_overspray(self, value: float):
+        self.primer_data.primer_overspray = value
+
+    @property
+    def uses_powder(self) -> bool:
+        return self.powder_data.uses_powder
+
+    @uses_powder.setter
+    def uses_powder(self, value: bool):
+        self.powder_data.uses_powder = value
+
+    @property
+    def powder_name(self) -> str:
+        return self.powder_data.powder_name
+
+    @powder_name.setter
+    def powder_name(self, value: str):
+        self.powder_data.powder_name = value
+
+    @property
+    def powder_item(self) -> Optional[CoatingItem]:
+        return self.powder_data.powder_item
+
+    @powder_item.setter
+    def powder_item(self, value: Optional[CoatingItem]):
+        self.powder_data.powder_item = value
+
+    @property
+    def powder_transfer_efficiency(self) -> float:
+        return self.powder_data.powder_transfer_efficiency
+
+    @powder_transfer_efficiency.setter
+    def powder_transfer_efficiency(self, value: float):
+        self.powder_data.powder_transfer_efficiency = value
+
+    @property
+    def bending_files(self) -> list:
+        return self.workspace_data.bending_files
+
+    @bending_files.setter
+    def bending_files(self, value: list):
+        self.workspace_data.bending_files = value
+
+    @property
+    def welding_files(self) -> list:
+        return self.workspace_data.welding_files
+
+    @welding_files.setter
+    def welding_files(self, value: list):
+        self.workspace_data.welding_files = value
+
+    @property
+    def cnc_milling_files(self) -> list:
+        return self.workspace_data.cnc_milling_files
+
+    @cnc_milling_files.setter
+    def cnc_milling_files(self, value: list):
+        self.workspace_data.cnc_milling_files = value
+
+    @property
+    def flowtag(self) -> Optional[Flowtag]:
+        return self.workspace_data.flowtag
+
+    @flowtag.setter
+    def flowtag(self, value: Optional[Flowtag]):
+        self.workspace_data.flowtag = value
+
+    @property
+    def flowtag_data(self) -> Optional[FlowtagData]:
+        return self.workspace_data.flowtag_data
+
+    @flowtag_data.setter
+    def flowtag_data(self, value: Optional[FlowtagData]):
+        self.workspace_data.flowtag_data = value
 
     def is_process_finished(self) -> bool:
         return self.current_flow_tag_index >= len(self.flowtag.tags)
@@ -164,6 +716,7 @@ class LaserCutPart(InventoryItem):
         return 0
 
     def mark_as_recoat(self):
+        return
         if current_tag := self.get_current_tag():
             self.timer.stop(current_tag)
             self.current_flow_tag_index = self.get_first_tag_index_with_similar_keyword(["powder", "coating", "liquid", "paint", "gloss", "prime"])
@@ -176,6 +729,7 @@ class LaserCutPart(InventoryItem):
         self.move_to_next_process()
 
     def mark_as_recut(self):
+        return
         if current_tag := self.get_current_tag():
             self.timer.stop(current_tag)
             self.current_flow_tag_index = 0
@@ -188,6 +742,7 @@ class LaserCutPart(InventoryItem):
         self.move_to_next_process()
 
     def move_to_next_process(self):
+        return
         if current_tag := self.get_current_tag():
             self.timer.stop(current_tag)
             if not self.is_process_finished():
@@ -239,107 +794,22 @@ class LaserCutPart(InventoryItem):
 
     def get_category_quantity(self, category: Union[str, Category]) -> float:
         if isinstance(category, str):
-            category = self.laser_cut_inventory.get_category(category)
-        try:
+            if category_obj := self.laser_cut_inventory.get_category(category):
+                return self.category_quantities[category_obj]
+        elif isinstance(category, Category):
             return self.category_quantities[category]
-        except KeyError:
-            return 1.0
+        return 1.0
 
     def set_category_quantity(self, category: Union[str, Category], quantity: float) -> float:
         if isinstance(category, str):
-            category = self.laser_cut_inventory.get_category(category)
-        self.category_quantities[category] = quantity
+            if category_obj := self.laser_cut_inventory.get_category(category):
+                self.category_quantities[category_obj] = quantity
+        elif isinstance(category, Category):
+            self.category_quantities[category] = quantity
         return quantity
 
     def print_category_quantities(self) -> str:
         return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
-
-    def load_data(self, data: LaserCutPartDict):
-        self.id = data.get("id", -1)
-        self.name = data.get("name", "")
-        self.quantity = data.get("quantity", 0)  # In the context of assemblies, quantity is unit_quantity
-        self.red_quantity_limit = data.get("red_quantity_limit", 10)
-        self.yellow_quantity_limit = data.get("yellow_quantity_limit", 20)
-        self.category_quantities.clear()
-        for category_name, unit_quantity in data.get("category_quantities", {}).items():
-            category = self.laser_cut_inventory.get_category(category_name)
-            self.category_quantities.update({category: unit_quantity})
-        self.machine_time = data.get("machine_time", 0.0)
-        self.weight = data.get("weight", 0.0)
-        self.part_number = data.get("part_number", "")
-        self.image_index = data.get("image_index", "")
-        self.surface_area = data.get("surface_area", 0.0)
-        self.cutting_length = data.get("cutting_length", 0.0)
-        self.file_name = data.get("file_name", "")
-        self.piercing_time = data.get("piercing_time", 0.0)
-        self.piercing_points = data.get("piercing_points", 0)
-        self.gauge = data.get("gauge", "")
-        self.material = data.get("material", "")
-        self.price = data.get("price", 0.0)
-        self.cost_of_goods = data.get("cost_of_goods", 0.0)
-        self.recut = data.get("recut", False)
-        self.recut_count = data.get("recut_count", 0)
-        self.recut_count_notes = data.get("recut_count_notes", 0)
-        self.shelf_number = data.get("shelf_number", "")
-        self.sheet_dim = data.get("sheet_dim", "")
-        self.part_dim = data.get("part_dim", "")
-        self.geofile_name = data.get("geofile_name", "")
-        self.modified_date = data.get("modified_date", "")
-        self.notes = data.get("notes", "")
-        self.bend_cost = data.get("bend_cost", 0.0)
-        self.labor_cost = data.get("labor_cost", 0.0)
-
-        self.uses_primer = data.get("uses_primer", False)
-        self.primer_name = data.get("primer_name")
-        self.primer_overspray = data.get("primer_overspray", 66.67)
-        if self.uses_primer and self.primer_name:
-            self.primer_item = self.paint_inventory.get_primer(self.primer_name)
-        self.cost_for_primer = data.get("cost_for_primer", 0.0)
-
-        self.uses_paint = data.get("uses_paint", False)
-        self.paint_name = data.get("paint_name")
-        self.paint_overspray = data.get("paint_overspray", 66.67)
-        if self.uses_paint and self.paint_name:
-            self.paint_item = self.paint_inventory.get_paint(self.paint_name)
-        self.cost_for_paint = data.get("cost_for_paint", 0.0)
-
-        self.uses_powder = data.get("uses_powder_coating", False)
-        self.powder_name = data.get("powder_name")
-        self.powder_transfer_efficiency = data.get("powder_transfer_efficiency", 66.67)
-        if self.uses_powder and self.powder_name:
-            self.powder_item = self.paint_inventory.get_powder(self.powder_name)
-        self.cost_for_powder_coating = data.get("cost_for_powder_coating", 0.0)
-
-        self.recoat = data.get("recoat", False)
-        self.recoat_count = data.get("recoat_count", 0)
-
-        self.flowtag = Flowtag(data.get("flow_tag", {}), self.workspace_settings)
-        self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
-        self.current_flow_tag_status_index = data.get("current_flow_tag_status_index", 0)
-        self.bending_files.clear()
-        self.bending_files = data.get("bending_files", [])
-        self.bend_hits = data.get("bend_hits", 0)
-        self.welding_files.clear()
-        self.welding_files = data.get("welding_files", [])
-        self.cnc_milling_files.clear()
-        self.cnc_milling_files = data.get("cnc_milling_files", [])
-        # If deepcopy is not done, than a reference is kept in the original object it was copied from
-        # and then it messes everything up, specifically it will mess up laser cut parts
-        # when you add a job to workspace
-        self.timer = FlowtagTimer(copy.deepcopy(data.get("timer", {})), self.flowtag)
-        self.flowtag_data = FlowtagData(self.flowtag)
-        self.flowtag_data.load_data(data.get("flow_tag_data", {}))
-        if tag := self.flowtag.get_tag_with_similar_name("laser"):
-            self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(self.machine_time * 60))
-        elif tag := self.flowtag.get_tag_with_similar_name("picking"):
-            self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", self.weight)
-        self.quantity_on_sheet = data.get("quantity_on_sheet", 0)
-
-        self.categories.clear()
-        categories = data.get("categories", [])
-        for category in self.laser_cut_inventory.get_categories():
-            if category.name in categories:
-                self.categories.append(category)
 
     def calculate_machine_time_from_length(self, L: float) -> float:
         return 0.00001 * L**2 + 0.00389 * L + 0.25198
@@ -359,9 +829,9 @@ class LaserCutPart(InventoryItem):
         return 0.0
 
     def load_dxf_settings(self, dxf_analyzer: DxfAnalyzer):
-        self.surface_area = float(dxf_analyzer.get_cutting_area())
-        self.cutting_length = float(dxf_analyzer.get_cutting_length())
-        self.piercing_points = int(dxf_analyzer.get_piercing_points())
+        self.surface_area = dxf_analyzer.get_cutting_area()
+        self.cutting_length = dxf_analyzer.get_cutting_length()
+        self.piercing_points = dxf_analyzer.get_piercing_points()
         dimensions = dxf_analyzer.get_dimensions()
         self.part_dim = f"{dimensions['length']} x {dimensions['width']}"
         self.piercing_time = self.calculate_piercing_time(self.cutting_length, self.piercing_points)
@@ -393,57 +863,38 @@ class LaserCutPart(InventoryItem):
         return {
             "id": self.id,
             "name": self.name,
-            "part_number": self.part_number,
-            "gauge": self.gauge,
-            "material": self.material,
-            "part_dim": self.part_dim,
-            "machine_time": self.machine_time,
-            "weight": self.weight,
-            "surface_area": self.surface_area,
-            "cutting_length": self.cutting_length,
-            "piercing_time": self.piercing_time,
-            "piercing_points": self.piercing_points,
-            "shelf_number": self.shelf_number,
-            "sheet_dim": self.sheet_dim,
-            "file_name": self.file_name,
-            "geofile_name": self.geofile_name,
-            "modified_date": self.modified_date,
-            "notes": self.notes,
-            "image_index": self.image_index,
-            "price": self.price,
-            "cost_of_goods": self.cost_of_goods,
-            "bend_cost": self.bend_cost,
-            "labor_cost": self.labor_cost,
-            "recut": self.recut,
-            "recut_count": self.recut_count,
-            "recut_count_notes": self.recut_count_notes,
-            "uses_primer": self.uses_primer,
-            "primer_name": None if self.primer_name == "None" else self.primer_name,
-            "primer_overspray": self.primer_overspray,
-            "cost_for_primer": self.cost_for_primer,
-            "uses_paint": self.uses_paint,
-            "paint_name": None if self.paint_name == "None" else self.paint_name,
-            "paint_overspray": self.paint_overspray,
-            "cost_for_paint": self.cost_for_paint,
-            "uses_powder_coating": self.uses_powder,
-            "powder_name": None if self.powder_name == "None" else self.powder_name,
-            "powder_transfer_efficiency": self.powder_transfer_efficiency,
-            "cost_for_powder_coating": self.cost_for_powder_coating,
-            "recoat": self.recoat,
-            "recoat_count": self.recoat_count,
-            "bend_hits": self.bend_hits,
-            "bending_files": self.bending_files,
-            "welding_files": self.welding_files,
-            "cnc_milling_files": self.cnc_milling_files,
             "categories": [category.name for category in self.categories],
             "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
-            "quantity": self.quantity,
-            "quantity_on_sheet": self.quantity_on_sheet,
-            "red_quantity_limit": self.red_quantity_limit,
-            "yellow_quantity_limit": self.yellow_quantity_limit,
-            "flow_tag": self.flowtag.to_dict(),
-            "current_flow_tag_index": self.current_flow_tag_index,
-            "current_flow_tag_status_index": self.current_flow_tag_status_index,
-            "timer": self.timer.to_dict(),
-            "flow_tag_data": self.flowtag_data.to_dict(),
+            "inventory_data": self.inventory_data.to_dict(),
+            "meta_data": self.meta_data.to_dict(),
+            "prices": self.prices.to_dict(),
+            "paint_data": self.paint_data.to_dict(),
+            "primer_data": self.primer_data.to_dict(),
+            "powder_data": self.powder_data.to_dict(),
+            "workspace_data": self.workspace_data.to_dict(),
         }
+
+
+if __name__ == "__main__":
+    from typing import get_type_hints
+
+    def generate_properties(cls_name: str, source_attr: str):
+        cls = globals()[cls_name]
+        annotations = get_type_hints(cls)
+        result = []
+        for name, typ in annotations.items():
+            result.extend(
+                (
+                    f"    @property\n    def {name}(self) -> {typ.__name__}:\n        return self.{source_attr}.{name}\n",
+                    f"    @{name}.setter\n    def {name}(self, value: {typ.__name__}):\n        self.{source_attr}.{name} = value\n",
+                )
+            )
+        return "\n".join(result)
+
+    print(generate_properties("InventoryData", "inventory_data"))
+    print(generate_properties("MetaData", "meta_data"))
+    print(generate_properties("Prices", "prices"))
+    print(generate_properties("PaintData", "paint_data"))
+    print(generate_properties("PrimerData", "primer_data"))
+    print(generate_properties("PowderData", "powder_data"))
+    print(generate_properties("WorkspaceData", "workspace_data"))
