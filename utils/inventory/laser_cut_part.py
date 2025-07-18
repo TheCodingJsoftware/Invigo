@@ -7,6 +7,7 @@ from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
+from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.flowtag import Flowtag
 from utils.workspace.flowtag_data import FlowtagData
 from utils.workspace.flowtag_timer import FlowtagTimer
@@ -20,16 +21,20 @@ if TYPE_CHECKING:
 
 
 class LaserCutPart(InventoryItem):
+    PIERCING_TIME = 2.73157894737  # seconds per piercing point
+    CUT_TIME_PER_INCH = 2.87897096597  # seconds per inch of cutting length
+
     def __init__(
         self,
         data: dict[str, Union[str, float, int, dict[str, object], list[object]]],
-        laser_cut_inventory,
+        laser_cut_inventory: "LaserCutInventory",
     ):
         super().__init__()
 
-        self.laser_cut_inventory: LaserCutInventory = laser_cut_inventory
+        self.laser_cut_inventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
         self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
+        self.sheet_settings: SheetSettings = self.laser_cut_inventory.sheet_settings
 
         self.id = -1
         self.quantity: int = 0
@@ -290,12 +295,32 @@ class LaserCutPart(InventoryItem):
             if category.name in categories:
                 self.categories.append(category)
 
+    def calculate_machine_time_from_length(self, L: float) -> float:
+        return 0.00001 * L**2 + 0.00389 * L + 0.25198
+
+    def calculate_machine_time_from_length_and_piercing_points(self, L: float, P: float) -> float:
+        return (
+            0.00000 * L**3 + 0.00000 * L**2 * P + -0.00000 * L * P**2 + 0.00000 * P**3 + -0.00001 * L**2 + -0.00010 * L * P + 0.00011 * P**2 + 0.00816 * L + 0.01222 * P + 0.04308
+        )
+
+    def calculate_piercing_time(self, L: float, P: float) -> float:
+        return 0.00000 * L**2 * P + -0.00000 * L * P**2 + 0.00000 * P**3 + -0.00010 * L * P + 0.00011 * P**2 + 0.01222 * P
+
+    def calculate_weight(self) -> float:
+        if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(self.material, self.gauge):
+            pounds_per_square_inch = pounds_per_square_foot / 144  # convert lb/ft² → lb/in²
+            return self.surface_area * pounds_per_square_inch
+        return 0.0
+
     def load_dxf_settings(self, dxf_analyzer: DxfAnalyzer):
-        self.machine_time = float(dxf_analyzer.get_machinging_time_minutes())
         self.surface_area = float(dxf_analyzer.get_cutting_area())
         self.cutting_length = float(dxf_analyzer.get_cutting_length())
-        self.piercing_time = float(dxf_analyzer.get_piercing_time())
         self.piercing_points = int(dxf_analyzer.get_piercing_points())
+        dimensions = dxf_analyzer.get_dimensions()
+        self.part_dim = f"{dimensions['length']} x {dimensions['width']}"
+        self.piercing_time = self.calculate_piercing_time(self.cutting_length, self.piercing_points)
+        self.machine_time = self.calculate_machine_time_from_length_and_piercing_points(self.cutting_length, self.piercing_points)
+        self.weight = self.calculate_weight()
 
     def load_part_data(self, data: dict):
         """Only updates part information from nest files."""
