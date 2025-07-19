@@ -60,7 +60,7 @@ class LaserCutPartsListSummaryDialog(QDialog, Ui_Form):
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []
         for assembly in self.assemblies:
             for laser_cut_part in assembly.get_all_laser_cut_parts():
-                all_assembly_laser_cut_parts.setdefault(laser_cut_part, {}).update({"assembly_quantity": assembly.quantity})
+                all_assembly_laser_cut_parts.setdefault(laser_cut_part, {}).update({"assembly_quantity": assembly.meta_data.quantity})
 
         for laser_cut_part, part_data in all_assembly_laser_cut_parts.items():
             for workspace_laser_cut_part_group in grouped_laser_cut_parts:

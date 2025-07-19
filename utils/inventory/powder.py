@@ -1,9 +1,40 @@
-from typing import TYPE_CHECKING, Union
+from dataclasses import dataclass, fields
+from typing import TYPE_CHECKING, Optional, TypedDict, Union, cast
 
 from utils.inventory.coating_item import CoatingItem, CoatingTypes
 
 if TYPE_CHECKING:
     from utils.inventory.paint_inventory import PaintInventory
+
+
+class PowderDataDict(TypedDict):
+    uses_powder: bool
+    powder_name: str
+    powder_transfer_efficiency: float
+
+
+@dataclass
+class PowderData:
+    uses_powder: bool = False
+    powder_name: str = ""
+    powder_item: Optional[CoatingItem] = None
+    powder_transfer_efficiency: float = 66.67
+
+    def __init__(self, data: Optional[PowderDataDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> PowderDataDict:
+        return {
+            "uses_powder": self.uses_powder,
+            "powder_name": self.powder_name,
+            "powder_transfer_efficiency": self.powder_transfer_efficiency,
+        }
 
 
 class Powder(CoatingItem):

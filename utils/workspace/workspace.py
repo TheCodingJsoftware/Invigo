@@ -55,19 +55,19 @@ class Workspace:
         job_ending_date: str,
     ):
         for assembly in assemblies:
-            for _ in range(int(assembly.quantity)):
+            for _ in range(int(assembly.meta_data.quantity)):
                 new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
-                new_assembly.load_settings(assembly.to_dict())
+                new_assembly.load_data(assembly.to_dict())
 
-                parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
+                parent_starting_date = datetime.strptime(parent.workspace_data.starting_date, "%Y-%m-%d %I:%M %p")
 
                 calculated_starting_date = parent_starting_date - timedelta(days=7.0)
-                calculated_ending_date = calculated_starting_date + timedelta(days=assembly.expected_time_to_complete)
+                calculated_ending_date = calculated_starting_date + timedelta(days=assembly.workspace_data.expected_time_to_complete)
 
-                new_assembly.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
-                new_assembly.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
+                new_assembly.workspace_data.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
+                new_assembly.workspace_data.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
 
-                new_assembly.quantity = 1
+                new_assembly.meta_data.quantity = 1
 
                 if isinstance(parent, Job):
                     parent.add_assembly(new_assembly)
@@ -161,9 +161,9 @@ class Workspace:
         elif self.workspace_filter.sorting_method == SortingMethod.Z_TO_A:
             assemblies.sort(key=lambda assembly: assembly.name, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.MOST_TO_LEAST:
-            assemblies.sort(key=lambda assembly: assembly.quantity, reverse=True)
+            assemblies.sort(key=lambda assembly: assembly.meta_data.quantity, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.LEAST_TO_MOST:
-            assemblies.sort(key=lambda assembly: assembly.quantity)
+            assemblies.sort(key=lambda assembly: assembly.meta_data.quantity)
         elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_TO_LIGHT:
             assemblies.sort(key=lambda assembly: assembly.get_weight(), reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_TO_HEAVY:

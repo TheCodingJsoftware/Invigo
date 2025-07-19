@@ -89,14 +89,14 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         self.assembly_image = AssemblyImage(self)
 
-        if self.assembly.assembly_image:
-            self.assembly_image.set_new_image(self.assembly.assembly_image)
+        if self.assembly.meta_data.assembly_image:
+            self.assembly_image.set_new_image(self.assembly.meta_data.assembly_image)
 
         self.assembly_image.clicked.connect(self.open_assembly_image)
         self.assembly_image.imagePathDropped.connect(self.upload_assembly_image)
         self.assembly_image.customContextMenuRequested.connect(self.assembly_image_show_context_menu)
 
-        self.doubleSpinBox_quantity.setValue(self.assembly.quantity)
+        self.doubleSpinBox_quantity.setValue(self.assembly.meta_data.quantity)
         self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
         self.doubleSpinBox_expected_time_to_complete = TimeSpinBox(self)
@@ -104,7 +104,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.doubleSpinBox_expected_time_to_complete.setValue(int(self.assembly.get_expected_time_to_complete()))
         self.expected_time_to_complete_layout.addWidget(self.doubleSpinBox_expected_time_to_complete)
 
-        self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
+        self.paint_widget.setVisible(self.assembly.workspace_data.flowtag.contains(["paint", "powder", "coating", "liquid"]))
 
         self.assembly_setting_paint_widget = AssemblyPaintSettingsWidget(self.assembly, self)
         self.assembly_setting_paint_widget.settingsChanged.connect(self.changes_made)
@@ -115,18 +115,18 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         self.image_layout.addWidget(self.assembly_image)
 
-        if str(self.assembly.flowtag.name):
+        if str(self.assembly.workspace_data.flowtag.name):
             self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
         else:
             self.comboBox_assembly_flow_tag.addItems(["Select flow tag"] + [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
-        self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flowtag))
+        self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.workspace_data.flowtag))
         self.comboBox_assembly_flow_tag.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.comboBox_assembly_flow_tag.currentTextChanged.connect(self.assembly_flow_tag_changed)
         self.comboBox_assembly_flow_tag.setFixedWidth(200)
-        self.comboBox_assembly_flow_tag.setToolTip(self.assembly.flowtag.get_tooltip())
+        self.comboBox_assembly_flow_tag.setToolTip(self.assembly.workspace_data.flowtag.get_tooltip())
 
         self.flowtag_data_widget.setVisible(True)
-        self.assembly_flowtag_data_widget = FlowtagDataButton(self.assembly.flowtag_data, self)
+        self.assembly_flowtag_data_widget = FlowtagDataButton(self.assembly.workspace_data.flowtag_data, self)
         self.flowtag_data_layout.addWidget(self.assembly_flowtag_data_widget)
 
         self.laser_cut_parts_table = LaserCutPartsPlanningTableWidget(self)
@@ -156,7 +156,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.comboBox_assembly_flow_tag.clear()
         self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
         self.comboBox_assembly_flow_tag.setCurrentText(assembly_selected_flow_tag)
-        self.comboBox_assembly_flow_tag.setToolTip(self.assembly.flowtag.get_tooltip())
+        self.comboBox_assembly_flow_tag.setToolTip(self.assembly.workspace_data.flowtag.get_tooltip())
         self.comboBox_assembly_flow_tag.blockSignals(False)
         for _, table_items in self.laser_cut_part_table_items.items():
             selected_flow_tag = table_items["flow_tag"].currentText()
@@ -172,7 +172,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
     # ASSEMBLY STUFF
     def assembly_quantity_changed(self):
-        self.assembly.quantity = self.doubleSpinBox_quantity.value()
+        self.assembly.meta_data.quantity = self.doubleSpinBox_quantity.value()
         self.update_laser_cut_parts_table_quantity()
         self.update_component_table_quantity()
         self.changes_made()
@@ -205,7 +205,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         main_layout.addWidget(scroll_area)
 
-        for file in self.assembly.assembly_files:
+        for file in self.assembly.workspace_data.assembly_files:
             self.add_assembly_drag_file_widget(files_layout, file)
 
         return main_widget, files_layout
@@ -219,7 +219,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.copy_file_with_overwrite(path_to_image, target_path)
 
         self.assembly_image.set_new_image(target_path)
-        self.assembly.assembly_image = target_path
+        self.assembly.meta_data.assembly_image = target_path
         self.upload_images([target_path])
         self.changes_made()
 
@@ -231,7 +231,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         action = contextMenu.exec(QCursor.pos())
 
         if action == delete_action:
-            self.assembly.assembly_image = None
+            self.assembly.meta_data.assembly_image = None
             self.assembly_image.clear_image()
             self.changes_made()
         elif action == paste_action:
@@ -253,13 +253,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
             )
             msg.exec()
             return
-        self.assembly.flowtag = new_flowtag
-        self.assembly.flowtag_data.flowtag = new_flowtag
-        self.assembly.flowtag_data.load_data(self.assembly.flowtag_data.to_dict())
+        self.assembly.workspace_data.flowtag = new_flowtag
+        self.assembly.workspace_data.flowtag_data.flowtag = new_flowtag
+        self.assembly.workspace_data.flowtag_data.load_data(self.assembly.workspace_data.flowtag_data.to_dict())
         self.assembly_flowtag_data_widget.dropdown.load_ui()
 
         try:
-            self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "glosspowder", "coating", "liquid"]))
+            self.paint_widget.setVisible(self.assembly.workspace_data.flowtag.contains(["paint", "glosspowder", "coating", "liquid"]))
         except AttributeError:  # There is no flow tag selected
             self.paint_widget.setHidden(True)
         self.changes_made()
@@ -284,7 +284,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.open_pdf(self.assembly_get_all_file_types(".pdf"), file_path)
 
     def assembly_delete_file(self, file_path: str, file_button: FileButton):
-        self.assembly.assembly_files.remove(file_path)
+        self.assembly.workspace_data.assembly_files.remove(file_path)
         file_button.deleteLater()
         self.changes_made()
 
@@ -301,13 +301,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
             self.copy_file_with_overwrite(file_path, target_path)
 
-            self.assembly.assembly_files.append(target_path)
+            self.assembly.workspace_data.assembly_files.append(target_path)
             self.add_assembly_drag_file_widget(files_layout, target_path)
         self.upload_files(file_paths)
         self.changes_made()
 
     def assembly_get_all_file_types(self, file_ext: str) -> list[str]:
-        files: set[str] = {file for file in self.assembly.assembly_files if file.lower().endswith(file_ext)}
+        files: set[str] = {file for file in self.assembly.workspace_data.assembly_files if file.lower().endswith(file_ext)}
         return list(files)
 
     # COMPONENT STUFF
@@ -384,7 +384,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.components_table.setItem(current_row, ComponentsTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
         self.components_table_items[component].update({"unit_quantity": unit_quantity_item})
 
-        quantity_item = QTableWidgetItem(str(component.quantity * self.assembly.quantity))
+        quantity_item = QTableWidgetItem(str(component.quantity * self.assembly.meta_data.quantity))
         quantity_item.setFont(self.tables_font)
         self.components_table.setItem(current_row, ComponentsTableColumns.QUANTITY.value, quantity_item)
         self.components_table_items[component].update({"quantity": quantity_item})
@@ -405,7 +405,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
     def update_component_table_quantity(self):
         self.components_table.blockSignals(True)
         for component, table_data in self.components_table_items.items():
-            table_data["quantity"].setText(str(component.quantity * self.assembly.quantity))
+            table_data["quantity"].setText(str(component.quantity * self.assembly.meta_data.quantity))
         self.components_table.blockSignals(False)
 
     def components_table_changed(self, row: int):
@@ -679,7 +679,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"unit_quantity": unit_quantity_item})
 
-        quantity_item = QTableWidgetItem(str(laser_cut_part.inventory_data.quantity * self.assembly.quantity))
+        quantity_item = QTableWidgetItem(str(laser_cut_part.inventory_data.quantity * self.assembly.meta_data.quantity))
         quantity_item.setFont(self.tables_font)
         quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
@@ -729,18 +729,18 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_parts_table.blockSignals(False)
         self.update_laser_cut_parts_table_height()
 
-        flowtag_data_widget = FlowtagDataButton(laser_cut_part.flowtag_data, self)
+        flowtag_data_widget = FlowtagDataButton(laser_cut_part.workspace_data.flowtag_data, self)
         if tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("laser"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.meta_data.machine_time * 60))
+            laser_cut_part.workspace_data.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.meta_data.machine_time * 60))
         elif tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("picking"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
+            laser_cut_part.workspace_data.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG_DATA.value, flowtag_data_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"flowtag_data_button": flowtag_data_widget})
 
     def update_laser_cut_parts_table_quantity(self):
         self.laser_cut_parts_table.blockSignals(True)
         for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
-            table_data["quantity"].setText(str(laser_cut_part.inventory_data.quantity * self.assembly.quantity))
+            table_data["quantity"].setText(str(laser_cut_part.inventory_data.quantity * self.assembly.meta_data.quantity))
         self.laser_cut_parts_table.blockSignals(False)
 
     def laser_cut_parts_table_changed(self, row: int):
@@ -788,12 +788,12 @@ class AssemblyPlanningWidget(AssemblyWidget):
             msg.exec()
             return
         laser_cut_part.workspace_data.flowtag = new_flowtag
-        laser_cut_part.flowtag_data.flowtag = new_flowtag
-        laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
+        laser_cut_part.workspace_data.flowtag_data.flowtag = new_flowtag
+        laser_cut_part.workspace_data.flowtag_data.load_data(laser_cut_part.workspace_data.flowtag_data.to_dict())
         if tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("laser"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.meta_data.machine_time * 60))
+            laser_cut_part.workspace_data.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.meta_data.machine_time * 60))
         elif tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("picking"):
-            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
+            laser_cut_part.workspace_data.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
         self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
         self.laser_cut_parts_table.resizeRowsToContents()
         self.laser_cut_parts_table.resizeColumnsToContents()
@@ -1016,15 +1016,15 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 laser_cut_part.inventory_data.quantity = float(selection)
             elif ACTION == "SET_FLOW_TAG":
                 laser_cut_part.workspace_data.flowtag = self.workspace_settings.get_flow_tag_by_name(selection)
-                laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
+                laser_cut_part.workspace_data.flowtag_data.load_data(laser_cut_part.workspace_data.flowtag_data.to_dict())
                 if tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("laser"):
-                    laser_cut_part.flowtag_data.set_tag_data(
+                    laser_cut_part.workspace_data.flowtag_data.set_tag_data(
                         tag,
                         "expected_time_to_complete",
                         int(laser_cut_part.meta_data.machine_time * 60),
                     )
                 elif tag := laser_cut_part.workspace_data.flowtag.get_tag_with_similar_name("picking"):
-                    laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
+                    laser_cut_part.workspace_data.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.meta_data.weight)
                 self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
                 self.laser_cut_parts_table.resizeRowsToContents()
                 self.laser_cut_parts_table.resizeColumnsToContents()
@@ -1173,9 +1173,9 @@ class AssemblyPlanningWidget(AssemblyWidget):
                         laser_cut_part.meta_data.modified_date = existing_laser_cut_part.meta_data.modified_date
                         laser_cut_part.meta_data.notes = existing_laser_cut_part.meta_data.notes
                         laser_cut_part.prices.price = existing_laser_cut_part.prices.price
-                        laser_cut_part.cost_of_goods = existing_laser_cut_part.cost_of_goods
-                        laser_cut_part.bend_cost = existing_laser_cut_part.bend_cost
-                        laser_cut_part.labor_cost = existing_laser_cut_part.labor_cost
+                        laser_cut_part.prices.cost_of_goods = existing_laser_cut_part.prices.cost_of_goods
+                        laser_cut_part.prices.bend_cost = existing_laser_cut_part.prices.bend_cost
+                        laser_cut_part.prices.labor_cost = existing_laser_cut_part.prices.labor_cost
                         laser_cut_part.primer_data.uses_primer = existing_laser_cut_part.primer_data.uses_primer
                         laser_cut_part.primer_data.primer_name = existing_laser_cut_part.primer_data.primer_name
                         laser_cut_part.primer_data.primer_overspray = existing_laser_cut_part.primer_data.primer_overspray
@@ -1272,10 +1272,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.assembly.add_sub_assembly(sub_assembly)
         else:
             sub_assembly = new_sub_assembly
-        sub_assembly.color = self.assembly.color
+        sub_assembly.meta_data.color = self.assembly.meta_data.color
 
         sub_assembly_widget = AssemblyPlanningWidget(sub_assembly, self._parent_widget)
-        self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, self.assembly.color)
+        self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, self.assembly.meta_data.color)
 
         toggle_button = self.sub_assemblies_toolbox.getLastToggleButton()
 
@@ -1378,7 +1378,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
     def load_sub_assemblies(self):
         for sub_assembly in self.assembly.sub_assemblies:
             sub_assembly.job = self.assembly.job
-            sub_assembly.color = self.assembly.color
+            sub_assembly.meta_data.color = self.assembly.meta_data.color
             self.load_sub_assembly(sub_assembly)
 
     def load_sub_assembly(self, assembly: Assembly):
@@ -1393,7 +1393,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
     def duplicate_sub_assembly(self, sub_assembly: Assembly):
         new_sub_assembly = Assembly(sub_assembly.to_dict(), self.assembly.job)
         new_sub_assembly.name = f"{sub_assembly.name} - (Copy)"
-        new_sub_assembly.color = self.assembly.color
+        new_sub_assembly.meta_data.color = self.assembly.meta_data.color
         self.load_sub_assembly(new_sub_assembly)
         self.assembly.add_sub_assembly(new_sub_assembly)
         self.update_context_menu()

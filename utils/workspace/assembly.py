@@ -1,5 +1,6 @@
 import copy
-from typing import TYPE_CHECKING, Optional, TypedDict
+from dataclasses import dataclass, field, fields
+from typing import TYPE_CHECKING, Any, Optional, TypedDict, cast
 
 from ui.theme import theme_var
 from utils.inventory.angle_bar import AngleBar
@@ -7,18 +8,17 @@ from utils.inventory.component import Component, ComponentDict
 from utils.inventory.dom_round_tube import DOMRoundTube
 from utils.inventory.flat_bar import FlatBar
 from utils.inventory.laser_cut_part import LaserCutPart, LaserCutPartDict
-from utils.inventory.paint import Paint
+from utils.inventory.paint import PaintData, PaintDataDict
 from utils.inventory.pipe import Pipe
-from utils.inventory.powder import Powder
-from utils.inventory.primer import Primer
+from utils.inventory.powder import PowderData, PowderDataDict
+from utils.inventory.primer import PrimerData, PrimerDataDict
 from utils.inventory.rectangular_bar import RectangularBar
 from utils.inventory.rectangular_tube import RectangularTube
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
-from utils.inventory.structural_profile import ProfilesTypes, StructuralProfileDict
+from utils.inventory.structural_profile import ProfilesTypes
 from utils.workspace.flowtag import Flowtag, FlowtagDict
 from utils.workspace.flowtag_data import FlowtagData, FlowtagDataDict
-from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
@@ -26,100 +26,162 @@ if TYPE_CHECKING:
     from utils.workspace.job import Job
 
 
-class AssemblyDataDict(TypedDict):
-    id: int
-    name: str
-    color: str
-    starting_date: str
-    expected_time_to_complete: int
-    ending_date: str
-    assembly_files: list[str]
-    quantity: int
-    not_part_of_process: bool
-    uses_primer: bool
-    primer_name: str
-    primer_overspray: float
-    cost_for_primer: float
-    uses_paint: bool
-    paint_name: str
-    paint_overspray: float
+class PricesDict(TypedDict):
     cost_for_paint: float
-    uses_powder_coating: bool
-    powder_name: str
-    powder_transfer_efficiency: float
+    cost_for_primer: float
     cost_for_powder_coating: float
+
+
+@dataclass
+class Prices:
+    cost_for_paint: float = 0.0
+    cost_for_primer: float = 0.0
+    cost_for_powder_coating: float = 0.0
+
+    def __init__(self, data: Optional[PricesDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> PricesDict:
+        return cast(PricesDict, {f.name: getattr(self, f.name) for f in fields(self)})
+
+
+class MetaDataDict(TypedDict):
     assembly_image: str
-    current_flow_tag_index: int
-    current_flow_tag_status_index: int
-    timer: dict[str, object]
+    not_part_of_process: bool
+    quantity: int
+    color: str
+
+
+@dataclass
+class MetaData:
+    assembly_image: str = ""
+    not_part_of_process: bool = False
+    quantity: int = 1
+    color: str = ""
+
+    def __init__(self, data: Optional[MetaDataDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> MetaDataDict:
+        return cast(MetaDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
+
+
+class WorkspaceDataDict(TypedDict):
+    starting_date: str
+    ending_date: str
+    expected_time_to_complete: int
+    assembly_files: list[str]
     flow_tag: FlowtagDict
     flow_tag_data: FlowtagDataDict
 
 
+@dataclass
+class WorkspaceData:
+    starting_date: str = ""
+    ending_date: str = ""
+    expected_time_to_complete: int = 0
+    assembly_files: list[str] = field(default_factory=list)
+    flowtag: Optional[Flowtag] = None
+    flowtag_data: Optional[FlowtagData] = None
+
+    def __init__(self, data: Optional[WorkspaceDataDict], workspace_settings: WorkspaceSettings):
+        self.workspace_settings = workspace_settings
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in ["flowtag", "flow_tag_data"]:
+                    continue
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+            self.flowtag = Flowtag(data.get("flowtag", {}), self.workspace_settings)
+            self.flowtag_data = FlowtagData(self.flowtag)
+            self.flowtag_data.load_data(data.get("flow_tag_data", {}))
+
+    def to_dict(self) -> WorkspaceDataDict:
+        result: dict[str, Any] = {}
+        for f in fields(self):
+            value = getattr(self, f.name)
+            result[f.name] = value.to_dict() if hasattr(value, "to_dict") else value
+        return cast(WorkspaceDataDict, result)
+
+
 class AssemblyDict(TypedDict):
-    assembly_data: AssemblyDataDict
+    id: int
+    name: str
+    meta_data: MetaDataDict
+    prices: PricesDict
+    workspace_data: WorkspaceDataDict
+    primer_data: PrimerDataDict
+    paint_data: PaintDataDict
+    powder_data: PowderDataDict
     laser_cut_parts: list[LaserCutPartDict]
     components: list[ComponentDict]
-    structural_steel_components: list[StructuralProfileDict]
+    # structural_steel_components: list[StructuralProfileDict]
     sub_assemblies: list["AssemblyDict"]
 
 
 class Assembly:
-    def __init__(self, assembly_data: dict[str, object], job):
-        self.job: Job = job
+    id: int
+    name: str
+    meta_data: MetaData
+    workspace_data: WorkspaceData
+    paint_data: PaintData
+    primer_data: PrimerData
+    powder_data: PowderData
+    laser_cut_parts: list[LaserCutPart]
+    components: list[Component]
+    sub_assemblies: list["Assembly"]
 
-        self.id = -1
-        self.name = ""
-        self.color = ""
+    def __init__(self, assembly_data: AssemblyDict, job: "Job"):
+        self.job = job
+
+        self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
         self.paint_inventory = self.job.job_manager.paint_inventory
         self.parent_assembly: "Assembly | None" = None
-        self.assembly_files: list[str] = []
+
+        self.id = assembly_data.get("id", -1)
+        self.name = assembly_data.get("name", "")
+        self.meta_data = MetaData(assembly_data.get("meta_data", {}))
+        self.workspace_data = WorkspaceData(assembly_data.get("workspace_data", {}), self.workspace_settings)
+        self.prices = Prices(assembly_data.get("prices", {}))
+        self.primer_data = PrimerData(assembly_data.get("primer_data", {}))
+        self.primer_data.primer_item = self.paint_inventory.get_primer(self.primer_data.primer_name)
+        self.paint_data = PaintData(assembly_data.get("paint_data", {}))
+        self.paint_data.paint_item = self.paint_inventory.get_paint(self.paint_data.paint_name)
+        self.powder_data = PowderData(assembly_data.get("powder_data", {}))
+        self.powder_data.powder_item = self.paint_inventory.get_powder(self.powder_data.powder_name)
+
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
         self.structural_steel_items: list[Pipe | RectangularBar | AngleBar | FlatBar | RoundBar | RectangularTube | RoundTube | DOMRoundTube] = []
         self.sub_assemblies: list[Assembly] = []
-        self.not_part_of_process = False
 
-        # Paint Items
-        self.uses_primer: bool = False
-        self.primer_name: str = None
-        self.primer_item: Primer = None
-        self.primer_overspray: float = 66.67
-        self.cost_for_primer: float = 0.0
-
-        self.uses_paint: bool = False
-        self.paint_name: str = None
-        self.paint_item: Paint = None
-        self.paint_overspray: float = 66.67
-        self.cost_for_paint: float = 0.0
-
-        self.uses_powder: bool = False
-        self.powder_name: str = None
-        self.powder_item: Powder = None
-        self.powder_transfer_efficiency: float = 66.67
-        self.cost_for_powder_coating: float = 0.0
-
-        self.starting_date = ""
-        self.ending_date = ""
-        self.expected_time_to_complete = 0
-        self.flowtag: Flowtag = None
         # self.current_flow_tag_index = 0
         # self.current_flow_tag_status_index = 0
-        self.assembly_image: str = None
-        self.quantity = 1
-
-        self.timer: FlowtagTimer = None
-        self.flowtag_data: FlowtagData = None
-
-        # NOTE Non serializable variables
-        self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
 
         self.load_data(assembly_data)
 
     def is_assembly_finished(self) -> bool:
-        return self.current_flow_tag_index >= len(self.flowtag.tags)
+        return
+        return self.current_flow_tag_index >= len(self.workspace_data.flowtag.tags)
 
     def move_to_next_process(self):
+        return
         self.timer.stop(self.get_current_tag())
         if not self.is_assembly_finished():
             self.current_flow_tag_index += 1
@@ -127,12 +189,14 @@ class Assembly:
             self.timer.start(self.get_current_tag())
 
     def all_laser_cut_parts_complete(self) -> bool:
+        return
         for laser_cut_part in self.laser_cut_parts:
             if not laser_cut_part.is_process_finished():
                 return False
         return True
 
     def all_sub_assemblies_complete(self) -> bool:
+        return
         for sub_assembly in self.sub_assemblies:
             if not sub_assembly.is_assembly_finished():
                 return False
@@ -152,18 +216,18 @@ class Assembly:
 
     def get_current_tag(self) -> Optional[Tag]:
         try:
-            return self.flowtag.tags[self.current_flow_tag_index]
+            return self.workspace_data.flowtag.tags[self.current_flow_tag_index]
         except IndexError:
             return None
 
     def get_all_paints(self) -> str:
         name = ""
-        if self.uses_primer and self.primer_item:
-            name += f"{self.primer_item.part_name}\n"
-        if self.uses_paint and self.paint_item:
-            name += f"{self.paint_item.part_name}\n"
-        if self.uses_powder and self.powder_item:
-            name += f"{self.powder_item.part_name}\n"
+        if self.primer_data.uses_primer and self.primer_data.primer_item:
+            name += f"{self.primer_data.primer_item.part_name}\n"
+        if self.paint_data.uses_paint and self.paint_data.paint_item:
+            name += f"{self.paint_data.paint_item.part_name}\n"
+        if self.powder_data.uses_powder and self.powder_data.powder_item:
+            name += f"{self.powder_data.powder_item.part_name}\n"
         return name
 
     def get_weight(self) -> float:
@@ -210,61 +274,14 @@ class Assembly:
         return self.laser_cut_parts + [part for sub_assembly in self.get_all_sub_assemblies() for part in sub_assembly.laser_cut_parts]
 
     def get_expected_time_to_complete(self) -> int:
-        total_time: int = 0
-        for laser_cut_part in self.laser_cut_parts:
-            total_time += laser_cut_part.get_expected_time_to_complete() * laser_cut_part.inventory_data.quantity
-        for tag in self.flowtag_data.tags_data:
-            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
+        total_time: int = sum(laser_cut_part.get_expected_time_to_complete() * laser_cut_part.inventory_data.quantity for laser_cut_part in self.laser_cut_parts)
+        for tag in self.workspace_data.flowtag_data.tags_data:
+            total_time += self.workspace_data.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
         for sub_assembly in self.sub_assemblies:
             total_time += sub_assembly.get_expected_time_to_complete()
-        return total_time * self.quantity
-
-    def load_settings(self, data):
-        assembly_data = data.get("assembly_data", {})
-        self.id = assembly_data.get("id", -1)
-        self.name = assembly_data.get("name", "Assembly")
-        self.starting_date = assembly_data.get("starting_date", "")
-        self.expected_time_to_complete = assembly_data.get("expected_time_to_complete", 0)
-        self.ending_date = assembly_data.get("ending_date", "")
-        self.flowtag = Flowtag(assembly_data.get("flow_tag", {}), self.workspace_settings)
-        self.current_flow_tag_index = assembly_data.get("current_flow_tag_index", 0)
-        self.current_flow_tag_status_index = assembly_data.get("current_flow_tag_status_index", 0)
-        self.assembly_image = assembly_data.get("assembly_image")
-        self.assembly_files = assembly_data.get("assembly_files", [])
-        self.quantity = assembly_data.get("quantity", 1)
-        self.color = assembly_data.get("color", theme_var("primary"))
-        self.not_part_of_process = assembly_data.get("not_part_of_process", False)
-        # If deepcopy is not done, than a reference is kept in the original object it was copied from
-        # and then it messes everything up, specifically it will mess up laser cut parts
-        # when you add a job to workspace
-        self.timer = FlowtagTimer(copy.deepcopy(assembly_data.get("timer", {})), self.flowtag)
-        self.flowtag_data = FlowtagData(self.flowtag)
-        self.flowtag_data.load_data(assembly_data.get("flow_tag_data", {}))
-
-        self.uses_primer = assembly_data.get("uses_primer", False)
-        self.primer_name = assembly_data.get("primer_name")
-        self.primer_overspray = assembly_data.get("primer_overspray", 66.67)
-        if self.uses_primer and self.primer_name:
-            self.primer_item = self.paint_inventory.get_primer(self.primer_name)
-        self.cost_for_primer = assembly_data.get("cost_for_primer", 0.0)
-
-        self.uses_paint = assembly_data.get("uses_paint", False)
-        self.paint_name = assembly_data.get("paint_name")
-        self.paint_overspray = assembly_data.get("paint_overspray", 66.67)
-        if self.uses_paint and self.paint_name:
-            self.paint_item = self.paint_inventory.get_paint(self.paint_name)
-        self.cost_for_paint = assembly_data.get("cost_for_paint", 0.0)
-
-        self.uses_powder = assembly_data.get("uses_powder_coating", False)
-        self.powder_name = assembly_data.get("powder_name")
-        self.powder_transfer_efficiency = assembly_data.get("powder_transfer_efficiency", 66.67)
-        if self.uses_powder and self.powder_name:
-            self.powder_item = self.paint_inventory.get_powder(self.powder_name)
-        self.cost_for_powder_coating = assembly_data.get("cost_for_powder_coating", 0.0)
+        return total_time * self.meta_data.quantity
 
     def load_data(self, data):
-        self.load_settings(data)
-
         self.laser_cut_parts.clear()
         laser_cut_parts = data.get("laser_cut_parts", [])
         for laser_cut_part_data in laser_cut_parts:
@@ -280,52 +297,52 @@ class Assembly:
             component = Component(component_data, self.job.components_inventory)
             self.add_component(component)
 
-        self.structural_steel_items.clear()
-        structural_steel_components = data.get("structural_steel_components", [])
-        for structural_steel_component_data in structural_steel_components:
-            if structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_BAR.value:
-                structural_steel_component = RectangularBar(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_BAR.value:
-                structural_steel_component = RoundBar(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.FLAT_BAR.value:
-                structural_steel_component = FlatBar(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ANGLE_BAR.value:
-                structural_steel_component = AngleBar(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_TUBE.value:
-                structural_steel_component = RectangularTube(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_TUBE.value:
-                structural_steel_component = RoundTube(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.DOM_ROUND_TUBE.value:
-                structural_steel_component = DOMRoundTube(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            elif structural_steel_component_data.get("profile_type") == ProfilesTypes.PIPE.value:
-                structural_steel_component = Pipe(
-                    structural_steel_component_data,
-                    self.job.structural_steel_inventory,
-                )
-            else:
-                continue
-            self.structural_steel_items.append(structural_steel_component)
+        # self.structural_steel_items.clear()
+        # structural_steel_components = data.get("structural_steel_components", [])
+        # for structural_steel_component_data in structural_steel_components:
+        #     if structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_BAR.value:
+        #         structural_steel_component = RectangularBar(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_BAR.value:
+        #         structural_steel_component = RoundBar(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     elif structural_steel_component_data.get("profile_type") == ProfilesTypes.FLAT_BAR.value:
+        #         structural_steel_component = FlatBar(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ANGLE_BAR.value:
+        #         structural_steel_component = AngleBar(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     elif structural_steel_component_data.get("profile_type") == ProfilesTypes.RECTANGULAR_TUBE.value:
+        #         structural_steel_component = RectangularTube(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     elif structural_steel_component_data.get("profile_type") == ProfilesTypes.ROUND_TUBE.value:
+        #         structural_steel_component = RoundTube(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     elif structural_steel_component_data.get("profile_type") == ProfilesTypes.DOM_ROUND_TUBE.value:
+        #         structural_steel_component = DOMRoundTube(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     elif structural_steel_component_data.get("profile_type") == ProfilesTypes.PIPE.value:
+        #         structural_steel_component = Pipe(
+        #             structural_steel_component_data,
+        #             self.job.structural_steel_inventory,
+        #         )
+        #     else:
+        #         continue
+        # self.structural_steel_items.append(structural_steel_component)
 
         self.sub_assemblies.clear()
         sub_assemblies = data.get("sub_assemblies", [])
@@ -335,37 +352,16 @@ class Assembly:
 
     def to_dict(self) -> AssemblyDict:
         return {
-            "assembly_data": {
-                "id": self.id,
-                "name": self.name,
-                "color": self.color,
-                "starting_date": self.starting_date,
-                "expected_time_to_complete": self.get_expected_time_to_complete(),
-                "ending_date": self.ending_date,
-                "assembly_image": self.assembly_image,
-                "quantity": self.quantity,
-                "not_part_of_process": self.not_part_of_process,
-                "uses_primer": self.uses_primer,
-                "primer_name": None if self.primer_name == "None" else self.primer_name,
-                "primer_overspray": self.primer_overspray,
-                "cost_for_primer": self.cost_for_primer,
-                "uses_paint": self.uses_paint,
-                "paint_name": None if self.paint_name == "None" else self.paint_name,
-                "paint_overspray": self.paint_overspray,
-                "cost_for_paint": self.cost_for_paint,
-                "uses_powder_coating": self.uses_powder,
-                "powder_name": None if self.powder_name == "None" else self.powder_name,
-                "powder_transfer_efficiency": self.powder_transfer_efficiency,
-                "cost_for_powder_coating": self.cost_for_powder_coating,
-                "assembly_files": self.assembly_files,
-                "flow_tag": self.flowtag.to_dict(),
-                "current_flow_tag_index": self.current_flow_tag_index,
-                "current_flow_tag_status_index": self.current_flow_tag_status_index,
-                "timer": self.timer.to_dict(),
-                "flow_tag_data": self.flowtag_data.to_dict(),
-            },
+            "id": self.id,
+            "name": self.name,
+            "meta_data": self.meta_data.to_dict(),
+            "prices": self.prices.to_dict(),
+            "paint_data": self.paint_data.to_dict(),
+            "primer_data": self.primer_data.to_dict(),
+            "powder_data": self.powder_data.to_dict(),
+            "workspace_data": self.workspace_data.to_dict(),
             "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
             "components": [component.to_dict() for component in self.components],
-            "structural_steel_components": [structural_steel_component.to_dict() for structural_steel_component in self.structural_steel_items],
+            # "structural_steel_components": [structural_steel_component.to_dict() for structural_steel_component in self.structural_steel_items],
             "sub_assemblies": [sub_assembly.to_dict() for sub_assembly in self.sub_assemblies],
         }

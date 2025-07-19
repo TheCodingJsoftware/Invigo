@@ -77,8 +77,8 @@ class JobLoaderController(QObject):
     def get_all_images(self, job: Job) -> list[str]:
         images = set()
         for a in job.get_all_assemblies():
-            if a.assembly_image:
-                images.add(a.assembly_image)
+            if a.meta_data.assembly_image:
+                images.add(a.meta_data.assembly_image)
         for lcp in job.get_all_laser_cut_parts():
             images.add(lcp.meta_data.image_index)
         for c in job.get_all_components():
@@ -91,7 +91,7 @@ class JobLoaderController(QObject):
     def get_all_files(self, job: Job) -> list[str]:
         files = set()
         for a in job.get_all_assemblies():
-            for f in a.assembly_files:
+            for f in a.workspace_data.assembly_files:
                 if not f.lower().endswith((".pdf", ".jpeg", ".jpg", ".png")):
                     files.add(f)
         for lcp in job.get_all_laser_cut_parts():

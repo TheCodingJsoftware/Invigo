@@ -69,10 +69,10 @@ class JobGeneratorDialog(QDialog, Ui_Form):
 
                 spin_box = HumbleDoubleSpinBox(self.tree_widget)
                 spin_box.setDecimals(0)
-                spin_box.setToolTip(f"Original: {assembly.quantity}")
+                spin_box.setToolTip(f"Original: {assembly.meta_data.quantity}")
                 spin_box.setMinimum(1)
                 spin_box.setMaximum(9999)  # or some other logical limit
-                spin_box.setValue(assembly.quantity)
+                spin_box.setValue(assembly.meta_data.quantity)
 
                 # Insert spin box into column 2
                 job_item.addChild(assembly_item)
@@ -125,7 +125,7 @@ class JobGeneratorDialog(QDialog, Ui_Form):
                         spinbox: HumbleDoubleSpinBox = info["spinbox"]
 
                         cloned_assembly = Assembly(assembly_ref.to_dict(), merged_job)
-                        cloned_assembly.quantity = int(spinbox.value())
+                        cloned_assembly.meta_data.quantity = int(spinbox.value())
                         merged_job.add_assembly(cloned_assembly)
 
         return merged_job

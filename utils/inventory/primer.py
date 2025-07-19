@@ -1,9 +1,40 @@
-from typing import TYPE_CHECKING, Union
+from dataclasses import dataclass, fields
+from typing import TYPE_CHECKING, Optional, TypedDict, Union, cast
 
 from utils.inventory.coating_item import CoatingItem, CoatingTypes
 
 if TYPE_CHECKING:
     from utils.inventory.paint_inventory import PaintInventory
+
+
+class PrimerDataDict(TypedDict):
+    uses_primer: bool
+    primer_name: str
+    primer_overspray: float
+
+
+@dataclass
+class PrimerData:
+    uses_primer: bool = False
+    primer_name: str = ""
+    primer_item: Optional[CoatingItem] = None
+    primer_overspray: float = 66.67
+
+    def __init__(self, data: Optional[PrimerDataDict]):
+        for f in fields(self):
+            setattr(self, f.name, f.default)
+
+        if data:
+            for f in fields(self):
+                if f.name in data:
+                    setattr(self, f.name, data[f.name])
+
+    def to_dict(self) -> PrimerDataDict:
+        return {
+            "uses_primer": self.uses_primer,
+            "primer_name": self.primer_name,
+            "primer_overspray": self.primer_overspray,
+        }
 
 
 class Primer(CoatingItem):

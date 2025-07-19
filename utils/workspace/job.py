@@ -112,7 +112,7 @@ class Job:
             for tag in laser_cut_part.workspace_data.flowtag.tags:
                 tags[tag.name] = tag
         for assembly in self.get_all_assemblies():
-            for tag in assembly.flowtag.tags:
+            for tag in assembly.workspace_data.flowtag.tags:
                 tags[tag.name] = tag
 
         ordered_tags: list[Tag] = []
@@ -143,8 +143,8 @@ class Job:
             for assembly_laser_cut_part in assembly.laser_cut_parts:
                 unit_quantity = assembly_laser_cut_part.inventory_data.quantity
                 new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
-                new_laser_cut_part.inventory_data.quantity = unit_quantity * assembly.quantity
-                new_laser_cut_part.matched_to_sheet_cost_price = assembly_laser_cut_part.matched_to_sheet_cost_price
+                new_laser_cut_part.inventory_data.quantity = unit_quantity * assembly.meta_data.quantity
+                new_laser_cut_part.prices.matched_to_sheet_cost_price = assembly_laser_cut_part.prices.matched_to_sheet_cost_price
 
                 if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
                     existing_component.inventory_data.quantity += new_laser_cut_part.inventory_data.quantity
@@ -163,7 +163,7 @@ class Job:
             for assembly_component in assembly.components:
                 unit_quantity = assembly_component.quantity
                 new_component = Component(assembly_component.to_dict(), self.components_inventory)
-                new_component.quantity = unit_quantity * assembly.quantity
+                new_component.quantity = unit_quantity * assembly.meta_data.quantity
                 if existing_component := components_dict.get(new_component.name):
                     existing_component.quantity += new_component.quantity
                 else:
@@ -186,7 +186,7 @@ class Job:
         total_weight = 0.0
         for assembly in self.get_all_assemblies():
             for laser_cut_part in assembly.laser_cut_parts:
-                total_weight += laser_cut_part.meta_data.weight * laser_cut_part.inventory_data.quantity * assembly.quantity
+                total_weight += laser_cut_part.meta_data.weight * laser_cut_part.inventory_data.quantity * assembly.meta_data.quantity
         return total_weight
 
     def get_all_assemblies(self) -> list[Assembly]:
@@ -251,7 +251,7 @@ class Job:
                 inventory_laser_cut_part.workspace_data.welding_files = laser_cut_part.workspace_data.welding_files
                 inventory_laser_cut_part.workspace_data.cnc_milling_files = laser_cut_part.workspace_data.cnc_milling_files
                 inventory_laser_cut_part.workspace_data.flowtag = laser_cut_part.workspace_data.flowtag
-                inventory_laser_cut_part.flowtag_data = laser_cut_part.flowtag_data
+                inventory_laser_cut_part.workspace_data.flowtag_data = laser_cut_part.workspace_data.flowtag_data
 
                 inventory_laser_cut_part.primer_data.uses_primer = laser_cut_part.primer_data.uses_primer
                 inventory_laser_cut_part.paint_data.uses_paint = laser_cut_part.paint_data.uses_paint
@@ -278,7 +278,7 @@ class Job:
 
     def is_valid(self) -> tuple[bool, str]:
         for assembly in self.get_all_assemblies():
-            if not assembly.flowtag:
+            if not assembly.workspace_data.flowtag:
                 return (False, assembly.name)
         for laser_cut_part in self.get_all_laser_cut_parts():
             if not laser_cut_part.workspace_data.flowtag.tags:

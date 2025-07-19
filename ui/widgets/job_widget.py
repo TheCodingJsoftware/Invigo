@@ -374,7 +374,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         if not new_assembly:
             assembly = Assembly({}, self.job)
             assembly.name = f"Enter Assembly Name{len(self.job.assemblies)}"
-            assembly.color = colors.get_random_color()
+            assembly.meta_data.color = colors.get_random_color()
             self.job.add_assembly(assembly)
             self.changes_made()
         else:
@@ -385,7 +385,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         elif self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_quoter_tab":
             assembly_widget = AssemblyQuotingWidget(assembly, self)
 
-        self.assemblies_toolbox.addItem(assembly_widget, assembly.name, assembly.color)
+        self.assemblies_toolbox.addItem(assembly_widget, assembly.name, assembly.meta_data.color)
 
         toggle_button = self.assemblies_toolbox.getLastToggleButton()
 
@@ -501,7 +501,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
     def duplicate_assembly(self, assembly: Assembly):
         new_assembly = Assembly(assembly.to_dict(), self.job)
         new_assembly.name = f"{assembly.name} - (Copy)"
-        new_assembly.color = colors.get_random_color()
+        new_assembly.meta_data.color = colors.get_random_color()
         self.load_assembly(new_assembly)
         self.job.add_assembly(new_assembly)
         self.update_context_menu()

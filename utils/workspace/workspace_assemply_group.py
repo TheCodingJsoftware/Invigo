@@ -26,7 +26,7 @@ class WorkspaceAssemblyGroup:
     def get_all_files(self) -> list[str]:
         all_files: set[str] = set()
         for assembly in self:
-            for file in assembly.assembly_files:
+            for file in assembly.workspace_data.assembly_files:
                 all_files.add(file)
         return list(all_files)
 

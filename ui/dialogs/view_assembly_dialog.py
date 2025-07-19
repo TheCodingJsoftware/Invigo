@@ -28,7 +28,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.workspace = workspace
         self.laser_cut_inventory = self.workspace.laser_cut_inventory
 
-        self.label_assembly_image.setPixmap(QPixmap(self.assembly.assembly_image))
+        self.label_assembly_image.setPixmap(QPixmap(self.assembly.meta_data.assembly_image))
         self.label_assembly_name.setText(self.assembly.name)
 
         self.parent: MainWindow = parent
@@ -50,7 +50,7 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
         self.setWindowTitle(self.assembly.name)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
-        base_color = self.assembly.color
+        base_color = self.assembly.meta_data.color
         hover_color = lighten_color(base_color)
         font_color = get_on_color_from_primary(base_color)
         button.setObjectName("assembly_button_drop_menu")

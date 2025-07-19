@@ -1029,8 +1029,8 @@ class WorkspaceWidget(QWidget, Ui_Form):
         assembly_tree_widget_item.setFont(WorkspaceAssemblyTreeColumns.QUANTITY.value, self.tables_font)
 
         # PICTURE
-        if group.base_assembly.assembly_image:
-            image = QPixmap(group.base_assembly.assembly_image)
+        if group.base_assembly.meta_data.assembly_image:
+            image = QPixmap(group.base_assembly.meta_data.assembly_image)
             original_width = image.width()
             original_height = image.height()
             new_height = self.assemblies_tree_widget.ROW_HEIGHT

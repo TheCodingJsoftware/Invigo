@@ -2266,8 +2266,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for component_from_job in assembly.components:
                 if not (component_from_inventory := self.components_inventory.get_component_by_part_name(component_from_job.part_name)):
                     continue
-                component_from_inventory.quantity -= component_from_job.quantity * assembly.quantity
-                component_from_inventory.latest_change_quantity = f"{os.getlogin().title()} removed {component_from_job.quantity * assembly.quantity} quantity from sending {job.name} to workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                component_from_inventory.quantity -= component_from_job.quantity * assembly.meta_data.quantity
+                component_from_inventory.latest_change_quantity = f"{os.getlogin().title()} removed {component_from_job.quantity * assembly.meta_data.quantity} quantity from sending {job.name} to workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 components_to_save.append(component_from_inventory)
             self.components_inventory.save_components(components_to_save)
         # self.components_inventory.save_local_copy()

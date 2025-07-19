@@ -34,7 +34,6 @@ class StructuralProfileDict(TypedDict):
     notes: str
     material: str
     flow_tag: FlowtagDict
-    # timer: dict[str, object]
     flow_tag_data: FlowtagDataDict
     current_flow_tag_index: int
     current_flow_tag_status_index: int

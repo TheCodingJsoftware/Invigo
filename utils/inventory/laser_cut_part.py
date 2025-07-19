@@ -4,15 +4,13 @@ from typing import TYPE_CHECKING, Any, Optional, TypedDict, Union, cast
 
 from utils.dxf_analyzer import DxfAnalyzer
 from utils.inventory.category import Category
-from utils.inventory.coating_item import CoatingItem
 from utils.inventory.inventory_item import InventoryItem
-from utils.inventory.paint import Paint
-from utils.inventory.powder import Powder
-from utils.inventory.primer import Primer
+from utils.inventory.paint import PaintData, PaintDataDict
+from utils.inventory.powder import PowderData, PowderDataDict
+from utils.inventory.primer import PrimerData, PrimerDataDict
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.flowtag import Flowtag, FlowtagDict
 from utils.workspace.flowtag_data import FlowtagData, FlowtagDataDict
-from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
@@ -142,87 +140,6 @@ class Prices:
         return cast(PricesDict, {f.name: getattr(self, f.name) for f in fields(self)})
 
 
-class PaintDataDict(TypedDict):
-    uses_paint: bool
-    paint_name: str
-    paint_item: Paint | None
-    paint_overspray: float
-
-
-@dataclass
-class PaintData:
-    uses_paint: bool = False
-    paint_name: str = ""
-    paint_item: Optional[CoatingItem] = None
-    paint_overspray: float = 66.67
-
-    def __init__(self, data: Optional[PaintDataDict]):
-        for f in fields(self):
-            setattr(self, f.name, f.default)
-
-        if data:
-            for f in fields(self):
-                if f.name in data:
-                    setattr(self, f.name, data[f.name])
-
-    def to_dict(self) -> PaintDataDict:
-        return cast(PaintDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
-
-
-class PrimerDataDict(TypedDict):
-    uses_primer: bool
-    primer_name: str
-    primer_item: Primer | None
-    primer_overspray: float
-
-
-@dataclass
-class PrimerData:
-    uses_primer: bool = False
-    primer_name: str = ""
-    primer_item: Optional[CoatingItem] = None
-    primer_overspray: float = 66.67
-
-    def __init__(self, data: Optional[PrimerDataDict]):
-        for f in fields(self):
-            setattr(self, f.name, f.default)
-
-        if data:
-            for f in fields(self):
-                if f.name in data:
-                    setattr(self, f.name, data[f.name])
-
-    def to_dict(self) -> PrimerDataDict:
-        return cast(PrimerDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
-
-
-class PowderDataDict(TypedDict):
-    uses_powder: bool
-    powder_name: str
-    powder_item: Powder | None
-    powder_transfer_efficiency: float
-
-
-@dataclass
-class PowderData:
-    uses_powder: bool = False
-    powder_name: str = ""
-    powder_item: Optional[CoatingItem] = None
-    powder_transfer_efficiency: float = 66.67
-
-    def __init__(self, data: Optional[PowderDataDict]):
-        for f in fields(self):
-            setattr(self, f.name, f.default)
-
-        if data:
-            for f in fields(self):
-                if f.name in data:
-                    setattr(self, f.name, data[f.name])
-
-    def to_dict(self) -> PowderDataDict:
-        return cast(PowderDataDict, {f.name: getattr(self, f.name) for f in fields(self)})
-
-
 class WorkspaceDataDict(TypedDict):
     bending_files: list[str]
     welding_files: list[str]
@@ -295,7 +212,7 @@ class LaserCutPart(InventoryItem):
     ):
         super().__init__()
         self.id = data.get("id", -1)
-
+        self.name = data.get("name", "")
         self.laser_cut_inventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
         self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
@@ -333,6 +250,18 @@ class LaserCutPart(InventoryItem):
         self.nest: Nest | None = None
 
         # self.load_data(data)
+
+    @property
+    def bending_files(self) -> list[str]:
+        return self.workspace_data.bending_files
+
+    @property
+    def welding_files(self) -> list[str]:
+        return self.workspace_data.welding_files
+
+    @property
+    def cnc_milling_files(self) -> list[str]:
+        return self.workspace_data.cnc_milling_files
 
     def get_first_tag_index_with_similar_keyword(self, keywords: list[str]) -> int:
         for index in range(len(self.workspace_data.flowtag.tags) - 1, -1, -1):
@@ -464,7 +393,7 @@ class LaserCutPart(InventoryItem):
         self.meta_data.machine_time = self.calculate_machine_time_from_length_and_piercing_points(self.meta_data.cutting_length, self.meta_data.piercing_points)
         self.meta_data.weight = self.calculate_weight()
 
-    def load_part_data(self, data: dict):
+    def load_part_data(self, data: MetaDataDict):
         """Only updates part information from nest files."""
         self.meta_data.machine_time = data.get("machine_time", 0.0)
         self.meta_data.weight = data.get("weight", 0.0)

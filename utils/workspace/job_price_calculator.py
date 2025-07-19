@@ -88,7 +88,7 @@ class JobPriceCalculator:
         return total
 
     def get_assembly_cost(self, assembly: Assembly) -> float:
-        total = self.get_laser_cut_parts_cost(assembly.laser_cut_parts) * assembly.quantity + self.get_components_cost(assembly.components) * assembly.quantity
+        total = self.get_laser_cut_parts_cost(assembly.laser_cut_parts) * assembly.meta_data.quantity + self.get_components_cost(assembly.components) * assembly.meta_data.quantity
         for sub_assembly in assembly.sub_assemblies:
             total += self.get_assembly_cost(sub_assembly)
         return total
@@ -101,7 +101,7 @@ class JobPriceCalculator:
 
     def get_laser_cut_part_cost_of_goods(self, laser_cut_part: LaserCutPart) -> float:
         if self.match_item_cogs_to_sheet:
-            return laser_cut_part.matched_to_sheet_cost_price
+            return laser_cut_part.prices.matched_to_sheet_cost_price
         price_per_pound = self.sheet_settings.get_price_per_pound(laser_cut_part.meta_data.material)
         return (laser_cut_part.meta_data.machine_time * (self.cost_for_laser / 60)) + (laser_cut_part.meta_data.weight * price_per_pound)
 
@@ -127,10 +127,10 @@ class JobPriceCalculator:
                 self.get_laser_cut_part_cost_of_goods(laser_cut_part),
             )
             + self.calculate_laser_cut_part_overhead(
-                laser_cut_part.bend_cost,
+                laser_cut_part.prices.bend_cost,
             )
             + self.calculate_laser_cut_part_overhead(
-                laser_cut_part.labor_cost,
+                laser_cut_part.prices.labor_cost,
             )
             + self.get_laser_cut_part_cost_for_painting(laser_cut_part)
         )
@@ -176,11 +176,11 @@ class JobPriceCalculator:
 
         all_laser_cut_parts = self.job.get_all_laser_cut_parts()
         for laser_cut_part in all_laser_cut_parts:
-            laser_cut_part.matched_to_sheet_cost_price = laser_cut_part.cost_of_goods
+            laser_cut_part.prices.matched_to_sheet_cost_price = laser_cut_part.prices.cost_of_goods
 
         def _adjust_item_price(laser_cut_parts: list[LaserCutPart], amount: float):
             for laser_cut_part in laser_cut_parts:
-                laser_cut_part.matched_to_sheet_cost_price += amount
+                laser_cut_part.prices.matched_to_sheet_cost_price += amount
 
         new_item_cost = self.get_job_cost()
         difference = round(new_item_cost - target_value, 2)
@@ -204,7 +204,7 @@ class JobPriceCalculator:
             laser_cut_part.cost_for_primer = self.paint_inventory.get_primer_cost(laser_cut_part)
             laser_cut_part.cost_for_paint = self.paint_inventory.get_paint_cost(laser_cut_part)
             laser_cut_part.cost_for_powder_coating = self.paint_inventory.get_powder_cost(laser_cut_part, self.mil_thickness)
-            laser_cut_part.cost_of_goods = self.get_laser_cut_part_cost_of_goods(laser_cut_part)
+            laser_cut_part.prices.cost_of_goods = self.get_laser_cut_part_cost_of_goods(laser_cut_part)
             laser_cut_part.prices.price = round(self.get_laser_cut_part_cost(laser_cut_part), 2)
 
     def load_settings(self, settings: dict[str, float]):

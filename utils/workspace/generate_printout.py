@@ -605,7 +605,7 @@ class AssemblyTable:
             f"""
             <div class="overlay blur"></div>
             <dialog style="width: 30vw;" class="right" id="A-{self.format_filename(assembly.name)}">
-                <img src="{self.server_directory}/{assembly.assembly_image}" style="height: 100px; width: 100px;" >
+                <img src="{self.server_directory}/{assembly.meta_data.assembly_image}" style="height: 100px; width: 100px;" >
                 <h5>{assembly.name}</h5>
                 <div>{self.generate_assembly_data(assembly)}</div>
                 <nav class="right-align no-space">
@@ -625,12 +625,12 @@ class AssemblyTable:
             for assembly in self.job.get_all_assemblies():
                 html += f"""
                 <a class="row tiny-padding ripple" onclick="ui('#A-{self.format_filename(assembly.name)}');">
-                    <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
+                    <img src="{self.server_directory}/image/{assembly.meta_data.assembly_image}" class="assembly_image round">
                     <div class="max">
                         <h6>{assembly.name}</h6>
-                        <div id="assembly-proess-layout">{assembly.flowtag.get_flow_string()}</div>
+                        <div id="assembly-proess-layout">{assembly.workspace_data.flowtag.get_flow_string()}</div>
                     </div>
-                    <h5>× {assembly.quantity:,.0f}</h5>
+                    <h5>× {assembly.meta_data.quantity:,.0f}</h5>
                 </a><div class="divider"></div>"""
         html += "</article></div><br>"
         return html
@@ -657,12 +657,12 @@ class AssemblyDiv:
 
     def get_assembly_data_html(self) -> str:
         html = '<div class="assembly_data">'
-        image_html = f'<img class="assembly-image" src="{self.server_directory}/image/{self.assembly.assembly_image}">' if self.assembly.assembly_image else ""
+        image_html = f'<img class="assembly-image" src="{self.server_directory}/image/{self.assembly.meta_data.assembly_image}">' if self.assembly.meta_data.assembly_image else ""
         html += image_html
         html += '<div class="padding">'
         html += f"<h5>{self.assembly.name}</h5>"
-        html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity:,.0f}</p>'
-        html += f'<p class="small-text">Process: {self.assembly.flowtag.get_flow_string()}</p>'
+        html += f'<p class="small-text">Assembly Quantity: {self.assembly.meta_data.quantity:,.0f}</p>'
+        html += f'<p class="small-text">Process: {self.assembly.workspace_data.flowtag.get_flow_string()}</p>'
         html += f'<p class="small-text">Paint: {self.get_paint()}</p>'
         html += "</div>"
         html += "</div>"
@@ -670,7 +670,7 @@ class AssemblyDiv:
 
     def generate(self) -> str:
         html = '<details class="assembly_details" open>'
-        html += f"<summary>{self.assembly.name} × {self.assembly.quantity:,.0f}</summary>"
+        html += f"<summary>{self.assembly.name} × {self.assembly.meta_data.quantity:,.0f}</summary>"
         html += '<div class="assembly">'
         html += self.get_assembly_data_html()
 
@@ -678,7 +678,7 @@ class AssemblyDiv:
             html += '<details class="laser_cut_parts_detail" open>'
             html += "<summary>Laser Cut Parts</summary>"
             html += '<div class="detail_contents laser_cut_part_contents">'
-            laser_cut_table = LaserCutPartsTable(self.job, self.assembly.quantity, self.assembly.laser_cut_parts)
+            laser_cut_table = LaserCutPartsTable(self.job, self.assembly.meta_data.quantity, self.assembly.laser_cut_parts)
             html += laser_cut_table.generate()
             html += "</div>"
             html += "</details>"
@@ -687,7 +687,7 @@ class AssemblyDiv:
             html += '<details class="components_detail" open>'
             html += "<summary>Components</summary>"
             html += '<div class="detail_contents components_contents">'
-            component_table = ComponentsTable(self.job, self.assembly.quantity, self.assembly.components)
+            component_table = ComponentsTable(self.job, self.assembly.meta_data.quantity, self.assembly.components)
             html += component_table.generate()
             html += "</div>"
             html += "</details>"
@@ -711,13 +711,13 @@ class AssemblyDiv:
 
     def get_paint(self) -> str:
         html = '<div class="no-padding small-text">'
-        if self.assembly.uses_primer and self.assembly.primer_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.primer_item.color}; border-radius: 5px;"></div>{self.assembly.primer_item.part_name}</div>'
-        if self.assembly.uses_paint and self.assembly.paint_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.paint_item.color}; border-radius: 5px;"></div>{self.assembly.paint_item.part_name}</div>'
-        if self.assembly.uses_powder and self.assembly.powder_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.powder_item.color}; border-radius: 5px;"></div>{self.assembly.powder_item.part_name}</div>'
-        if not (self.assembly.uses_primer or self.assembly.uses_paint or self.assembly.uses_powder):
+        if self.assembly.primer_data.uses_primer and self.assembly.primer_data.primer_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.primer_data.primer_item.color}; border-radius: 5px;"></div>{self.assembly.primer_data.primer_item.part_name}</div>'
+        if self.assembly.paint_data.uses_paint and self.assembly.paint_data.paint_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.paint_data.paint_item.color}; border-radius: 5px;"></div>{self.assembly.paint_data.paint_item.part_name}</div>'
+        if self.assembly.powder_data.uses_powder and self.assembly.powder_data.powder_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.powder_data.powder_item.color}; border-radius: 5px;"></div>{self.assembly.powder_data.powder_item.part_name}</div>'
+        if not (self.assembly.primer_data.uses_primer or self.assembly.paint_data.uses_paint or self.assembly.powder_data.uses_powder):
             html = ""
         else:
             html += "</div>"

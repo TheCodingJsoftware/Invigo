@@ -35,7 +35,6 @@ class AssemblyWidget(QWidget, Ui_Form):
         super().__init__(parent)
         self.setupUi(self)
         self._parent_widget: Union["AssemblyWidget", JobWidget] = parent
-
         self.assembly = assembly
         self.job_preferences: JobPreferences = self._parent_widget.job_preferences
         self.sheet_settings = self.assembly.job.sheet_settings
@@ -55,7 +54,7 @@ border-top-right-radius: 0px;
 border-top-left-radius: 0px;
 background-color: {theme_var("surface")};
 }}"""
-            % {"base_color": self.assembly.color}
+            % {"base_color": self.assembly.meta_data.color}
         )
         self.verticalLayout_14.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_3.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -69,13 +68,13 @@ background-color: {theme_var("surface")};
         self.doubleSpinBox_quantity.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.checkBox_not_part_of_process.setChecked(self.assembly.not_part_of_process)
+        self.checkBox_not_part_of_process.setChecked(self.assembly.meta_data.not_part_of_process)
         self.checkBox_not_part_of_process.clicked.connect(self.changes_made)
 
         self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
-        base_color = self.assembly.color
+        base_color = self.assembly.meta_data.color
         hover_color = lighten_color(base_color)
         font_color = get_on_color_from_primary(base_color)
         button.setObjectName("assembly_button_drop_menu")
@@ -136,7 +135,7 @@ background-color: {theme_var("surface")};
         dialog.show()
 
     def open_assembly_image(self):
-        self.open_image(self.assembly.assembly_image, self.assembly.name)
+        self.open_image(self.assembly.meta_data.assembly_image, self.assembly.name)
 
     def open_image(self, path: str, title: str):
         image_viewer = QImageViewer(self, path, title)
@@ -167,7 +166,7 @@ background-color: {theme_var("surface")};
         self._parent_widget.update_context_menu()
 
     def changes_made(self):
-        self.assembly.not_part_of_process = self.checkBox_not_part_of_process.isChecked()
+        self.assembly.meta_data.not_part_of_process = self.checkBox_not_part_of_process.isChecked()
         self._parent_widget.changes_made()
 
     def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
