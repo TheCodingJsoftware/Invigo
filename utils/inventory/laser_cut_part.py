@@ -1,4 +1,5 @@
 import copy
+import dataclasses
 from dataclasses import dataclass, field, fields
 from typing import TYPE_CHECKING, Any, Optional, TypedDict, Union, cast
 
@@ -35,8 +36,14 @@ class InventoryData:
     def __init__(self, data: Optional[InventoryDataDict], laser_cut_inventory: "LaserCutInventory"):
         self.laser_cut_inventory = laser_cut_inventory
 
+        for f in fields(self.__class__):
+            if f.default is not dataclasses.MISSING:
+                setattr(self, f.name, f.default)
+            elif f.default_factory is not dataclasses.MISSING:
+                setattr(self, f.name, f.default_factory())
+
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 
@@ -93,11 +100,14 @@ class MetaData:
     quantity_on_sheet: int = 0
 
     def __init__(self, data: Optional[MetaDataDict]):
-        for f in fields(self):
-            setattr(self, f.name, f.default)
+        for f in fields(self.__class__):
+            if f.default is not dataclasses.MISSING:
+                setattr(self, f.name, f.default)
+            elif f.default_factory is not dataclasses.MISSING:
+                setattr(self, f.name, f.default_factory())
 
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 
@@ -128,11 +138,14 @@ class Prices:
     matched_to_sheet_cost_price: float = 0.0
 
     def __init__(self, data: Optional[PricesDict]):
-        for f in fields(self):
-            setattr(self, f.name, f.default)
+        for f in fields(self.__class__):
+            if f.default is not dataclasses.MISSING:
+                setattr(self, f.name, f.default)
+            elif f.default_factory is not dataclasses.MISSING:
+                setattr(self, f.name, f.default_factory())
 
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 
@@ -158,23 +171,26 @@ class WorkspaceData:
 
     def __init__(self, data: Optional[WorkspaceDataDict], workspace_settings: WorkspaceSettings):
         self.workspace_settings = workspace_settings
-        for f in fields(self):
-            setattr(self, f.name, f.default)
+        for f in fields(self.__class__):
+            if f.default is not dataclasses.MISSING:
+                setattr(self, f.name, f.default)
+            elif f.default_factory is not dataclasses.MISSING:
+                setattr(self, f.name, f.default_factory())
 
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in ["flowtag", "flow_tag_data"]:
                     continue
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 
-            self.flowtag = Flowtag(data.get("flowtag", {}), self.workspace_settings)
-            self.flowtag_data = FlowtagData(self.flowtag)
-            self.flowtag_data.load_data(data.get("flow_tag_data", {}))
+        self.flowtag = Flowtag(data.get("flowtag", {}), self.workspace_settings)
+        self.flowtag_data = FlowtagData(self.flowtag)
+        self.flowtag_data.load_data(data.get("flow_tag_data", {}))
 
     def to_dict(self) -> WorkspaceDataDict:
         result: dict[str, Any] = {}
-        for f in fields(self):
+        for f in fields(self.__class__):
             value = getattr(self, f.name)
             result[f.name] = value.to_dict() if hasattr(value, "to_dict") else value
         return cast(WorkspaceDataDict, result)

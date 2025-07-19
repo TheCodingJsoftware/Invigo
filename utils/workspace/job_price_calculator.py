@@ -201,9 +201,9 @@ class JobPriceCalculator:
 
     def update_laser_cut_parts_cost(self):
         for laser_cut_part in self.job.get_all_laser_cut_parts():
-            laser_cut_part.cost_for_primer = self.paint_inventory.get_primer_cost(laser_cut_part)
-            laser_cut_part.cost_for_paint = self.paint_inventory.get_paint_cost(laser_cut_part)
-            laser_cut_part.cost_for_powder_coating = self.paint_inventory.get_powder_cost(laser_cut_part, self.mil_thickness)
+            laser_cut_part.prices.cost_for_primer = self.paint_inventory.get_primer_cost(laser_cut_part)
+            laser_cut_part.prices.cost_for_paint = self.paint_inventory.get_paint_cost(laser_cut_part)
+            laser_cut_part.prices.cost_for_powder_coating = self.paint_inventory.get_powder_cost(laser_cut_part, self.mil_thickness)
             laser_cut_part.prices.cost_of_goods = self.get_laser_cut_part_cost_of_goods(laser_cut_part)
             laser_cut_part.prices.price = round(self.get_laser_cut_part_cost(laser_cut_part), 2)
 

@@ -1052,8 +1052,8 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         return filename.lower().endswith(".pdf")
 
     def directoryContainsPdf(self, directory):
-        # if self.path not in directory:
-        # return False
+        if self.path not in directory:
+            return False
         return any(any(file.lower().endswith(".pdf") for file in files) for root, dirs, files in os.walk(directory))
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):

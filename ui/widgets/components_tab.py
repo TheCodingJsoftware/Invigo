@@ -672,8 +672,14 @@ class ComponentsTab(QWidget, Ui_Form):
         self.update_component_row_color(current_table, component)
 
     def load_table(self):
-        self.category = self.components_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex()))
-        current_table = self.category_tables[self.category]
+        if category := self.components_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex())):
+            self.category = category
+            current_table = self.category_tables[self.category]
+        else:
+            return
+        if not current_table:
+            return
+
         current_table.blockSignals(True)
         current_table.clearContents()
         current_table.setRowCount(0)
@@ -1509,7 +1515,7 @@ class ComponentsTab(QWidget, Ui_Form):
         self.settings_file.set_value("category_tabs_order", tab_order)
 
     def save_scroll_position(self):
-        if self.finished_loading:
+        if self.finished_loading and (self.category and self.category_tables[self.category]):
             self._parent_widget.save_scroll_position(self.category, self.category_tables[self.category])
 
     def restore_scroll_position(self):

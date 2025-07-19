@@ -30,7 +30,8 @@ class FlowtagDataWidget(QWidget):
 
     def load_ui(self):
         self.clear_layout(self.grid_layout)  # Clear any existing layout
-
+        if not self.flowtag_data:
+            return
         row = 0
         for tag, tag_data in self.flowtag_data.tags_data.items():
             tag_label = QLabel(tag.name)

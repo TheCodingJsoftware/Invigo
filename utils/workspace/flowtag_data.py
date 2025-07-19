@@ -15,7 +15,6 @@ class FlowtagData:
     def __init__(self, flowtag: Flowtag):
         self.flowtag: Flowtag = flowtag
         self.workspace_settings = self.flowtag.workspace_settings
-
         self.tags_data: dict[Tag, TagDataDict] = {}
 
     def load_data(self, data: FlowtagDataDict):

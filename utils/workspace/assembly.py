@@ -1,8 +1,7 @@
-import copy
+import dataclasses
 from dataclasses import dataclass, field, fields
 from typing import TYPE_CHECKING, Any, Optional, TypedDict, cast
 
-from ui.theme import theme_var
 from utils.inventory.angle_bar import AngleBar
 from utils.inventory.component import Component, ComponentDict
 from utils.inventory.dom_round_tube import DOMRoundTube
@@ -16,7 +15,6 @@ from utils.inventory.rectangular_bar import RectangularBar
 from utils.inventory.rectangular_tube import RectangularTube
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
-from utils.inventory.structural_profile import ProfilesTypes
 from utils.workspace.flowtag import Flowtag, FlowtagDict
 from utils.workspace.flowtag_data import FlowtagData, FlowtagDataDict
 from utils.workspace.tag import Tag
@@ -39,11 +37,14 @@ class Prices:
     cost_for_powder_coating: float = 0.0
 
     def __init__(self, data: Optional[PricesDict]):
-        for f in fields(self):
-            setattr(self, f.name, f.default)
+        for f in fields(self.__class__):
+            if f.default is not dataclasses.MISSING:
+                setattr(self, f.name, f.default)
+            elif f.default_factory is not dataclasses.MISSING:
+                setattr(self, f.name, f.default_factory())
 
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 
@@ -66,11 +67,14 @@ class MetaData:
     color: str = ""
 
     def __init__(self, data: Optional[MetaDataDict]):
-        for f in fields(self):
-            setattr(self, f.name, f.default)
+        for f in fields(self.__class__):
+            if f.default is not dataclasses.MISSING:
+                setattr(self, f.name, f.default)
+            elif f.default_factory is not dataclasses.MISSING:
+                setattr(self, f.name, f.default_factory())
 
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 
@@ -98,23 +102,29 @@ class WorkspaceData:
 
     def __init__(self, data: Optional[WorkspaceDataDict], workspace_settings: WorkspaceSettings):
         self.workspace_settings = workspace_settings
-        for f in fields(self):
-            setattr(self, f.name, f.default)
+
+        for f in fields(self.__class__):
+            if f.default is not dataclasses.MISSING:
+                setattr(self, f.name, f.default)
+            elif f.default_factory is not dataclasses.MISSING:
+                setattr(self, f.name, f.default_factory())
+            else:
+                setattr(self, f.name, None)  # Fallback if no default
 
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in ["flowtag", "flow_tag_data"]:
                     continue
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 
-            self.flowtag = Flowtag(data.get("flowtag", {}), self.workspace_settings)
-            self.flowtag_data = FlowtagData(self.flowtag)
-            self.flowtag_data.load_data(data.get("flow_tag_data", {}))
+        self.flowtag = Flowtag(data.get("flowtag", {}), self.workspace_settings)
+        self.flowtag_data = FlowtagData(self.flowtag)
+        self.flowtag_data.load_data(data.get("flow_tag_data", {}))
 
     def to_dict(self) -> WorkspaceDataDict:
         result: dict[str, Any] = {}
-        for f in fields(self):
+        for f in fields(self.__class__):
             value = getattr(self, f.name)
             result[f.name] = value.to_dict() if hasattr(value, "to_dict") else value
         return cast(WorkspaceDataDict, result)
@@ -275,8 +285,10 @@ class Assembly:
 
     def get_expected_time_to_complete(self) -> int:
         total_time: int = sum(laser_cut_part.get_expected_time_to_complete() * laser_cut_part.inventory_data.quantity for laser_cut_part in self.laser_cut_parts)
-        for tag in self.workspace_data.flowtag_data.tags_data:
-            total_time += self.workspace_data.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
+        if self.workspace_data.flowtag_data:
+            for tag in self.workspace_data.flowtag_data.tags_data:
+                if expected_time_to_complete := self.workspace_data.flowtag_data.get_tag_data(tag, "expected_time_to_complete"):
+                    total_time += expected_time_to_complete
         for sub_assembly in self.sub_assemblies:
             total_time += sub_assembly.get_expected_time_to_complete()
         return total_time * self.meta_data.quantity

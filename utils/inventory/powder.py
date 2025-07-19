@@ -21,11 +21,11 @@ class PowderData:
     powder_transfer_efficiency: float = 66.67
 
     def __init__(self, data: Optional[PowderDataDict]):
-        for f in fields(self):
+        for f in fields(self.__class__):
             setattr(self, f.name, f.default)
 
         if data:
-            for f in fields(self):
+            for f in fields(self.__class__):
                 if f.name in data:
                     setattr(self, f.name, data[f.name])
 

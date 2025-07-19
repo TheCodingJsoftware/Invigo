@@ -124,7 +124,7 @@ class EditLaserCutPart(QDialog):
 class LaserCutPartsTableWidget(CustomTableWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.parent: "LaserCutPartsTabWidget" = parent
+        self._parent_widget: "LaserCutPartsTabWidget" = parent
         self.setShowGrid(True)
         self.setSortingEnabled(False)
         self.setTextElideMode(Qt.TextElideMode.ElideNone)
@@ -138,10 +138,10 @@ class LaserCutPartsTableWidget(CustomTableWidget):
         self.unit_quantity_column = 2
         self.quantity_column = 3
         self.total_cost_in_stock_column = 4
-        self.paint_column = 5
-        self.paint_settings_column = 6
-        self.shelf_number_column = 7
-        self.modified_date_column = 8
+        # self.paint_column = 5
+        # self.paint_settings_column = 6
+        self.shelf_number_column = 5
+        self.modified_date_column = 6
 
         self.set_editable_column_index(
             [
@@ -158,8 +158,6 @@ class LaserCutPartsTableWidget(CustomTableWidget):
             "Quantity per Unit": self.unit_quantity_column,
             "Quantity in Stock": self.quantity_column,
             "Total Cost in Stock": self.total_cost_in_stock_column,
-            "Paint": self.paint_column,
-            "Paint Settings": self.paint_settings_column,
             "Shelf #": self.shelf_number_column,
             "Modified Date": self.modified_date_column,
         }
@@ -170,7 +168,7 @@ class LaserCutPartsTableWidget(CustomTableWidget):
 class LaserCutPartsTabWidget(CustomTabWidget):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
-        self.parent: "LaserCutTab" = parent
+        self._parent_widget: "LaserCutTab" = parent
 
 
 class PaintSettingsWidget(QWidget):
@@ -600,13 +598,13 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part]["shelf_number"].setText(laser_cut_part.meta_data.shelf_number)
         self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(laser_cut_part.meta_data.modified_date)
 
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].block_signals(True)
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].update_widgets()
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].block_signals(False)
+        # self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].block_signals(True)
+        # self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].update_widgets()
+        # self.table_laser_cut_parts_widgets[laser_cut_part]["paint_widget"].block_signals(False)
 
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_settings_widget"].block_signals(True)
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_settings_widget"].update_widgets()
-        self.table_laser_cut_parts_widgets[laser_cut_part]["paint_settings_widget"].block_signals(False)
+        # self.table_laser_cut_parts_widgets[laser_cut_part]["paint_settings_widget"].block_signals(True)
+        # self.table_laser_cut_parts_widgets[laser_cut_part]["paint_settings_widget"].update_widgets()
+        # self.table_laser_cut_parts_widgets[laser_cut_part]["paint_settings_widget"].block_signals(False)
 
         # self.update_all_laser_cut_parts_costs()
         self.update_category_total_stock_costs()
@@ -619,7 +617,7 @@ class LaserCutTab(QWidget, Ui_Form):
         laser_cut_part: LaserCutPart,
     ):
         current_table.insertRow(row_index)
-        current_table.setRowHeight(row_index, 80)
+        # current_table.setRowHeight(row_index, 80)
 
         self.table_laser_cut_parts_widgets.update({laser_cut_part: {}})
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"row": row_index})
@@ -675,21 +673,21 @@ class LaserCutTab(QWidget, Ui_Form):
         self.table_laser_cut_parts_widgets[laser_cut_part].update({"total_cost": table_item_total_cost})
 
         # PAINT SETTINGS
-        paint_settings_widget = PaintSettingsWidget(laser_cut_part, current_table)
-        current_table.setCellWidget(
-            row_index,
-            current_table.paint_settings_column,
-            paint_settings_widget,
-        )
-        self.table_laser_cut_parts_widgets[laser_cut_part].update({"paint_settings_widget": paint_settings_widget})
-        # PAINT
-        paint_widget = PaintWidget(laser_cut_part, paint_settings_widget, current_table)
-        current_table.setCellWidget(
-            row_index,
-            current_table.paint_column,
-            paint_widget,
-        )
-        self.table_laser_cut_parts_widgets[laser_cut_part].update({"paint_widget": paint_widget})
+        # paint_settings_widget = PaintSettingsWidget(laser_cut_part, current_table)
+        # current_table.setCellWidget(
+        #     row_index,
+        #     current_table.paint_settings_column,
+        #     paint_settings_widget,
+        # )
+        # self.table_laser_cut_parts_widgets[laser_cut_part].update({"paint_settings_widget": paint_settings_widget})
+        # # PAINT
+        # paint_widget = PaintWidget(laser_cut_part, paint_settings_widget, current_table)
+        # current_table.setCellWidget(
+        #     row_index,
+        #     current_table.paint_column,
+        #     paint_widget,
+        # )
+        # self.table_laser_cut_parts_widgets[laser_cut_part].update({"paint_widget": paint_widget})
         # SHELF NUMBER
         table_item_shelf_number = QTableWidgetItem(laser_cut_part.meta_data.shelf_number)
         table_item_shelf_number.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)

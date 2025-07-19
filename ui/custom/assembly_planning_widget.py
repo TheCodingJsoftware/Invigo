@@ -1179,15 +1179,15 @@ class AssemblyPlanningWidget(AssemblyWidget):
                         laser_cut_part.primer_data.uses_primer = existing_laser_cut_part.primer_data.uses_primer
                         laser_cut_part.primer_data.primer_name = existing_laser_cut_part.primer_data.primer_name
                         laser_cut_part.primer_data.primer_overspray = existing_laser_cut_part.primer_data.primer_overspray
-                        laser_cut_part.cost_for_primer = existing_laser_cut_part.cost_for_primer
+                        laser_cut_part.prices.cost_for_primer = existing_laser_cut_part.prices.cost_for_primer
                         laser_cut_part.paint_data.uses_paint = existing_laser_cut_part.paint_data.uses_paint
                         laser_cut_part.paint_data.paint_name = existing_laser_cut_part.paint_data.paint_name
                         laser_cut_part.paint_data.paint_overspray = existing_laser_cut_part.paint_data.paint_overspray
-                        laser_cut_part.cost_for_paint = existing_laser_cut_part.cost_for_paint
+                        laser_cut_part.prices.cost_for_paint = existing_laser_cut_part.prices.cost_for_paint
                         laser_cut_part.powder_data.uses_powder = existing_laser_cut_part.powder_data.uses_powder
                         laser_cut_part.powder_data.powder_name = existing_laser_cut_part.powder_data.powder_name
                         laser_cut_part.powder_data.powder_transfer_efficiency = existing_laser_cut_part.powder_data.powder_transfer_efficiency
-                        laser_cut_part.cost_for_powder_coating = existing_laser_cut_part.cost_for_powder_coating
+                        laser_cut_part.prices.cost_for_powder_coating = existing_laser_cut_part.prices.cost_for_powder_coating
                         # with contextlib.suppress(KeyError):
                         self.laser_cut_part_table_items[laser_cut_part]["painting_widget"].update_checkboxes()
                         self.laser_cut_part_table_items[laser_cut_part]["painting_settings_widget"].update_inputs()
