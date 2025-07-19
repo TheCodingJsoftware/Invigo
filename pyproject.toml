@@ -60,7 +60,7 @@ dependencies = [
     "platformdirs",
     "pluggy",
     "ptyprocess",
-    "pyglet",
+    "pyglet<2",
     "Pygments",
     "pyinstaller",
     "pyinstaller-hooks-contrib",
