@@ -656,7 +656,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
 
         # PAINT COST
-        table_widget_item_paint_cost = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_prices.cost_for_painting(laser_cut_part):,.2f}")
+        table_widget_item_paint_cost = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part):,.2f}")
         table_widget_item_paint_cost.setFont(self.tables_font)
         table_widget_item_paint_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         table_widget_item_paint_cost.setToolTip(
@@ -756,7 +756,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
             unit_price = self.price_calculator.get_laser_cut_part_cost(laser_cut_part)
             cost_of_goods = self.price_calculator.get_laser_cut_part_cost_of_goods(laser_cut_part)
-            paint_cost = self.price_calculator.get_laser_cut_part_prices.cost_for_painting(laser_cut_part)
+            paint_cost = self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part)
             table_data["paint_cost"].setText(f"${paint_cost:,.2f}")
             table_data["paint_cost"].setToolTip(
                 f"Cost for priming: ${laser_cut_part.prices.cost_for_primer:,.2f}\nCost for painting: ${laser_cut_part.prices.cost_for_paint:,.2f}\nCost for powder coating: ${laser_cut_part.prices.cost_for_powder_coating:,.2f}"
