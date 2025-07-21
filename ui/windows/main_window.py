@@ -165,7 +165,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.4"
+__version__: str = "v4.0.5"
 
 
 def check_folders(folders: list[str]):
@@ -2108,7 +2108,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             new=0,
         )
 
-    def open_workorder(self, workorder_id: str):
+    def open_workorder(self, workorder_id: int):
         webbrowser.open(
             f"http://{get_server_ip_address()}:{get_server_port()}/workorders/view?id={workorder_id}",
             new=0,
@@ -3073,15 +3073,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # )
 
             if generate_workorder_dialog.should_generate_printout():
-                folder_name = datetime.now().strftime("%Y%m%d%H%M%S%f")
-                workorder = Workorder({}, self.sheet_settings, self.laser_cut_parts_inventory)
-                workorder.nests = nests
-
-                printout = WorkorderPrintout(nests, folder_name, generate_workorder_dialog.should_show_qr_code())
-                self.upload_workorder_thread(folder_name, workorder, printout.generate())
+                workorder = Workorder(nests, self.sheet_settings, self.laser_cut_parts_inventory)
 
                 if generate_workorder_dialog.should_open_printout():
-                    self.open_workorder(folder_name)
+
+                    def workorder_saved(response: dict):
+                        self.open_workorder(response["id"])
+
+                    workorder.open_workorder(on_finished=workorder_saved)
 
             # self.workspace_tab_widget.workspace_widget.get_all_workspace_jobs_thread()
             # # self.workspace_tab_widget.workspace_widget.load_parts_table()
