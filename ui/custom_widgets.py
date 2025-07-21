@@ -2,7 +2,7 @@ import contextlib
 import os
 import platform
 from datetime import datetime, timedelta
-from functools import partial
+from functools import lru_cache, partial
 from typing import Literal
 
 from natsort import natsorted
@@ -1038,30 +1038,10 @@ class ButtonManagerWidget(QWidget):
 
 
 class PdfFilterProxyModel(QSortFilterProxyModel):
-    def __init__(self, model: QFileSystemModel, parent=None, path=""):
+    def __init__(self, model: QFileSystemModel, parent=None, root=""):
         super().__init__(parent)
-        self.path = path
+        self.root = root
         self.setSourceModel(model)
-
-    def filterAcceptsRow(self, row, parent):
-        index = self.sourceModel().index(row, 0, parent)
-        if not index.isValid():
-            return False
-        if self.sourceModel().isDir(index):
-            return self.directoryContainsPdf(self.sourceModel().filePath(index))
-        filename = self.sourceModel().fileName(index)
-        return filename.lower().endswith(".pdf")
-
-    def directoryContainsPdf(self, directory: str):
-        try:
-            # Works on both Linux and Windows
-            if os.path.commonpath([self.path, directory]) != self.path:
-                return False
-        except ValueError:  # different drives / mount points
-            return False
-
-        # your existing os.walk logic
-        return any(any(file.lower().endswith(".pdf") for file in files) for _, _, files in os.walk(directory))
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):
         left_index = left.sibling(left.row(), 0)
@@ -1081,14 +1061,17 @@ class PdfTreeView(QTreeView):
     def __init__(self, path: str, parent=None):
         super().__init__(parent)
         self._parent_widget = parent
-        self.file_system_model = QFileSystemModel(self._parent_widget)
-        self.file_system_model.setRootPath(path)
-        self.setModel(self.file_system_model)
-        self.filterModel = PdfFilterProxyModel(self.file_system_model, self._parent_widget, path)
-        self.filterModel.setSourceModel(self.file_system_model)
-        self.filterModel.setFilterKeyColumn(0)
+        self.file_system_model = QFileSystemModel(self)
+        self.file_system_model.setRootPath(path)  # <-- the source must start here
+        self.file_system_model.setNameFilters(["*.pdf"])  # optional: speed-up
+        self.file_system_model.setNameFilterDisables(False)
+
+        self.filterModel = PdfFilterProxyModel(self.file_system_model, self, path)
         self.setModel(self.filterModel)
-        self.setRootIndex(self.filterModel.mapFromSource(self.file_system_model.index(path)))
+
+        # tell the VIEW to start at the right place
+        root_index = self.filterModel.mapFromSource(self.file_system_model.index(path))
+        self.setRootIndex(root_index)
         self.header().resizeSection(0, 170)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.header().hideSection(1)  # Size
