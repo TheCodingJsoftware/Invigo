@@ -1,5 +1,6 @@
 import contextlib
 import os
+import platform
 from datetime import datetime, timedelta
 from functools import partial
 from typing import Literal
@@ -1051,8 +1052,9 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         filename = self.sourceModel().fileName(index)
         return filename.lower().endswith(".pdf")
 
-    def directoryContainsPdf(self, directory):
-        if self.path not in directory:
+    def directoryContainsPdf(self, directory: str):
+        print(self.path, directory)
+        if platform.system() == "Windows" and self.path not in directory:
             return False
         return any(any(file.lower().endswith(".pdf") for file in files) for root, dirs, files in os.walk(directory))
 
