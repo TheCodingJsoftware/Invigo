@@ -1040,7 +1040,7 @@ class ButtonManagerWidget(QWidget):
 class PdfFilterProxyModel(QSortFilterProxyModel):
     def __init__(self, model: QFileSystemModel, parent=None, root=""):
         super().__init__(parent)
-        self.root = root
+        self.root = os.path.abspath(root)
         self.setSourceModel(model)
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):

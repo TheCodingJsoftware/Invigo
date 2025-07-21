@@ -74,7 +74,7 @@ class MetaDataDict(TypedDict):
     modified_date: str
     bend_hits: int
     notes: str
-    quamtity_on_sheet: int
+    quantity_on_sheet: int
 
 
 @dataclass
@@ -426,6 +426,10 @@ class LaserCutPart(InventoryItem):
         self.meta_data.part_dim = data.get("part_dim", "")
         self.meta_data.geofile_name = data.get("geofile_name", "")
         self.meta_data.quantity_on_sheet = data.get("quantity_on_sheet", 0)
+        self.meta_data.shelf_number = data.get("shelf_number", "")
+        self.meta_data.modified_date = data.get("modified_date", "")
+        self.meta_data.bend_hits = data.get("bend_hits", 0)
+        self.meta_data.notes = data.get("notes", "")
 
     def get_copy(self) -> "LaserCutPart":
         return copy.deepcopy(self)

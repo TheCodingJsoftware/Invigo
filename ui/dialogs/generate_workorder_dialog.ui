@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>448</width>
-    <height>304</height>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -122,6 +122,9 @@ Press 'Generate' when finished.</string>
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="2" column="1">
               <widget class="QPushButton" name="pushButton_update_inventory">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -147,7 +150,7 @@ Press 'Generate' when finished.</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="autoDefault">
                 <bool>false</bool>
@@ -193,6 +196,9 @@ Press 'Generate' when finished.</string>
              </item>
              <item row="0" column="1">
               <widget class="QPushButton" name="pushButton_show_qr_code">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -215,7 +221,7 @@ Press 'Generate' when finished.</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="autoDefault">
                 <bool>false</bool>
@@ -227,6 +233,9 @@ Press 'Generate' when finished.</string>
              </item>
              <item row="0" column="0">
               <widget class="QPushButton" name="pushButton_generate_printout">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -271,7 +280,7 @@ Press 'Generate' when finished.</string>
                 <string>Opens the printout once generated.</string>
                </property>
                <property name="text">
-                <string>Open file when generated</string>
+                <string>Open printout</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
@@ -280,6 +289,9 @@ Press 'Generate' when finished.</string>
              </item>
              <item row="3" column="0">
               <widget class="QPushButton" name="pushButton_add_overflow_parts">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -303,7 +315,7 @@ if not found in Workspace</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="autoDefault">
                 <bool>false</bool>
@@ -315,6 +327,9 @@ if not found in Workspace</string>
              </item>
              <item row="3" column="1">
               <widget class="QPushButton" name="pushButton_add_remaning_parts">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>

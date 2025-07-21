@@ -49,6 +49,7 @@ class PopoutWidget(QWidget):
 
 class JobTab(QWidget):
     saveJob = pyqtSignal(Job)
+    printJob = pyqtSignal(Job)
     reloadJob = pyqtSignal(JobWidget)
 
     def __init__(self, tab_data: dict[str, str], parent):
@@ -63,8 +64,8 @@ class JobTab(QWidget):
         self.job_preferences = self._parent_widget.job_preferences
 
         self.job_widgets: list[JobWidget] = []
-        self.current_job: Job = None
-        self.default_job_status: JobStatus = None
+        self.current_job: Job | None = None
+        self.default_job_status: JobStatus | None = None
 
         self.shortcut_save = QShortcut(QKeySequence("Ctrl+S"), self)
         self.shortcut_save.activated.connect(self.save_current_job)
@@ -195,7 +196,7 @@ class JobTab(QWidget):
     def get_active_jobs(self) -> list[Job]:
         return [job_widget.job for job_widget in self.job_widgets]
 
-    def get_active_job(self) -> Job:
+    def get_active_job(self) -> Job | None:
         return next(
             (job_widget.job for job_widget in self.job_widgets if job_widget.job.name == self.get_active_tab()),
             None,
@@ -250,10 +251,10 @@ class JobTab(QWidget):
         self.update_job_save_status(self.current_job)
 
     def open_printout(self):
+        # This saves the job before printing
         self.current_job.unsaved_changes = False
-        self.saveJob.emit(self.current_job)
+        self.printJob.emit(self.current_job)
         self.update_job_save_status(self.current_job)
-        self._parent_widget.open_job(f"saved_jobs/{self.current_job.status.name.lower()}/{self.current_job.name}")
 
     def job_changed(self, job: Job):
         job.changes_made()
@@ -270,7 +271,7 @@ class JobTab(QWidget):
             else:
                 self._parent_widget.label_job_save_status.setText("Job is saved")
                 self._parent_widget.label_job_save_status.setStyleSheet(SAVED_JOB_STYLE)
-        else:
+        elif self._parent_widget.tab_text(self._parent_widget.stackedWidget.currentIndex()) == "job_quoter_tab":
             if job.unsaved_changes:
                 self._parent_widget.label_job_save_status_2.setText("You have unsaved changes")
                 self._parent_widget.label_job_save_status_2.setStyleSheet(UNSAVED_JOB_STYLE)

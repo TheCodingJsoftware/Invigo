@@ -1,6 +1,7 @@
 import os
 import shutil
 import traceback
+from datetime import datetime
 from pathlib import Path
 
 from PyQt6.QtCore import pyqtSignal
@@ -86,10 +87,13 @@ class LoadNestsThread(LoadNestFileThread):
                 for i, part_name in enumerate(parts):
                     part_name = part_name.split("\\")[-1].replace("\n", "").replace(".GEO", "").replace(".geo", "").strip()
                     laser_cut_part = LaserCutPart(
+                        {},  # type: ignore
+                        self.laser_cut_inventory,
+                    )
+                    laser_cut_part.name = part_name
+                    laser_cut_part.inventory_data.quantity = int(quantities[i]) * quantity_multiplier
+                    laser_cut_part.load_part_data(
                         {
-                            "name": part_name,
-                            "quantity": int(quantities[i]) * quantity_multiplier,
-                            "quantity_on_sheet": int(quantities[i]),
                             "machine_time": float(machining_times[i]),
                             "weight": float(weights[i]),
                             "part_number": part_numbers[i],
@@ -104,8 +108,12 @@ class LoadNestsThread(LoadNestFileThread):
                             "sheet_dim": sheet_dimension,
                             "part_dim": part_dimensions[i],
                             "geofile_name": geofile_names[i],
-                        },
-                        self.laser_cut_inventory,
+                            "shelf_number": "",
+                            "modified_date": datetime.now().strftime("%B %d %Y %I:%M:%S %p"),
+                            "bend_hits": 0,
+                            "notes": "",
+                            "quantity_on_sheet": int(quantities[i]),
+                        }
                     )
                     laser_cut_part.nest = nest_object
                     nest_object.add_laser_cut_part(laser_cut_part)
@@ -134,9 +142,11 @@ class LoadNestsThread(LoadNestFileThread):
             print(e)
             try:
                 self.signal.emit(
-                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
+                    [f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"]
                 )
             except Exception:
                 self.signal.emit(
-                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nest_files[0]}"
+                    [
+                        f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nest_files[0]}"
+                    ]
                 )

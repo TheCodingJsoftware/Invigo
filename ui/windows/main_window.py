@@ -897,6 +897,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.job_planner_widget = JobTab(self.stack_tab_buttons_data["Job Planner"], self)
         self.job_planner_widget.default_job_status = JobStatus.PLANNING
         self.job_planner_widget.saveJob.connect(self.save_job)
+        self.job_planner_widget.printJob.connect(self.print_job)
         self.job_planner_widget.reloadJob.connect(self.reload_job)
         self.job_planner_widget.add_job()
         self.job_planner_layout.addWidget(self.job_planner_widget)
@@ -910,6 +911,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.job_quote_widget = JobTab(self.stack_tab_buttons_data["Job Quoter"], self)
         self.job_quote_widget.default_job_status = JobStatus.QUOTING
         self.job_quote_widget.saveJob.connect(self.save_job)
+        self.job_quote_widget.printJob.connect(self.print_job)
         self.job_quote_widget.reloadJob.connect(self.reload_job)
         self.job_quote_widget.add_job()
         self.quote_generator_layout.addWidget(self.job_quote_widget)
@@ -1572,21 +1574,43 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         job = job_widget.job
         self.reload_job_worker(job.id)
 
+    def get_active_job(self) -> Job | None:
+        if self.tab_text(self.stackedWidget.currentIndex()) == "job_planner_tab":
+            return self.job_planner_widget.get_active_job()
+        elif self.tab_text(self.stackedWidget.currentIndex()) == "job_quoter_tab":
+            return self.job_quote_widget.get_active_job()
+        return None
+
     def save_job(self, job: Job | None):
-        if not job:
-            if self.tab_text(self.stackedWidget.currentIndex()) == "job_planner_tab":
-                job = self.job_planner_widget.get_active_job()
-            elif self.tab_text(self.stackedWidget.currentIndex()) == "job_quoter_tab":
-                job = self.job_quote_widget.get_active_job()
-        if not job:
+        if job is None:
+            job = self.get_active_job()
+        if job is None:
             msg = QMessageBox(
                 QMessageBox.Icon.Critical,
-                "Critcal",
-                "Active job could not be found. Aborted.n\n\nHow did this happen?",
+                "Critical",
+                "Active job could not be found. Aborted.\n\nHow did this happen?",
             )
             msg.exec()
             return
+
         self.save_job_worker(job)
+        job.unsaved_changes = False
+        self.job_planner_widget.update_job_save_status(job)
+        self.status_button.setText(f"Saved {job.name}", "lime")
+
+    def print_job(self, job: Job | None):
+        if job is None:
+            job = self.get_active_job()
+        if job is None:
+            msg = QMessageBox(
+                QMessageBox.Icon.Critical,
+                "Critical",
+                "Active job could not be found. Aborted.\n\nHow did this happen?",
+            )
+            msg.exec()
+            return
+
+        self.print_job_worker(job)
         job.unsaved_changes = False
         self.job_planner_widget.update_job_save_status(job)
         self.status_button.setText(f"Saved {job.name}", "lime")
@@ -2078,15 +2102,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             new=0,
         )
 
-    def open_job(self, job_id: str):
+    def open_job(self, job_id: int):
         webbrowser.open(
             f"http://{get_server_ip_address()}:{get_server_port()}/jobs/view?id={job_id}",
             new=0,
         )
 
-    def open_workorder(self, folder: str):
+    def open_workorder(self, workorder_id: str):
         webbrowser.open(
-            f"http://{get_server_ip_address()}:{get_server_port()}/workorder_printout/{folder}",
+            f"http://{get_server_ip_address()}:{get_server_port()}/workorders/view?id={workorder_id}",
             new=0,
         )
 
@@ -3172,8 +3196,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QThreadPool.globalInstance().start(upload_job_worker)
 
     def save_job_response(self, response: str):
+        if job := self.get_active_job():
+            job.id = response["id"]
         self.status_button.setText("Job was sent successfully", "lime")
         self.load_jobs_worker()
+
+    def print_job_worker(self, job: Job):
+        upload_job_worker = SaveJobWorker(job)
+        upload_job_worker.signals.success.connect(self.save_job_response)
+        upload_job_worker.signals.success.connect(self.print_job_response)
+        self.status_button.setText(f"Uploading {job.name}", "yellow")
+        self.job_planner_widget.update_job_save_status(job)
+        QThreadPool.globalInstance().start(upload_job_worker)
+
+    def print_job_response(self, response: dict):
+        self.open_job(response["id"])
 
     def load_jobs_worker(self):
         get_all_jobs_worker = GetAllJobsWorker()

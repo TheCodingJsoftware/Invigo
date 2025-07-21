@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 from natsort import natsorted
 
@@ -47,10 +47,10 @@ class JobIcon(Enum):
             cls.WORKSPACE: Icons.job_workspace_icon,
             cls.ARCHIVE: Icons.job_archive_icon,
         }
-        for member in cls:
-            if member.value == job_status:
-                return icon_map.get(member)
-        return None
+        return next(
+            (icon_map.get(member) for member in cls if member.value == job_status),
+            None,
+        )
 
 
 class JobColor(Enum):
@@ -116,10 +116,7 @@ class Job:
                 tags[tag.name] = tag
 
         ordered_tags: list[Tag] = []
-        for ordered_tag in self.workspace_settings.get_all_tags():
-            if ordered_tag in tags:
-                ordered_tags.append(tags[ordered_tag])
-
+        ordered_tags.extend(tags[ordered_tag] for ordered_tag in self.workspace_settings.get_all_tags() if ordered_tag in tags)
         return ordered_tags
 
     def changes_made(self):
@@ -280,16 +277,13 @@ class Job:
         for assembly in self.get_all_assemblies():
             if not assembly.workspace_data.flowtag:
                 return (False, assembly.name)
-        for laser_cut_part in self.get_all_laser_cut_parts():
-            if not laser_cut_part.workspace_data.flowtag.tags:
-                return (False, laser_cut_part.name)
-        return (True, "")
+        return next(
+            ((False, laser_cut_part.name) for laser_cut_part in self.get_all_laser_cut_parts() if not laser_cut_part.workspace_data.flowtag.tags),
+            (True, ""),
+        )
 
     def is_job_finished(self) -> bool:
-        for assembly in self.get_all_assemblies():
-            if not assembly.is_assembly_finished():
-                return False
-        return True
+        return all(assembly.is_assembly_finished() for assembly in self.get_all_assemblies())
 
     def load_data(self, data: dict[str, dict[str, object]]):
         self.load_settings(data)
