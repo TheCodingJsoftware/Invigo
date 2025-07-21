@@ -1053,10 +1053,13 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         return filename.lower().endswith(".pdf")
 
     def directoryContainsPdf(self, directory: str):
-        print(self.path, directory)
-        if platform.system() == "Windows" and self.path not in directory:
-            return False
-        return any(any(file.lower().endswith(".pdf") for file in files) for root, dirs, files in os.walk(directory))
+        if platform.system() == "Windows":
+            try:
+                if os.path.commonpath([self.path, directory]) != self.path:
+                    return False
+            except ValueError:
+                return False
+        return any(file.lower().endswith(".pdf") for _, _, files in os.walk(directory) for file in files)
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):
         left_index = left.sibling(left.row(), 0)
