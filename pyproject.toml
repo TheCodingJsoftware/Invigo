@@ -1,6 +1,6 @@
 [project]
 name = "Invigo"
-version = "4.0.0"
+version = "4.0.7"
 description = "A state-of-the-art assembly-based Inventory Manager, designed to streamline the process of component tracking, quoting and management."
 readme = "README.md"
 requires-python = ">=3.13"
@@ -88,6 +88,7 @@ dependencies = [
     "rtree",
     "ruff",
     "schedule",
+    "scipy>=1.16.0",
     "setuptools",
     "shapely",
     "shiboken6",

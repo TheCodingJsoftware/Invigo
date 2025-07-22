@@ -9,6 +9,7 @@ import time
 import tkinter as tk
 import traceback
 import webbrowser
+from collections import defaultdict
 from datetime import datetime
 from functools import partial
 from tkinter import messagebox
@@ -165,7 +166,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.6"
+__version__: str = "v4.0.7"
 
 
 def check_folders(folders: list[str]):
@@ -2269,20 +2270,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             laser_cut_part_to_add.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_parts_inventory.add_laser_cut_part(laser_cut_part_to_add)
 
-    # TODO Group sheets together with quantity: e.g. 5, 10, 1 should be total 16 of the same sheets in different nests
     def remove_sheet_quantities_from_nests(self, nests: list[Nest]):
+        grouped_sheet_counts: dict[str, int] = defaultdict(int)
+
+        # Group total quantity used per sheet name
         for nest in nests:
-            if sheet := self.sheets_inventory.get_sheet_by_name(nest.sheet.get_name()):
-                old_quantity = sheet.quantity
-                sheet.quantity -= nest.sheet_count
-                sheet.latest_change_quantity = f"{os.getlogin().title()} - Removed {nest.sheet_count} sheets from workorder at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning and "Cutoff" not in sheet.get_categories():
-                    sheet.has_sent_warning = True
-                    self.generate_single_sheet_report(sheet, old_quantity)
-                if "Cutoff" in sheet.get_categories() and sheet.quantity <= 0:
-                    self.sheets_inventory.remove_sheet(sheet)
-        self.sheets_inventory.save_local_copy()
-        # self.upload_files([f"{self.sheets_inventory.filename}.json"])
+            name = nest.sheet.get_name()
+            grouped_sheet_counts[name] += nest.sheet_count
+
+        sheets_to_save: list[Sheet] = []
+        for sheet_name, total_count in grouped_sheet_counts.items():
+            sheet = self.sheets_inventory.get_sheet_by_name(sheet_name)
+            if not sheet:
+                continue
+
+            old_quantity = sheet.quantity
+            sheet.quantity -= total_count
+            sheet.latest_change_quantity = f"{os.getlogin().title()} - Removed {total_count} sheets from workorder at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+
+            if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning and "Cutoff" not in sheet.get_categories():
+                sheet.has_sent_warning = True
+                self.generate_single_sheet_report(sheet, old_quantity)
+
+            if "Cutoff" in sheet.get_categories() and sheet.quantity <= 0:
+                self.sheets_inventory.remove_sheet(sheet)
+            else:
+                sheets_to_save.append(sheet)
+
+        self.sheets_inventory.save_sheets(sheets_to_save)
 
     def subtract_component_quantity_from_job(self, job: Job):
         for assembly in job.get_all_assemblies():
@@ -3039,38 +3054,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 )
                 msg.exec()
 
-            if generate_workorder_dialog.should_update_inventory() and nested_parts_in_workspace:
-                if not self.show_nested_parts_in_workspace_dialog(nested_parts_in_workspace):
-                    # self.laser_cut_parts_inventory.save_local_copy()
-                    # self.workspace.save()
-                    # self.upload_files(
-                    #     [
-                    #         f"{self.workspace.filename}.json",
-                    #         f"{self.laser_cut_parts_inventory.filename}.json",
-                    #     ],
-                    # )
-                    msg = QMessageBox(
-                        QMessageBox.Icon.Information,
-                        "Aborted",
-                        "Process aborted.",
-                        QMessageBox.StandardButton.Ok,
-                        self,
-                    )
-                    msg.exec()
-                    return
-                self.workorder_move_to_next_process(
-                    nests,
-                    all_workspace_laser_part_groups,
-                    generate_workorder_dialog.should_add_remaining_parts(),
-                )
-                # self.laser_cut_parts_inventory.save_local_copy()
-                # self.workspace.save()
-                # self.upload_files(
-                #     [
-                #         f"{self.workspace.filename}.json",
-                #         f"{self.laser_cut_parts_inventory.filename}.json",
-                #     ],
-                # )
+            # if generate_workorder_dialog.should_update_inventory() and nested_parts_in_workspace:
+            #     if not self.show_nested_parts_in_workspace_dialog(nested_parts_in_workspace):
+            #         # self.laser_cut_parts_inventory.save_local_copy()
+            #         # self.workspace.save()
+            #         # self.upload_files(
+            #         #     [
+            #         #         f"{self.workspace.filename}.json",
+            #         #         f"{self.laser_cut_parts_inventory.filename}.json",
+            #         #     ],
+            #         # )
+            #         msg = QMessageBox(
+            #             QMessageBox.Icon.Information,
+            #             "Aborted",
+            #             "Process aborted.",
+            #             QMessageBox.StandardButton.Ok,
+            #             self,
+            #         )
+            #         msg.exec()
+            #         return
+            #     self.workorder_move_to_next_process(
+            #         nests,
+            #         all_workspace_laser_part_groups,
+            #         generate_workorder_dialog.should_add_remaining_parts(),
+            #     )
+            # self.laser_cut_parts_inventory.save_local_copy()
+            # self.workspace.save()
+            # self.upload_files(
+            #     [
+            #         f"{self.workspace.filename}.json",
+            #         f"{self.laser_cut_parts_inventory.filename}.json",
+            #     ],
+            # )
 
             if generate_workorder_dialog.should_generate_printout():
                 workorder = Workorder(nests, self.sheet_settings, self.laser_cut_parts_inventory)

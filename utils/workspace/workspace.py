@@ -59,7 +59,12 @@ class Workspace:
                 new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
                 new_assembly.load_data(assembly.to_dict())
 
-                parent_starting_date = datetime.strptime(parent.workspace_data.starting_date, "%Y-%m-%d %I:%M %p")
+                if isinstance(parent, Job):
+                    parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
+                elif isinstance(parent, Assembly):
+                    parent_starting_date = datetime.strptime(parent.workspace_data.starting_date, "%Y-%m-%d %I:%M %p")
+                else:
+                    parent_starting_date = datetime.now()
 
                 calculated_starting_date = parent_starting_date - timedelta(days=7.0)
                 calculated_ending_date = calculated_starting_date + timedelta(days=assembly.workspace_data.expected_time_to_complete)
