@@ -26,7 +26,7 @@ class MetaDataDict(TypedDict):
 
 class POItemDict(TypedDict):
     id: int
-    order_quantity: int
+    order_quantity: float
 
 
 class PurchaseOrderDict(TypedDict):
@@ -152,7 +152,7 @@ class PurchaseOrder:
                 self.sheets.append(sheet)
                 self.sheets_order_data.append(sheet_data)
 
-    def set_component_order_quantity(self, component: Component, quantity_to_order: int):
+    def set_component_order_quantity(self, component: Component, quantity_to_order: float):
         for item in self.components_order_data:
             if item["id"] == component.id:
                 item["order_quantity"] = quantity_to_order

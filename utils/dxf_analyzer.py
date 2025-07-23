@@ -11,7 +11,7 @@ class DxfAnalyzer:
             raise ValueError("DXF did not load as a 2D shape")
 
     def get_cutting_length(self) -> float:
-        return sum(entity.length(self.shape.vertices) for entity in self.shape.entities)
+        return float(sum(entity.length(self.shape.vertices) for entity in self.shape.entities))
 
     def get_cutting_area(self) -> float:
         return float(self.shape.area)
