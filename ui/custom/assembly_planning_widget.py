@@ -1252,7 +1252,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.upload_images_thread = UploadThread(files)
         self.upload_images_thread.start()
 
-    def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart:
+    def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart | None:
         return next(
             (laser_cut_part_name for laser_cut_part_name in self.assembly.laser_cut_parts if laser_cut_part_name.name == laser_cut_part_name),
             None,

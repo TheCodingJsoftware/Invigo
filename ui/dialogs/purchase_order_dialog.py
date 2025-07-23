@@ -1,4 +1,5 @@
 import contextlib
+import logging
 import webbrowser
 from datetime import datetime
 from enum import Enum, auto
@@ -706,13 +707,13 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
     def components_table_row_changed(self, row: int):
         self.components_table.blockSignals(True)
         if component := self.components_dict.get(row):
-            with contextlib.suppress(ValueError):
+            try:
                 part_name = self.components_table.item(row, ComponentsTableColumns.PART_NAME.value).text()
                 part_number = self.components_table.item(row, ComponentsTableColumns.PART_NUMBER.value).text()
                 unit_price = float(
                     self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).text().replace("$", "").replace(",", "").replace("CAD", "").replace("USD", "").strip()
                 )
-                quantity_to_order = int(self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
+                quantity_to_order = float(self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
 
                 component.part_name = part_name
                 component.part_number = part_number
@@ -726,6 +727,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).setText(f"{quantity_to_order:,}")
 
                 self.unsaved_changes = True
+            except Exception as e:
+                print(e)
+                logging.error(f"Error loading component: {e}")
 
         self.components_table.blockSignals(False)
 
@@ -842,7 +846,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 price_per_pound = float(
                     self.sheets_table.item(row, SheetsTableColumns.PRICE_PER_POUND.value).text().replace("CAD", "").replace("USD", "").replace("$", "").replace(",", "").strip()
                 )
-                quantity_to_order = int(self.sheets_table.item(row, SheetsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
+                quantity_to_order = float(self.sheets_table.item(row, SheetsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
 
                 sheet.price_per_pound = price_per_pound
                 self.purchase_order.set_sheet_order_quantity(sheet, quantity_to_order)

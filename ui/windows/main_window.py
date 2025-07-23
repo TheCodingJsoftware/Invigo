@@ -17,7 +17,7 @@ from typing import Any, Callable, Optional, Union
 
 import qtawesome as qta
 import requests
-from natsort import natsorted, ns
+from natsort import natsorted
 from PyQt6.QtCore import (
     QEventLoop,
     QPoint,
@@ -32,7 +32,6 @@ from PyQt6.QtGui import (
     QCursor,
     QDragEnterEvent,
     QDragLeaveEvent,
-    QDropEvent,
     QFont,
     QIcon,
 )
@@ -56,7 +55,6 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from config.environments import Environment
 from ui.custom.job_tab import JobTab
 from ui.custom_widgets import (
     ButtonManagerWidget,
@@ -73,7 +71,6 @@ from ui.dialogs.edit_business_dialog import EditBusinessInfoDialog
 from ui.dialogs.edit_contact_dialog import EditContactInfoDialog
 from ui.dialogs.edit_paint_inventory import EditPaintInventory
 from ui.dialogs.edit_shipping_address_dialog import EditShippingAddressDialog
-from ui.dialogs.edit_user_workspace_settings import EditUserWorkspaceSettingsDialog
 from ui.dialogs.edit_workspace_settings import EditWorkspaceSettings
 from ui.dialogs.generate_workorder_dialog import GenerateWorkorderDialog
 from ui.dialogs.job_generator import JobGeneratorDialog
@@ -166,7 +163,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.10"
+__version__: str = "v4.0.11"
 
 
 def check_folders(folders: list[str]):
@@ -2745,11 +2742,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for nest_laser_cut_part in current_job.get_all_nested_laser_cut_parts():
                 for laser_cut_part in current_job.get_all_laser_cut_parts():
                     if laser_cut_part.name == nest_laser_cut_part.name:
-                        laser_cut_part.load_part_data(nest_laser_cut_part.to_dict())
+                        laser_cut_part.load_part_data(nest_laser_cut_part.to_dict().get("meta_data", {}))
                         parts_to_update.discard(nest_laser_cut_part.name)
                         break
-            not_updated_parts = list(parts_to_update)
-            if not_updated_parts:
+            if not_updated_parts := list(parts_to_update):
                 message = f"The following parts were not found in {current_job.name}:\n"
                 for i, part in enumerate(not_updated_parts):
                     message += f"{i + 1}. {part}\n"
