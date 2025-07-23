@@ -535,14 +535,16 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         self.comboBox_vendor.addItems([vendor.name for vendor in self.purchase_order_manager.vendors])
 
-        if not self.purchase_order.meta_data.purchase_order_number:
-            self.comboBox_vendor.setCurrentText(self.purchase_order.meta_data.vendor.name)
+        if self.purchase_order.meta_data.purchase_order_number <= 1:
+            if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
+                self.purchase_order.meta_data.vendor = selected_vendor
             self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
             self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
         else:
             self.doubleSpinBox_po_number.setValue(self.purchase_order.meta_data.purchase_order_number)
 
         self.doubleSpinBox_po_number.valueChanged.connect(self.meta_data_changed)
+
         status_list = list(Status)
         self.comboBox_status.addItems([status.name.replace("_", " ").title() for status in status_list])
         try:
@@ -551,6 +553,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             status_index = 0  # fallback to first if not found
         self.comboBox_status.setCurrentIndex(status_index)
         self.comboBox_status.currentIndexChanged.connect(self.meta_data_changed)
+
         self.comboBox_shipping_method.addItems([method.name.replace("_", " ").title() for method in ShippingMethod])
         self.comboBox_shipping_method.setCurrentIndex(self.purchase_order.meta_data.shipping_method.value)
         self.comboBox_shipping_method.currentIndexChanged.connect(self.meta_data_changed)
@@ -558,14 +561,18 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.comboBox_shipping_address.setCurrentText(self.purchase_order.meta_data.shipping_address.name)
         self.comboBox_shipping_address.setToolTip(self.purchase_order.meta_data.shipping_address.__str__())
         self.comboBox_shipping_address.currentIndexChanged.connect(self.meta_data_changed)
+
         self.comboBox_vendor.setCurrentText(self.purchase_order.meta_data.vendor.name)
         self.comboBox_vendor.setToolTip(self.purchase_order.meta_data.vendor.__str__())
-        self.comboBox_vendor.currentIndexChanged.connect(self.meta_data_changed)
+        self.comboBox_vendor.currentIndexChanged.connect(self.vendor_changed)
+
         order_date_qdate = QDate.fromString(self.purchase_order.meta_data.order_date, "yyyy-MM-dd")
         if not order_date_qdate.isValid():
             order_date_qdate = QDate.currentDate()
+
         self.dateEdit_expected_arrival.setDate(order_date_qdate)
         self.dateEdit_expected_arrival.dateChanged.connect(self.meta_data_changed)
+
         self.textEdit_notes.setText(self.purchase_order.meta_data.notes)
         self.textEdit_notes.textChanged.connect(self.meta_data_changed)
 
@@ -585,12 +592,16 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         self.refresh_purchase_orders()
 
-    def meta_data_changed(self):
-        self.purchase_order.meta_data.shipping_method = ShippingMethod(self.comboBox_shipping_method.currentIndex())
+    def vendor_changed(self):
         if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
             self.purchase_order.meta_data.vendor = selected_vendor
             self.comboBox_vendor.setToolTip(selected_vendor.__str__())
             self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(selected_vendor))
+        self.unsaved_changes = True
+
+    def meta_data_changed(self):
+        self.purchase_order.meta_data.shipping_method = ShippingMethod(self.comboBox_shipping_method.currentIndex())
+        self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
         if selected_shipping_address := self.purchase_order_manager.get_shipping_address_by_name(self.comboBox_shipping_address.currentText()):
             self.purchase_order.meta_data.shipping_address = selected_shipping_address
             self.comboBox_shipping_address.setToolTip(selected_shipping_address.__str__())

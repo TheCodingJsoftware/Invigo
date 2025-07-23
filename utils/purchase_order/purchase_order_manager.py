@@ -105,7 +105,7 @@ class PurchaseOrderManager:
 
     def get_latest_po_number(self, vendor: Vendor) -> int:
         max_po_number = max(
-            (po.meta_data.purchase_order_number for po in self.purchase_orders if po.meta_data.vendor == vendor),
+            (po.meta_data.purchase_order_number for po in self.purchase_orders if po.meta_data.vendor.name == vendor.name),
             default=0,
         )
         return max_po_number + 1
@@ -179,6 +179,8 @@ class PurchaseOrderManager:
         self.purchase_orders.append(po)
 
     def save_purchase_order(self, purchase_order: PO, on_finished: Callable | None = None):
+        self.purchase_orders.append(purchase_order)
+
         self.save_purchase_order_chain = RunnableChain()
 
         save_purchase_order_worker = SavePurchaseOrderWorker(purchase_order)
