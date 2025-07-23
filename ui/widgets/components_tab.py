@@ -923,11 +923,7 @@ class ComponentsTab(QWidget, Ui_Form):
                 return
 
             new_unit_quantity, ok = QInputDialog.getDouble(
-                self,
-                "Unit Quantity",
-                "Enter a new unit quantity:",
-                value=selected_component.get_category_quantity(self.category),
-                min=0,
+                self, "Unit Quantity", "Enter a new unit quantity:", value=selected_component.get_category_quantity(self.category), min=0, decimals=2
             )
             if new_unit_quantity and ok:
                 selected_component.set_category_quantity(self.category, new_unit_quantity)
@@ -945,6 +941,7 @@ class ComponentsTab(QWidget, Ui_Form):
                 "Quantity in Stock",
                 "Enter a new quantity in stock:",
                 value=selected_component.quantity,
+                decimals=2,
             )
             if new_quantity_in_stock and ok:
                 try:
