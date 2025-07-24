@@ -2363,6 +2363,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.upload_files(list(images))
 
     def changes_response(self, responses: str | list[str]):
+        logging.info(f"changes_response: {responses}")
+
         def extract_last(path: str) -> str:
             """Helper to extract last part of path."""
             return path.split("/")[-1]
