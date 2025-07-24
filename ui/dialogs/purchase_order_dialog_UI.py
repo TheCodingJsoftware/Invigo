@@ -12,7 +12,10 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(1780, 1151)
+        Dialog.setWindowModality(QtCore.Qt.WindowModality.NonModal)
+        Dialog.resize(1356, 636)
+        Dialog.setSizeGripEnabled(False)
+        Dialog.setModal(False)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.splitter = QtWidgets.QSplitter(parent=Dialog)
@@ -111,7 +114,7 @@ class Ui_Dialog(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1202, 837))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 908, 322))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
@@ -243,7 +246,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Edit Purchase Order"))
         self.label.setText(_translate("Dialog", "PO number:"))
         self.label_2.setText(_translate("Dialog", "Vendor:"))
         self.label_3.setText(_translate("Dialog", "Shipping address:"))

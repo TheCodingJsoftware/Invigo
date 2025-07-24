@@ -333,6 +333,7 @@ class SheetOrdersWidget(QWidget):
         self.h_layout.addStretch()
 
         self.setLayout(self.h_layout)
+
         self.load_ui()
 
     def load_ui(self):
@@ -504,6 +505,8 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self.purchase_order_manager.get_purchase_order_data(self.purchase_order, on_finished=self.load_ui)
         else:
             self.load_ui()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.showMaximized()
 
     def load_ui(self):
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.widget_components)
