@@ -335,8 +335,8 @@ class NestedLaserCutParts:
         html += "<tbody>"
         for laser_cut_part in nest.laser_cut_parts:
             recut_part_string = ""
-            if laser_cut_part.recut:
-                recut_part_string = f"<br><span class='small-text no-line'>(Recuts: {laser_cut_part.recut_count_notes})</span>"
+            # if laser_cut_part.recut:
+            #     recut_part_string = f"<br><span class='small-text no-line'>(Recuts: {laser_cut_part.recut_count_notes})</span>"
             html += f"""<tr>
             <td class="min" data-label="{self.headers[0]}" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#NEST-{self.format_filename(laser_cut_part.name)}');">

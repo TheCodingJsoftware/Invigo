@@ -641,19 +641,19 @@ class AssemblyQuotingWidget(AssemblyWidget):
         part_dim_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_DIM.value, part_dim_item)
 
-        painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
-        painting_settings_widget.settingsChanged.connect(self.changes_made)
-        self.laser_cut_parts_table.setCellWidget(
-            current_row,
-            LaserCutTableColumns.PAINT_SETTINGS.value,
-            painting_settings_widget,
-        )
-        self.laser_cut_part_table_items[laser_cut_part].update({"painting_settings_widget": painting_settings_widget})
+        # painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
+        # painting_settings_widget.settingsChanged.connect(self.changes_made)
+        # self.laser_cut_parts_table.setCellWidget(
+        #     current_row,
+        #     LaserCutTableColumns.PAINT_SETTINGS.value,
+        #     painting_settings_widget,
+        # )
+        # self.laser_cut_part_table_items[laser_cut_part].update({"painting_settings_widget": painting_settings_widget})
 
-        painting_widget = LaserCutPartPaintWidget(laser_cut_part, painting_settings_widget, self.laser_cut_parts_table)
-        painting_widget.settingsChanged.connect(self.changes_made)
-        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PAINTING.value, painting_widget)
-        self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
+        # painting_widget = LaserCutPartPaintWidget(laser_cut_part, painting_settings_widget, self.laser_cut_parts_table)
+        # painting_widget.settingsChanged.connect(self.changes_made)
+        # self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PAINTING.value, painting_widget)
+        # self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
 
         # PAINT COST
         table_widget_item_paint_cost = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part):,.2f}")
@@ -668,6 +668,17 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_widget_item_paint_cost,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"paint_cost": table_widget_item_paint_cost})
+
+        # Cutting Cost
+        table_widget_item_cutting_cost = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_for_cutting(laser_cut_part):,.2f}")
+        table_widget_item_cutting_cost.setFont(self.tables_font)
+        table_widget_item_cutting_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.laser_cut_parts_table.setItem(
+            current_row,
+            LaserCutTableColumns.CUTTING_COST.value,
+            table_widget_item_cutting_cost,
+        )
+        self.laser_cut_part_table_items[laser_cut_part].update({"cutting_cost": table_widget_item_cutting_cost})
 
         # COGS
         table_widget_item_cost_of_goods = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_of_goods(laser_cut_part):,.2f}")
@@ -757,10 +768,12 @@ class AssemblyQuotingWidget(AssemblyWidget):
             unit_price = self.price_calculator.get_laser_cut_part_cost(laser_cut_part)
             cost_of_goods = self.price_calculator.get_laser_cut_part_cost_of_goods(laser_cut_part)
             paint_cost = self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part)
+            cutting_cost = self.price_calculator.get_laser_cut_part_cost_for_cutting(laser_cut_part)
             table_data["paint_cost"].setText(f"${paint_cost:,.2f}")
             table_data["paint_cost"].setToolTip(
                 f"Cost for priming: ${laser_cut_part.prices.cost_for_primer:,.2f}\nCost for painting: ${laser_cut_part.prices.cost_for_paint:,.2f}\nCost for powder coating: ${laser_cut_part.prices.cost_for_powder_coating:,.2f}"
             )
+            table_data["cutting_cost"].setText(f"${cutting_cost:,.2f}")
             table_data["cost_of_goods"].setText(f"${cost_of_goods:,.2f}")
             table_data["labor_cost"].setText(f"${laser_cut_part.prices.labor_cost:,.2f}")
             table_data["bend_cost"].setText(f"${laser_cut_part.prices.bend_cost:,.2f}")
@@ -932,6 +945,11 @@ class AssemblyQuotingWidget(AssemblyWidget):
         rows: set[int] = {item.row() for item in self.laser_cut_parts_table.selectedItems()}
         return list(rows)
 
+    def edit_paint(self):
+        edit_paint_dialog = EditPaintDialog(self.laser_cut_inventory, self)
+        if edit_paint_dialog.exec():
+            self.changes_made()
+
     def delete_selected_laser_cut_parts(self):
         if selected_laser_cut_parts := self.get_selected_laser_cut_parts():
             for laser_cut_part in selected_laser_cut_parts:
@@ -1017,6 +1035,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
             )
             move_to_menu.addAction(action)
 
+        edit_paint_action = QAction("Edit Paint", self)
+        edit_paint_action.triggered.connect(self.edit_paint)
+
         delete_action = QAction("Delete", self)
         delete_action.triggered.connect(self.delete_selected_laser_cut_parts)
 
@@ -1025,6 +1046,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         menu.addMenu(set_quantity_menu)
         menu.addMenu(add_to_menu)
         menu.addMenu(move_to_menu)
+        menu.addAction(edit_paint_action)
         menu.addAction(delete_action)
 
         self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))

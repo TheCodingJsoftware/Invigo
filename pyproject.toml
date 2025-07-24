@@ -21,6 +21,7 @@ dependencies = [
     "colorlog",
     "colormap",
     "contourpy",
+    "cryptography>=45.0.5",
     "cycler",
     "debugpy",
     "distro",

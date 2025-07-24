@@ -20,11 +20,12 @@ class LaserCutTableColumns(AutoNumber):
     QUANTITY = auto()
     PART_DIM = auto()
     SHELF_NUMBER = auto()
-    PAINTING = auto()
-    PAINT_SETTINGS = auto()
+    # PAINTING = auto()
+    # PAINT_SETTINGS = auto()
     PAINT_COST = auto()
     BEND_COST = auto()
     LABOR_COST = auto()
+    CUTTING_COST = auto()
     COST_OF_GOODS = auto()
     UNIT_PRICE = auto()
     PRICE = auto()
@@ -60,9 +61,10 @@ class LaserCutPartsQuotingTableWidget(CustomTableWidget):
             "Qty": LaserCutTableColumns.QUANTITY.value,
             "Part Dim": LaserCutTableColumns.PART_DIM.value,
             "Shelf #": LaserCutTableColumns.SHELF_NUMBER.value,
-            "Painting": LaserCutTableColumns.PAINTING.value,
-            "Paint Settings": LaserCutTableColumns.PAINT_SETTINGS.value,
+            # "Painting": LaserCutTableColumns.PAINTING.value,
+            # "Paint Settings": LaserCutTableColumns.PAINT_SETTINGS.value,
             "Paint Cost": LaserCutTableColumns.PAINT_COST.value,
+            "Cutting Cost": LaserCutTableColumns.CUTTING_COST.value,
             "Cost of\nGoods": LaserCutTableColumns.COST_OF_GOODS.value,
             "Bend Cost": LaserCutTableColumns.BEND_COST.value,
             "Labor Cost": LaserCutTableColumns.LABOR_COST.value,

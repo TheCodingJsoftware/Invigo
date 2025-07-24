@@ -536,7 +536,11 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         self.comboBox_vendor.addItems([vendor.name for vendor in self.purchase_order_manager.vendors])
 
-        if self.purchase_order.meta_data.purchase_order_number <= 1:
+        if self.purchase_order.meta_data.purchase_order_number <= 1 and self.purchase_order.meta_data.vendor:
+            self.comboBox_vendor.setCurrentText(self.purchase_order.meta_data.vendor.name)
+            self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
+            self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
+        elif self.purchase_order.meta_data.purchase_order_number <= 1:
             if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
                 self.purchase_order.meta_data.vendor = selected_vendor
             self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))

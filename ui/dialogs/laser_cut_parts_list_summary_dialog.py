@@ -21,8 +21,8 @@ class LaserCutPartsListSummaryTable(LaserCutPartsPlanningTableWidget):
         super().__init__(parent)
         self.parent = parent
         columns_to_hide = [
-            LaserCutTableColumns.PAINTING,
-            LaserCutTableColumns.PAINT_SETTINGS,
+            # LaserCutTableColumns.PAINTING,
+            # LaserCutTableColumns.PAINT_SETTINGS,
             LaserCutTableColumns.FLOW_TAG,
             LaserCutTableColumns.FLOW_TAG_DATA,
         ]

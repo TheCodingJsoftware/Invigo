@@ -685,19 +685,19 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
 
-        painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
-        painting_settings_widget.settingsChanged.connect(self.changes_made)
-        self.laser_cut_parts_table.setCellWidget(
-            current_row,
-            LaserCutTableColumns.PAINT_SETTINGS.value,
-            painting_settings_widget,
-        )
-        self.laser_cut_part_table_items[laser_cut_part].update({"painting_settings_widget": painting_settings_widget})
+        # painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
+        # painting_settings_widget.settingsChanged.connect(self.changes_made)
+        # self.laser_cut_parts_table.setCellWidget(
+        #     current_row,
+        #     LaserCutTableColumns.PAINT_SETTINGS.value,
+        #     painting_settings_widget,
+        # )
+        # self.laser_cut_part_table_items[laser_cut_part].update({"painting_settings_widget": painting_settings_widget})
 
-        painting_widget = LaserCutPartPaintWidget(laser_cut_part, painting_settings_widget, self.laser_cut_parts_table)
-        painting_widget.settingsChanged.connect(self.changes_made)
-        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PAINTING.value, painting_widget)
-        self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
+        # painting_widget = LaserCutPartPaintWidget(laser_cut_part, painting_settings_widget, self.laser_cut_parts_table)
+        # painting_widget.settingsChanged.connect(self.changes_made)
+        # self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PAINTING.value, painting_widget)
+        # self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
 
         flow_tag_combobox = QComboBox(self)
         flow_tag_combobox.setStyleSheet("border-radius: 0px;")
@@ -1189,8 +1189,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
                         laser_cut_part.powder_data.powder_transfer_efficiency = existing_laser_cut_part.powder_data.powder_transfer_efficiency
                         laser_cut_part.prices.cost_for_powder_coating = existing_laser_cut_part.prices.cost_for_powder_coating
                         # with contextlib.suppress(KeyError):
-                        self.laser_cut_part_table_items[laser_cut_part]["painting_widget"].update_checkboxes()
-                        self.laser_cut_part_table_items[laser_cut_part]["painting_settings_widget"].update_inputs()
+                        # self.laser_cut_part_table_items[laser_cut_part]["painting_widget"].update_checkboxes()
+                        # self.laser_cut_part_table_items[laser_cut_part]["painting_settings_widget"].update_inputs()
                         self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
                         # laser_cut_part.bending_files = existing_laser_cut_part.bending_files
                         # laser_cut_part.welding_files = existing_laser_cut_part.welding_files

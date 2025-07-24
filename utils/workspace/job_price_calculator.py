@@ -105,6 +105,9 @@ class JobPriceCalculator:
         price_per_pound = self.sheet_settings.get_price_per_pound(laser_cut_part.meta_data.material)
         return (laser_cut_part.meta_data.machine_time * (self.cost_for_laser / 60)) + (laser_cut_part.meta_data.weight * price_per_pound)
 
+    def get_laser_cut_part_cost_for_cutting(self, laser_cut_part: LaserCutPart) -> float:
+        return laser_cut_part.meta_data.machine_time * (self.cost_for_laser / 60)
+
     def get_laser_cut_part_cost_for_painting(self, laser_cut_part: LaserCutPart) -> float:
         cost_for_priming = self.paint_inventory.get_primer_cost(laser_cut_part)
         cost_for_painting = self.paint_inventory.get_paint_cost(laser_cut_part)

@@ -1,4 +1,5 @@
 import contextlib
+import logging
 import os
 from datetime import datetime
 from functools import partial
@@ -674,7 +675,15 @@ class ComponentsTab(QWidget, Ui_Form):
     def load_table(self):
         if category := self.components_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex())):
             self.category = category
-            current_table = self.category_tables[self.category]
+            try:
+                current_table = self.category_tables[self.category]
+            except KeyError:
+                logging.error(f"category_tables[{self.category.name}] does not exist")
+                for category, table in self.category_tables.items():
+                    if category.name == self.category.name:
+                        current_table = table
+                        self.category = category
+                        break
         else:
             return
         if not current_table:
@@ -762,10 +771,24 @@ class ComponentsTab(QWidget, Ui_Form):
             item_history_dialog.show()
 
     def block_table_signals(self):
-        self.category_tables[self.category].blockSignals(True)
+        if not self.category:
+            return
+        try:
+            self.category_tables[self.category].blockSignals(True)
+        except KeyError:
+            logging.error(f"Error: category_tables[{self.category.name}] does not exist")
+            for _, table in self.category_tables.items():
+                table.blockSignals(True)
 
     def unblock_table_signals(self):
-        self.category_tables[self.category].blockSignals(False)
+        if not self.category:
+            return
+        try:
+            self.category_tables[self.category].blockSignals(False)
+        except KeyError:
+            logging.error(f"category_tables[{self.category.name}] does not exist.")
+            for _, table in self.category_tables.items():
+                table.blockSignals(False)
 
     def table_selected_changed(self):
         if component := self.get_selected_component():

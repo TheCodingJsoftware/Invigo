@@ -25,13 +25,15 @@ class EditContactInfoDialog(QDialog, Ui_Form):
         self.lineEdit_name.setText(self.contact_info.name)
         self.lineEdit_phone.setText(self.contact_info.phone)
         self.lineEdit_email.setText(self.contact_info.email)
+        self.lineEdit_password.setText(self.contact_info.password)
 
     def save(self):
         contact_info_data: ContactInfoDict = {
             "name": self.lineEdit_name.text(),
             "phone": self.lineEdit_phone.text(),
             "email": self.lineEdit_email.text(),
+            "password": self.lineEdit_password.text(),
         }
-        self.contact_info.load_data(contact_info_data)
+        self.contact_info.load_data(contact_info_data, encrypted=False)
         self.contact_info.save_data()
         self.accept()

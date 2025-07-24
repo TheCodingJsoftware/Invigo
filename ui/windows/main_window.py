@@ -154,7 +154,6 @@ from utils.workers.workspace.get_entries_by_name import (
     GetWorkspaceEntriesByNameWorker,
 )
 from utils.workers.workspace.get_workspace_entry import GetWorkspaceEntryWorker
-from utils.workspace.generate_printout import WorkorderPrintout
 from utils.workspace.job import Job, JobColor, JobIcon, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
@@ -1419,7 +1418,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # * \/ Dialogs \/
     def edit_contact_info(self):
         self.contact_info_dialog = EditContactInfoDialog(self)
-        self.contact_info_dialog.show()
+        if self.contact_info_dialog.exec():
+            self.contact
 
     def edit_business_info(self):
         self.business_info_dialog = EditBusinessInfoDialog(self)
@@ -2385,7 +2385,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Defensive: Empty list check
         if not responses:
-            logging.error("Syncing Error: empty responses list")
+            logging.error(f"Syncing Error: empty responses list: {responses}")
             set_status("Syncing Error: Empty responses", "red")
             return
 

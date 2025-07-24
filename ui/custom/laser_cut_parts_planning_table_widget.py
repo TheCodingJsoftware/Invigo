@@ -25,8 +25,8 @@ class LaserCutTableColumns(AutoNumber):
     SHELF_NUMBER = auto()
     UNIT_QUANTITY = auto()
     QUANTITY = auto()
-    PAINTING = auto()
-    PAINT_SETTINGS = auto()
+    # PAINTING = auto()
+    # PAINT_SETTINGS = auto()
     FLOW_TAG = auto()
     FLOW_TAG_DATA = auto()
 
@@ -63,8 +63,8 @@ class LaserCutPartsPlanningTableWidget(CustomTableWidget):
             "Unit Quantity": LaserCutTableColumns.UNIT_QUANTITY.value,
             "Quantity": LaserCutTableColumns.QUANTITY.value,
             "Shelf #": LaserCutTableColumns.SHELF_NUMBER.value,
-            "Painting": LaserCutTableColumns.PAINTING.value,
-            "Paint Settings": LaserCutTableColumns.PAINT_SETTINGS.value,
+            # "Painting": LaserCutTableColumns.PAINTING.value,
+            # "Paint Settings": LaserCutTableColumns.PAINT_SETTINGS.value,
             "Notes": LaserCutTableColumns.NOTES.value,
             "Process": LaserCutTableColumns.FLOW_TAG.value,
             "Process Data": LaserCutTableColumns.FLOW_TAG_DATA.value,
