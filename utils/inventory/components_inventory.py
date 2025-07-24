@@ -101,9 +101,12 @@ class ComponentsInventory(Inventory):
         self.remove_components([component], on_finished)
 
     def components_removed_response(self, response: tuple[dict, list[Component]]):
-        data, components = response
-        for component in components:
-            self.components.remove(component)
+        data, components_r = response
+        for component_r in components_r:
+            for component in self.components:
+                if component.id == component_r.id:
+                    self.components.remove(component)
+                    break
         # self.save_local_copy()
 
     def save_component(self, component: Component):
