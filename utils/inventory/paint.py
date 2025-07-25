@@ -1,5 +1,5 @@
 from dataclasses import dataclass, fields
-from typing import TYPE_CHECKING, Optional, TypedDict, Union, cast
+from typing import TYPE_CHECKING, Optional, TypedDict, Union
 
 from utils.inventory.coating_item import CoatingItem, CoatingTypes
 

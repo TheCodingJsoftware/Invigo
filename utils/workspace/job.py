@@ -8,6 +8,8 @@ from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
+from utils.purchase_order.business_info import BusinessInfo
+from utils.purchase_order.contact_info import ContactInfo
 from utils.workspace.assembly import Assembly
 from utils.workspace.job_flowtag_timeline import JobFlowtagTimeline
 from utils.workspace.job_price_calculator import JobPriceCalculator
@@ -83,6 +85,9 @@ class Job:
         self.job_manager: JobManager = job_manager
         self.status = JobStatus.PLANNING
         self.color: str = JobColor.get_color(self.status)
+
+        self.contact_info = ContactInfo()
+        self.business_info = BusinessInfo()
 
         # NOTE Non serialized variables
         self.grouped_components: list[Component] = []
@@ -321,6 +326,8 @@ class Job:
                 "price_settings": self.price_calculator.to_dict(),
                 "flowtag_timeline": self.flowtag_timeline.to_dict(),
                 "moved_job_to_workspace": self.moved_job_to_workspace,
+                "contact_info": self.contact_info.to_dict(),
+                "business_info": self.business_info.to_dict(),
             },
             "nests": [nest.to_dict() for nest in self.nests],
             "assemblies": [assembly.to_dict() for assembly in self.assemblies],

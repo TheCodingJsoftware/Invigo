@@ -40,6 +40,7 @@ from ui.custom.laser_cut_parts_quoting_table_widget import (
 from ui.custom_widgets import AssemblyMultiToolBox
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
+from ui.dialogs.edit_paint_dialog import EditPaintDialog
 from ui.theme import theme_var
 from ui.widgets.assembly_widget import AssemblyWidget
 from utils.inventory.category import Category
@@ -222,7 +223,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.changes_made()
 
     def add_assembly_drag_file_widget(self, files_layout: QHBoxLayout, file_path: str):
-        file_button = FileButton(f"{os.path.dirname(os.path.realpath(__file__))}\\{file_path}", self)
+        file_button = FileButton(os.path.join(os.path.dirname(os.path.realpath(__file__)), file_path), self)
         file_button.buttonClicked.connect(partial(self.assembly_file_clicked, file_path))
         file_button.deleteFileClicked.connect(partial(self.assembly_delete_file, file_path, file_button))
         file_name = os.path.basename(file_path)
@@ -824,7 +825,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         files_layout: QHBoxLayout,
         file_path: str,
     ):
-        file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
+        file_button = FileButton(os.path.join(Environment.DATA_PATH, file_path), self)
         file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, laser_cut_part, file_path))
         file_button.deleteFileClicked.connect(
             partial(
@@ -947,7 +948,25 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
     def edit_paint(self):
         edit_paint_dialog = EditPaintDialog(self.laser_cut_inventory, self)
-        if edit_paint_dialog.exec():
+        selected_parts = self.get_selected_laser_cut_parts()
+        if edit_paint_dialog.exec() and selected_parts:
+            for laser_cut_part in selected_parts:
+                paint_data = edit_paint_dialog.get_paint()
+                laser_cut_part.paint_data.uses_paint = paint_data["uses_paint"]
+                laser_cut_part.paint_data.paint_name = paint_data["paint_name"]
+                laser_cut_part.paint_data.paint_item = paint_data["paint_item"]
+                laser_cut_part.paint_data.paint_overspray = paint_data["paint_overspray"]
+
+                laser_cut_part.primer_data.uses_primer = edit_paint_dialog.get_primer()["uses_primer"]
+                laser_cut_part.primer_data.primer_name = edit_paint_dialog.get_primer()["primer_name"]
+                laser_cut_part.primer_data.primer_item = edit_paint_dialog.get_primer()["primer_item"]
+                laser_cut_part.primer_data.primer_overspray = edit_paint_dialog.get_primer()["primer_overspray"]
+
+                laser_cut_part.powder_data.uses_powder = edit_paint_dialog.get_powder()["uses_powder"]
+                laser_cut_part.powder_data.powder_name = edit_paint_dialog.get_powder()["powder_name"]
+                laser_cut_part.powder_data.powder_item = edit_paint_dialog.get_powder()["powder_item"]
+                laser_cut_part.powder_data.powder_transfer_efficiency = edit_paint_dialog.get_powder()["powder_transfer_efficiency"]
+            self.update_laser_cut_parts_table_prices()
             self.changes_made()
 
     def delete_selected_laser_cut_parts(self):

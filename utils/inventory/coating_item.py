@@ -41,6 +41,7 @@ class CoatingItem(InventoryItem):
         self.id = data.get("id", -1)
         self.component_id = data.get("component_id", -1)
         self.part_name = data.get("part_name", "")
+        self.name = self.part_name
         self.part_number = data.get("part_number", "")
         self.color = data.get("color", "#ffffff")
         self.average_coverage = data.get("average_coverage", 300)

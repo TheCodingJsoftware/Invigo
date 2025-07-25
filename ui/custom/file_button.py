@@ -18,6 +18,7 @@ class FileButton(QPushButton):
         self.setAcceptDrops(True)
         self.dragging = False
         self.file = file
+        print(self.file)
         self.drag_start_position = None
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)

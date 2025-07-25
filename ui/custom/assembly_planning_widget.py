@@ -265,7 +265,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.changes_made()
 
     def add_assembly_drag_file_widget(self, files_layout: QHBoxLayout, file_path: str):
-        file_button = FileButton(f"{os.path.dirname(os.path.realpath(__file__))}\\{file_path}", self)
+        file_button = FileButton(os.path.join(os.path.dirname(os.path.realpath(__file__)), file_path), self)
         file_button.buttonClicked.connect(partial(self.assembly_file_clicked, file_path))
         file_button.deleteFileClicked.connect(partial(self.assembly_delete_file, file_path, file_button))
         file_name = os.path.basename(file_path)
@@ -808,7 +808,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         files_layout: QHBoxLayout,
         file_path: str,
     ):
-        file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
+        file_button = FileButton(os.path.join(Environment.DATA_PATH, file_path), self)
         file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, laser_cut_part, file_path))
         file_button.deleteFileClicked.connect(
             partial(

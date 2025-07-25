@@ -662,7 +662,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         files_layout: QHBoxLayout,
         file_path: str,
     ):
-        file_button = FileButton(f"{Environment.DATA_PATH}\\{file_path}", self)
+        file_button = FileButton(os.path.join(Environment.DATA_PATH, file_path), self)
         file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, item, file_path))
         file_name = os.path.basename(file_path)
         file_ext = file_name.split(".")[-1].upper()
