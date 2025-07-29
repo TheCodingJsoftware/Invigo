@@ -111,8 +111,7 @@ from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
 from utils.inventory.structural_steel_inventory import StructuralSteelInventory
 from utils.ip_utils import get_server_ip_address, get_server_port
-from utils.po import check_po_directories, get_all_po
-from utils.po_template import POTemplate
+from utils.po import check_po_directories
 from utils.purchase_order.purchase_order import PurchaseOrder
 from utils.purchase_order.purchase_order_manager import PurchaseOrderManager
 from utils.purchase_order.shipping_address import ShippingAddress
