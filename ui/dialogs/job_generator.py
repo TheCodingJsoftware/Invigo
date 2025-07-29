@@ -31,6 +31,7 @@ class JobGeneratorDialog(QDialog, Ui_Form):
         self._parent_widget = parent
         self.jobs: list[Job] = []
         self.tree_widget = QTreeWidget()
+        self.tree_widget.itemChanged.connect(self.on_item_check_changed)
         self.tree_widget.setColumnCount(3)
         self.tree_widget.setHeaderLabels(["Job/Assembly Name", "Status", "Quantity"])
         self.tree_widget.setSortingEnabled(True)
@@ -39,14 +40,23 @@ class JobGeneratorDialog(QDialog, Ui_Form):
         self.pushButton_cancel.clicked.connect(self.reject)
         self.pushButton_merge.clicked.connect(self.accept)
         self.lineEdit_job_name.textChanged.connect(self.on_job_name_changed)
+        self.lineEdit_search.textChanged.connect(self.on_search_changed)
+        self.assembly_states: dict[int, dict[str, float | Qt.CheckState]] = {}
+        self.search_text = ""
         self.get_all_jobs()
 
         self.resize(650, 800)
 
-    def load_ui(self):
+    def reload_tree(self):
+        self.tree_widget.blockSignals(True)
         self.tree_widget.clear()
+        self.tree_widget_items.clear()
 
         for job in self.jobs:
+            if self.search_text:
+                if not any(self.search_text in assembly.name.lower() for assembly in job.assemblies):
+                    continue
+
             job_item = QTreeWidgetItem()
             job_item.setText(0, job.name)
             job_item.setText(1, job.status.name)
@@ -58,23 +68,29 @@ class JobGeneratorDialog(QDialog, Ui_Form):
                 "item": job_item,
                 "job": job,
             }
-
             self.tree_widget.addTopLevelItem(job_item)
 
             for assembly in job.assemblies:
+                if self.search_text and self.search_text not in assembly.name.lower():
+                    continue
+
                 assembly_item = QTreeWidgetItem()
                 assembly_item.setText(0, assembly.name)
                 assembly_item.setFlags(assembly_item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
-                assembly_item.setCheckState(0, Qt.CheckState.Unchecked)
+                cached = self.assembly_states.get(id(assembly), {})
+                check_state = cached.get("check_state", Qt.CheckState.Unchecked)
+                quantity = cached.get("quantity", assembly.meta_data.quantity)
+
+                assembly_item.setCheckState(0, check_state)
 
                 spin_box = HumbleDoubleSpinBox(self.tree_widget)
                 spin_box.setDecimals(0)
                 spin_box.setToolTip(f"Original: {assembly.meta_data.quantity}")
                 spin_box.setMinimum(1)
-                spin_box.setMaximum(9999)  # or some other logical limit
-                spin_box.setValue(assembly.meta_data.quantity)
+                spin_box.setMaximum(9999999)
+                spin_box.setValue(quantity)
+                spin_box.valueChanged.connect(lambda val, asm=assembly: self._on_spinbox_value_changed(asm, val))
 
-                # Insert spin box into column 2
                 job_item.addChild(assembly_item)
                 self.tree_widget.setItemWidget(assembly_item, 2, spin_box)
 
@@ -91,42 +107,40 @@ class JobGeneratorDialog(QDialog, Ui_Form):
                 job_item.setForeground(col, QColor(job.color))
 
         self.tree_widget.expandAll()
-
         self.tree_widget.resizeColumnToContents(0)
         self.tree_widget.resizeColumnToContents(1)
         self.tree_widget.resizeColumnToContents(2)
-
         self.tree_widget.sortByColumn(1, Qt.SortOrder.DescendingOrder)
-        QTimer.singleShot(1, self._update_spinboxes)
 
-        # Connect to handle changes
-        self.tree_widget.itemChanged.connect(self.on_item_check_changed)
+        QTimer.singleShot(1, self._update_spinboxes)
+        self.tree_widget.blockSignals(False)
+
+    def on_search_changed(self, text: str):
+        self.search_text = text.strip().lower()
+        self.reload_tree()
 
     def merge(self) -> Job | None:
-        # Get checked job items
-        checked_jobs = [
-            info["item"] for info in self.tree_widget_items.values() if "job" in info and info["item"].parent() is None and info["item"].checkState(0) == Qt.CheckState.Checked
-        ]
-
-        if not checked_jobs:
+        if not self.assembly_states:
             return None
 
-        # Create new Job
         merged_job = Job({}, self._parent_widget.job_manager)
         merged_job.name = self.lineEdit_job_name.text().strip()
 
-        for job_item in checked_jobs:
-            for i in range(job_item.childCount()):
-                assembly_item = job_item.child(i)
-                if assembly_item.checkState(0) == Qt.CheckState.Checked:
-                    info = self.tree_widget_items.get(id(assembly_item))
-                    if info:
-                        assembly_ref: Assembly = info["assembly"]
-                        spinbox: HumbleDoubleSpinBox = info["spinbox"]
+        for job in self.jobs:
+            for assembly in job.assemblies:
+                state = self.assembly_states.get(id(assembly))
+                if not state:
+                    continue
 
-                        cloned_assembly = Assembly(assembly_ref.to_dict(), merged_job)
-                        cloned_assembly.meta_data.quantity = int(spinbox.value())
-                        merged_job.add_assembly(cloned_assembly)
+                if state.get("check_state") != Qt.CheckState.Checked:
+                    continue
+
+                cloned_assembly = Assembly(assembly.to_dict(), merged_job)
+                cloned_assembly.meta_data.quantity = state.get("quantity", assembly.meta_data.quantity)
+                merged_job.add_assembly(cloned_assembly)
+
+        if not merged_job.assemblies:
+            return None
 
         return merged_job
 
@@ -137,23 +151,28 @@ class JobGeneratorDialog(QDialog, Ui_Form):
         self.tree_widget.blockSignals(True)
 
         if item.parent() is None:
-            # It's a job (parent)
+            # It's a job
             state = item.checkState(0)
             for i in range(item.childCount()):
                 child = item.child(i)
                 child.setCheckState(0, state)
         else:
-            # It's an assembly (child)
+            # It's an assembly
             parent = item.parent()
             any_checked = any(parent.child(i).checkState(0) == Qt.CheckState.Checked for i in range(parent.childCount()))
-            if any_checked:
-                parent.setCheckState(0, Qt.CheckState.Checked)
-            else:
-                parent.setCheckState(0, Qt.CheckState.Unchecked)
+            parent.setCheckState(0, Qt.CheckState.Checked if any_checked else Qt.CheckState.Unchecked)
+
+            info = self.tree_widget_items.get(id(item))
+            if info and "assembly" in info:
+                self.assembly_states[id(info["assembly"])] = {"check_state": item.checkState(0), "quantity": int(info["spinbox"].value())}
 
         self._update_spinboxes()
-
         self.tree_widget.blockSignals(False)
+
+    def _on_spinbox_value_changed(self, assembly: Assembly, value: float):
+        if id(assembly) not in self.assembly_states:
+            self.assembly_states[id(assembly)] = {}
+        self.assembly_states[id(assembly)]["quantity"] = int(value)
 
     def _update_spinboxes(self):
         for i in range(self.tree_widget.topLevelItemCount()):
@@ -178,7 +197,7 @@ class JobGeneratorDialog(QDialog, Ui_Form):
             get_job_worker = GetJobWorker(job["id"])
             self.chain.add(get_job_worker, self.on_get_job_result)
 
-        self.chain.finished.connect(self.load_ui)
+        self.chain.finished.connect(self.reload_tree)
         self.chain.start()
 
     def on_get_job_result(self, result, next_step: Callable):
