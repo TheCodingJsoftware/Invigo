@@ -24,7 +24,7 @@ class NestDict(TypedDict):
 class Nest:
     def __init__(
         self,
-        data: dict[str, object],
+        data: NestDict,
         sheet_settings: SheetSettings,
         laser_cut_inventory: LaserCutInventory,
     ):

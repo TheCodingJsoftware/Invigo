@@ -7,6 +7,7 @@ import msgspec
 from config.environments import Environment
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
@@ -31,6 +32,7 @@ class Workspace:
         self.workspace_settings = workspace_settings
         self.job_manager = job_manager
         self.laser_cut_inventory = self.job_manager.laser_cut_inventory
+        self.sheet_settings = self.job_manager.sheet_settings
         self.components_inventory = self.job_manager.components_inventory
         self.workspace_filter = WorkspaceFilter()
 
@@ -46,6 +48,7 @@ class Workspace:
         new_job.load_settings(job.to_dict())
         new_job.flowtag_timeline = job.flowtag_timeline
         self.copy_assemblies(job.assemblies, new_job, job.ending_date)
+        self.copy_nests(job.nests, new_job)
         return new_job
 
     def copy_assemblies(
@@ -56,8 +59,7 @@ class Workspace:
     ):
         for assembly in assemblies:
             for _ in range(int(assembly.meta_data.quantity)):
-                new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
-                new_assembly.load_data(assembly.to_dict())
+                new_assembly = Assembly(assembly.to_dict(), parent if isinstance(parent, Job) else parent.job)
 
                 if isinstance(parent, Job):
                     parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
@@ -85,6 +87,11 @@ class Workspace:
                     self.copy_components(assembly.components, new_assembly)
                 if assembly.sub_assemblies:
                     self.copy_assemblies(assembly.sub_assemblies, new_assembly, job_ending_date)
+
+    def copy_nests(self, nests: list[Nest], job: Job):
+        for nest in nests:
+            new_nest = Nest(nest.to_dict(), self.sheet_settings, self.laser_cut_inventory)
+            job.add_nest(new_nest)
 
     def copy_components(self, components: list[Component], assembly: Assembly):
         for component in components:
