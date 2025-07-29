@@ -50,7 +50,7 @@ from utils.colors import get_on_color_from_primary, lighten_color
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
-from utils.threads.upload_thread import UploadThread
+from utils.workers.upload_files import UploadFilesWorker
 from utils.workers.workspace.download_file import WorkspaceDownloadWorker
 from utils.workers.workspace.get_all_workspace_jobs import (
     GetAllWorkspaceJobsWorker,
@@ -1329,8 +1329,8 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self._parent_widget.sync_changes()
 
     def upload_files(self, files_to_upload: list[str]):
-        self.upload_thread = UploadThread(files_to_upload)
-        self.upload_thread.start()
+        self.upload_thread = UploadFilesWorker(files_to_upload)
+        QThreadPool.globalInstance().start(self.upload_thread)
 
     def clear_layout(self, layout: Union[QVBoxLayout, QWidget]):
         with contextlib.suppress(AttributeError):

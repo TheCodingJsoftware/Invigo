@@ -1310,6 +1310,7 @@ class ComponentsTab(QWidget, Ui_Form):
                 # self.sync_changes()
 
     def change_quantities(self, add_or_remove: str):
+        components_to_save: list[Component] = []
         selected_components = self.get_selected_components()
         dialog = ItemsChangeQuantityDialog(self.category.name, add_or_remove, selected_components, self)
         if dialog.exec():
@@ -1327,12 +1328,13 @@ class ComponentsTab(QWidget, Ui_Form):
                         component.quantity = component.quantity - (multiplier * component.get_category_quantity(self.category))
                     tables_item["quantity"].setText(str(component.quantity))
                     tables_item["quantity"].setToolTip(component.latest_change_quantity)
+                    components_to_save.append(component)
                 self.category_tables[self.category].blockSignals(False)
                 history_file.add_new_to_category(
                     date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
                     description=f"{'Added' if add_or_remove == 'ADD' else 'Removed'} a multiple of {multiplier} {'quantity' if multiplier == 1 else 'quantities'} from each item in {self.category.name}",
                 )
-                self.components_inventory.save_components(selected_components)
+                self.components_inventory.save_components(components_to_save)
                 # self.components_inventory.save_local_copy()
                 # self.sync_changes()
                 self.update_components_costs()
@@ -1350,10 +1352,11 @@ class ComponentsTab(QWidget, Ui_Form):
                         date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
                         description=f'{"Added" if add_or_remove == "ADD" else "Removed"} {multiplier} {"quantity" if multiplier == 1 else "quantities"} from "{component.part_name}"',
                     )
+                    components_to_save.append(component)
                     self.table_components_widgets[component]["quantity"].setText(str(component.quantity))
                     self.table_components_widgets[component]["quantity"].setToolTip(component.latest_change_quantity)
                 self.category_tables[self.category].blockSignals(False)
-                self.components_inventory.save_components(selected_components)
+                self.components_inventory.save_components(components_to_save)
                 # self.components_inventory.save_local_copy()
                 # self.sync_changes()
                 self.sort_components()

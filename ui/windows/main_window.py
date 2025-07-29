@@ -136,8 +136,6 @@ from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
 from utils.threads.update_quote_settings import UpdateQuoteSettings
-from utils.threads.upload_thread import UploadThread
-from utils.threads.upload_workorder_thread import UploadWorkorderThread
 from utils.workers.auth.connect import ConnectWorker
 from utils.workers.auth.is_client_trusted import IsClientTrustedWorker
 from utils.workers.jobs.delete_job import DeleteJobWorker
@@ -146,6 +144,7 @@ from utils.workers.jobs.job_loader_controller import JobLoaderController
 from utils.workers.jobs.save_job import SaveJobWorker
 from utils.workers.jobs.update_job_setting import UpdateJobSettingWorker
 from utils.workers.runnable_chain import RunnableChain
+from utils.workers.upload_files import UploadFilesWorker
 from utils.workers.utils.get_order_number import GetOrderNumberWorker
 from utils.workers.utils.set_order_number import SetOrderNumberWorker
 from utils.workers.workspace.add_job_to_workspace import AddJobToWorkspaceWorker
@@ -161,7 +160,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.14"
+__version__: str = "v4.0.15"
 
 
 def check_folders(folders: list[str]):
@@ -2541,10 +2540,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         thread.start()
 
     def upload_files(self, files_to_upload: list[str]):
-        upload_thread = UploadThread(files_to_upload)
-        self.threads.append(upload_thread)
-        upload_thread.signal.connect(self.upload_thread_response)
-        upload_thread.start()
+        self.upload_thread = UploadFilesWorker(files_to_upload)
+        self.upload_thread.signals.success.connect(self.upload_thread_response)
+        QThreadPool.globalInstance().start(self.upload_thread)
 
     def upload_thread_response(self, response: dict, files_uploaded: list[str]):
         # print("upload_thread_response", response, files_uploaded)
@@ -3180,24 +3178,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.load_previous_quotes(data)
         else:
             self.status_button.setText(f"Error: {data}'", "red")
-
-    def upload_workorder_thread(self, folder: str, workorder: Workorder, html_file_contents: str):
-        upload_batch = UploadWorkorderThread(folder, workorder, html_file_contents)
-        upload_batch.signal.connect(self.upload_workorder_response)
-        self.threads.append(upload_batch)
-        self.status_button.setText("Uploading workorder", "yellow")
-        upload_batch.start()
-
-    def upload_workorder_response(self, response: str):
-        if response == "Workorder sent successfully":
-            self.status_button.setText("Workorder was sent successfully", "lime")
-        else:
-            self.status_button.setText("Workorder failed to send", "red")
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Upload error")
-            msg.setText(f"{response}")
-            msg.exec()
 
     def save_job_worker(self, job: Job):
         upload_job_worker = SaveJobWorker(job)

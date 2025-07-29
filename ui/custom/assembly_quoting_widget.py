@@ -47,7 +47,7 @@ from utils.inventory.category import Category
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
-from utils.threads.upload_thread import UploadThread
+from utils.workers.upload_files import UploadFilesWorker
 from utils.workers.workspace.download_file import WorkspaceDownloadWorker
 from utils.workers.workspace.upload_file import WorkspaceUploadWorker
 from utils.workspace.assembly import Assembly
@@ -61,7 +61,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items: dict[LaserCutPart, dict[str, QTableWidgetItem | QComboBox | QWidget | int]] = {}
         self.components_table_items: dict[Component, dict[str, QTableWidgetItem | int]] = {}
 
-        self.upload_images_thread: UploadThread | None = None
+        self.upload_images_thread: UploadFilesWorker | None = None
         self.upload_files_thread: WorkspaceUploadWorker | None = None
         self.download_file_thread: WorkspaceDownloadWorker | None = None
 
@@ -1206,8 +1206,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
         # self.upload_files_thread.start()
 
     def upload_images(self, files: list[str]):
-        self.upload_images_thread = UploadThread(files)
-        self.upload_images_thread.start()
+        self.upload_images_thread = UploadFilesWorker(files)
+        QThreadPool.globalInstance().start(self.upload_images_thread)
 
     def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart:
         return next(

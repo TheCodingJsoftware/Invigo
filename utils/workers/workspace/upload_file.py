@@ -6,7 +6,7 @@ from utils.workers.base_worker import BaseWorker
 class WorkspaceUploadWorker(BaseWorker):
     def __init__(self, files_to_upload: list[str]):
         super().__init__(name="WorkspaceUploadWorker")
-        self.upload_url = f"{self.DOMAIN}/workspace_upload"
+        self.upload_url = f"{self.DOMAIN}/workspace/upload"
         self.files_to_upload = files_to_upload
 
     def do_work(self):
