@@ -1179,7 +1179,7 @@ class PriorityComboBox(QComboBox):
 
 
 class ExchangeRateComboBox(QComboBox):
-    def __init__(self, parent, selected_item: int):
+    def __init__(self, parent, selected_item: str):
         super().__init__(parent)
         self.addItems(["CAD", "USD"])
         self.setCurrentText(selected_item)

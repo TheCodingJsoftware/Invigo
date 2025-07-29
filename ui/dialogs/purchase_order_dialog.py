@@ -26,7 +26,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from ui.custom_widgets import CustomTableWidget, OrderStatusButton
+from ui.custom_widgets import CustomTableWidget, ExchangeRateComboBox, OrderStatusButton
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_vendor_dialog import AddVendorDialog
 from ui.dialogs.edit_shipping_address_dialog import EditShippingAddressDialog
@@ -46,6 +46,8 @@ from utils.purchase_order.purchase_order import PurchaseOrder, PurchaseOrderDict
 from utils.purchase_order.purchase_order_manager import PurchaseOrderManager
 from utils.purchase_order.shipping_address import ShippingAddress
 from utils.purchase_order.vendor import Vendor, VendorDict
+from utils.settings import Settings
+from utils.threads import exchange_rate
 from utils.workers.purchase_orders.get_all_purchase_orders import GetAllPurchaseOrders
 from utils.workers.runnable_chain import RunnableChain
 from utils.workers.vendors.get_all_vendors import GetAllVendors
@@ -64,6 +66,7 @@ class ComponentsTableColumns(AutoNumber):
     PART_NAME = auto()
     PART_NUMBER = auto()
     UNIT_PRICE = auto()
+    USD_CAD = auto()
     QUANTITY_IN_STOCK = auto()
     QUANTITY_TO_ORDER = auto()
     ORDER_COST = auto()
@@ -96,7 +99,8 @@ class ComponentsTable(CustomTableWidget):
         headers = {
             "Part Name": ComponentsTableColumns.PART_NAME.value,
             "Part Number": ComponentsTableColumns.PART_NUMBER.value,
-            "Unit Price": ComponentsTableColumns.UNIT_PRICE.value,
+            "Item Price": ComponentsTableColumns.UNIT_PRICE.value,
+            "USD/CAD": ComponentsTableColumns.USD_CAD.value,
             "Quantity in Stock": ComponentsTableColumns.QUANTITY_IN_STOCK.value,
             "Quantity to Order": ComponentsTableColumns.QUANTITY_TO_ORDER.value,
             "Order Cost": ComponentsTableColumns.ORDER_COST.value,
@@ -483,6 +487,8 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         self.unsaved_changes = False
 
+        self.settings_file = Settings()
+
         self.purchase_order_manager = purchase_order_manager
         self.purchase_order = purchase_order
         self.vendors: list[Vendor] = []
@@ -667,9 +673,11 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         part_number = component.part_number
         unit_price = component.price
         quantity_in_stock = component.quantity
-        price_suffix = "CAD" if component.use_exchange_rate else "USD"
         quantity_to_order = self.purchase_order.get_component_quantity_to_order(component)
         order_cost = unit_price * quantity_to_order
+        use_exchange_rate = component.use_exchange_rate
+        converted_price = unit_price * self.get_exchange_rate() if use_exchange_rate else unit_price / self.get_exchange_rate()
+        converted_order_cost = converted_price * quantity_to_order
 
         history_button = QPushButton("View History", self)
         history_button.clicked.connect(partial(self.open_component_history, component))
@@ -681,13 +689,14 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         part_name_widget.setToolTip(f'<img src="{component.image_path}" width="150">')
         part_number_widget = QTableWidgetItem(part_number)
         part_number_widget.setToolTip(f'<img src="{component.image_path}" width="150">')
-        price_widget = QTableWidgetItem(f"${unit_price:,.2f} {price_suffix}")
+        price_widget = QTableWidgetItem(f"${unit_price:,.2f}")
+        price_widget.setToolTip(f"${converted_price:,.2f} {'CAD' if use_exchange_rate else 'USD'}")
         quantity_in_stock_widget = QTableWidgetItem(str(quantity_in_stock))
         quantity_in_stock_widget.setToolTip(
             f"Category quantities:\n{component.print_category_quantities()}\nRed Quanatity Limit: {component.red_quantity_limit}\nYellow Quantity Limit: {component.yellow_quantity_limit}"
         )
-        order_cost_widget = QTableWidgetItem(f"${order_cost:,.2f} {price_suffix}")
-        order_cost_widget.setToolTip(f"Order cost: {order_cost}\nOrder quantity: {quantity_to_order}")
+        order_cost_widget = QTableWidgetItem(f"${order_cost:,.2f}")
+        order_cost_widget.setToolTip(f"${converted_order_cost:,.2f} {'CAD' if use_exchange_rate else 'USD'}\nOrder quantity: {quantity_to_order}")
 
         self.components_table.setItem(row_count, ComponentsTableColumns.PART_NAME.value, part_name_widget)
         self.components_table.setItem(row_count, ComponentsTableColumns.PART_NUMBER.value, part_number_widget)
@@ -697,6 +706,17 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             ComponentsTableColumns.QUANTITY_IN_STOCK.value,
             quantity_in_stock_widget,
         )
+        exchange_rate_combobox = ExchangeRateComboBox(
+            parent=self,
+            selected_item="USD" if component.use_exchange_rate else "CAD",
+        )
+        exchange_rate_combobox.currentIndexChanged.connect(
+            partial(
+                self.components_table_row_changed,
+                row_count,
+            )
+        )
+        self.components_table.setCellWidget(row_count, ComponentsTableColumns.USD_CAD.value, exchange_rate_combobox)
         self.components_table.setItem(
             row_count,
             ComponentsTableColumns.QUANTITY_TO_ORDER.value,
@@ -721,17 +741,25 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                     self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).text().replace("$", "").replace(",", "").replace("CAD", "").replace("USD", "").strip()
                 )
                 quantity_to_order = float(self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
+                exchange_rate_combobox: ExchangeRateComboBox = self.components_table.cellWidget(row, ComponentsTableColumns.USD_CAD.value)
+                converted_price: float = component.price * self.get_exchange_rate() if component.use_exchange_rate else component.price / self.get_exchange_rate()
 
                 component.part_name = part_name
                 component.part_number = part_number
                 component.price = unit_price
+                component.use_exchange_rate = exchange_rate_combobox.currentText() == "USD"
                 self.purchase_order.set_component_order_quantity(component, quantity_to_order)
                 order_cost = unit_price * quantity_to_order
-                price_suffix = "CAD" if component.use_exchange_rate else "USD"
+                converted_order_cost = converted_price * quantity_to_order
 
-                self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).setText(f"${unit_price:,.2f} {price_suffix}")
-                self.components_table.item(row, ComponentsTableColumns.ORDER_COST.value).setText(f"${order_cost:,.2f} {price_suffix}")
+                self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).setText(f"${unit_price:,.2f}")
+                self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).setToolTip(f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}")
+
+                self.components_table.item(row, ComponentsTableColumns.ORDER_COST.value).setText(f"${order_cost:,.2f}")
                 self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).setText(f"{quantity_to_order:,}")
+                self.components_table.item(row, ComponentsTableColumns.ORDER_COST.value).setToolTip(
+                    f"${converted_order_cost:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}"
+                )
 
                 self.unsaved_changes = True
             except Exception as e:
@@ -1061,6 +1089,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.load_purchase_order_data(self.purchase_order)
 
     # * \/ OTHER \/
+    def get_exchange_rate(self) -> float:
+        return self.settings_file.get_value(setting_name="exchange_rate")
+
     def open_sheet_history(self, sheet: Sheet):
         item_history_dialog = ViewItemHistoryDialog(self, "sheet", sheet.id)
         item_history_dialog.show()

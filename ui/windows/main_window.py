@@ -1805,9 +1805,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     send_to_workspace_dialog.should_update_components(),
                 )
 
-            for assembly in self.workspace.get_all_assemblies():
-                if assembly.all_laser_cut_parts_complete() and not assembly.timer.has_started_timer():
-                    assembly.timer.start_timer()
+            # for assembly in self.workspace.get_all_assemblies():
+            #     if assembly.all_laser_cut_parts_complete() and not assembly.timer.has_started_timer():
+            #         assembly.timer.start_timer()
 
             # self.workspace.save()
             # self.components_inventory.save_local_copy()
