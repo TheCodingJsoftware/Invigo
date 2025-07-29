@@ -44,10 +44,10 @@ class JobLoaderController(QObject):
         self.job.downloaded_from_server = True
         images = self.get_all_images(self.job)
         self.logger.info(f"Found {len(images)} image(s) to download")
-        if images:
-            self.download_images(images)
-        else:
-            self.task_finished("images")
+        # if images:
+        self.download_images(images)
+        # else:
+        # self.task_finished("images")
 
     def download_images(self, image_paths: list[str]):
         self.logger.info(f"Starting image download: {image_paths}")
@@ -61,10 +61,10 @@ class JobLoaderController(QObject):
         self.logger.info("Images downloaded successfully")
         files = self.get_all_files(self.job)
         self.logger.info(f"Found {len(files)} file(s) to download")
-        if files:
-            self.download_files(files)
-        else:
-            self.task_finished("files")
+        # if files:
+        self.download_files(files)
+        # else:
+        # self.task_finished("files")
 
     def download_files(self, files: list[str]):
         self.logger.info(f"Starting file download: {files}")
@@ -75,10 +75,7 @@ class JobLoaderController(QObject):
         self.thread_pool.start(worker)
 
     def get_all_images(self, job: Job) -> list[str]:
-        images = set()
-        for a in job.get_all_assemblies():
-            if a.meta_data.assembly_image:
-                images.add(a.meta_data.assembly_image)
+        images = {a.meta_data.assembly_image for a in job.get_all_assemblies() if a.meta_data.assembly_image}
         for lcp in job.get_all_laser_cut_parts():
             images.add(lcp.meta_data.image_index)
         for c in job.get_all_components():
