@@ -748,6 +748,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 component.part_number = part_number
                 component.price = unit_price
                 component.use_exchange_rate = exchange_rate_combobox.currentText() == "USD"
+                component.quantity_to_order = quantity_to_order
                 self.purchase_order.set_component_order_quantity(component, quantity_to_order)
                 order_cost = unit_price * quantity_to_order
                 converted_order_cost = converted_price * quantity_to_order
@@ -786,13 +787,10 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         menu = QMenu(self)
 
         def remove_components():
-            selected_components = self.get_selected_components()
-            if not selected_components:
-                return
-
-            for component in selected_components:
-                self.purchase_order.components.remove(component)
-            self.load_components_table()
+            if selected_components := self.get_selected_components():
+                for component in selected_components:
+                    self.purchase_order.remove_component(component)
+                self.load_components_table()
 
         delete_component_action = QAction("Remove Selected Components", self)
         delete_component_action.triggered.connect(remove_components)
@@ -884,6 +882,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 quantity_to_order = float(self.sheets_table.item(row, SheetsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
 
                 sheet.price_per_pound = price_per_pound
+                sheet.quantity_to_order = quantity_to_order
                 self.purchase_order.set_sheet_order_quantity(sheet, quantity_to_order)
                 quantity_weight = quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
                 order_cost = price_per_pound * quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
@@ -915,13 +914,10 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         menu = QMenu(self)
 
         def remove_sheets():
-            selected_sheets = self.get_selected_sheets()
-            if not selected_sheets:
-                return
-
-            for sheet in selected_sheets:
-                self.purchase_order.sheets.remove(sheet)
-            self.load_sheets_table()
+            if selected_sheets := self.get_selected_sheets():
+                for sheet in selected_sheets:
+                    self.purchase_order.remove_sheet(sheet)
+                self.load_sheets_table()
 
         delete_sheet_action = QAction("Remove Selected Sheets", self)
         delete_sheet_action.triggered.connect(remove_sheets)
@@ -1205,7 +1201,6 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         for component in self.purchase_order.components:
             if component.quantity_to_order <= 0:
                 continue
-            components_to_save.append(component)
             expected_arrival_time = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
             order_data: OrderDict = {
                 "purchase_order_id": self.purchase_order.id,
@@ -1217,8 +1212,10 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             order = Order(order_data)
             order.set_purchase_order(self.purchase_order)
             component.add_order(order)
+            components_to_save.append(component)
 
-        self.purchase_order_manager.components_inventory.save_components(components_to_save)
+        if components_to_save:
+            self.purchase_order_manager.components_inventory.save_components(components_to_save)
 
         if self.purchase_order.components:
             self.load_components_table()
@@ -1240,7 +1237,8 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             order.set_purchase_order(self.purchase_order)
             sheet.add_order(order)
 
-        self.purchase_order_manager.sheets_inventory.save_sheets(sheets_to_save)
+        if sheets_to_save:
+            self.purchase_order_manager.sheets_inventory.save_sheets(sheets_to_save)
 
         if self.purchase_order.sheets:
             self.load_sheets_table()

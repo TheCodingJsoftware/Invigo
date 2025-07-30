@@ -126,8 +126,6 @@ from utils.threads.add_job_to_production_planner_thread import (
 )
 from utils.threads.changes_thread import ChangesThread
 from utils.threads.check_for_updates_thread import CheckForUpdatesThread
-from utils.threads.delete_quote_thread import DeleteQuoteThread
-from utils.threads.download_quote_thread import DownloadQuoteThread
 from utils.threads.download_thread import DownloadThread
 from utils.threads.exchange_rate import ExchangeRate
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
@@ -160,7 +158,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.15"
+__version__: str = "v4.0.16"
 
 
 def check_folders(folders: list[str]):
@@ -1416,8 +1414,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # * \/ Dialogs \/
     def edit_contact_info(self):
         self.contact_info_dialog = EditContactInfoDialog(self)
-        if self.contact_info_dialog.exec():
-            self.contact
+        self.contact_info_dialog.show()
 
     def edit_business_info(self):
         self.business_info_dialog = EditBusinessInfoDialog(self)
@@ -1434,22 +1431,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not hasattr(self, "purchase_order_dialog"):
             self.create_purchase_order()
         if self.purchase_order_dialog:
+            for component in components:
+                self.purchase_order_dialog.purchase_order.set_component_order_quantity(component, 0)
             self.purchase_order_dialog.purchase_order.components.extend(components)
             self.purchase_order_dialog.load_components_table()
         else:
             self.create_purchase_order()
-            self.purchase_order_dialog.add_components(components)
+            for component in components:
+                self.purchase_order_dialog.purchase_order.set_component_order_quantity(component, 0)
+            self.purchase_order_dialog.purchase_order.components.extend(components)
             self.purchase_order_dialog.load_components_table()
 
     def add_sheets_to_purchase_order(self, sheets: list[Sheet]):
         if not hasattr(self, "purchase_order_dialog"):
             self.create_purchase_order()
         if self.purchase_order_dialog:
+            for sheet in sheets:
+                self.purchase_order_dialog.purchase_order.set_sheet_order_quantity(sheet, 0)
             self.purchase_order_dialog.purchase_order.sheets.extend(sheets)
             self.purchase_order_dialog.load_sheets_table()
         else:
             self.create_purchase_order()
-            self.purchase_order_dialog.add_sheets(sheets)
+            for sheet in sheets:
+                self.purchase_order_dialog.purchase_order.set_sheet_order_quantity(sheet, 0)
+            self.purchase_order_dialog.purchase_order.sheets.extend(sheets)
             self.purchase_order_dialog.load_sheets_table()
 
     def create_purchase_order(self, vendor: Vendor | None = None):
@@ -3304,85 +3309,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             "lime",
         )
         self.load_jobs_worker()
-
-    def change_quote_thread(self, quote_path: str, quote_setting_key: str, setting: QComboBox):
-        setting.setEnabled(False)
-        update_quote_thread = UpdateQuoteSettings(quote_path, quote_setting_key, setting.currentText())
-        self.threads.append(update_quote_thread)
-        update_quote_thread.signal.connect(self.change_quote_response)
-        update_quote_thread.start()
-
-    def change_quote_response(self, response: dict | str, folder_name: str):
-        if isinstance(response, dict):
-            self.status_button.setText(
-                f"Successfully updated {folder_name}",
-                "lime",
-            )
-        else:
-            self.status_button.setText(f"Error: {response} - {folder_name}", "red")
-        self.load_saved_quoted_thread()
-
-    def download_quote_data_thread(self, folder_name: str):
-        self.status_button.setText("Loading quote data", "lime")
-        download_quote_thread = DownloadQuoteThread(folder_name)
-        self.threads.append(download_quote_thread)
-        download_quote_thread.signal.connect(self.download_quote_data_response)
-        download_quote_thread.start()
-
-    def download_quote_data_response(self, data: dict[str, dict[str, Any]], folder_name: str):
-        if isinstance(data, dict):
-            quote_name = folder_name.split("/")[-1]
-            quote = Quote(
-                quote_name,
-                data,
-                self.components_inventory,
-                self.laser_cut_parts_inventory,
-                self.sheet_settings,
-            )
-
-            required_images = [laser_cut_part.image_index for laser_cut_part in quote.grouped_laser_cut_parts]
-            required_images.extend(component.image_path for component in quote.components)
-            required_images.extend(nest.image_path for nest in quote.nests)
-
-            self.download_required_images_thread(required_images)
-
-            quote.downloaded_from_server = True
-            self.quote_generator_tab_widget.add_tab(quote)
-            self.status_button.setText(
-                f"Successfully fetched {folder_name} data",
-                "lime",
-            )
-        else:
-            self.status_button.setText(f"Error - {data}", "red")
-
-    def delete_quote_thread(self, folder_path: str):
-        quote_name = folder_path.split("/")[-1]
-        are_you_sure = QMessageBox(
-            QMessageBox.Icon.Question,
-            "Are you sure?",
-            f"Are you sure you want to delete {quote_name}?\n\nThis is permanent and cannot be undone.",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
-            self,
-        )
-        if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
-            self.status_button.setText(f"Deleting {folder_path}", "yellow")
-            delete_quote_thread = DeleteQuoteThread(folder_path)
-            self.threads.append(delete_quote_thread)
-            delete_quote_thread.signal.connect(self.delete_quote_response)
-            delete_quote_thread.start()
-
-    def delete_quote_response(self, response: dict | str, folder_name: str):
-        if isinstance(response, dict):
-            self.status_button.setText(
-                f"Successfully deleted {folder_name}",
-                "lime",
-            )
-            if "saved_quotes" in folder_name:
-                self.load_saved_quoted_thread()
-            elif "previous_quotes" in folder_name:
-                self.load_previous_quotes_thread()
-        else:
-            self.status_button.setText(f"Error: {response}", "red")
 
     def send_email_thread(self, title: str, message: str, emails: list[str], notify: bool = False):
         self.status_button.setText("Loading quote data", "yellow")

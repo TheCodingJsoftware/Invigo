@@ -172,6 +172,20 @@ class PurchaseOrder:
     def get_sheet_quantity_to_order(self, sheet: Sheet) -> int:
         return next((item["order_quantity"] for item in self.sheets_order_data if item["id"] == sheet.id), 0)
 
+    def remove_component(self, component: Component):
+        for item in self.components_order_data:
+            if item["id"] == component.id:
+                self.components.remove(component)
+                self.components_order_data.remove(item)
+                break
+
+    def remove_sheet(self, sheet: Sheet):
+        for item in self.sheets_order_data:
+            if item["id"] == sheet.id:
+                self.sheets.remove(sheet)
+                self.sheets_order_data.remove(item)
+                break
+
     def to_dict(self) -> PurchaseOrderDict:
         return {
             "id": self.id,
