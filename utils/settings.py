@@ -112,8 +112,8 @@ DEFAULT_SETTINGS: SettingsDict = {
     "sort_alphabatical": False,
     "server": {
         "protocol": "http",
-        "ip": "invi.go",
-        "port": go,
+        "ip": "localhost",
+        "port": 5057,
     },
     "geometry": {"x": 200, "y": 200, "width": 1200, "height": 600},
     "last_opened": str(datetime.now()),
