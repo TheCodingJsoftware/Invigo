@@ -2549,7 +2549,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.upload_thread.signals.success.connect(self.upload_thread_response)
         QThreadPool.globalInstance().start(self.upload_thread)
 
-    def upload_thread_response(self, response: dict, files_uploaded: list[str]):
+    def upload_thread_response(self, response: dict):
         # print("upload_thread_response", response, files_uploaded)
         if response["status"] == "success":
             self.status_button.setText("Synched", "lime")
@@ -2560,7 +2560,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.threads.append(download_thread)
         download_thread.start()
 
-    def download_thread_response(self, response: dict, files_uploaded: list[str]):
+    def download_thread_response(self, response: dict):
         print("download_thread_response", response)
 
         if not self.finished_downloading_all_files:
