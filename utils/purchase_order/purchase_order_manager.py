@@ -120,7 +120,7 @@ class PurchaseOrderManager:
                     order.set_purchase_order(po)
             for vendor_id in sheet._vendor_ids:
                 if vendor := vendor_lookup.get(vendor_id):
-                    sheet.vendors.append(vendor)
+                    sheet.add_vendor(vendor)
 
         for component in self.components_inventory.components:
             for order in component.orders:
@@ -128,7 +128,7 @@ class PurchaseOrderManager:
                     order.set_purchase_order(po)
             for vendor_id in component._vendor_ids:
                 if vendor := vendor_lookup.get(vendor_id):
-                    component.vendors.append(vendor)
+                    component.add_vendor(vendor)
 
     def get_organized_purchase_orders(self) -> dict[str, list[PO]]:
         return {vendor.name: [po for po in self.purchase_orders if po.meta_data.vendor.name == vendor.name] for vendor in self.vendors}

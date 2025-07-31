@@ -76,6 +76,12 @@ class Sheet(InventoryItem):
     def remove_order(self, order: Order):
         self.orders.remove(order)
 
+    def add_vendor(self, vendor: Vendor):
+        for _vendor in self.vendors:
+            if _vendor.id == vendor.id:
+                return
+        self.vendors.append(vendor)
+
     def get_categories(self) -> list[str]:
         return [category.name for category in self.categories]
 

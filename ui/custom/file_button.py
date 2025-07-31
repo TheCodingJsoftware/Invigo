@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from PyQt6.QtCore import QMimeData, Qt, QThreadPool, QUrl, pyqtSignal
 from PyQt6.QtGui import QDrag, QMouseEvent
@@ -17,8 +18,7 @@ class FileButton(QPushButton):
         self.setFixedWidth(50)
         self.setAcceptDrops(True)
         self.dragging = False
-        self.file = file
-        print(self.file)
+        self.file = str(Path(file.replace("\\", "/")))
         self.drag_start_position = None
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
