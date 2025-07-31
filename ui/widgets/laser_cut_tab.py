@@ -798,8 +798,8 @@ class LaserCutTab(QWidget, Ui_Form):
         self.load_context_menu()
 
     def view_quantity_history(self):
-        if selected_laser_cut_parts := self.get_selected_laser_cut_parts():
-            item_history_dialog = ViewItemHistoryDialog(self, "laser_cut_part", selected_laser_cut_parts[0].id)
+        if selected_laser_cut_part := self.get_selected_laser_cut_part():
+            item_history_dialog = ViewItemHistoryDialog(self, selected_laser_cut_part)
             item_history_dialog.tabWidget.setCurrentIndex(0)
             item_history_dialog.show()
 

@@ -185,7 +185,7 @@ class OrderWidget(QWidget):
             self.load_ui()
 
     def view_order_history(self):
-        view_item_history_dialog = ViewItemHistoryDialog(self, "component", self.component.id)
+        view_item_history_dialog = ViewItemHistoryDialog(self, component)
         view_item_history_dialog.tabWidget.setCurrentIndex(2)
         view_item_history_dialog.show()
 
@@ -754,19 +754,19 @@ class ComponentsTab(QWidget, Ui_Form):
 
     def view_quantity_history(self):
         if selected_component := self.get_selected_component():
-            item_history_dialog = ViewItemHistoryDialog(self, "component", selected_component.id)
+            item_history_dialog = ViewItemHistoryDialog(self, selected_component)
             item_history_dialog.tabWidget.setCurrentIndex(0)
             item_history_dialog.show()
 
     def view_price_history(self):
         if selected_component := self.get_selected_component():
-            item_history_dialog = ViewItemHistoryDialog(self, "component", selected_component.id)
+            item_history_dialog = ViewItemHistoryDialog(self, selected_component)
             item_history_dialog.tabWidget.setCurrentIndex(1)
             item_history_dialog.show()
 
     def view_order_history(self):
         if selected_component := self.get_selected_component():
-            item_history_dialog = ViewItemHistoryDialog(self, "component", selected_component.id)
+            item_history_dialog = ViewItemHistoryDialog(self, selected_component)
             item_history_dialog.tabWidget.setCurrentIndex(2)
             item_history_dialog.show()
 

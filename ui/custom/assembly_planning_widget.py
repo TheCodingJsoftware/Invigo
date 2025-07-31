@@ -276,7 +276,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         files_layout.addWidget(file_button)
 
     def assembly_file_clicked(self, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
+        self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
         self.download_file_thread.wait()
@@ -1088,6 +1088,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         raise PermissionError(f"Failed to copy file from {source} to {target} after {max_retries} retries.")
 
     def file_downloaded(self, response: tuple[str, str, bool]):
+        if not response:
+            return
         file_ext, file_name, open_when_done = response
         if file_ext is None:
             msg = QMessageBox(

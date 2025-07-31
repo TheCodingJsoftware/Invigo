@@ -7,6 +7,9 @@ import pyqtgraph as pg
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QDialog, QTreeWidget, QTreeWidgetItem
 
+from utils.inventory.sheet import Sheet
+from utils.inventory.component import Component
+from utils.inventory.laser_cut_part import LaserCutPart
 from ui.dialogs.view_item_history_dialog_UI import Ui_Form
 from ui.theme import theme_var
 from utils.workers.history.get_item_order_history import GetItemOrderHistoryWorker
@@ -27,19 +30,27 @@ class ViewItemHistoryDialog(QDialog, Ui_Form):
     def __init__(
         self,
         parent,
-        item_type: Literal["sheet", "component", "structural_steel_item", "laser_cut_part"],
-        item_id: int,
+        item: Component | LaserCutPart | Sheet,
     ):
         super().__init__(parent)
         self.setupUi(self)
         self._parent_widget = parent
-        self.item_type = item_type
-        self.item_id = item_id
+        self.item = item
+        self.item_id = item.id
+        if isinstance(item, Component):
+            self.item_type = "component"
+        elif isinstance(item, LaserCutPart):
+            self.item_type = "laser_cut_part"
+        elif isinstance(item, Sheet):
+            self.item_type = "sheet"
+        else:
+            raise ValueError(f"Invalid item type: {type(item)}")
 
         if self.item_type == "laser_cut_part":
             self.tabWidget.tabBar().setTabVisible(1, False)
             self.tabWidget.tabBar().setTabVisible(2, False)
 
+        self.label_item_name.setText(self.item.name)
         self.resize(1200, 900)
         self.get_history()
 

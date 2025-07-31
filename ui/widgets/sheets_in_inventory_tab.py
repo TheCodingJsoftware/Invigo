@@ -176,7 +176,7 @@ class OrderWidget(QWidget):
             self.load_ui()
 
     def view_order_history(self):
-        item_history_dialog = ViewItemHistoryDialog(self, "sheet", self.sheet.id)
+        item_history_dialog = ViewItemHistoryDialog(self, sheet)
         item_history_dialog.tabWidget.setCurrentIndex(2)
         item_history_dialog.show()
 
@@ -695,19 +695,19 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
 
     def view_order_history(self):
         if selected_sheet := self.get_selected_sheet():
-            item_history_dialog = ViewItemHistoryDialog(self, "sheet", selected_sheet.id)
+            item_history_dialog = ViewItemHistoryDialog(self, selected_sheet)
             item_history_dialog.tabWidget.setCurrentIndex(2)
             item_history_dialog.show()
 
     def view_price_history(self):
         if selected_sheet := self.get_selected_sheet():
-            item_history_dialog = ViewItemHistoryDialog(self, "sheet", selected_sheet.id)
+            item_history_dialog = ViewItemHistoryDialog(self, selected_sheet)
             item_history_dialog.tabWidget.setCurrentIndex(1)
             item_history_dialog.show()
 
     def view_quantity_history(self):
         if selected_sheet := self.get_selected_sheet():
-            item_history_dialog = ViewItemHistoryDialog(self, "sheet", selected_sheet.id)
+            item_history_dialog = ViewItemHistoryDialog(self, selected_sheet)
             item_history_dialog.tabWidget.setCurrentIndex(0)
             item_history_dialog.show()
 

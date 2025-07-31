@@ -1089,11 +1089,11 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         return self.settings_file.get_value(setting_name="exchange_rate")
 
     def open_sheet_history(self, sheet: Sheet):
-        item_history_dialog = ViewItemHistoryDialog(self, "sheet", sheet.id)
+        item_history_dialog = ViewItemHistoryDialog(self, sheet)
         item_history_dialog.show()
 
     def open_component_history(self, component: Component):
-        item_history_dialog = ViewItemHistoryDialog(self, "component", component.id)
+        item_history_dialog = ViewItemHistoryDialog(self, component)
         item_history_dialog.show()
 
     def get_selected_vendor(self) -> Vendor | None:
