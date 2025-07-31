@@ -88,6 +88,12 @@ class Component(InventoryItem):
     def remove_order(self, order: Order):
         self.orders.remove(order)
 
+    def add_vendor(self, vendor: Vendor):
+        for _vendor in self.vendors:
+            if _vendor.id == vendor.id:
+                return
+        self.vendors.append(vendor)
+
     def get_category_quantity(self, category: str | Category) -> float:
         if isinstance(category, str):
             category = self.components_inventory.get_category(category)

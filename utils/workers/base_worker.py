@@ -1,3 +1,4 @@
+import contextlib
 import getpass
 import logging
 import socket
@@ -5,7 +6,7 @@ import time
 
 from PyQt6.QtCore import QObject, QRunnable, pyqtSignal
 
-from utils.ip_utils import get_server_ip_address, get_server_port
+from utils.ip_utils import get_server_ip_address, get_server_port, get_server_protocol
 
 
 class WorkerSignals(QObject):
@@ -20,9 +21,10 @@ class BaseWorker(QRunnable):
         self.signals = WorkerSignals()
         self.logger = logging.getLogger(name)
 
+        self.PROTOCOL = get_server_protocol()
         self.SERVER_IP = get_server_ip_address()
         self.SERVER_PORT = get_server_port()
-        self.DOMAIN = f"http://{self.SERVER_IP}:{self.SERVER_PORT}"
+        self.DOMAIN = f"{self.PROTOCOL}://{self.SERVER_IP}:{self.SERVER_PORT}"
 
         self.headers = {
             "X-Client-Name": getpass.getuser(),
@@ -34,12 +36,14 @@ class BaseWorker(QRunnable):
         try:
             self.logger.info(f"[{self.__class__.__name__}] started.")
             result = self.do_work()
-            self.signals.success.emit(result)
+            with contextlib.suppress(RuntimeError):
+                self.signals.success.emit(result)
         except Exception as e:
             self.logger.exception("Worker error:")
             self.handle_exception(e)
         finally:
-            self.signals.finished.emit()
+            with contextlib.suppress(RuntimeError):
+                self.signals.finished.emit()
             self.logger.info(f"[{self.__class__.__name__}] finished in {time.perf_counter() - start:.2f}s")
 
     def handle_exception(self, e):

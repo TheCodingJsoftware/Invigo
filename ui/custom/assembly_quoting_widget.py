@@ -1149,7 +1149,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
             return
         if open_when_done:
             if file_ext in {"PNG", "JPG", "JPEG"}:
-                local_path = f"data/workspace/{file_ext}/{file_name}"
+                local_path = os.path.join("data", "workspace", file_ext, file_name)
                 self.open_image(local_path, file_name)
             # elif file_ext == "PDF":
             # self.open_pdf(laser_cut_part, local_path)
