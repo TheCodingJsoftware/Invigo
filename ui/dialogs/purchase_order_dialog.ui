@@ -478,7 +478,7 @@ Double click to load.</string>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <spacer name="horizontalSpacer_3">
+      <spacer name="horizontalSpacer_6">
        <property name="orientation">
         <enum>Qt::Orientation::Horizontal</enum>
        </property>
@@ -492,24 +492,40 @@ Double click to load.</string>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_duplicate">
+       <property name="toolTip">
+        <string>Duplicate this PO and increment the number</string>
+       </property>
        <property name="text">
-        <string>Duplicate &amp;&amp; Increase PO Number</string>
+        <string>Duplicate +1 PO#</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_save_and_apply_orders">
        <property name="text">
-        <string>Apply Orders &amp;&amp; Save</string>
+        <string>Save with Orders</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_apply_orders">
        <property name="text">
-        <string>Apply Orders</string>
+        <string>Apply Orders Only</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_save">
@@ -521,7 +537,7 @@ Double click to load.</string>
      <item>
       <widget class="QPushButton" name="pushButton_print">
        <property name="text">
-        <string>Open Printout</string>
+        <string>View Printout</string>
        </property>
        <property name="shortcut">
         <string>Ctrl+P</string>
@@ -529,16 +545,29 @@ Double click to load.</string>
       </widget>
      </item>
      <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_delete">
        <property name="text">
-        <string>Delete</string>
+        <string>Delete Order</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_close">
        <property name="text">
-        <string>Close</string>
+        <string>Close Window</string>
        </property>
       </widget>
      </item>

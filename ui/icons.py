@@ -72,6 +72,14 @@ class Icons:
     recut_icon = None
     recoat_icon = None
     merge_icon = None
+    close_icon = None
+
+    purchase_order_duplicate_icon = None
+    purchase_order_apply_and_save_icon = None
+    purchase_order_save_icon = None
+    purchase_order_print_icon = None
+    purchase_order_delete_icon = None
+
     job_planning_icon = None
     job_quoting_icon = None
     job_quoted_icon = None
@@ -484,6 +492,8 @@ class Icons:
             color_off=theme_var("primary"),
             color_off_active=theme_var("primary"),
         )
+        cls.close_icon = make_icon("mdi.close", "primary")
+
         cls.job_planning_icon = make_icon("fa6s.calendar", "job-planning")
         cls.job_quoting_icon = make_icon("fa6s.file-invoice-dollar", "job-quoting")
         cls.job_quoted_icon = make_icon("ph.check-fill", "job-quoted")
@@ -491,3 +501,10 @@ class Icons:
         cls.job_template_icon = make_icon("fa6s.box-archive", "job-template")
         cls.job_workspace_icon = make_icon("fa6s.network-wired", "job-workspace")
         cls.job_archive_icon = make_icon("fa6s.box-archive", "job-archive")
+
+        cls.purchase_order_print_icon = make_icon("ph.printer-fill", "primary")
+        cls.purchase_order_save_icon = make_icon("ri.save-3-fill", "primary")
+        cls.purchase_order_delete_icon = make_icon("ph.trash-fill", "primary")
+        cls.purchase_order_duplicate_icon = make_icon("mdi.content-duplicate", "primary")
+        cls.purchase_order_apply_and_save_icon = make_icon("msc.save-all", "primary")
+        cls.purchase_order_apply_icon = make_icon("msc.checklist", "primary")

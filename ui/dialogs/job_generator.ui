@@ -80,7 +80,7 @@
             <property name="text">
              <string>Select jobs/assemblies and set quantity for selected assemblies.
 
-Press 'Add' when finished.</string>
+Press 'Merge' when finished.</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
@@ -157,6 +157,19 @@ Press 'Add' when finished.</string>
               </widget>
              </item>
              <item>
+              <widget class="QCheckBox" name="checkBox_bring_along_subassemblies">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;With this setting enabled it will bring along all sub-assemblies of the (sub)-assembly you selected.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;With this setting disabled it will only bring along the assembly and no other subsequent sub-assemblies.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Bring along sub-assemblies</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QScrollArea" name="scrollArea_2">
                <property name="widgetResizable">
                 <bool>true</bool>
@@ -166,8 +179,8 @@ Press 'Add' when finished.</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>1047</width>
-                  <height>386</height>
+                  <width>1043</width>
+                  <height>357</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">

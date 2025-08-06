@@ -1455,6 +1455,9 @@ class ComponentsTab(QWidget, Ui_Form):
             html += "</thead>"
             html += "<tbody>"
             for component in components:
+                img = ""
+                if component.image_path:
+                    img = f'<td><img src="{component.image_path}" width="150"></td>'
                 order_status = ""
                 if component.orders:
                     for order in component.orders:
@@ -1462,7 +1465,7 @@ class ComponentsTab(QWidget, Ui_Form):
                 else:
                     order_status = "No order is pending"
                 html += f"""<tr style="border-bottom: 1px solid black;">
-                <td><img src="{component.image_path}" width="150"></td>
+                {img}
                 <td>{component.part_name}</td>
                 <td>{component.part_number}</td>
                 <td>{component.get_category_quantity(self.category)}</td>

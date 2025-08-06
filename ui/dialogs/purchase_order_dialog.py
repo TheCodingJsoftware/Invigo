@@ -535,13 +535,27 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.pushButton_edit_vendor.clicked.connect(self.edit_vendor)
         self.pushButton_edit_shipping_address.setIcon(Icons.edit_icon)
         self.pushButton_edit_shipping_address.clicked.connect(self.edit_shipping_address)
-        self.pushButton_save.clicked.connect(self.save)
+
+        self.pushButton_save.clicked.connect(partial(self.save, self.saved_purchase_order))
+        self.pushButton_save.setIcon(Icons.purchase_order_save_icon)
+
         self.pushButton_duplicate.clicked.connect(self.duplicate)
+        self.pushButton_duplicate.setIcon(Icons.purchase_order_duplicate_icon)
+
         self.pushButton_apply_orders.clicked.connect(self.apply_orders)
+        self.pushButton_apply_orders.setIcon(Icons.purchase_order_apply_icon)
+
         self.pushButton_save_and_apply_orders.clicked.connect(self.save_and_apply_orders)
+        self.pushButton_save_and_apply_orders.setIcon(Icons.purchase_order_apply_and_save_icon)
+
         self.pushButton_print.clicked.connect(self.open_printout)
+        self.pushButton_print.setIcon(Icons.purchase_order_print_icon)
+
         self.pushButton_delete.clicked.connect(self.delete)
+        self.pushButton_delete.setIcon(Icons.purchase_order_delete_icon)
+
         self.pushButton_close.clicked.connect(self.close)
+        self.pushButton_close.setIcon(Icons.close_icon)
 
         self.comboBox_vendor.addItems([vendor.name for vendor in self.purchase_order_manager.vendors])
 
@@ -1170,7 +1184,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
             self.purchase_order_manager.delete_purchase_order(self.purchase_order, on_finished=on_finished)
 
-    def save(self):
+    def save(self, on_finsihed: Callable | None=None):
         self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
         self.purchase_order.meta_data.status = Status(self.comboBox_status.currentIndex())
         self.purchase_order.meta_data.shipping_method = ShippingMethod(self.comboBox_shipping_method.currentIndex())
@@ -1181,7 +1195,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.purchase_order.meta_data.order_date = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
         self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
 
-        self.purchase_order_manager.save_purchase_order(self.purchase_order, on_finished=self.saved_purchase_order)
+        self.purchase_order_manager.save_purchase_order(self.purchase_order, on_finished=on_finsihed)
 
         self._parent_widget.load_po_menus()
         QTimer.singleShot(1000, self.refresh_purchase_orders)
@@ -1256,7 +1270,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
     def save_and_apply_orders(self):
         self.apply_orders()
-        self.save()
+        self.save(on_finsihed=self.saved_purchase_order)
 
     def edit_vendor(self):
         edit_vendor_dialog = AddVendorDialog(self, self.get_selected_vendor())
@@ -1275,10 +1289,13 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self.unsaved_changes = True
 
     def open_printout(self):
-        webbrowser.open(
-            f"http://{get_server_ip_address()}:{get_server_port()}/purchase_orders/view?id={self.purchase_order.id}",
-            new=0,
-        )
+        def open_printout():
+            webbrowser.open(
+                f"http://{get_server_ip_address()}:{get_server_port()}/purchase_orders/view?id={self.purchase_order.id}",
+                new=0,
+            )
+
+        self.save(on_finsihed=open_printout)
 
     def saved_purchase_order(self):
         self.unsaved_changes = False

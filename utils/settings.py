@@ -71,6 +71,7 @@ class SettingsDict(TypedDict, total=False):
     sort_descending: bool
     sort_quantity_in_stock: bool
     sort_priority: bool
+    bring_along_sub_assemblies: bool
     sort_alphabatical: bool
     server: ServerSettings
     geometry: Geometry
@@ -110,6 +111,7 @@ DEFAULT_SETTINGS: SettingsDict = {
     "sort_quantity_in_stock": True,
     "sort_priority": False,
     "sort_alphabatical": False,
+    "bring_along_sub_assemblies": True,
     "server": {
         "protocol": "http",
         "ip": "invi.go",

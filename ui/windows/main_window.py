@@ -158,7 +158,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.18"
+__version__: str = "v4.0.19"
 
 
 def check_folders(folders: list[str]):
@@ -3125,31 +3125,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         nest_laser_cut_part.powder_data.powder_name = workspace_laser_cut_part_group.base_part.powder_data.powder_name
                         nest_laser_cut_part.powder_data.powder_item = workspace_laser_cut_part_group.base_part.powder_data.powder_item
                         break
-
-    def workorder_move_to_next_process(
-        self,
-        nests: list[Nest],
-        all_workspace_laser_part_groups: list[WorkspaceLaserCutPartGroup],
-        should_handle_remaining_parts: bool,
-    ):
-        laser_cut_parts_to_update: list[LaserCutPart] = []
-        for nest in nests:
-            for nest_laser_cut_part in nest.laser_cut_parts:
-                for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
-                    if workspace_laser_cut_part_group.base_part.name == nest_laser_cut_part.name and "laser" in workspace_laser_cut_part_group.get_current_tag().name.lower():
-                        workorder_quantity = workspace_laser_cut_part_group.get_count()
-                        nest_quantity = nest_laser_cut_part.meta_data.quantity_on_sheet * nest.sheet_count
-                        workorder_remaining_quantity = nest_quantity - workorder_quantity
-                        workspace_laser_cut_part_group.move_to_next_process(workorder_quantity)
-                        if nest_quantity > workorder_quantity and should_handle_remaining_parts:
-                            new_part = LaserCutPart(
-                                nest_laser_cut_part.to_dict(),
-                                self.laser_cut_parts_inventory,
-                            )
-                            new_part.inventory_data.quantity = workorder_remaining_quantity
-                            laser_cut_parts_to_update.append(new_part)
-                        break
-        self.laser_cut_parts_inventory.add_or_update_laser_cut_parts(laser_cut_parts_to_update, "workorder nest overflow")
 
     def set_order_number_thread(self, order_number: float):
         self.order_number = order_number
