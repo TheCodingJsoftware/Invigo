@@ -3,15 +3,12 @@ import traceback
 from typing import TYPE_CHECKING, Callable
 
 from PyQt6.QtCore import Qt, QThreadPool, QTimer
-from PyQt6.QtGui import QBrush, QColor
+from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QDialog, QTreeWidget, QTreeWidgetItem
 
-from settings import Settings
 from ui.custom_widgets import HumbleDoubleSpinBox
 from ui.dialogs.job_generator_UI import Ui_Form
-from ui.icons import Icons
-from ui.theme import theme_var
-from utils.colors import get_on_color_from_primary
+from utils.settings import Settings
 from utils.workers.jobs.get_all_jobs import GetAllJobsWorker
 from utils.workers.jobs.get_job import GetJobWorker
 from utils.workers.runnable_chain import RunnableChain
@@ -19,7 +16,7 @@ from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job, JobIcon
 
 if TYPE_CHECKING:
-    from ui.windows.main_window import MainWindow
+    pass
 
 
 class JobGeneratorDialog(QDialog, Ui_Form):
