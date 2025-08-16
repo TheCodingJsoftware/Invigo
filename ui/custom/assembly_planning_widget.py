@@ -226,7 +226,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
     def assembly_image_show_context_menu(self):
         contextMenu = QMenu(self)
         delete_action = contextMenu.addAction("Clear image")
-        paste_action = contextMenu.addAction("Paste image from clipboard")
+        paste_action = contextMenu.addAction("Paste Image from Clipboard")
 
         action = contextMenu.exec(QCursor.pos())
 

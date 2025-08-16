@@ -42,7 +42,12 @@ from utils.inventory.component import Component
 from utils.inventory.order import Order, OrderDict
 from utils.inventory.sheet import Sheet
 from utils.ip_utils import get_server_ip_address, get_server_port
-from utils.purchase_order.purchase_order import PurchaseOrder, PurchaseOrderDict, ShippingMethod, Status
+from utils.purchase_order.purchase_order import (
+    PurchaseOrder,
+    PurchaseOrderDict,
+    ShippingMethod,
+    Status,
+)
 from utils.purchase_order.purchase_order_manager import PurchaseOrderManager
 from utils.purchase_order.shipping_address import ShippingAddress
 from utils.purchase_order.vendor import Vendor, VendorDict
@@ -157,7 +162,9 @@ class ComponentOrdersWidget(QWidget):
             order_status_button.setText(f"Order Pending ({int(order.quantity)})")
             order_status_button.setToolTip(str(order))
             order_status_button.setChecked(True)
-            order_status_button.clicked.connect(partial(self.order_button_pressed, order, order_status_button))
+            order_status_button.clicked.connect(
+                partial(self.order_button_pressed, order, order_status_button)
+            )
 
             year, month, day = map(int, order.expected_arrival_time.split("-"))
             date = QDate(year, month, day)
@@ -166,11 +173,15 @@ class ComponentOrdersWidget(QWidget):
             arrival_date.setStyleSheet(
                 f"QDateEdit{{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}} QDateEdit:hover{{border-color: {theme_var('primary-green')}; }}"
             )
-            arrival_date.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+            arrival_date.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+                event
+            )
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
-            arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
+            arrival_date.dateChanged.connect(
+                partial(self.date_changed, order, arrival_date)
+            )
 
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
@@ -202,9 +213,13 @@ class ComponentOrdersWidget(QWidget):
     #     )
     #     view_item_history_dialog.show()
 
-    def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
+    def order_button_pressed(
+        self, order: Order, order_status_button: OrderStatusButton
+    ):
         self.orderOpened.emit()
-        dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.component.part_name}", self)
+        dialog = UpdateComponentOrderPendingDialog(
+            order, f"Update order for {self.component.part_name}", self
+        )
         if dialog.exec():
             if dialog.action == "CANCEL_ORDER":
                 self.component.remove_order(order)
@@ -217,9 +232,7 @@ class ComponentOrdersWidget(QWidget):
                 old_quantity = self.component.quantity
                 new_quantity = old_quantity + quantity_to_add
                 self.component.quantity = new_quantity
-                self.component.latest_change_quantity = (
-                    f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                )
+                self.component.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 order.quantity = remaining_quantity
                 if remaining_quantity <= 0:
                     msg = QMessageBox(
@@ -236,7 +249,9 @@ class ComponentOrdersWidget(QWidget):
                 self.orderClosed.emit()
                 return
             # self.parent.components_inventory.save_local_copy()
-            self._parent_widget.purchase_order_manager.components_inventory.save_component(self.component)
+            self._parent_widget.purchase_order_manager.components_inventory.save_component(
+                self.component
+            )
             self._parent_widget.load_components_table()
             self._parent_widget.unsaved_changes = True
             # self.parent.sync_changes()
@@ -250,7 +265,9 @@ class ComponentOrdersWidget(QWidget):
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
         # self.parent.components_inventory.save_local_copy()
-        self._parent_widget.purchase_order_manager.components_inventory.save_component(self.component)
+        self._parent_widget.purchase_order_manager.components_inventory.save_component(
+            self.component
+        )
         # self.parent.sync_changes()
 
     def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
@@ -289,7 +306,10 @@ class SheetsTable(CustomTableWidget):
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-        editable_columns = [SheetsTableColumns.QUANTITY_TO_ORDER, SheetsTableColumns.PRICE_PER_POUND]
+        editable_columns = [
+            SheetsTableColumns.QUANTITY_TO_ORDER,
+            SheetsTableColumns.PRICE_PER_POUND,
+        ]
         self.set_editable_column_index([col.value for col in editable_columns])
 
         headers = {
@@ -354,7 +374,9 @@ class SheetOrdersWidget(QWidget):
             order_status_button.setText(f"Order Pending ({int(order.quantity)})")
             order_status_button.setToolTip(str(order))
             order_status_button.setChecked(True)
-            order_status_button.clicked.connect(partial(self.order_button_pressed, order, order_status_button))
+            order_status_button.clicked.connect(
+                partial(self.order_button_pressed, order, order_status_button)
+            )
 
             year, month, day = map(int, order.expected_arrival_time.split("-"))
             date = QDate(year, month, day)
@@ -363,11 +385,15 @@ class SheetOrdersWidget(QWidget):
             arrival_date.setStyleSheet(
                 "QDateEdit{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;} QDateEdit:hover{border-color: #3bba6d; }"
             )
-            arrival_date.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+            arrival_date.wheelEvent = lambda event: self._parent_widget.wheelEvent(
+                event
+            )
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
-            arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
+            arrival_date.dateChanged.connect(
+                partial(self.date_changed, order, arrival_date)
+            )
 
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
@@ -405,9 +431,13 @@ class SheetOrdersWidget(QWidget):
     #     item_history_dialog.tabWidget.setCurrentIndex(2)
     #     item_history_dialog.show()
 
-    def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
+    def order_button_pressed(
+        self, order: Order, order_status_button: OrderStatusButton
+    ):
         self.orderOpened.emit()
-        dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.sheet.get_name()}", self)
+        dialog = UpdateComponentOrderPendingDialog(
+            order, f"Update order for {self.sheet.get_name()}", self
+        )
         if dialog.exec():
             if dialog.action == "CANCEL_ORDER":
                 self.sheet.remove_order(order)
@@ -421,9 +451,7 @@ class SheetOrdersWidget(QWidget):
                 new_quantity = old_quantity + quantity_to_add
                 self.sheet.quantity = new_quantity
                 self.sheet.has_sent_warning = False
-                self.sheet.latest_change_quantity = (
-                    f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                )
+                self.sheet.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 order.quantity = remaining_quantity
                 if remaining_quantity <= 0:
                     msg = QMessageBox(
@@ -439,7 +467,9 @@ class SheetOrdersWidget(QWidget):
                 order_status_button.setChecked(True)
                 self.orderClosed.emit()
                 return
-            self._parent_widget.purchase_order_manager.sheets_inventory.save_sheet(self.sheet)
+            self._parent_widget.purchase_order_manager.sheets_inventory.save_sheet(
+                self.sheet
+            )
             self._parent_widget.load_sheets_table()
             self._parent_widget.unsaved_changes = True
             # self._parent_widget.sheets_inventory.save_local_copy()
@@ -453,7 +483,9 @@ class SheetOrdersWidget(QWidget):
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
-        self._parent_widget.purchase_order_manager.sheets_inventory.save_sheet(self.sheet)
+        self._parent_widget.purchase_order_manager.sheets_inventory.save_sheet(
+            self.sheet
+        )
         # self._parent_widget.sheets_inventory.save_local_copy()
         # self._parent_widget.sync_changes()
 
@@ -494,7 +526,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.vendors: list[Vendor] = []
         self.purchase_orders: list[PurchaseOrder] = []
 
-        self.tree_widget_purchase_orders: dict[str, dict[str, QTreeWidgetItem | PurchaseOrder | Vendor]] = {}
+        self.tree_widget_purchase_orders: dict[
+            str, dict[str, QTreeWidgetItem | PurchaseOrder | Vendor]
+        ] = {}
 
         self.component_orders_widgets: list[ComponentOrdersWidget] = []
         self.sheets_orders_widgets: list[SheetOrdersWidget] = []
@@ -508,20 +542,26 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.sheets_dict: dict[int, Sheet] = {}
 
         if self.purchase_order.meta_data.purchase_order_number:
-            self.purchase_order_manager.get_purchase_order_data(self.purchase_order, on_finished=self.load_ui)
+            self.purchase_order_manager.get_purchase_order_data(
+                self.purchase_order, on_finished=self.load_ui
+            )
         else:
             self.load_ui()
         self.setWindowFlags(Qt.WindowType.Window)
         self.showMaximized()
 
     def load_ui(self):
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.widget_components)
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_components, self.widget_components
+        )
         if not self.purchase_order.components:
             self.pushButton_components.click()
             self.pushButton_components.click()
         else:
             self.pushButton_components.setChecked(True)
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sheets, self.widget_sheets)
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_sheets, self.widget_sheets
+        )
         if not self.purchase_order.sheets:
             self.pushButton_sheets.click()
             self.pushButton_sheets.click()
@@ -529,14 +569,20 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self.pushButton_sheets.setChecked(True)
 
         self.pushButton_refresh_purchase_orders.setIcon(Icons.refresh_icon)
-        self.pushButton_refresh_purchase_orders.clicked.connect(self.refresh_purchase_orders)
+        self.pushButton_refresh_purchase_orders.clicked.connect(
+            self.refresh_purchase_orders
+        )
         self.pushButton_autofill.clicked.connect(self.autofill_purchase_order)
         self.pushButton_edit_vendor.setIcon(Icons.edit_icon)
         self.pushButton_edit_vendor.clicked.connect(self.edit_vendor)
         self.pushButton_edit_shipping_address.setIcon(Icons.edit_icon)
-        self.pushButton_edit_shipping_address.clicked.connect(self.edit_shipping_address)
+        self.pushButton_edit_shipping_address.clicked.connect(
+            self.edit_shipping_address
+        )
 
-        self.pushButton_save.clicked.connect(partial(self.save, self.saved_purchase_order))
+        self.pushButton_save.clicked.connect(
+            partial(self.save, self.saved_purchase_order)
+        )
         self.pushButton_save.setIcon(Icons.purchase_order_save_icon)
 
         self.pushButton_duplicate.clicked.connect(self.duplicate)
@@ -545,8 +591,12 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.pushButton_apply_orders.clicked.connect(self.apply_orders)
         self.pushButton_apply_orders.setIcon(Icons.purchase_order_apply_icon)
 
-        self.pushButton_save_and_apply_orders.clicked.connect(self.save_and_apply_orders)
-        self.pushButton_save_and_apply_orders.setIcon(Icons.purchase_order_apply_and_save_icon)
+        self.pushButton_save_and_apply_orders.clicked.connect(
+            self.save_and_apply_orders
+        )
+        self.pushButton_save_and_apply_orders.setIcon(
+            Icons.purchase_order_apply_and_save_icon
+        )
 
         self.pushButton_print.clicked.connect(self.open_printout)
         self.pushButton_print.setIcon(Icons.purchase_order_print_icon)
@@ -557,24 +607,49 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.pushButton_close.clicked.connect(self.close)
         self.pushButton_close.setIcon(Icons.close_icon)
 
-        self.comboBox_vendor.addItems([vendor.name for vendor in self.purchase_order_manager.vendors])
+        self.comboBox_vendor.addItems(
+            [vendor.name for vendor in self.purchase_order_manager.vendors]
+        )
 
-        if self.purchase_order.meta_data.purchase_order_number <= 1 and self.purchase_order.meta_data.vendor:
-            self.comboBox_vendor.setCurrentText(self.purchase_order.meta_data.vendor.name)
-            self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
-            self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
+        if (
+            self.purchase_order.meta_data.purchase_order_number <= 1
+            and self.purchase_order.meta_data.vendor
+        ):
+            self.comboBox_vendor.setCurrentText(
+                self.purchase_order.meta_data.vendor.name
+            )
+            self.doubleSpinBox_po_number.setValue(
+                self.purchase_order_manager.get_latest_po_number(
+                    self.purchase_order.meta_data.vendor
+                )
+            )
+            self.purchase_order.meta_data.purchase_order_number = int(
+                self.doubleSpinBox_po_number.value()
+            )
         elif self.purchase_order.meta_data.purchase_order_number <= 1:
-            if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
+            if selected_vendor := self.purchase_order_manager.get_vendor_by_name(
+                self.comboBox_vendor.currentText()
+            ):
                 self.purchase_order.meta_data.vendor = selected_vendor
-            self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(self.purchase_order.meta_data.vendor))
-            self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
+            self.doubleSpinBox_po_number.setValue(
+                self.purchase_order_manager.get_latest_po_number(
+                    self.purchase_order.meta_data.vendor
+                )
+            )
+            self.purchase_order.meta_data.purchase_order_number = int(
+                self.doubleSpinBox_po_number.value()
+            )
         else:
-            self.doubleSpinBox_po_number.setValue(self.purchase_order.meta_data.purchase_order_number)
+            self.doubleSpinBox_po_number.setValue(
+                self.purchase_order.meta_data.purchase_order_number
+            )
 
         self.doubleSpinBox_po_number.valueChanged.connect(self.meta_data_changed)
 
         status_list = list(Status)
-        self.comboBox_status.addItems([status.name.replace("_", " ").title() for status in status_list])
+        self.comboBox_status.addItems(
+            [status.name.replace("_", " ").title() for status in status_list]
+        )
         try:
             status_index = status_list.index(self.purchase_order.meta_data.status)
         except ValueError:
@@ -582,19 +657,35 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.comboBox_status.setCurrentIndex(status_index)
         self.comboBox_status.currentIndexChanged.connect(self.meta_data_changed)
 
-        self.comboBox_shipping_method.addItems([method.name.replace("_", " ").title() for method in ShippingMethod])
-        self.comboBox_shipping_method.setCurrentIndex(self.purchase_order.meta_data.shipping_method.value)
-        self.comboBox_shipping_method.currentIndexChanged.connect(self.meta_data_changed)
-        self.comboBox_shipping_address.addItems([address.name for address in self.purchase_order_manager.shipping_addresses])
-        self.comboBox_shipping_address.setCurrentText(self.purchase_order.meta_data.shipping_address.name)
-        self.comboBox_shipping_address.setToolTip(self.purchase_order.meta_data.shipping_address.__str__())
-        self.comboBox_shipping_address.currentIndexChanged.connect(self.meta_data_changed)
+        self.comboBox_shipping_method.addItems(
+            [method.name.replace("_", " ").title() for method in ShippingMethod]
+        )
+        self.comboBox_shipping_method.setCurrentIndex(
+            self.purchase_order.meta_data.shipping_method.value
+        )
+        self.comboBox_shipping_method.currentIndexChanged.connect(
+            self.meta_data_changed
+        )
+        self.comboBox_shipping_address.addItems(
+            [address.name for address in self.purchase_order_manager.shipping_addresses]
+        )
+        self.comboBox_shipping_address.setCurrentText(
+            self.purchase_order.meta_data.shipping_address.name
+        )
+        self.comboBox_shipping_address.setToolTip(
+            self.purchase_order.meta_data.shipping_address.__str__()
+        )
+        self.comboBox_shipping_address.currentIndexChanged.connect(
+            self.meta_data_changed
+        )
 
         self.comboBox_vendor.setCurrentText(self.purchase_order.meta_data.vendor.name)
         self.comboBox_vendor.setToolTip(self.purchase_order.meta_data.vendor.__str__())
         self.comboBox_vendor.currentIndexChanged.connect(self.vendor_changed)
 
-        order_date_qdate = QDate.fromString(self.purchase_order.meta_data.order_date, "yyyy-MM-dd")
+        order_date_qdate = QDate.fromString(
+            self.purchase_order.meta_data.order_date, "yyyy-MM-dd"
+        )
         if not order_date_qdate.isValid():
             order_date_qdate = QDate.currentDate()
 
@@ -616,25 +707,46 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         self.treeWidget_purchase_orders.setColumnCount(2)
         self.treeWidget_purchase_orders.setHeaderLabels(["Vendor/PO Number", "Status"])
-        self.treeWidget_purchase_orders.itemDoubleClicked.connect(self.tree_widget_double_clicked)
+        self.treeWidget_purchase_orders.itemDoubleClicked.connect(
+            self.tree_widget_double_clicked
+        )
 
         self.refresh_purchase_orders()
 
     def vendor_changed(self):
-        if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
+        if selected_vendor := self.purchase_order_manager.get_vendor_by_name(
+            self.comboBox_vendor.currentText()
+        ):
             self.purchase_order.meta_data.vendor = selected_vendor
             self.comboBox_vendor.setToolTip(selected_vendor.__str__())
-            self.doubleSpinBox_po_number.setValue(self.purchase_order_manager.get_latest_po_number(selected_vendor))
+            self.doubleSpinBox_po_number.setValue(
+                self.purchase_order_manager.get_latest_po_number(selected_vendor)
+            )
         self.unsaved_changes = True
 
     def meta_data_changed(self):
-        self.purchase_order.meta_data.shipping_method = ShippingMethod(self.comboBox_shipping_method.currentIndex())
-        self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
-        if selected_shipping_address := self.purchase_order_manager.get_shipping_address_by_name(self.comboBox_shipping_address.currentText()):
+        self.purchase_order.meta_data.shipping_method = ShippingMethod(
+            self.comboBox_shipping_method.currentIndex()
+        )
+        self.purchase_order.meta_data.purchase_order_number = int(
+            self.doubleSpinBox_po_number.value()
+        )
+        if (
+            selected_shipping_address
+            := self.purchase_order_manager.get_shipping_address_by_name(
+                self.comboBox_shipping_address.currentText()
+            )
+        ):
             self.purchase_order.meta_data.shipping_address = selected_shipping_address
-            self.comboBox_shipping_address.setToolTip(selected_shipping_address.__str__())
-        self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
-        self.purchase_order.meta_data.order_date = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+            self.comboBox_shipping_address.setToolTip(
+                selected_shipping_address.__str__()
+            )
+        self.purchase_order.meta_data.purchase_order_number = int(
+            self.doubleSpinBox_po_number.value()
+        )
+        self.purchase_order.meta_data.order_date = (
+            self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+        )
         self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
         self.unsaved_changes = True
 
@@ -642,11 +754,17 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
     def get_selected_components(self) -> list[Component]:
         selected_components: list[Component] = []
         selected_rows = self.get_selected_rows(self.components_table)
-        selected_components.extend(component for row, component in self.components_dict.items() if row in selected_rows)
+        selected_components.extend(
+            component
+            for row, component in self.components_dict.items()
+            if row in selected_rows
+        )
         return selected_components
 
     def add_component(self):
-        add_component_dialog = AddComponentDialog(self.purchase_order_manager.components_inventory, self)
+        add_component_dialog = AddComponentDialog(
+            self.purchase_order_manager.components_inventory, self
+        )
         if add_component_dialog.exec():
             if selected_components := add_component_dialog.get_selected_components():
                 for component in selected_components:
@@ -667,10 +785,14 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                     self.purchase_order.components.append(new_component)
                     new_component.vendors.append(self.purchase_order.meta_data.vendor)
                     new_component.quantity = 0
-                    self.purchase_order.set_component_order_quantity(new_component, add_component_dialog.get_current_quantity())
+                    self.purchase_order.set_component_order_quantity(
+                        new_component, add_component_dialog.get_current_quantity()
+                    )
                     self.add_component_to_table(new_component)
 
-                self.purchase_order_manager.components_inventory.add_component(new_component, on_finished=add_component_to_purchase_order)
+                self.purchase_order_manager.components_inventory.add_component(
+                    new_component, on_finished=add_component_to_purchase_order
+                )
 
             self.unsaved_changes = True
 
@@ -687,10 +809,16 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         part_number = component.part_number
         unit_price = component.price
         quantity_in_stock = component.quantity
-        quantity_to_order = self.purchase_order.get_component_quantity_to_order(component)
+        quantity_to_order = self.purchase_order.get_component_quantity_to_order(
+            component
+        )
         order_cost = unit_price * quantity_to_order
         use_exchange_rate = component.use_exchange_rate
-        converted_price = unit_price * self.get_exchange_rate() if use_exchange_rate else unit_price / self.get_exchange_rate()
+        converted_price = (
+            unit_price * self.get_exchange_rate()
+            if use_exchange_rate
+            else unit_price / self.get_exchange_rate()
+        )
         converted_order_cost = converted_price * quantity_to_order
 
         history_button = QPushButton("View History", self)
@@ -704,17 +832,27 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         part_number_widget = QTableWidgetItem(part_number)
         part_number_widget.setToolTip(f'<img src="{component.image_path}" width="150">')
         price_widget = QTableWidgetItem(f"${unit_price:,.2f}")
-        price_widget.setToolTip(f"${converted_price:,.2f} {'CAD' if use_exchange_rate else 'USD'}")
+        price_widget.setToolTip(
+            f"${converted_price:,.2f} {'CAD' if use_exchange_rate else 'USD'}"
+        )
         quantity_in_stock_widget = QTableWidgetItem(str(quantity_in_stock))
         quantity_in_stock_widget.setToolTip(
             f"Category quantities:\n{component.print_category_quantities()}\nRed Quanatity Limit: {component.red_quantity_limit}\nYellow Quantity Limit: {component.yellow_quantity_limit}"
         )
         order_cost_widget = QTableWidgetItem(f"${order_cost:,.2f}")
-        order_cost_widget.setToolTip(f"${converted_order_cost:,.2f} {'CAD' if use_exchange_rate else 'USD'}\nOrder quantity: {quantity_to_order}")
+        order_cost_widget.setToolTip(
+            f"${converted_order_cost:,.2f} {'CAD' if use_exchange_rate else 'USD'}\nOrder quantity: {quantity_to_order}"
+        )
 
-        self.components_table.setItem(row_count, ComponentsTableColumns.PART_NAME.value, part_name_widget)
-        self.components_table.setItem(row_count, ComponentsTableColumns.PART_NUMBER.value, part_number_widget)
-        self.components_table.setItem(row_count, ComponentsTableColumns.UNIT_PRICE.value, price_widget)
+        self.components_table.setItem(
+            row_count, ComponentsTableColumns.PART_NAME.value, part_name_widget
+        )
+        self.components_table.setItem(
+            row_count, ComponentsTableColumns.PART_NUMBER.value, part_number_widget
+        )
+        self.components_table.setItem(
+            row_count, ComponentsTableColumns.UNIT_PRICE.value, price_widget
+        )
         self.components_table.setItem(
             row_count,
             ComponentsTableColumns.QUANTITY_IN_STOCK.value,
@@ -730,18 +868,30 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 row_count,
             )
         )
-        self.components_table.setCellWidget(row_count, ComponentsTableColumns.USD_CAD.value, exchange_rate_combobox)
+        self.components_table.setCellWidget(
+            row_count, ComponentsTableColumns.USD_CAD.value, exchange_rate_combobox
+        )
         self.components_table.setItem(
             row_count,
             ComponentsTableColumns.QUANTITY_TO_ORDER.value,
             QTableWidgetItem(str(quantity_to_order)),
         )
-        self.components_table.setCellWidget(row_count, ComponentsTableColumns.HISTORY.value, history_button)
-        self.components_table.setItem(row_count, ComponentsTableColumns.ORDER_COST.value, order_cost_widget)
+        self.components_table.setCellWidget(
+            row_count, ComponentsTableColumns.HISTORY.value, history_button
+        )
+        self.components_table.setItem(
+            row_count, ComponentsTableColumns.ORDER_COST.value, order_cost_widget
+        )
         order_widget = ComponentOrdersWidget(component, self)
-        order_widget.orderOpened.connect(lambda: self.components_table.blockSignals(True))
-        order_widget.orderClosed.connect(lambda: self.components_table.blockSignals(False))
-        self.components_table.setCellWidget(row_count, ComponentsTableColumns.ORDER_WIDGET.value, order_widget)
+        order_widget.orderOpened.connect(
+            lambda: self.components_table.blockSignals(True)
+        )
+        order_widget.orderClosed.connect(
+            lambda: self.components_table.blockSignals(False)
+        )
+        self.components_table.setCellWidget(
+            row_count, ComponentsTableColumns.ORDER_WIDGET.value, order_widget
+        )
         self.component_orders_widgets.append(order_widget)
         self.components_table.blockSignals(False)
 
@@ -749,30 +899,73 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.components_table.blockSignals(True)
         if component := self.components_dict.get(row):
             try:
-                part_name = self.components_table.item(row, ComponentsTableColumns.PART_NAME.value).text()
-                part_number = self.components_table.item(row, ComponentsTableColumns.PART_NUMBER.value).text()
+                part_name = self.components_table.item(
+                    row, ComponentsTableColumns.PART_NAME.value
+                ).text()
+                part_number = self.components_table.item(
+                    row, ComponentsTableColumns.PART_NUMBER.value
+                ).text()
                 unit_price = float(
-                    self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).text().replace("$", "").replace(",", "").replace("CAD", "").replace("USD", "").strip()
+                    self.components_table.item(
+                        row, ComponentsTableColumns.UNIT_PRICE.value
+                    )
+                    .text()
+                    .replace("$", "")
+                    .replace(",", "")
+                    .replace("CAD", "")
+                    .replace("USD", "")
+                    .strip()
                 )
-                quantity_to_order = float(self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
-                exchange_rate_combobox: ExchangeRateComboBox = self.components_table.cellWidget(row, ComponentsTableColumns.USD_CAD.value)
-                converted_price: float = component.price * self.get_exchange_rate() if component.use_exchange_rate else component.price / self.get_exchange_rate()
+                quantity_to_order = float(
+                    self.components_table.item(
+                        row, ComponentsTableColumns.QUANTITY_TO_ORDER.value
+                    )
+                    .text()
+                    .replace(",", "")
+                    .strip()
+                )
+                exchange_rate_combobox: ExchangeRateComboBox = (
+                    self.components_table.cellWidget(
+                        row, ComponentsTableColumns.USD_CAD.value
+                    )
+                )
+                converted_price: float = (
+                    component.price * self.get_exchange_rate()
+                    if component.use_exchange_rate
+                    else component.price / self.get_exchange_rate()
+                )
 
                 component.part_name = part_name
                 component.part_number = part_number
                 component.price = unit_price
-                component.use_exchange_rate = exchange_rate_combobox.currentText() == "USD"
+                component.use_exchange_rate = (
+                    exchange_rate_combobox.currentText() == "USD"
+                )
                 component.quantity_to_order = quantity_to_order
-                self.purchase_order.set_component_order_quantity(component, quantity_to_order)
+                self.purchase_order.set_component_order_quantity(
+                    component, quantity_to_order
+                )
                 order_cost = unit_price * quantity_to_order
                 converted_order_cost = converted_price * quantity_to_order
 
-                self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).setText(f"${unit_price:,.2f}")
-                self.components_table.item(row, ComponentsTableColumns.UNIT_PRICE.value).setToolTip(f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}")
+                self.components_table.item(
+                    row, ComponentsTableColumns.UNIT_PRICE.value
+                ).setText(f"${unit_price:,.2f}")
+                self.components_table.item(
+                    row, ComponentsTableColumns.UNIT_PRICE.value
+                ).setToolTip(
+                    f"${converted_price:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}"
+                )
 
-                self.components_table.item(row, ComponentsTableColumns.ORDER_COST.value).setText(f"${order_cost:,.2f}")
-                self.components_table.item(row, ComponentsTableColumns.QUANTITY_TO_ORDER.value).setText(f"{quantity_to_order:,}")
-                self.components_table.item(row, ComponentsTableColumns.ORDER_COST.value).setToolTip(
+                self.components_table.item(
+                    row, ComponentsTableColumns.ORDER_COST.value
+                ).setText(f"${order_cost:,.2f}")
+                self.components_table.item(
+                    row, ComponentsTableColumns.QUANTITY_TO_ORDER.value
+                ).setText(f"{quantity_to_order:,}")
+                self.components_table.item(
+                    row, ComponentsTableColumns.ORDER_COST.value
+                ).setToolTip(
                     f"${converted_order_cost:,.2f} {'CAD' if component.use_exchange_rate else 'USD'}"
                 )
 
@@ -794,10 +987,14 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
     def components_table_loaded(self):
         self.components_table.resizeColumnsToContents()
-        self.components_table.setFixedHeight(self.components_table.rowHeight(0) * self.components_table.rowCount() + 50)
+        self.components_table.setFixedHeight(
+            self.components_table.rowHeight(0) * self.components_table.rowCount() + 50
+        )
 
     def create_components_table_context_menu(self):
-        self.components_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.components_table.setContextMenuPolicy(
+            Qt.ContextMenuPolicy.CustomContextMenu
+        )
         menu = QMenu(self)
 
         def remove_components():
@@ -810,21 +1007,32 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         delete_component_action.triggered.connect(remove_components)
         menu.addAction(delete_component_action)
 
-        self.components_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+        self.components_table.customContextMenuRequested.connect(
+            partial(self.open_group_menu, menu)
+        )
 
     # * \/ SHEETS TABLE \/
     def get_selected_sheets(self) -> list[Sheet]:
         selected_sheets: list[Sheet] = []
         selected_rows = self.get_selected_rows(self.sheets_table)
-        selected_sheets.extend(sheet for row, sheet in self.sheets_dict.items() if row in selected_rows)
+        selected_sheets.extend(
+            sheet for row, sheet in self.sheets_dict.items() if row in selected_rows
+        )
         return selected_sheets
 
     def add_sheet(self):
-        all_sheets = [sheet.get_name() for sheet in self.purchase_order_manager.sheets_inventory.sheets]
+        all_sheets = [
+            sheet.get_name()
+            for sheet in self.purchase_order_manager.sheets_inventory.sheets
+        ]
 
-        sheet_name, ok = QInputDialog.getItem(self, "Add Sheet", "Select a sheet to add:", all_sheets, 0, False)
+        sheet_name, ok = QInputDialog.getItem(
+            self, "Add Sheet", "Select a sheet to add:", all_sheets, 0, False
+        )
         if sheet_name and ok:
-            if sheet := self.purchase_order_manager.sheets_inventory.get_sheet_by_name(sheet_name):
+            if sheet := self.purchase_order_manager.sheets_inventory.get_sheet_by_name(
+                sheet_name
+            ):
                 self.purchase_order.set_sheet_order_quantity(sheet, 0)
                 self.purchase_order.sheets.append(sheet)
                 self.add_sheet_to_table(sheet)
@@ -840,18 +1048,31 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.sheets_dict[row_count] = sheet
 
         sheet_name = sheet.get_name()
-        price_per_pound = self.purchase_order_manager.sheets_inventory.sheet_settings.get_price_per_pound(sheet.material)
+        price_per_pound = self.purchase_order_manager.sheets_inventory.sheet_settings.get_price_per_pound(
+            sheet.material
+        )
         quantity_in_stock = sheet.quantity
         quantity_to_order = self.purchase_order.get_sheet_quantity_to_order(sheet)
-        quantity_weight = quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
-        order_price = price_per_pound * quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
+        quantity_weight = (
+            quantity_to_order
+            * ((sheet.length * sheet.width) / 144)
+            * sheet.pounds_per_square_foot
+        )
+        order_price = (
+            price_per_pound
+            * quantity_to_order
+            * ((sheet.length * sheet.width) / 144)
+            * sheet.pounds_per_square_foot
+        )
         history_button = QPushButton("View History", self)
         history_button.clicked.connect(partial(self.open_sheet_history, sheet))
         history_button.setFlat(True)
         history_button.setIcon(Icons.button_history_icon)
         history_button.setToolTip("Open the sheet history.")
 
-        self.sheets_table.setItem(row_count, SheetsTableColumns.SHEET_NAME.value, QTableWidgetItem(sheet_name))
+        self.sheets_table.setItem(
+            row_count, SheetsTableColumns.SHEET_NAME.value, QTableWidgetItem(sheet_name)
+        )
 
         self.sheets_table.setItem(
             row_count,
@@ -874,7 +1095,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             SheetsTableColumns.WEIGHT.value,
             QTableWidgetItem(f"{quantity_weight:,.2f}"),
         )
-        self.sheets_table.setCellWidget(row_count, SheetsTableColumns.HISTORY.value, history_button)
+        self.sheets_table.setCellWidget(
+            row_count, SheetsTableColumns.HISTORY.value, history_button
+        )
         self.sheets_table.setItem(
             row_count,
             SheetsTableColumns.ORDER_COST.value,
@@ -883,7 +1106,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         order_widget = SheetOrdersWidget(sheet, self)
         order_widget.orderOpened.connect(lambda: self.sheets_table.blockSignals(True))
         order_widget.orderClosed.connect(lambda: self.sheets_table.blockSignals(False))
-        self.sheets_table.setCellWidget(row_count, SheetsTableColumns.ORDER_WIDGET.value, order_widget)
+        self.sheets_table.setCellWidget(
+            row_count, SheetsTableColumns.ORDER_WIDGET.value, order_widget
+        )
         self.sheets_table.blockSignals(False)
 
     def sheets_table_row_changed(self, row: int):
@@ -891,20 +1116,52 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         if sheet := self.sheets_dict.get(row):
             with contextlib.suppress(ValueError):
                 price_per_pound = float(
-                    self.sheets_table.item(row, SheetsTableColumns.PRICE_PER_POUND.value).text().replace("CAD", "").replace("USD", "").replace("$", "").replace(",", "").strip()
+                    self.sheets_table.item(
+                        row, SheetsTableColumns.PRICE_PER_POUND.value
+                    )
+                    .text()
+                    .replace("CAD", "")
+                    .replace("USD", "")
+                    .replace("$", "")
+                    .replace(",", "")
+                    .strip()
                 )
-                quantity_to_order = float(self.sheets_table.item(row, SheetsTableColumns.QUANTITY_TO_ORDER.value).text().replace(",", "").strip())
+                quantity_to_order = float(
+                    self.sheets_table.item(
+                        row, SheetsTableColumns.QUANTITY_TO_ORDER.value
+                    )
+                    .text()
+                    .replace(",", "")
+                    .strip()
+                )
 
                 sheet.price_per_pound = price_per_pound
                 sheet.quantity_to_order = quantity_to_order
                 self.purchase_order.set_sheet_order_quantity(sheet, quantity_to_order)
-                quantity_weight = quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
-                order_cost = price_per_pound * quantity_to_order * ((sheet.length * sheet.width) / 144) * sheet.pounds_per_square_foot
+                quantity_weight = (
+                    quantity_to_order
+                    * ((sheet.length * sheet.width) / 144)
+                    * sheet.pounds_per_square_foot
+                )
+                order_cost = (
+                    price_per_pound
+                    * quantity_to_order
+                    * ((sheet.length * sheet.width) / 144)
+                    * sheet.pounds_per_square_foot
+                )
 
-                self.sheets_table.item(row, SheetsTableColumns.ORDER_COST.value).setText(f"${order_cost:,.2f}")
-                self.sheets_table.item(row, SheetsTableColumns.PRICE_PER_POUND.value).setText(f"${price_per_pound:,.2f}")
-                self.sheets_table.item(row, SheetsTableColumns.QUANTITY_TO_ORDER.value).setText(f"{quantity_to_order:,}")
-                self.sheets_table.item(row, SheetsTableColumns.WEIGHT.value).setText(f"{quantity_weight:,.2f}")
+                self.sheets_table.item(
+                    row, SheetsTableColumns.ORDER_COST.value
+                ).setText(f"${order_cost:,.2f}")
+                self.sheets_table.item(
+                    row, SheetsTableColumns.PRICE_PER_POUND.value
+                ).setText(f"${price_per_pound:,.2f}")
+                self.sheets_table.item(
+                    row, SheetsTableColumns.QUANTITY_TO_ORDER.value
+                ).setText(f"{quantity_to_order:,}")
+                self.sheets_table.item(row, SheetsTableColumns.WEIGHT.value).setText(
+                    f"{quantity_weight:,.2f}"
+                )
 
                 self.unsaved_changes = True
 
@@ -912,7 +1169,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
     def sheets_table_loaded(self):
         self.sheets_table.resizeColumnsToContents()
-        self.sheets_table.setFixedHeight(self.sheets_table.rowHeight(0) * self.sheets_table.rowCount() + 50)
+        self.sheets_table.setFixedHeight(
+            self.sheets_table.rowHeight(0) * self.sheets_table.rowCount() + 50
+        )
 
     def load_sheets_table(self):
         self.sheets_dict.clear()
@@ -937,7 +1196,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         delete_sheet_action.triggered.connect(remove_sheets)
         menu.addAction(delete_sheet_action)
 
-        self.sheets_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+        self.sheets_table.customContextMenuRequested.connect(
+            partial(self.open_group_menu, menu)
+        )
 
     # * \/ PURCHASE ORDERS \/
     def load_data_vendor_po_data(self, on_finished: Callable | None = None):
@@ -947,7 +1208,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         get_purchase_orders_worker = GetAllPurchaseOrders()
 
         self.chain.add(get_vendors_worker, self.get_vendors_thread_response)
-        self.chain.add(get_purchase_orders_worker, self.get_purchase_orders_thread_response)
+        self.chain.add(
+            get_purchase_orders_worker, self.get_purchase_orders_thread_response
+        )
 
         if on_finished:
             self.chain.finished.connect(on_finished)
@@ -958,16 +1221,26 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         def data_loaded():
             self.tree_widget_purchase_orders.clear()
             self.treeWidget_purchase_orders.clear()
-            for vendor_name, purchase_orders in self.get_organized_purchase_orders().items():
+            for (
+                vendor_name,
+                purchase_orders,
+            ) in self.get_organized_purchase_orders().items():
                 if vendor := self.get_vendor_by_name(vendor_name):
                     vendor_item = QTreeWidgetItem(self.treeWidget_purchase_orders)
                     vendor_item.setText(0, vendor.name)
                     for purchase_order in purchase_orders:
                         po_item = QTreeWidgetItem(vendor_item)
                         po_item.setText(0, purchase_order.get_name())
-                        po_item.setText(1, purchase_order.meta_data.status.name.replace("_", " ").title())
+                        po_item.setText(
+                            1,
+                            purchase_order.meta_data.status.name.replace(
+                                "_", " "
+                            ).title(),
+                        )
 
-                        self.tree_widget_purchase_orders[f"{vendor.name}/{purchase_order.get_name()}"] = {
+                        self.tree_widget_purchase_orders[
+                            f"{vendor.name}/{purchase_order.get_name()}"
+                        ] = {
                             "purchase_order": purchase_order,
                             "vendor": vendor,
                             "tree_item": po_item,
@@ -985,12 +1258,23 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.load_data_vendor_po_data(on_finished=data_loaded)
 
     def get_vendor_by_name(self, vendor_name: str) -> Vendor | None:
-        return next((vendor for vendor in self.vendors if vendor.name == vendor_name), None)
+        return next(
+            (vendor for vendor in self.vendors if vendor.name == vendor_name), None
+        )
 
     def get_organized_purchase_orders(self) -> dict[str, list[PurchaseOrder]]:
-        return {vendor.name: [po for po in self.purchase_orders if po.meta_data.vendor.name == vendor.name] for vendor in self.vendors}
+        return {
+            vendor.name: [
+                po
+                for po in self.purchase_orders
+                if po.meta_data.vendor.name == vendor.name
+            ]
+            for vendor in self.vendors
+        }
 
-    def get_vendors_thread_response(self, response: list[VendorDict], next_step: Callable):
+    def get_vendors_thread_response(
+        self, response: list[VendorDict], next_step: Callable
+    ):
         self.vendors.clear()
         for vendor_data in response:
             vendor = Vendor(vendor_data)
@@ -1000,18 +1284,25 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         next_step()
 
-    def get_purchase_orders_thread_response(self, response: list[dict[str, PurchaseOrderDict]], next_step: Callable):
+    def get_purchase_orders_thread_response(
+        self, response: list[dict[str, PurchaseOrderDict]], next_step: Callable
+    ):
         if not response:
             next_step()
             return
         self.purchase_orders.clear()
         for data in response:
-            po = PurchaseOrder(self.purchase_order_manager.components_inventory, self.purchase_order_manager.sheets_inventory)
+            po = PurchaseOrder(
+                self.purchase_order_manager.components_inventory,
+                self.purchase_order_manager.sheets_inventory,
+            )
             po.load_data(data["purchase_order_data"])
             po.id = data["id"]
             self.purchase_orders.append(po)
 
-        self.purchase_orders.sort(key=lambda po: po.meta_data.purchase_order_number, reverse=True)
+        self.purchase_orders.sort(
+            key=lambda po: po.meta_data.purchase_order_number, reverse=True
+        )
 
         next_step()
 
@@ -1034,7 +1325,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 QMessageBox.Icon.Information,
                 "Unsaved changes",
                 "You have unsaved changes. Are you sure you want to load this purchase order?",
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Yes
+                | QMessageBox.StandardButton.No
+                | QMessageBox.StandardButton.Cancel,
                 self,
             )
             if msg.exec() != QMessageBox.StandardButton.Yes:
@@ -1054,7 +1347,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.comboBox_status.blockSignals(False)
 
         self.comboBox_shipping_method.blockSignals(True)
-        self.comboBox_shipping_method.setCurrentIndex(new_po.meta_data.shipping_method.value)
+        self.comboBox_shipping_method.setCurrentIndex(
+            new_po.meta_data.shipping_method.value
+        )
         self.comboBox_shipping_method.blockSignals(False)
 
         self.doubleSpinBox_po_number.blockSignals(True)
@@ -1062,7 +1357,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.doubleSpinBox_po_number.blockSignals(False)
 
         self.dateEdit_expected_arrival.blockSignals(True)
-        self.dateEdit_expected_arrival.setDate(QDate.fromString(new_po.meta_data.order_date, "yyyy-MM-dd"))
+        self.dateEdit_expected_arrival.setDate(
+            QDate.fromString(new_po.meta_data.order_date, "yyyy-MM-dd")
+        )
         self.dateEdit_expected_arrival.blockSignals(False)
 
         self.textEdit_notes.blockSignals(True)
@@ -1089,7 +1386,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             QMessageBox.Icon.Question,
             "Autofill Purchase Order",
             "Are you sure you want to autofill this purchase order?\n\nThis is permanent and cannot be undone.",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Yes
+            | QMessageBox.StandardButton.No
+            | QMessageBox.StandardButton.Cancel,
             self,
         )
         if are_you_sure.exec() != QMessageBox.StandardButton.Yes:
@@ -1111,15 +1410,23 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         item_history_dialog.show()
 
     def get_selected_vendor(self) -> Vendor | None:
-        return self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText())
+        return self.purchase_order_manager.get_vendor_by_name(
+            self.comboBox_vendor.currentText()
+        )
 
     def load_vendor_data(self):
         def load_vendor_data():
             self.comboBox_vendor.blockSignals(True)
             self.comboBox_vendor.clear()
-            self.comboBox_vendor.addItems([vendor.name for vendor in self.purchase_order_manager.vendors])
-            self.comboBox_vendor.setCurrentText(self.purchase_order.meta_data.vendor.name)
-            self.comboBox_vendor.setToolTip(self.purchase_order.meta_data.vendor.__str__())
+            self.comboBox_vendor.addItems(
+                [vendor.name for vendor in self.purchase_order_manager.vendors]
+            )
+            self.comboBox_vendor.setCurrentText(
+                self.purchase_order.meta_data.vendor.name
+            )
+            self.comboBox_vendor.setToolTip(
+                self.purchase_order.meta_data.vendor.__str__()
+            )
 
             self.comboBox_vendor.blockSignals(False)
 
@@ -1127,16 +1434,27 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self._parent_widget.load_po_menus()
 
     def get_selected_shipping_address(self) -> ShippingAddress | None:
-        return self.purchase_order_manager.get_shipping_address_by_name(self.comboBox_shipping_address.currentText())
+        return self.purchase_order_manager.get_shipping_address_by_name(
+            self.comboBox_shipping_address.currentText()
+        )
 
     def load_shipping_address_data(self):
         def load_shipping_address_data():
             self.comboBox_shipping_address.blockSignals(True)
 
             self.comboBox_shipping_address.clear()
-            self.comboBox_shipping_address.addItems([address.name for address in self.purchase_order_manager.shipping_addresses])
-            self.comboBox_shipping_address.setCurrentText(self.purchase_order.meta_data.shipping_address.name)
-            self.comboBox_shipping_address.setToolTip(self.purchase_order.meta_data.shipping_address.__str__())
+            self.comboBox_shipping_address.addItems(
+                [
+                    address.name
+                    for address in self.purchase_order_manager.shipping_addresses
+                ]
+            )
+            self.comboBox_shipping_address.setCurrentText(
+                self.purchase_order.meta_data.shipping_address.name
+            )
+            self.comboBox_shipping_address.setToolTip(
+                self.purchase_order.meta_data.shipping_address.__str__()
+            )
 
             self.comboBox_shipping_address.blockSignals(False)
 
@@ -1144,10 +1462,15 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self._parent_widget.load_po_menus()
 
     def duplicate(self):
-        new_po = PurchaseOrder(self.purchase_order_manager.components_inventory, self.purchase_order_manager.sheets_inventory)
+        new_po = PurchaseOrder(
+            self.purchase_order_manager.components_inventory,
+            self.purchase_order_manager.sheets_inventory,
+        )
         new_po.load_data(self.purchase_order.to_dict())
         new_po.id = -1
-        new_po.meta_data.purchase_order_number = self.purchase_order.meta_data.purchase_order_number + 1
+        new_po.meta_data.purchase_order_number = (
+            self.purchase_order.meta_data.purchase_order_number + 1
+        )
 
         self.doubleSpinBox_po_number.blockSignals(True)
         self.doubleSpinBox_po_number.setValue(new_po.meta_data.purchase_order_number)
@@ -1173,7 +1496,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             QMessageBox.Icon.Question,
             "Are you sure?",
             "Are you sure you want to delete this purchase order?\n\nThis is permanent and cannot be undone.",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Yes
+            | QMessageBox.StandardButton.No
+            | QMessageBox.StandardButton.Cancel,
             self,
         )
         if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
@@ -1182,20 +1507,34 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 self._parent_widget.load_po_menus()
                 self.close()
 
-            self.purchase_order_manager.delete_purchase_order(self.purchase_order, on_finished=on_finished)
+            self.purchase_order_manager.delete_purchase_order(
+                self.purchase_order, on_finished=on_finished
+            )
 
-    def save(self, on_finsihed: Callable | None=None):
-        self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
-        self.purchase_order.meta_data.status = Status(self.comboBox_status.currentIndex())
-        self.purchase_order.meta_data.shipping_method = ShippingMethod(self.comboBox_shipping_method.currentIndex())
+    def save(self, on_finsihed: Callable | None = None):
+        self.purchase_order.meta_data.purchase_order_number = int(
+            self.doubleSpinBox_po_number.value()
+        )
+        self.purchase_order.meta_data.status = Status(
+            self.comboBox_status.currentIndex()
+        )
+        self.purchase_order.meta_data.shipping_method = ShippingMethod(
+            self.comboBox_shipping_method.currentIndex()
+        )
 
-        if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
+        if selected_vendor := self.purchase_order_manager.get_vendor_by_name(
+            self.comboBox_vendor.currentText()
+        ):
             self.purchase_order.meta_data.vendor = selected_vendor
 
-        self.purchase_order.meta_data.order_date = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+        self.purchase_order.meta_data.order_date = (
+            self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+        )
         self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
 
-        self.purchase_order_manager.save_purchase_order(self.purchase_order, on_finished=on_finsihed)
+        self.purchase_order_manager.save_purchase_order(
+            self.purchase_order, on_finished=on_finsihed
+        )
 
         self._parent_widget.load_po_menus()
         QTimer.singleShot(1000, self.refresh_purchase_orders)
@@ -1205,7 +1544,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             QMessageBox.Icon.Question,
             "Apply Orders",
             "Are you sure you want to add orders to the items?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Yes
+            | QMessageBox.StandardButton.No
+            | QMessageBox.StandardButton.Cancel,
             self,
         )
         if are_you_sure.exec() != QMessageBox.StandardButton.Yes:
@@ -1215,12 +1556,16 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         for component in self.purchase_order.components:
             if component.quantity_to_order <= 0:
                 continue
-            expected_arrival_time = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+            expected_arrival_time = self.dateEdit_expected_arrival.date().toString(
+                "yyyy-MM-dd"
+            )
             order_data: OrderDict = {
                 "purchase_order_id": self.purchase_order.id,
                 "expected_arrival_time": expected_arrival_time,
                 "order_pending_date": QDate().toString("yyyy-MM-dd"),
-                "order_pending_quantity": self.purchase_order.get_component_quantity_to_order(component),
+                "order_pending_quantity": self.purchase_order.get_component_quantity_to_order(
+                    component
+                ),
                 "notes": "",
             }
             order = Order(order_data)
@@ -1229,7 +1574,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             components_to_save.append(component)
 
         if components_to_save:
-            self.purchase_order_manager.components_inventory.save_components(components_to_save)
+            self.purchase_order_manager.components_inventory.save_components(
+                components_to_save
+            )
 
         if self.purchase_order.components:
             self.load_components_table()
@@ -1239,12 +1586,16 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             if sheet.quantity_to_order <= 0:
                 continue
             sheets_to_save.append(sheet)
-            expected_arrival_time = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+            expected_arrival_time = self.dateEdit_expected_arrival.date().toString(
+                "yyyy-MM-dd"
+            )
             order_data: OrderDict = {
                 "purchase_order_id": self.purchase_order.id,
                 "expected_arrival_time": expected_arrival_time,
                 "order_pending_date": QDate().toString("yyyy-MM-dd"),
-                "order_pending_quantity": self.purchase_order.get_sheet_quantity_to_order(sheet),
+                "order_pending_quantity": self.purchase_order.get_sheet_quantity_to_order(
+                    sheet
+                ),
                 "notes": "",
             }
             order = Order(order_data)
@@ -1276,15 +1627,21 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         edit_vendor_dialog = AddVendorDialog(self, self.get_selected_vendor())
         if edit_vendor_dialog.exec():
             new_vendor = edit_vendor_dialog.get_vendor()
-            self.purchase_order_manager.save_vendor(new_vendor, on_finished=self.load_vendor_data)
+            self.purchase_order_manager.save_vendor(
+                new_vendor, on_finished=self.load_vendor_data
+            )
             self.purchase_order.meta_data.vendor = new_vendor
             self.unsaved_changes = True
 
     def edit_shipping_address(self):
-        edit_shipping_address_dialog = EditShippingAddressDialog(self, self.get_selected_shipping_address())
+        edit_shipping_address_dialog = EditShippingAddressDialog(
+            self, self.get_selected_shipping_address()
+        )
         if edit_shipping_address_dialog.exec():
             new_shipping_address = edit_shipping_address_dialog.get_shipping_address()
-            self.purchase_order_manager.save_shipping_address(new_shipping_address, on_finished=self.load_shipping_address_data)
+            self.purchase_order_manager.save_shipping_address(
+                new_shipping_address, on_finished=self.load_shipping_address_data
+            )
             self.purchase_order.meta_data.shipping_address = new_shipping_address
             self.unsaved_changes = True
 
@@ -1386,7 +1743,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 QMessageBox.Icon.Question,
                 "Unsaved changes",
                 "Are you sure you want to close this purchase order without saving?",
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Yes
+                | QMessageBox.StandardButton.No
+                | QMessageBox.StandardButton.Cancel,
                 self,
             )
             result = msg.exec()

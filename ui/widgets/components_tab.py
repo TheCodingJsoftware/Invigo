@@ -1,15 +1,18 @@
 import contextlib
 import logging
 import os
+import shutil
+import time
 from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING
 
 import sympy
 from natsort import natsorted
-from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
+from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal, QThreadPool
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import (
+    QApplication,
     QAbstractItemView,
     QCompleter,
     QDateEdit,
@@ -45,6 +48,7 @@ from ui.dialogs.view_item_history_dialog import ViewItemHistoryDialog
 from ui.icons import Icons
 from ui.theme import theme_var
 from ui.widgets.components_tab_UI import Ui_Form
+from utils.workers.upload_files import UploadFilesWorker
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
@@ -902,6 +906,12 @@ class ComponentsTab(QWidget, Ui_Form):
         current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
         menu = QMenu(self)
+
+        action = QAction("Paste Image from Clipboard", self)
+        action.setIcon(Icons.paste_icon)
+        action.triggered.connect(self.set_image)
+        menu.addAction(action)
+
         action = QAction("Set Custom Quantity Limit", self)
         action.setIcon(Icons.edit_icon)
         action.triggered.connect(self.set_custom_quantity_limit)
@@ -1289,6 +1299,70 @@ class ComponentsTab(QWidget, Ui_Form):
         # lbl.setTextInteractionFlags(Qt.ItemFlag.TextSelectableByMouse)
         lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}")
         self.gridLayout_category_stock_costs.addWidget(lbl, i + 1, 1)
+
+    def set_image(self):
+        current_table = self.category_tables[self.category]
+        if component := self.get_selected_component():
+            clipboard = QApplication.clipboard()
+            image = clipboard.image()
+            if not image.isNull():
+                temp_path = f"images/{component.part_number.encode("utf-8")}.png"
+                image.save(temp_path)
+                self.upload_component_image(component, temp_path, False)
+
+                tooltip_html = f"""
+                <b>{component.part_name}</b><br>
+                {component.part_number}<br>
+                <img src="{component.image_path}" width="150"><br>
+                <p>Component is present in:<br>{component.print_categories()}</p>
+                """
+                self.table_components_widgets[component]["part_name"].setToolTip(tooltip_html)
+                self.table_components_widgets[component]["part_number"].setToolTip(tooltip_html)
+
+    def upload_component_image(self, component: Component, path_to_image: str, save_image: bool = True):
+        file_name = os.path.basename(path_to_image)
+
+        target_path = os.path.join("images", file_name)
+
+        if save_image:
+            self.copy_file_with_overwrite(path_to_image, target_path)
+
+        component.image_path = target_path
+        self.upload_images([target_path])
+
+    def copy_file_with_overwrite(self, source: str, target: str, retry_interval=1, max_retries=10):
+        source = os.path.abspath(source)
+        target = os.path.abspath(target)
+
+        if os.path.normcase(source) == os.path.normcase(target):
+            # Source and target are literally the same path
+            return
+
+        retries = 0
+        while retries < max_retries:
+            try:
+                if os.path.exists(target):
+                    # Explicitly remove target first
+                    os.remove(target)
+
+                shutil.copyfile(source, target)
+                return
+
+            except PermissionError as e:
+                if hasattr(e, "winerror") and e.winerror == 32:
+                    # Windows: file in use
+                    retries += 1
+                    time.sleep(retry_interval)
+                else:
+                    raise
+            except Exception as e:
+                raise e
+
+        raise PermissionError(f"Failed to copy file from {source} to {target} after {max_retries} retries.")
+
+    def upload_images(self, files: list[str]):
+        self.upload_images_thread = UploadFilesWorker(files)
+        QThreadPool.globalInstance().start(self.upload_images_thread)
 
     def set_custom_quantity_limit(self):
         current_table = self.category_tables[self.category]

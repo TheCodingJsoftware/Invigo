@@ -73,6 +73,7 @@ class Icons:
     recoat_icon = None
     merge_icon = None
     close_icon = None
+    paste_icon = None
 
     purchase_order_duplicate_icon = None
     purchase_order_apply_and_save_icon = None
@@ -508,3 +509,5 @@ class Icons:
         cls.purchase_order_duplicate_icon = make_icon("mdi.content-duplicate", "primary")
         cls.purchase_order_apply_and_save_icon = make_icon("msc.save-all", "primary")
         cls.purchase_order_apply_icon = make_icon("msc.checklist", "primary")
+
+        cls.paste_icon = make_icon("fa6s.paste", "surface")
