@@ -250,7 +250,7 @@ class SheetSettingsTab(QWidget, Ui_Form):
             table_item_material.setFont(self.tables_font)
             self.price_per_pound_table.setItem(row, 0, table_item_material)
 
-            table_item_price = QTableWidgetItem(f"${price_per_pound.price_per_pound:,.2f}")
+            table_item_price = QTableWidgetItem(f"${price_per_pound.price_per_pound:,.3f}")
             table_item_price.setFont(self.tables_font)
             self.price_per_pound_table.setItem(row, 1, table_item_price)
             self.price_per_pound_table_items[price_per_pound] = table_item_price
