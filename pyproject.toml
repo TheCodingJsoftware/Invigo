@@ -81,7 +81,7 @@ dependencies = [
     "python-dateutil",
     "python-dotenv",
     "pytz",
-    "QtAwesome",
+    "qtawesome",
     "QtPy",
     "QtRangeSlider",
     "requests",

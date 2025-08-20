@@ -585,6 +585,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         )
         self.pushButton_save.setIcon(Icons.purchase_order_save_icon)
 
+        self.pushButton_save_as_draft.clicked.connect(partial(self.save_as_draft, self.saved_purchase_order))
+        self.pushButton_save_as_draft.setIcon(Icons.purchase_order_save_icon)
+
         self.pushButton_duplicate.clicked.connect(self.duplicate)
         self.pushButton_duplicate.setIcon(Icons.purchase_order_duplicate_icon)
 
@@ -1511,7 +1514,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 self.purchase_order, on_finished=on_finished
             )
 
-    def save(self, on_finsihed: Callable | None = None):
+    def save_as_draft(self, on_finished: Callable | None = None):
         self.purchase_order.meta_data.purchase_order_number = int(
             self.doubleSpinBox_po_number.value()
         )
@@ -1521,6 +1524,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.purchase_order.meta_data.shipping_method = ShippingMethod(
             self.comboBox_shipping_method.currentIndex()
         )
+        self.purchase_order.meta_data.is_draft = True
 
         if selected_vendor := self.purchase_order_manager.get_vendor_by_name(
             self.comboBox_vendor.currentText()
@@ -1533,7 +1537,37 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
 
         self.purchase_order_manager.save_purchase_order(
-            self.purchase_order, on_finished=on_finsihed
+            self.purchase_order, on_finished=on_finished
+        )
+
+        self._parent_widget.load_po_menus()
+        QTimer.singleShot(1000, self.refresh_purchase_orders)
+
+
+    def save(self, on_finished: Callable | None = None):
+        self.purchase_order.meta_data.purchase_order_number = int(
+            self.doubleSpinBox_po_number.value()
+        )
+        self.purchase_order.meta_data.status = Status(
+            self.comboBox_status.currentIndex()
+        )
+        self.purchase_order.meta_data.shipping_method = ShippingMethod(
+            self.comboBox_shipping_method.currentIndex()
+        )
+        self.purchase_order.meta_data.is_draft = False
+
+        if selected_vendor := self.purchase_order_manager.get_vendor_by_name(
+            self.comboBox_vendor.currentText()
+        ):
+            self.purchase_order.meta_data.vendor = selected_vendor
+
+        self.purchase_order.meta_data.order_date = (
+            self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+        )
+        self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
+
+        self.purchase_order_manager.save_purchase_order(
+            self.purchase_order, on_finished=on_finished
         )
 
         self._parent_widget.load_po_menus()
@@ -1621,7 +1655,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
     def save_and_apply_orders(self):
         self.apply_orders()
-        self.save(on_finsihed=self.saved_purchase_order)
+        self.save(on_finished=self.saved_purchase_order)
 
     def edit_vendor(self):
         edit_vendor_dialog = AddVendorDialog(self, self.get_selected_vendor())
@@ -1652,7 +1686,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 new=0,
             )
 
-        self.save(on_finsihed=open_printout)
+        self.save(on_finished=open_printout)
 
     def saved_purchase_order(self):
         self.unsaved_changes = False

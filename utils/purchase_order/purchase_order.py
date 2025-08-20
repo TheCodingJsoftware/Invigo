@@ -22,6 +22,7 @@ class MetaDataDict(TypedDict):
     contact_info: ContactInfoDict
     business_info: BusinessInfoDict
     vendor: VendorDict
+    is_draft: bool
 
 
 class POItemDict(TypedDict):
@@ -73,6 +74,7 @@ class MetaData:
     shipping_method: ShippingMethod = ShippingMethod.HOLD_FOR_PICKUP
     order_date: str = ""
     notes: str = ""
+    is_draft: bool = False
 
     def __init__(self, data: MetaDataDict | None = None):
         if data:
@@ -85,6 +87,7 @@ class MetaData:
             self.shipping_address = ShippingAddress()
             self.order_date = ""
             self.notes = ""
+            self.is_draft = False
         self.contact_info = ContactInfo()
         self.business_info = BusinessInfo()
 
@@ -96,6 +99,7 @@ class MetaData:
         self.purchase_order_number = int(data.get("purchase_order_number", 0))
         self.order_date = data.get("order_date", "")
         self.notes = data.get("notes", "")
+        self.is_draft = data.get("is_draft", False)
 
     def to_dict(self) -> MetaDataDict:
         return {
@@ -108,6 +112,7 @@ class MetaData:
             "contact_info": self.contact_info.to_dict(),
             "business_info": self.business_info.to_dict(),
             "vendor": self.vendor.to_dict(),
+            "is_draft": self.is_draft,
         }
 
 
@@ -131,7 +136,7 @@ class PurchaseOrder:
         self.components_inventory = components_inventory
 
     def get_name(self):
-        return f"#{self.meta_data.purchase_order_number}"
+        return f"#{self.meta_data.purchase_order_number}{' (DRAFT)' if self.meta_data.is_draft else ''}"
 
     def load_data(self, data: PurchaseOrderDict):
         self.id = data.get("id", -1)

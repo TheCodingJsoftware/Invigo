@@ -30,7 +30,7 @@ from ui.custom.components_quoting_table_widget import (
 )
 from ui.custom.file_button import FileButton
 from ui.custom.laser_cut_part_paint_settings_widget import (
-    LasserCutPartPaintSettingsWidget,
+    LaserCutPartPaintSettingsWidget,
 )
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_quoting_table_widget import (

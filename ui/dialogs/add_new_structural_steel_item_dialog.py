@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QDialog
 from ui.dialogs.add_new_structural_steel_item_dialog_UI import Ui_Form
 from ui.icons import Icons
 from utils.inventory.category import Category
-from utils.inventory.structural_profile import ProfilesTypes, StructuralProfile
+from utils.inventory.structural_profile import ProfilesTypes
 from utils.inventory.round_bar import RoundBar
 from utils.inventory.round_tube import RoundTube
 from utils.inventory.rectangular_bar import RectangularBar

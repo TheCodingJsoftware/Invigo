@@ -528,6 +528,13 @@ Double click to load.</string>
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_save_as_draft">
+       <property name="text">
+        <string>Save as Draft</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_save">
        <property name="text">
         <string>Save</string>

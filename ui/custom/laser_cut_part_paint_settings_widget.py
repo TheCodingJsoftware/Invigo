@@ -13,7 +13,7 @@ from ui.theme import theme_var
 from utils.inventory.laser_cut_part import LaserCutPart
 
 
-class LasserCutPartPaintSettingsWidget(QWidget):
+class LaserCutPartPaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
 
     def __init__(self, laser_cut_part: LaserCutPart, parent: CustomTableWidget):

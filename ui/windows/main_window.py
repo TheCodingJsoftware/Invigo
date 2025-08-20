@@ -134,6 +134,7 @@ from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
 from utils.threads.update_quote_settings import UpdateQuoteSettings
+from utils.workers.download_images import DownloadImagesWorker
 from utils.workers.auth.connect import ConnectWorker
 from utils.workers.auth.is_client_trusted import IsClientTrustedWorker
 from utils.workers.jobs.delete_job import DeleteJobWorker
@@ -158,7 +159,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.21"
+__version__: str = "v4.0.22"
 
 
 def check_folders(folders: list[str]):
@@ -1208,6 +1209,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.menuPurchase_Orders_2.clear()
             organized_purchase_orders = self.purchase_order_manager.get_organized_purchase_orders()
             for vendor_name, purchase_orders in organized_purchase_orders.items():
+                has_po_as_draft = False
                 vendor_menu = QMenu(vendor_name, self.menuPurchase_Orders_2)
                 vendor = self.purchase_order_manager.get_vendor_by_name(vendor_name)
                 create_purchase_order_action = QAction("Create Purchase Order", self.menuPurchase_Orders_2)
@@ -1216,9 +1218,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 vendor_menu.addAction(create_purchase_order_action)
                 for purchase_order in purchase_orders:
                     action = QAction(purchase_order.get_name(), self.menuPurchase_Orders_2)
-                    action.setIcon(QIcon(Icons.edit_icon))
+                    if purchase_order.meta_data.is_draft:
+                        has_po_as_draft = True
+                        action.setIcon(QIcon(Icons.purchase_order_draft_icon))
+                    else:
+                        action.setIcon(QIcon(Icons.edit_icon))
                     action.triggered.connect(partial(self.open_purchase_order, purchase_order))
                     vendor_menu.addAction(action)
+                if has_po_as_draft:
+                    vendor_menu.setIcon(QIcon(Icons.purchase_order_draft_icon))
                 self.menuPurchase_Orders_2.addMenu(vendor_menu)
 
         def load_vendors_menu():
@@ -2339,7 +2347,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def download_required_images_thread(self, required_images: list[str]):
-        download_thread = DownloadImagesThread(required_images)
+        download_thread = Download(required_images)
         download_thread.signal.connect(self.download_required_images_response)
         self.threads.append(download_thread)
         download_thread.start()

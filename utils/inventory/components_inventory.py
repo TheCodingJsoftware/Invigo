@@ -1,4 +1,4 @@
-from typing import Callable, TypedDict
+from typing import Callable
 
 import msgspec
 from natsort import natsorted

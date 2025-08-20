@@ -32,7 +32,7 @@ from ui.custom.file_button import FileButton
 from ui.custom.flowtag_data_widget import FlowtagDataButton
 from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import (
-    LasserCutPartPaintSettingsWidget,
+    LaserCutPartPaintSettingsWidget,
 )
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_planning_table_widget import (

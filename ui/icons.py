@@ -80,6 +80,7 @@ class Icons:
     purchase_order_save_icon = None
     purchase_order_print_icon = None
     purchase_order_delete_icon = None
+    purchase_order_draft_icon = None
 
     job_planning_icon = None
     job_quoting_icon = None
@@ -90,7 +91,7 @@ class Icons:
     job_archive_icon = None
 
     @classmethod
-    def load_icons(cls):
+    def load_icons(cls) -> None:
         cls.refresh_icon = qta.icon(
             "ph.arrows-clockwise",
             color_on=theme_var("primary"),
@@ -509,5 +510,11 @@ class Icons:
         cls.purchase_order_duplicate_icon = make_icon("mdi.content-duplicate", "primary")
         cls.purchase_order_apply_and_save_icon = make_icon("msc.save-all", "primary")
         cls.purchase_order_apply_icon = make_icon("msc.checklist", "primary")
-
+        cls.purchase_order_draft_icon = qta.icon(
+            "mdi6.progress-alert",
+            color_on=theme_var("error"),
+            color_on_active=theme_var("error"),
+            color_off=theme_var("error"),
+            color_off_active=theme_var("error"),
+        )
         cls.paste_icon = make_icon("fa6s.paste", "surface")
