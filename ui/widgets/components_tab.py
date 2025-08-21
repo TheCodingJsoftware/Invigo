@@ -1248,10 +1248,10 @@ class ComponentsTab(QWidget, Ui_Form):
                 },
                 self.components_inventory,
             )
-            self.components_inventory.add_component(new_component)
+            self.components_inventory.add_component(new_component, on_finished=self.sort_components)
             # self.components_inventory.save_local_copy()
             # self.sync_changes()
-            self.load_table()
+            # self.load_table()
 
     def update_components_costs(self):
         self.category_tables[self.category].blockSignals(True)

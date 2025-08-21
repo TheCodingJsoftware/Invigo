@@ -156,7 +156,6 @@ class PurchaseOrder:
                 sheet.quantity_to_order = sheet_data.get("order_quantity", 0)
                 self.sheets.append(sheet)
                 self.sheets_order_data.append(sheet_data)
-        print("load_data: ",[component.to_dict() for component in self.components])
 
     def set_component_order_quantity(self, component: Component, quantity_to_order: float):
         for item in self.components_order_data:

@@ -1010,6 +1010,39 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         delete_component_action.triggered.connect(remove_components)
         menu.addAction(delete_component_action)
 
+        def apply_orders():
+            if selected_components := self.get_selected_components():
+                components_to_save = []
+                for component in selected_components:
+                    if component.quantity_to_order <= 0:
+                        continue
+                    expected_arrival_time = self.dateEdit_expected_arrival.date().toString(
+                        "yyyy-MM-dd"
+                    )
+                    order_data: OrderDict = {
+                        "purchase_order_id": self.purchase_order.id,
+                        "expected_arrival_time": expected_arrival_time,
+                        "order_pending_date": QDate().toString("yyyy-MM-dd"),
+                        "order_pending_quantity": self.purchase_order.get_component_quantity_to_order(
+                            component
+                        ),
+                        "notes": "",
+                    }
+                    order = Order(order_data)
+                    order.set_purchase_order(self.purchase_order)
+                    component.add_order(order)
+                    components_to_save.append(component)
+
+                if components_to_save:
+                    self.purchase_order_manager.components_inventory.save_components(
+                        components_to_save
+                    )
+                self.load_components_table()
+
+        apply_order = QAction("Apply Orders", self)
+        apply_order.triggered.connect(apply_orders)
+        menu.addAction(apply_order)
+
         self.components_table.customContextMenuRequested.connect(
             partial(self.open_group_menu, menu)
         )
@@ -1198,6 +1231,39 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         delete_sheet_action = QAction("Remove Selected Sheets", self)
         delete_sheet_action.triggered.connect(remove_sheets)
         menu.addAction(delete_sheet_action)
+
+        def apply_orders():
+            if selected_sheets := self.get_selected_sheets():
+                sheets_to_save = []
+                for sheet in selected_sheets:
+                    if sheet.quantity_to_order <= 0:
+                        continue
+                    expected_arrival_time = self.dateEdit_expected_arrival.date().toString(
+                        "yyyy-MM-dd"
+                    )
+                    order_data: OrderDict = {
+                        "purchase_order_id": self.purchase_order.id,
+                        "expected_arrival_time": expected_arrival_time,
+                        "order_pending_date": QDate().toString("yyyy-MM-dd"),
+                        "order_pending_quantity": self.purchase_order.get_sheet_quantity_to_order(
+                            sheet
+                        ),
+                        "notes": "",
+                    }
+                    order = Order(order_data)
+                    order.set_purchase_order(self.purchase_order)
+                    sheet.add_order(order)
+                    sheets_to_save.append(sheet)
+
+                if sheets_to_save:
+                    self.purchase_order_manager.sheets_inventory.save_sheets(
+                        sheets_to_save
+                    )
+                self.load_components_table()
+
+        apply_order = QAction("Apply Orders", self)
+        apply_order.triggered.connect(apply_orders)
+        menu.addAction(apply_order)
 
         self.sheets_table.customContextMenuRequested.connect(
             partial(self.open_group_menu, menu)
