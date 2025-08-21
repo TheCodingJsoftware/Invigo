@@ -15,7 +15,7 @@ class UpdateComponentsWorker(BaseWorker):
         self.logger.info(f"Sending update for {len(self.components)} components to {self.url}")
 
         data = [component.to_dict() for component in self.components]
-
+        print("update_components: ", data)
         with requests.Session() as session:
             response = session.post(self.url, json=data, headers=self.headers, timeout=10)
             response.raise_for_status()

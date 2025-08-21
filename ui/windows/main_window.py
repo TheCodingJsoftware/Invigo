@@ -133,8 +133,6 @@ from utils.threads.get_saved_quotes_thread import GetSavedQuotesThread
 from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
-from utils.threads.update_quote_settings import UpdateQuoteSettings
-from utils.workers.download_images import DownloadImagesWorker
 from utils.workers.auth.connect import ConnectWorker
 from utils.workers.auth.is_client_trusted import IsClientTrustedWorker
 from utils.workers.jobs.delete_job import DeleteJobWorker
@@ -2448,6 +2446,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.components_inventory.get_component(comp_id, on_finished=self.get_component_response)
 
         elif "components_inventory/get_all" in first_resp:
+            self.should_update_components_in_inventory_tab = True
             self.components_inventory.load_data(on_loaded=self.update_components_inventory_tab)
 
         elif "laser_cut_parts_inventory/get_laser_cut_part" in first_resp:
@@ -2456,6 +2455,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.laser_cut_parts_inventory.get_laser_cut_part(part_id, on_finished=self.get_laser_cut_part_response)
 
         elif "laser_cut_parts_inventory/get_all" in first_resp:
+            self.should_update_laser_cut_inventory_tab = True
             self.laser_cut_parts_inventory.load_data(on_loaded=self.update_laser_cut_inventory_tab)
 
         elif "workspace/get_entries_by_name" in first_resp:

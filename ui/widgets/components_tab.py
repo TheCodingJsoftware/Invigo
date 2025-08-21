@@ -464,7 +464,7 @@ class ComponentsTab(QWidget, Ui_Form):
             ):  # This happens when the updated component is not currently loaded. The UI will be updated when they switch tabs as the data for the component is updated.
                 self.update_component_table(self.category_tables[self.category], update_component)
         else:  # Meaning the component just got added
-            # I don't think this will ever run.
+            # I don't think this will ever run. Edit: Really??
             component = Component(component_data, self.components_inventory)
             self.components_inventory.add_component(component)
             self.add_component_to_table(
