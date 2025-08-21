@@ -1113,7 +1113,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.sheets_table.setItem(
             row_count,
             SheetsTableColumns.PRICE_PER_POUND.value,
-            QTableWidgetItem(f"${price_per_pound:,.2f}"),
+            QTableWidgetItem(f"${price_per_pound:,.3f}"),
         )
 
         self.sheets_table.setItem(

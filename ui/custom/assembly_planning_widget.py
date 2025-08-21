@@ -238,7 +238,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             clipboard = QApplication.clipboard()
             image = clipboard.image()
             if not image.isNull():
-                temp_path = f"images/{self.assembly.name}.png"
+                temp_path = os.path.join("images", self.assembly.name + ".png")
                 image.save(temp_path)
                 self.upload_assembly_image(temp_path, False)
 
