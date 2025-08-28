@@ -799,7 +799,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
             self.unsaved_changes = True
 
-            QTimer.singleShot(100, self.components_table_loaded)
+            QTimer.singleShot(250, self.components_table_loaded)
 
     def add_component_to_table(self, component: Component):
         self.components_table.blockSignals(True)
@@ -986,7 +986,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         for component in self.purchase_order.components:
             self.add_component_to_table(component)
 
-        QTimer.singleShot(100, self.components_table_loaded)
+        QTimer.singleShot(250, self.components_table_loaded)
 
     def components_table_loaded(self):
         self.components_table.resizeColumnsToContents()
@@ -1074,7 +1074,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
                 self.add_sheet_to_table(sheet)
                 self.unsaved_changes = True
 
-                QTimer.singleShot(100, self.sheets_table_loaded)
+                QTimer.singleShot(250, self.sheets_table_loaded)
 
     def add_sheet_to_table(self, sheet: Sheet):
         self.sheets_table.blockSignals(True)
@@ -1216,7 +1216,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         for sheet in self.purchase_order.sheets:
             self.add_sheet_to_table(sheet)
 
-        QTimer.singleShot(100, self.sheets_table_loaded)
+        QTimer.singleShot(250, self.sheets_table_loaded)
 
     def create_sheets_table_context_menu(self):
         self.sheets_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
