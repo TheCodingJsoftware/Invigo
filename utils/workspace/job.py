@@ -65,8 +65,8 @@ class JobColor(Enum):
     ARCHIVE = (theme_var("job-archive"), JobStatus.ARCHIVE)
 
     @classmethod
-    def get_color(cls, job_status: JobStatus):
-        return next((color.value[0] for color in cls if color.value[1] == job_status), "red")
+    def get_color(cls, job_status: JobStatus, default_color: str = "red") -> str:
+        return next((color.value[0] for color in cls if color.value[1] == job_status), default_color)
 
 
 class Job:
@@ -322,7 +322,7 @@ class Job:
                 "ship_to": self.ship_to,
                 "starting_date": self.starting_date,
                 "ending_date": self.ending_date,
-                "color": JobColor.get_color(self.status),
+                "color": JobColor.get_color(self.status) if self.status != JobStatus.WORKSPACE else self.color,
                 "price_settings": self.price_calculator.to_dict(),
                 "flowtag_timeline": self.flowtag_timeline.to_dict(),
                 "moved_job_to_workspace": self.moved_job_to_workspace,
