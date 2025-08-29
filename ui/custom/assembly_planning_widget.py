@@ -31,10 +31,6 @@ from ui.custom.components_planning_table_widget import (
 from ui.custom.file_button import FileButton
 from ui.custom.flowtag_data_widget import FlowtagDataButton
 from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
-from ui.custom.laser_cut_part_paint_settings_widget import (
-    LaserCutPartPaintSettingsWidget,
-)
-from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_planning_table_widget import (
     LaserCutPartsPlanningTableWidget,
     LaserCutTableColumns,
@@ -43,6 +39,7 @@ from ui.custom.time_double_spin_box import TimeSpinBox
 from ui.custom_widgets import AssemblyMultiToolBox
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
+from ui.dialogs.edit_paint_dialog import EditPaintDialog
 from ui.theme import theme_var
 from ui.widgets.assembly_widget import AssemblyWidget
 from utils.dxf_analyzer import DxfAnalyzer
@@ -893,6 +890,34 @@ class AssemblyPlanningWidget(AssemblyWidget):
         rows: set[int] = {item.row() for item in self.laser_cut_parts_table.selectedItems()}
         return list(rows)
 
+    def edit_paint(self):
+        edit_paint_dialog = EditPaintDialog(self.laser_cut_inventory, self)
+
+        if selected_parts := self.get_selected_laser_cut_parts():
+            edit_paint_dialog.load_part(selected_parts[0])
+            if edit_paint_dialog.exec():
+                for laser_cut_part in selected_parts:
+                    paint_data = edit_paint_dialog.get_paint()
+                    primer_data = edit_paint_dialog.get_primer()
+                    powder_data = edit_paint_dialog.get_powder()
+
+                    laser_cut_part.paint_data.uses_paint = paint_data["uses_paint"]
+                    laser_cut_part.paint_data.paint_name = paint_data["paint_name"]
+                    laser_cut_part.paint_data.paint_item = paint_data["paint_item"]
+                    laser_cut_part.paint_data.paint_overspray = paint_data["paint_overspray"]
+
+                    laser_cut_part.primer_data.uses_primer = primer_data["uses_primer"]
+                    laser_cut_part.primer_data.primer_name = primer_data["primer_name"]
+                    laser_cut_part.primer_data.primer_item = primer_data["primer_item"]
+                    laser_cut_part.primer_data.primer_overspray = primer_data["primer_overspray"]
+
+                    laser_cut_part.powder_data.uses_powder = powder_data["uses_powder"]
+                    laser_cut_part.powder_data.powder_name = powder_data["powder_name"]
+                    laser_cut_part.powder_data.powder_item = powder_data["powder_item"]
+                    laser_cut_part.powder_data.powder_transfer_efficiency = powder_data["powder_transfer_efficiency"]
+                # self.update_laser_cut_parts_table_prices()
+                self.changes_made()
+
     def delete_selected_laser_cut_parts(self):
         if selected_laser_cut_parts := self.get_selected_laser_cut_parts():
             for laser_cut_part in selected_laser_cut_parts:
@@ -990,6 +1015,9 @@ class AssemblyPlanningWidget(AssemblyWidget):
             )
             move_to_menu.addAction(action)
 
+        edit_paint_action = QAction("Edit Paint", self)
+        edit_paint_action.triggered.connect(self.edit_paint)
+
         delete_action = QAction("Delete", self)
         delete_action.triggered.connect(self.delete_selected_laser_cut_parts)
 
@@ -999,6 +1027,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         menu.addMenu(flow_tag_menu)
         menu.addMenu(add_to_menu)
         menu.addMenu(move_to_menu)
+        menu.addAction(edit_paint_action)
         menu.addAction(delete_action)
 
         self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))

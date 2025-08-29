@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QDialog
 
+from utils.inventory.laser_cut_part import LaserCutPart
 from ui.dialogs.edit_paint_dialog_UI import Ui_Dialog
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 
@@ -17,6 +18,22 @@ class EditPaintDialog(QDialog, Ui_Dialog):
         self.comboBox_paint.addItems(["None"] + [paint.name for paint in self.paint_inventory.paints])
         self.comboBox_primer.addItems(["None"] + [primer.name for primer in self.paint_inventory.primers])
         self.comboBox_powder.addItems(["None"] + [powder.name for powder in self.paint_inventory.powders])
+
+    def load_part(self, laser_cut_part: LaserCutPart):
+        self.checkBox_paint.setChecked(laser_cut_part.paint_data.uses_paint)
+        self.comboBox_paint.setCurrentText(laser_cut_part.paint_data.paint_name)
+        self.doubleSpinBox_paint_overspray.setValue(laser_cut_part.paint_data.paint_overspray)
+        self.widget_paint.setEnabled(laser_cut_part.paint_data.uses_paint)
+
+        self.checkBox_primer.setChecked(laser_cut_part.primer_data.uses_primer)
+        self.comboBox_primer.setCurrentText(laser_cut_part.primer_data.primer_name)
+        self.doubleSpinBox_primer_overspray.setValue(laser_cut_part.primer_data.primer_overspray)
+        self.widget_primer.setEnabled(laser_cut_part.primer_data.uses_primer)
+
+        self.checkBox_powder.setChecked(laser_cut_part.powder_data.uses_powder)
+        self.comboBox_powder.setCurrentText(laser_cut_part.powder_data.powder_name)
+        self.powder_transfer_efficiency = self.doubleSpinBox_powder_transfer_efficiency.setValue(laser_cut_part.powder_data.powder_transfer_efficiency)
+        self.widget_powder.setEnabled(laser_cut_part.powder_data.uses_powder)
 
     def uses_paint(self) -> bool:
         return self.checkBox_paint.isChecked()

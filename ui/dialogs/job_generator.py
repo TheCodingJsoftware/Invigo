@@ -58,7 +58,7 @@ class JobGeneratorDialog(QDialog, Ui_Form):
 
         for job in self.jobs:
             if self.search_text:
-                if not any(self.search_text in assembly.name.lower() for assembly in job.assemblies):
+                if not any(self.search_text.lower() in assembly.name.lower() for assembly in job.assemblies):
                     continue
 
             job_item = QTreeWidgetItem()
@@ -75,7 +75,7 @@ class JobGeneratorDialog(QDialog, Ui_Form):
             self.tree_widget.addTopLevelItem(job_item)
 
             for assembly in job.assemblies:
-                if self.search_text and self.search_text not in assembly.name.lower() and not self._has_matching_subassembly(assembly):
+                if self.search_text.lower() and self.search_text.lower() not in assembly.name.lower() and not self._has_matching_subassembly(assembly):
                     continue
                 self._add_assembly_recursive(job, job_item, assembly, job.color)
 
@@ -130,7 +130,7 @@ class JobGeneratorDialog(QDialog, Ui_Form):
             self._add_assembly_recursive(job, assembly_item, sub, color)
 
     def _has_matching_subassembly(self, assembly: Assembly) -> bool:
-        if self.search_text in assembly.name.lower():
+        if self.search_text.lower() in assembly.name.lower():
             return True
         return any(self._has_matching_subassembly(sub) for sub in assembly.sub_assemblies)
 
