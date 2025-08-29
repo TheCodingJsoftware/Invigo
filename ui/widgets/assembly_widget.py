@@ -71,6 +71,9 @@ background-color: {theme_var("surface")};
         self.checkBox_not_part_of_process.setChecked(self.assembly.meta_data.not_part_of_process)
         self.checkBox_not_part_of_process.clicked.connect(self.changes_made)
 
+        self.checkBox_has_serial_number.setChecked(self.assembly.meta_data.has_serial_number)
+        self.checkBox_has_serial_number.clicked.connect(self.changes_made)
+
         self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
@@ -167,6 +170,7 @@ background-color: {theme_var("surface")};
 
     def changes_made(self):
         self.assembly.meta_data.not_part_of_process = self.checkBox_not_part_of_process.isChecked()
+        self.assembly.meta_data.has_serial_number = self.checkBox_has_serial_number.isChecked()
         self._parent_widget.changes_made()
 
     def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):

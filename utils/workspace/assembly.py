@@ -63,6 +63,7 @@ class MetaDataDict(TypedDict):
 class MetaData:
     assembly_image: str = ""
     not_part_of_process: bool = False
+    has_serial_number: bool = False
     quantity: int = 1
     color: str = ""
 

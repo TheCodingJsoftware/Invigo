@@ -210,7 +210,7 @@
                     </property>
                    </widget>
                   </item>
-                  <item row="3" column="0">
+                  <item row="4" column="0">
                    <widget class="QWidget" name="paint_widget" native="true">
                     <layout class="QVBoxLayout" name="verticalLayout">
                      <property name="leftMargin">
@@ -242,6 +242,16 @@
                     </property>
                     <property name="text">
                      <string>Not part of the process</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QCheckBox" name="checkBox_has_serial_number">
+                    <property name="toolTip">
+                     <string>If the part HAS a serial number, it will not be grouped together in Workspace and vice versa.</string>
+                    </property>
+                    <property name="text">
+                     <string>Has serial number</string>
                     </property>
                    </widget>
                   </item>

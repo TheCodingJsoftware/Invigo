@@ -60,19 +60,19 @@ class Workspace:
         for assembly in assemblies:
             for _ in range(int(assembly.meta_data.quantity)):
                 new_assembly = Assembly(assembly.to_dict(), parent if isinstance(parent, Job) else parent.job)
+                #
+                # if isinstance(parent, Job):
+                #     parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
+                # elif isinstance(parent, Assembly):
+                #     parent_starting_date = datetime.strptime(parent.workspace_data.starting_date, "%Y-%m-%d %I:%M %p")
+                # else:
+                #     parent_starting_date = datetime.now()
 
-                if isinstance(parent, Job):
-                    parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
-                elif isinstance(parent, Assembly):
-                    parent_starting_date = datetime.strptime(parent.workspace_data.starting_date, "%Y-%m-%d %I:%M %p")
-                else:
-                    parent_starting_date = datetime.now()
-
-                calculated_starting_date = parent_starting_date - timedelta(days=7.0)
-                calculated_ending_date = calculated_starting_date + timedelta(days=assembly.workspace_data.expected_time_to_complete)
-
-                new_assembly.workspace_data.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
-                new_assembly.workspace_data.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
+                # calculated_starting_date = parent_starting_date - timedelta(days=7.0)
+                # calculated_ending_date = calculated_starting_date + timedelta(days=assembly.workspace_data.expected_time_to_complete)
+                #
+                # new_assembly.workspace_data.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
+                # new_assembly.workspace_data.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
 
                 new_assembly.meta_data.quantity = 1
 

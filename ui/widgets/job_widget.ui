@@ -162,6 +162,9 @@
             </item>
             <item row="0" column="3">
              <widget class="QDateTimeEdit" name="dateEdit_start">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="minimumDate">
                <date>
                 <year>2024</year>
@@ -257,6 +260,9 @@
             </item>
             <item row="1" column="3">
              <widget class="QDateTimeEdit" name="dateEdit_end">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="minimumDate">
                <date>
                 <year>2024</year>
@@ -418,8 +424,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>309</width>
-              <height>939</height>
+              <width>293</width>
+              <height>931</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1141,8 +1147,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1154</width>
-            <height>773</height>
+            <width>1155</width>
+            <height>783</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

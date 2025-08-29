@@ -163,22 +163,30 @@ class JobWidget(QWidget, Ui_Form):
         self.comboBox_type.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
 
-        try:
-            self.dateEdit_start.setDateTime(QDateTime(datetime.strptime(self.job.starting_date, "%Y-%m-%d %I:%M %p")))
-        except ValueError:
-            self.dateEdit_start.setDateTime(QDateTime().currentDateTime())
-            self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
+        if self.job.status == JobStatus.QUOTE_CONFIRMED:
+            try:
+                self.dateEdit_start.setDateTime(QDateTime(datetime.fromisoformat(self.job.starting_date)))
+            except Exception:
+                self.dateEdit_start.setDateTime(QDateTime.currentDateTime())
+                self.job.starting_date = self.dateEdit_start.dateTime().toString(Qt.DateFormat.ISODate)
 
-        self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_start.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
+            self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
+            self.dateEdit_start.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
 
-        try:
-            self.dateEdit_end.setDateTime(QDateTime(datetime.strptime(self.job.ending_date, "%Y-%m-%d %I:%M %p")))
-        except ValueError:
-            current_date = QDateTime.currentDateTime()
-            new_date = current_date.addDays(7)
-            self.dateEdit_end.setDateTime(new_date)
-            self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")
+            try:
+                self.dateEdit_end.setDateTime(QDateTime(datetime.fromisoformat(self.job.ending_date)))
+            except Exception:
+                current_date = QDateTime.currentDateTime()
+                new_date = current_date.addDays(21)
+                self.dateEdit_end.setDateTime(new_date)
+                self.job.ending_date = self.dateEdit_end.dateTime().toString(Qt.DateFormat.ISODate)
+        else:
+            self.dateEdit_start.setDateTime(QDateTime.currentDateTime())
+            self.job.starting_date = self.dateEdit_start.dateTime().toString(Qt.DateFormat.ISODate)
+
+            end_date = QDateTime.currentDateTime().addDays(21)
+            self.dateEdit_end.setDateTime(end_date)
+            self.job.ending_date = self.dateEdit_end.dateTime().toString(Qt.DateFormat.ISODate)
 
         self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.dateEdit_end.dateChanged.connect(self.job_settings_changed)
@@ -336,8 +344,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         self.job.order_number = int(self.doubleSpinBox_order_number.value())
         self.job.PO_number = int(self.doubleSpinBox_po_number.value())
         self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
-        self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
-        self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")
+        self.job.starting_date = self.dateEdit_start.dateTime().toString(Qt.DateFormat.ISODate)
+        self.job.ending_date = self.dateEdit_end.dateTime().toString(Qt.DateFormat.ISODate)
         self.flowtag_timeline.set_range(self.dateEdit_start.dateTime(), self.dateEdit_end.dateTime())
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
         self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
