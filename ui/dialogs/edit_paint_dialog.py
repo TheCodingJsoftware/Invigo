@@ -32,7 +32,7 @@ class EditPaintDialog(QDialog, Ui_Dialog):
 
         self.checkBox_powder.setChecked(laser_cut_part.powder_data.uses_powder)
         self.comboBox_powder.setCurrentText(laser_cut_part.powder_data.powder_name)
-        self.powder_transfer_efficiency = self.doubleSpinBox_powder_transfer_efficiency.setValue(laser_cut_part.powder_data.powder_transfer_efficiency)
+        self.doubleSpinBox_powder_transfer_efficiency.setValue(laser_cut_part.powder_data.powder_transfer_efficiency)
         self.widget_powder.setEnabled(laser_cut_part.powder_data.uses_powder)
 
     def uses_paint(self) -> bool:
