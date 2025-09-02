@@ -378,6 +378,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def update_components_table_prices(self):
         self.components_table.blockSignals(True)
         for component, table_data in self.components_table_items.items():
+            component.saved_price = self.price_calculator.get_component_cost(component)
             table_data["price"].setText(f"${(self.price_calculator.get_component_cost(component) * component.quantity * self.assembly.meta_data.quantity):,.2f}")
         self.components_table.blockSignals(False)
 

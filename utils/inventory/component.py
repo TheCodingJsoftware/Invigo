@@ -18,6 +18,7 @@ class ComponentDict(TypedDict):
     category: str
     quantity: float
     price: float
+    saved_price: float
     use_exchange_rate: bool
     priority: int
     shelf_number: str
@@ -44,6 +45,7 @@ class Component(InventoryItem):
         self.part_number: str = ""
         self.part_name: str = ""
         self.price: float = 0.0
+        self.saved_price: float = 0.0
         self.use_exchange_rate: bool = False
         self.priority: int = 0
         self.shelf_number: str = ""
@@ -122,6 +124,7 @@ class Component(InventoryItem):
             self.category_quantities.update({category: unit_quantity})
         self.part_name = data.get("part_name", "")
         self.price = data.get("price", 0.0)
+        self.saved_price = data.get("saved_price", 0.0)
         self.use_exchange_rate = data.get("use_exchange_rate", False)
         self.priority = data.get("priority", 0)
         self.shelf_number = data.get("shelf_number", "")
@@ -159,6 +162,7 @@ class Component(InventoryItem):
             "quantity": round(self.quantity, 2),
             "latest_change_quantity": self.latest_change_quantity,
             "price": round(self.price, 2),
+            "saved_price": round(self.saved_price, 2),
             "latest_change_price": self.latest_change_price,
             "use_exchange_rate": self.use_exchange_rate,
             "priority": self.priority,
