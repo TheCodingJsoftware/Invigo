@@ -16,6 +16,7 @@ dependencies = [
     "certifi",
     "charset-normalizer",
     "click",
+    "coloraide>=5.1",
     "colorama",
     "coloredlogs",
     "colorlog",

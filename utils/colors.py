@@ -2,6 +2,7 @@ import math
 import random
 
 from colormap import hls2rgb, rgb2hex, rgb2hls
+from coloraide import Color
 
 # pip install colormap
 # pip install easydev
@@ -227,7 +228,7 @@ colors_ral: dict[str, dict[str, str]] = {
 def hex_to_rgb(hex: str):
     _hex = hex.lstrip("#")
     hlen = len(_hex)
-    return tuple(int(_hex[i : i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
+    return tuple(int(_hex[i: i + hlen // 3], 16) for i in range(0, hlen, hlen // 3))
 
 
 def adjust_color_lightness(r: float, g: float, b: float, factor: float) -> str:
@@ -364,11 +365,10 @@ def interpolate_color(color1, color2, factor):
 
 
 def get_random_color() -> str:
-    return hsl_to_hex(
-        random.randint(0, 360) / 360,
-        random.randint(25, 75) / 100,
-        random.randint(15, 50) / 100,
-    )
+    c = Color.random('oklch', limits=[(0.65, 0.75), (0.08, 0.12), (0, 360)]).convert('srgb').fit('srgb',
+                                                                                                 method='oklch-chroma')
+    hex_color = c.to_string(hex=True)
+    return hex_color
 
 
 def get_contrast_text_color(hex_color: str) -> str:
