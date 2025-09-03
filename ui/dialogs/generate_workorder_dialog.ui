@@ -289,9 +289,6 @@ Press 'Generate' when finished.</string>
              </item>
              <item row="3" column="0">
               <widget class="QPushButton" name="pushButton_add_overflow_parts">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -315,7 +312,7 @@ if not found in Workspace</string>
                 <bool>true</bool>
                </property>
                <property name="checked">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
                <property name="autoDefault">
                 <bool>false</bool>

@@ -78,23 +78,23 @@ class LaserCutInventory(Inventory):
             total_stock_cost += recut_part.prices.price * recut_part.inventory_data.quantity
         return total_stock_cost
 
-    def add_or_update_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart], from_where: str) -> tuple[list[LaserCutPart], list[LaserCutPart], list[LaserCutPart]]:
+    def add_or_update_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart], from_where: str) -> tuple[list[LaserCutPart], list[LaserCutPart]]:
         laser_cut_parts_to_add: list[LaserCutPart] = []
         laser_cut_parts_to_update: list[LaserCutPart] = []
-        recut_laser_cut_parts: list[LaserCutPart] = []
+        # recut_laser_cut_parts: list[LaserCutPart] = []
         for laser_cut_part_to_add in laser_cut_parts:
-            if laser_cut_part_to_add.recut:
-                new_recut_part = LaserCutPart(
-                    laser_cut_part_to_add.to_dict(),
-                    self,
-                )
-                new_recut_part.add_to_category(self.get_category("Recut"))
-                if existing_recut_part := self.get_recut_part_by_name(laser_cut_part_to_add.name):
-                    existing_recut_part.recut_count += 1
-                    new_recut_part.recut_count = existing_recut_part.recut_count
-                    new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
-                new_recut_part.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            elif existing_laser_cut_part := self.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
+            # if laser_cut_part_to_add.inventory_data.recut:
+            #     new_recut_part = LaserCutPart(
+            #         laser_cut_part_to_add.to_dict(),
+            #         self,
+            #     )
+            #     new_recut_part.add_to_category(self.get_category("Recut"))
+            #     if existing_recut_part := self.get_recut_part_by_name(laser_cut_part_to_add.name):
+            #         existing_recut_part.recut_count += 1
+            #         new_recut_part.recut_count = existing_recut_part.recut_count
+            #         new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
+            #     new_recut_part.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            if existing_laser_cut_part := self.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
                 existing_laser_cut_part.inventory_data.quantity += laser_cut_part_to_add.inventory_data.quantity
 
                 existing_laser_cut_part.workspace_data.flowtag = laser_cut_part_to_add.workspace_data.flowtag
@@ -122,11 +122,11 @@ class LaserCutInventory(Inventory):
                 laser_cut_part_to_add.add_to_category(category)
                 laser_cut_part_to_add.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_add.append(laser_cut_part_to_add)
-        self.add_recut_parts(recut_laser_cut_parts)
-        self.upsert_laser_cut_parts(laser_cut_parts_to_add + laser_cut_parts_to_update, operation="ADD")
-        # self.add_laser_cut_parts(laser_cut_parts_to_add)
-        # self.save_laser_cut_parts(laser_cut_parts_to_update)
-        return recut_laser_cut_parts, laser_cut_parts_to_add, laser_cut_parts_to_update
+        # self.add_recut_parts(recut_laser_cut_parts)
+        # self.upsert_laser_cut_parts(laser_cut_parts_to_add + laser_cut_parts_to_update, operation="ADD")
+        self.add_laser_cut_parts(laser_cut_parts_to_add)
+        self.save_laser_cut_parts(laser_cut_parts_to_update)
+        return laser_cut_parts_to_add, laser_cut_parts_to_update
 
     def remove_laser_cut_parts_quantity(self, laser_cut_parts: list[LaserCutPart], from_where: str):
         laser_cut_parts_to_save: list[LaserCutPart] = []
@@ -144,9 +144,9 @@ class LaserCutInventory(Inventory):
                 laser_cut_part_to_update.inventory_data.quantity = 0
                 laser_cut_part_to_update.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 laser_cut_parts_to_add.append(laser_cut_part_to_update)
-        self.upsert_laser_cut_parts(laser_cut_parts_to_save + laser_cut_parts_to_add, operation="SUBTRACT")
-        # self.save_laser_cut_parts(laser_cut_parts_to_save)
-        # self.add_laser_cut_parts(laser_cut_parts_to_add)
+        # self.upsert_laser_cut_parts(laser_cut_parts_to_save + laser_cut_parts_to_add, operation="SUBTRACT")
+        self.save_laser_cut_parts(laser_cut_parts_to_save)
+        self.add_laser_cut_parts(laser_cut_parts_to_add)
 
     def add_recut_parts(self, laser_cut_parts: list[LaserCutPart]):
         raise NotImplementedError

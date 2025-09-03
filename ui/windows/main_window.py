@@ -157,7 +157,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.29"
+__version__: str = "v4.0.30"
 
 
 def check_folders(folders: list[str]):
@@ -3035,8 +3035,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.workorder_update_nest_parts_data(nests, all_workspace_laser_part_groups)
 
-            nested_parts_not_in_workspace = self.get_nested_parts_not_in_workspace(all_nested_laser_cut_parts,
-                                                                                   all_workspace_laser_part_groups)
+            nested_parts_not_in_workspace = self.get_nested_parts_not_in_workspace(all_nested_laser_cut_parts, [])
             nested_parts_in_workspace = self.get_nested_parts_in_workspace(all_nested_laser_cut_parts,
                                                                            all_workspace_laser_part_groups)
 
@@ -3055,8 +3054,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     laser_cut_parts_to_update.append(new_part)
                                     break
 
-                    self.laser_cut_parts_inventory.add_or_update_laser_cut_parts(laser_cut_parts_to_update,
-                                                                                 "workorder nest overflow")
+                    self.laser_cut_parts_inventory.add_or_update_laser_cut_parts(laser_cut_parts_to_update, "workorder nest overflow")
                     # self.laser_cut_parts_inventory.save_local_copy()
                     # self.upload_files(
                     #     [f"{self.laser_cut_parts_inventory.filename}.json"]
