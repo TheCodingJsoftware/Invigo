@@ -104,6 +104,9 @@ class LaserCutInventory(Inventory):
                 existing_laser_cut_part.meta_data.material = laser_cut_part_to_add.meta_data.material
                 existing_laser_cut_part.meta_data.gauge = laser_cut_part_to_add.meta_data.gauge
 
+                existing_laser_cut_part.prices.bend_cost = laser_cut_part_to_add.prices.bend_cost
+                existing_laser_cut_part.prices.labor_cost = laser_cut_part_to_add.prices.labor_cost
+
                 existing_laser_cut_part.primer_data.uses_primer = laser_cut_part_to_add.primer_data.uses_primer
                 existing_laser_cut_part.primer_data.primer_name = laser_cut_part_to_add.primer_data.primer_name
                 existing_laser_cut_part.paint_data.uses_paint = laser_cut_part_to_add.paint_data.uses_paint

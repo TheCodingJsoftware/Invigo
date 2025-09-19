@@ -176,7 +176,7 @@ class OrderWidget(QWidget):
             self.load_ui()
 
     def view_order_history(self):
-        item_history_dialog = ViewItemHistoryDialog(self, sheet)
+        item_history_dialog = ViewItemHistoryDialog(self, self.sheet)
         item_history_dialog.tabWidget.setCurrentIndex(2)
         item_history_dialog.show()
 

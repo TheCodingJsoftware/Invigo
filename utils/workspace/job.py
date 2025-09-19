@@ -259,6 +259,9 @@ class Job:
                 inventory_laser_cut_part.paint_data.uses_paint = laser_cut_part.paint_data.uses_paint
                 inventory_laser_cut_part.powder_data.uses_powder = laser_cut_part.powder_data.uses_powder
 
+                inventory_laser_cut_part.prices.bend_cost = laser_cut_part.prices.bend_cost
+                inventory_laser_cut_part.prices.labor_cost = laser_cut_part.prices.labor_cost
+
                 inventory_laser_cut_part.primer_data.primer_name = laser_cut_part.primer_data.primer_name
                 inventory_laser_cut_part.paint_data.paint_name = laser_cut_part.paint_data.paint_name
                 inventory_laser_cut_part.powder_data.powder_name = laser_cut_part.powder_data.powder_name

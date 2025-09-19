@@ -98,7 +98,7 @@ from ui.widgets.structural_steel_tab import StructuralSteelInventoryTab
 
 # from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
 from ui.windows.main_window_UI import Ui_MainWindow
-from utils.colors import lighten_color, get_random_color
+from utils.colors import get_random_color, lighten_color
 from utils.dialog_buttons import DialogButtons
 from utils.inventory.category import Category
 from utils.inventory.component import Component
@@ -157,7 +157,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.30"
+__version__: str = "v4.0.31"
 
 
 def check_folders(folders: list[str]):
@@ -403,12 +403,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.job_preferences = JobPreferences()
 
         self.sheets_inventory = SheetsInventory(self.sheet_settings)
-        self.structural_steel_inventory = StructuralSteelInventory(self.structural_steel_settings,
-                                                                   self.workspace_settings)
+        self.structural_steel_inventory = StructuralSteelInventory(self.structural_steel_settings, self.workspace_settings)
         self.components_inventory = ComponentsInventory()
         self.paint_inventory = PaintInventory(self.components_inventory)
-        self.laser_cut_parts_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings,
-                                                           self.sheet_settings)
+        self.laser_cut_parts_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings, self.sheet_settings)
 
         self.job_manager = JobManager(
             self.sheet_settings,
@@ -731,20 +729,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionComponents.triggered.connect(partial(self.toggle_tab_visibility, self.actionComponents))
         self.actionComponents.setChecked(self.settings_file.get_value("tab_visibility").get("Components", True))
         self.actionComponents.setIcon(Icons.inventory_icon)
-        self.actionSheets_in_Inventory.triggered.connect(
-            partial(self.toggle_tab_visibility, self.actionSheets_in_Inventory))
-        self.actionSheets_in_Inventory.setChecked(
-            self.settings_file.get_value("tab_visibility").get("Sheets In Inventory", True))
+        self.actionSheets_in_Inventory.triggered.connect(partial(self.toggle_tab_visibility, self.actionSheets_in_Inventory))
+        self.actionSheets_in_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Sheets In Inventory", True))
         self.actionSheets_in_Inventory.setIcon(Icons.inventory_icon)
-        self.actionLaser_Cut_Inventory.triggered.connect(
-            partial(self.toggle_tab_visibility, self.actionLaser_Cut_Inventory))
-        self.actionLaser_Cut_Inventory.setChecked(
-            self.settings_file.get_value("tab_visibility").get("Laser Cut Inventory", True))
+        self.actionLaser_Cut_Inventory.triggered.connect(partial(self.toggle_tab_visibility, self.actionLaser_Cut_Inventory))
+        self.actionLaser_Cut_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Laser Cut Inventory", True))
         self.actionLaser_Cut_Inventory.setIcon(Icons.inventory_icon)
-        self.actionStructural_Steel_Inventory.triggered.connect(
-            partial(self.toggle_tab_visibility, self.actionStructural_Steel_Inventory))
-        self.actionStructural_Steel_Inventory.setChecked(
-            self.settings_file.get_value("tab_visibility").get("Structural Steel Inventory", True))
+        self.actionStructural_Steel_Inventory.triggered.connect(partial(self.toggle_tab_visibility, self.actionStructural_Steel_Inventory))
+        self.actionStructural_Steel_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Structural Steel Inventory", True))
         self.actionStructural_Steel_Inventory.setIcon(Icons.inventory_icon)
         self.actionStructural_Steel_Settings.triggered.connect(
             partial(
@@ -752,8 +744,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.actionStructural_Steel_Settings,
             )
         )
-        self.actionStructural_Steel_Settings.setChecked(
-            self.settings_file.get_value("tab_visibility").get("Structural Steel Settings", True))
+        self.actionStructural_Steel_Settings.setChecked(self.settings_file.get_value("tab_visibility").get("Structural Steel Settings", True))
         self.actionStructural_Steel_Settings.setIcon(Icons.sheet_settings_icon)
         self.actionSheet_Settings.triggered.connect(partial(self.toggle_tab_visibility, self.actionSheet_Settings))
         self.actionSheet_Settings.setChecked(self.settings_file.get_value("tab_visibility").get("Sheet Settings", True))
@@ -945,8 +936,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.should_update_sheets_in_inventory_tab = False
 
     def load_components_inventory_tab(self):
-        self.paint_inventory.load_data(
-            on_loaded=self.load_paint_inventory_tab)  # Paint inventory is depdendent on components inventory
+        self.paint_inventory.load_data(on_loaded=self.load_paint_inventory_tab)  # Paint inventory is depdendent on components inventory
         # We load these because components tab is depended on them, they might be loaded ahead of time or they might not be
         self.load_job_planning_tab()
         self.load_job_quoting_tab()
@@ -1025,13 +1015,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.sheet_settings_tab_widget.load_tabs()
         elif current_tab == "structural_steel_settings_tab":
             self.structural_steel_settings_tab_widget.load_tabs()
-        elif current_tab == "quote_generator_tab":
-            self.load_cuttoff_drop_down()
-            self.load_saved_quoted_thread()
-            self.load_previous_quotes_thread()
-            self.refresh_nest_directories()
-            for quote_widget in self.quote_generator_tab_widget.quotes:
-                quote_widget.update_sheet_statuses()
+        # elif current_tab == "quote_generator_tab":
+        #     self.load_cuttoff_drop_down()
+        #     self.load_saved_quoted_thread()
+        #     self.load_previous_quotes_thread()
+        #     self.refresh_nest_directories()
+        #     for quote_widget in self.quote_generator_tab_widget.quotes:
+        #         quote_widget.update_sheet_statuses()
         elif current_tab == "job_quoter_tab":
             self.load_tree_widget_cuttoff_drop_down(self.treeWidget_cutoff_sheets)
             self.refresh_nest_directories()
@@ -1373,8 +1363,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         )
 
     def get_scroll_position(self, category: Category) -> QPoint:
-        return self.scroll_position_manager.get_scroll_position(
-            f"{self.tab_text(self.stackedWidget.currentIndex())} - {category.name}")
+        return self.scroll_position_manager.get_scroll_position(f"{self.tab_text(self.stackedWidget.currentIndex())} - {category.name}")
 
     # * /\ UPDATE UI ELEMENTS /\
     # * \/ GETTERS \/
@@ -1407,8 +1396,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         selected_rows = tab.selectedItems()
         all_items = list(self.parts_in_inventory_name_lookup.keys())
 
-        selected_items: list[str] = [item.text() for item in selected_rows if
-                                     item.text() in all_items and item.column() == 0]
+        selected_items: list[str] = [item.text() for item in selected_rows if item.text() in all_items and item.column() == 0]
         return selected_items
 
     # * /\ GETTERS /\
@@ -1520,22 +1508,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def add_new_shipping_address(self):
         new_shipping_address_dialog = EditShippingAddressDialog(self)
         if new_shipping_address_dialog.exec():
-            self.purchase_order_manager.add_shipping_address(new_shipping_address_dialog.get_shipping_address(),
-                                                             on_finished=self.load_po_menus)
+            self.purchase_order_manager.add_shipping_address(new_shipping_address_dialog.get_shipping_address(), on_finished=self.load_po_menus)
 
     def edit_shipping_address(self, shipping_address: ShippingAddress):
         edit_shipping_address_dialog = EditShippingAddressDialog(self, shipping_address)
         if edit_shipping_address_dialog.exec():
-            self.purchase_order_manager.save_shipping_address(edit_shipping_address_dialog.get_shipping_address(),
-                                                              on_finished=self.load_po_menus)
+            self.purchase_order_manager.save_shipping_address(edit_shipping_address_dialog.get_shipping_address(), on_finished=self.load_po_menus)
 
     def delete_shipping_address(self):
         shipping_address_to_remove, ok = QInputDialog.getItem(
             self,
             "Delete Shipping Address",
             "Select the shipping address to delete:",
-            [f"{shipping_address.name} (id: {shipping_address.id})" for shipping_address in
-             self.purchase_order_manager.shipping_addresses],
+            [f"{shipping_address.name} (id: {shipping_address.id})" for shipping_address in self.purchase_order_manager.shipping_addresses],
             0,
             False,
         )
@@ -1543,8 +1528,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for shipping_address in self.purchase_order_manager.shipping_addresses:
                 name = f"{shipping_address.name} (id: {shipping_address.id})"
                 if shipping_address_to_remove == name:
-                    self.purchase_order_manager.delete_shipping_address(shipping_address,
-                                                                        on_finished=self.load_po_menus)
+                    self.purchase_order_manager.delete_shipping_address(shipping_address, on_finished=self.load_po_menus)
                     break
 
     # def open_edit_user_workspace_settings(self):
@@ -1639,10 +1623,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.status_button.setText(f"Saved {job.name}", "lime")
 
     def add_job_to_production_plan(
-            self,
-            job_widget: JobTab,
-            jobs_data: dict[str, int],
-            should_update_components: bool,
+        self,
+        job_widget: JobTab,
+        jobs_data: dict[str, int],
+        should_update_components: bool,
     ):
         job_name, job_quantity = jobs_data
         if not (job := job_widget.get_job(job_name)):
@@ -1741,10 +1725,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # self.upload_files([f"{self.components_inventory.filename}.json"])
 
     def add_job_to_workspace(
-            self,
-            job_widget: JobTab,
-            jobs_data: dict[str, int],
-            should_update_components: bool,
+        self,
+        job_widget: JobTab,
+        jobs_data: dict[str, int],
+        should_update_components: bool,
     ):
         job_name, job_quantity = jobs_data
         if not (job := job_widget.get_job(job_name)):
@@ -2272,8 +2256,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
             new_recut_part.meta_data.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_parts_inventory.add_recut_part(new_recut_part)
-        elif existing_laser_cut_part := self.laser_cut_parts_inventory.get_laser_cut_part_by_name(
-                laser_cut_part_to_add.name):
+        elif existing_laser_cut_part := self.laser_cut_parts_inventory.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
             existing_laser_cut_part.inventory_data.quantity += laser_cut_part_to_add.inventory_data.quantity
             existing_laser_cut_part.meta_data.material = laser_cut_part_to_add.meta_data.material
             existing_laser_cut_part.meta_data.gauge = laser_cut_part_to_add.meta_data.gauge
@@ -2328,8 +2311,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for assembly in job.get_all_assemblies():
             components_to_save = []
             for component_from_job in assembly.components:
-                if not (component_from_inventory := self.components_inventory.get_component_by_part_name(
-                        component_from_job.part_name)):
+                if not (component_from_inventory := self.components_inventory.get_component_by_part_name(component_from_job.part_name)):
                     continue
                 component_from_inventory.quantity -= component_from_job.quantity * assembly.meta_data.quantity
                 component_from_inventory.latest_change_quantity = f"{os.getlogin().title()} removed {component_from_job.quantity * assembly.meta_data.quantity} quantity from sending {job.name} to workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
@@ -2439,8 +2421,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         # Endpoint-specific checks
-        if any(key in first_resp for key in
-               ("vendors/get_all", "purchase_orders/get_all", "shipping_addresses/get_all")):
+        if any(key in first_resp for key in ("vendors/get_all", "purchase_orders/get_all", "shipping_addresses/get_all")):
             self.load_po_menus()
 
         elif "jobs/get_all" in first_resp:
@@ -2563,8 +2544,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.components_tab_widget.label_exchange_price.setText(f"1.00 USD: {exchange_rate} CAD")
             self.settings_file.set_value("exchange_rate", exchange_rate)
         except (
-                AttributeError,
-                RuntimeError,
+            AttributeError,
+            RuntimeError,
         ) as e:  # It might be the case that ComponentsTab is not loaded
             self.status_button.setText(f"{e}", "red")
 
@@ -2667,8 +2648,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.tab_text(self.stackedWidget.currentIndex()) == "quote_generator_tab":
                 self.load_saved_quoted_thread()
                 self.load_cuttoff_drop_down()
-            elif self.tab_text(
-                    self.stackedWidget.currentIndex()) == "workspace_tab" or self.should_update_workspace_tab:
+            elif self.tab_text(self.stackedWidget.currentIndex()) == "workspace_tab" or self.should_update_workspace_tab:
                 # self.workspace_tab_widget.load_tags()
                 # self.workspace_tab_widget.set_current_tab(self.workspace_tab_widget_last_selected_tab)
                 self.should_update_workspace_tab = False
@@ -2741,8 +2721,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         QApplication.restoreOverrideCursor()
 
-        settings_text = "".join(
-            f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(nests))
+        settings_text = "".join(f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(nests))
         select_item_dialog = NestSheetVerification(
             f"The nests sheet settings from PDF are:\n{settings_text}",
             nests[0].sheet.thickness,
@@ -2864,8 +2843,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         msg.exec()
 
     def verify_nest_sheet_settings(self, nests: list[Nest]) -> NestSheetVerification:
-        settings_text = "".join(
-            f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(nests))
+        settings_text = "".join(f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(nests))
         return NestSheetVerification(
             f"The nests sheet settings from PDF are:\n{settings_text}",
             nests[0].sheet.thickness,
@@ -2885,8 +2863,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     new_part.inventory_data.quantity = laser_cut_part.meta_data.quantity_on_sheet * nest.sheet_count
                     part_dict[part_name] = new_part
                 else:
-                    part_dict[
-                        part_name].inventory_data.quantity += laser_cut_part.meta_data.quantity_on_sheet * nest.sheet_count
+                    part_dict[part_name].inventory_data.quantity += laser_cut_part.meta_data.quantity_on_sheet * nest.sheet_count
 
         return natsorted(part_dict.values(), key=lambda part: part.name)
 
@@ -2899,9 +2876,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 laser_cut_part.meta_data.gauge = new_thickness
 
     def get_nested_parts_not_in_workspace(
-            self,
-            nested_laser_cut_parts: list[LaserCutPart],
-            workspace_laser_cut_part_groups: list[WorkspaceLaserCutPartGroup],
+        self,
+        nested_laser_cut_parts: list[LaserCutPart],
+        workspace_laser_cut_part_groups: list[WorkspaceLaserCutPartGroup],
     ) -> list[LaserCutPart]:
         workspace_part_names = set()
         for group in workspace_laser_cut_part_groups:
@@ -2911,9 +2888,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return [part for part in nested_laser_cut_parts if part.name not in workspace_part_names]
 
     def get_nested_parts_in_workspace(
-            self,
-            nested_laser_cut_parts: list[LaserCutPart],
-            workspace_laser_cut_part_groups: list[WorkspaceLaserCutPartGroup],
+        self,
+        nested_laser_cut_parts: list[LaserCutPart],
+        workspace_laser_cut_part_groups: list[WorkspaceLaserCutPartGroup],
     ) -> list[LaserCutPart]:
         workspace_parts_dict: dict[str, LaserCutPart] = {}
         for group in workspace_laser_cut_part_groups:
@@ -3030,14 +3007,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         generate_workorder_dialog = GenerateWorkorderDialog(self)
         if generate_workorder_dialog.exec():
             all_nested_laser_cut_parts = self.get_nested_laser_cut_parts(nests)
-            all_workspace_laser_part_groups = self.workspace.get_grouped_laser_cut_parts(
-                self.workspace.get_all_laser_cut_parts_with_similar_tag("laser"))
+            all_workspace_laser_part_groups = self.workspace.get_grouped_laser_cut_parts(self.workspace.get_all_laser_cut_parts_with_similar_tag("laser"))
 
             self.workorder_update_nest_parts_data(nests, all_workspace_laser_part_groups)
 
             nested_parts_not_in_workspace = self.get_nested_parts_not_in_workspace(all_nested_laser_cut_parts, [])
-            nested_parts_in_workspace = self.get_nested_parts_in_workspace(all_nested_laser_cut_parts,
-                                                                           all_workspace_laser_part_groups)
+            nested_parts_in_workspace = self.get_nested_parts_in_workspace(all_nested_laser_cut_parts, all_workspace_laser_part_groups)
 
             if nested_parts_not_in_workspace and generate_workorder_dialog.should_add_overflow_parts():
                 if self.show_nested_parts_not_in_workspace_dialog(nested_parts_not_in_workspace):
@@ -3126,6 +3101,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 workorder = Workorder(nests, self.sheet_settings, self.laser_cut_parts_inventory)
 
                 if generate_workorder_dialog.should_open_printout():
+
                     def workorder_saved(response: dict):
                         self.open_workorder(response["id"])
 
@@ -3137,9 +3113,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # # self.workspace_tab_widget.workspace_widget.load_assembly_tree()
 
     def workorder_update_nest_parts_data(
-            self,
-            nests: list[Nest],
-            all_workspace_laser_part_groups: list[WorkspaceLaserCutPartGroup],
+        self,
+        nests: list[Nest],
+        all_workspace_laser_part_groups: list[WorkspaceLaserCutPartGroup],
     ):
         for nest in nests:
             for nest_laser_cut_part in nest.laser_cut_parts:
@@ -3181,17 +3157,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setText(f"{e}")
             msg.exec()
 
-    def load_previous_quotes_thread(self):
-        get_previous_quotes_thread = GetPreviousQuotesThread()
-        self.threads.append(get_previous_quotes_thread)
-        get_previous_quotes_thread.signal.connect(self.load_previous_quotes_response)
-        get_previous_quotes_thread.start()
+    # def load_previous_quotes_thread(self):
+    #     get_previous_quotes_thread = GetPreviousQuotesThread()
+    #     self.threads.append(get_previous_quotes_thread)
+    #     get_previous_quotes_thread.signal.connect(self.load_previous_quotes_response)
+    #     get_previous_quotes_thread.start()
 
-    def load_previous_quotes_response(self, data: dict):
-        if isinstance(data, dict):
-            self.load_previous_quotes(data)
-        else:
-            self.status_button.setText(f"Error: {data}'", "red")
+    # def load_previous_quotes_response(self, data: dict):
+    #     if isinstance(data, dict):
+    #         self.load_previous_quotes(data)
+    #     else:
+    #         self.status_button.setText(f"Error: {data}'", "red")
 
     def save_job_worker(self, job: Job):
         upload_job_worker = SaveJobWorker(job)

@@ -1,6 +1,6 @@
 import contextlib
+import getpass
 import logging
-import os
 import time
 
 import msgspec
@@ -20,7 +20,7 @@ class ChangesThread(QThread):
         self.parent = parent
         self.SERVER_IP = get_server_ip_address()
         self.SERVER_PORT = get_server_port()
-        self.client_name = os.getlogin()
+        self.client_name = getpass.getuser()
         self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws?client_name={self.client_name}"
 
     def run(self):
@@ -38,7 +38,7 @@ class ChangesThread(QThread):
                     self.websocket_url,
                     on_message=lambda ws, message: handle_file_data(ws, message),
                 )
-                self.websocket.run_forever()
+                self.websocket.run_forever(ping_interval=25, ping_timeout=20)
             except Exception as error:
                 with contextlib.suppress(AttributeError):
                     self.signal.emit(str(error))
