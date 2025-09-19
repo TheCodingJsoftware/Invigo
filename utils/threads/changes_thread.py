@@ -2,6 +2,7 @@ import contextlib
 import getpass
 import logging
 import time
+from urllib.parse import quote
 
 import msgspec
 import websocket
@@ -21,7 +22,8 @@ class ChangesThread(QThread):
         self.SERVER_IP = get_server_ip_address()
         self.SERVER_PORT = get_server_port()
         self.client_name = getpass.getuser()
-        self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws?client_name={self.client_name}"
+        safe_name = quote(self.client_name)
+        self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws?client_name={safe_name}"
 
     def run(self):
         while True:
