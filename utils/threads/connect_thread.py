@@ -1,4 +1,4 @@
-import os
+import getpass
 
 import msgspec
 import requests
@@ -16,7 +16,7 @@ class ConnectThread(QThread):
         self.SERVER_PORT: int = get_server_port()
         self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/connect"
         self.version: str = version
-        self.client_name = os.getlogin()
+        self.client_name = getpass.getuser()
 
     def run(self):
         payload = {"client_name": self.client_name, "version": self.version}
