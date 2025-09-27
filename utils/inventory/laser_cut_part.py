@@ -227,12 +227,19 @@ class LaserCutPart(InventoryItem):
         laser_cut_inventory: "LaserCutInventory",
     ):
         super().__init__()
-        self.id = data.get("id", -1)
-        self.name = data.get("name", "")
         self.laser_cut_inventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
         self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
         self.sheet_settings: SheetSettings = self.laser_cut_inventory.sheet_settings
+        self.load_data(data)
+
+        # NOTE Only for Quote Generator and load_nest.py
+        self.recut_count_notes: int = 0
+        self.nest: Nest | None = None
+
+    def load_data(self, data: LaserCutPartDict):
+        self.id = data.get("id", -1)
+        self.name = data.get("name", "")
 
         self.inventory_data = InventoryData(data.get("inventory_data", {}), self.laser_cut_inventory)
         self.meta_data = MetaData(data.get("meta_data", {}))
@@ -260,12 +267,6 @@ class LaserCutPart(InventoryItem):
                     flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(self.meta_data.machine_time * 60))
                 elif tag := flowtag.get_tag_with_similar_name("picking"):
                     flowtag_data.set_tag_data(tag, "expected_time_to_complete", self.meta_data.weight)
-
-        # NOTE Only for Quote Generator and load_nest.py
-        self.recut_count_notes: int = 0
-        self.nest: Nest | None = None
-
-        # self.load_data(data)
 
     @property
     def bending_files(self) -> list[str]:

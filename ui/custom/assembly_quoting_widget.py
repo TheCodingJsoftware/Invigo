@@ -510,6 +510,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items.clear()
         self.laser_cut_parts_table.setRowCount(0)
         for laser_cut_part in self.assembly.laser_cut_parts:
+            if laser_cut_part.id <= 0:  # Try to match the part with the inventory to get the ID
+                if inventory_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
+                    laser_cut_part.id = inventory_laser_cut_part.id
             self.add_laser_cut_part_to_table(laser_cut_part)
         self.laser_cut_parts_table.blockSignals(False)
         self.laser_cut_parts_table.resizeColumnsToContents()

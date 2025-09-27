@@ -265,13 +265,13 @@ class LaserCutInventory(Inventory):
         self.save_laser_cut_parts(self.get_laser_cut_parts_by_category(original))
         return original
 
-    def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart:
+    def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart | None:
         return next(
             (laser_cut_part for laser_cut_part in self.laser_cut_parts if laser_cut_part.name == laser_cut_part_name),
             None,
         )
 
-    def get_recut_part_by_name(self, recut_part_name: str) -> LaserCutPart:
+    def get_recut_part_by_name(self, recut_part_name: str) -> LaserCutPart | None:
         return next(
             (recut_part for recut_part in self.recut_parts if recut_part.name == recut_part_name),
             None,

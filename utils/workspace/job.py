@@ -247,7 +247,9 @@ class Job:
         laser_cut_parts_to_update = []
         for laser_cut_part in self.get_all_laser_cut_parts():
             if inventory_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
+                print(f"Job Part: {laser_cut_part.name}, ID: {laser_cut_part.id}")
                 inventory_laser_cut_part.meta_data.image_index = laser_cut_part.meta_data.image_index
+                print(f"Inventory data for laser cut part: {inventory_laser_cut_part.name}, ID: {inventory_laser_cut_part.id}")
 
                 inventory_laser_cut_part.workspace_data.bending_files = laser_cut_part.workspace_data.bending_files
                 inventory_laser_cut_part.workspace_data.welding_files = laser_cut_part.workspace_data.welding_files
