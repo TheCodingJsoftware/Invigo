@@ -46,6 +46,7 @@ class AutoNumber(Enum):
 class Status(AutoNumber):
     PURCHASE_ORDER = auto()
     QUOTE = auto()
+    RELEASE_ORDER = auto()
 
 
 class ShippingMethod(AutoNumber):
