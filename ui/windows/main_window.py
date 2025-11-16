@@ -157,7 +157,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.33"
+__version__: str = "v4.0.34"
 
 
 def check_folders(folders: list[str]):
