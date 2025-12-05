@@ -115,3 +115,4 @@ upload_update.py
 *.lock
 *.sql
 dxf test files/
+.idea/
