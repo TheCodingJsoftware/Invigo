@@ -87,6 +87,12 @@ class JobPriceCalculator:
             total += self.get_assembly_cost(assembly)
         return total
 
+    def get_job_weight(self) -> float:
+        total_weight = 0.0
+        for laser_cut_part in self.job.get_all_laser_cut_parts():
+            total_weight += laser_cut_part.meta_data.weight * laser_cut_part.inventory_data.quantity
+        return total_weight
+
     def get_assembly_cost(self, assembly: Assembly) -> float:
         total = self.get_laser_cut_parts_cost(assembly.laser_cut_parts) * assembly.meta_data.quantity + self.get_components_cost(assembly.components) * assembly.meta_data.quantity
         for sub_assembly in assembly.sub_assemblies:

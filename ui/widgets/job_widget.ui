@@ -1221,12 +1221,12 @@ QPushButton#pushButton_reload_job:flat:hover {
              <number>0</number>
             </property>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1">
+             <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1">
               <item>
                <widget class="QLabel" name="label_total_cost_for_sheets">
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>12</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -1244,7 +1244,7 @@ QPushButton#pushButton_reload_job:flat:hover {
                <widget class="QLabel" name="label_total_cost_for_parts">
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>12</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -1255,6 +1255,21 @@ QPushButton#pushButton_reload_job:flat:hover {
                 </property>
                 <property name="textInteractionFlags">
                  <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_total_weight_for_parts">
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Total Weight for Parts: 0.00lb</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>

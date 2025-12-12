@@ -72,8 +72,7 @@ class JobFlowtagTimelineWidget(QWidget):
 
             slider.setValue((start_value, end_value))
             slider.valueChanged.connect(
-                lambda value, tag=tag, slider=slider, start_label=start_label, end_label=end_label,
-                       tag_name_label=tag_name_label: self.update_labels(
+                lambda value, tag=tag, slider=slider, start_label=start_label, end_label=end_label, tag_name_label=tag_name_label: self.update_labels(
                     value, tag, slider, start_label, end_label, tag_name_label
                 )
             )
@@ -95,13 +94,13 @@ class JobFlowtagTimelineWidget(QWidget):
             row += 1
 
     def update_labels(
-            self,
-            value: tuple[int, int],
-            tag: Tag,
-            slider: QRangeSlider,
-            start_label: QLabel,
-            end_label: QLabel,
-            tag_name_label: QLabel,
+        self,
+        value: tuple[int, int],
+        tag: Tag,
+        slider: QRangeSlider,
+        start_label: QLabel,
+        end_label: QLabel,
+        tag_name_label: QLabel,
     ):
         start_label.setText(str(value[0]))
         end_label.setText(str(value[1]))
@@ -130,6 +129,7 @@ class JobFlowtagTimelineWidget(QWidget):
         self._parent_widget._parent_widget.job_changed(self._parent_widget.job)
         self._parent_widget.update_nest_parts_assemblies()
         self._parent_widget.update_prices()
+        self._parent_widget.update_weight()
 
     def clear_layout(self, layout: QGridLayout):
         with contextlib.suppress(AttributeError):

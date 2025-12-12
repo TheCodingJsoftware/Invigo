@@ -267,6 +267,8 @@ class JobWidget(QWidget, Ui_Form):
         self.label_total_cost_for_parts.setHidden(self._parent_widget._parent_widget.tab_text(self._parent_widget._parent_widget.stackedWidget.currentIndex()) == "job_planner_tab")
         self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
 
+        self.label_total_weight_for_parts.setText(f"Total Weight for Parts: {self.price_calculator.get_job_weight():,.2f} lbs")
+
         self.label_total_cost_for_sheets.setHidden(
             self._parent_widget._parent_widget.tab_text(self._parent_widget._parent_widget.stackedWidget.currentIndex()) == "job_planner_tab"
         )
@@ -377,6 +379,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 self.job.add_assembly(new_assembly)
                 self.load_assembly(new_assembly)
             self.update_prices()
+            self.changes_made()
 
     def add_assembly(self, new_assembly: Optional[Assembly] = None) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
         if not new_assembly:
@@ -656,6 +659,9 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
                 if isinstance(assembly_widget, AssemblyQuotingWidget):
                     assembly_widget.update_prices()
 
+    def update_weight(self):
+        self.label_total_weight_for_parts.setText(f"Total Weight for Parts: {self.price_calculator.get_job_weight():,.2f} lbs")
+
     def price_settings_changed(self):
         self.price_calculator.item_overhead = self.doubleSpinBox_items_overhead.value() / 100
         self.price_calculator.item_profit_margin = self.doubleSpinBox_items_profit_margin.value() / 100
@@ -679,6 +685,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         self._parent_widget.job_changed(self.job)
         self.update_nest_parts_assemblies()
         self.update_prices()
+        self.update_weight()
 
     def clear_layout(self, layout: QVBoxLayout | QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):

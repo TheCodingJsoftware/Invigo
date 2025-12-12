@@ -1229,6 +1229,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 self.assembly.add_sub_assembly(new_assembly)
                 self.load_sub_assembly(new_assembly)
             self.job_tab.get_active_job_widget().update_prices()
+            self.job_tab.get_active_job_widget().update_weight()
 
     def add_sub_assembly(self, new_sub_assembly: Optional[Assembly] = None) -> "AssemblyQuotingWidget":
         if not new_sub_assembly:
