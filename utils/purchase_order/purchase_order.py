@@ -137,7 +137,8 @@ class PurchaseOrder:
         self.components_inventory = components_inventory
 
     def get_name(self):
-        return f"#{self.meta_data.purchase_order_number}{' (DRAFT)' if self.meta_data.is_draft else ''}"
+        po_status = "PO" if self.meta_data.status == Status.PURCHASE_ORDER else "QUOTE" if self.meta_data.status == Status.QUOTE else "RO"
+        return f"{po_status} #{self.meta_data.purchase_order_number}{' (DRAFT)' if self.meta_data.is_draft else ''}"
 
     def load_data(self, data: PurchaseOrderDict):
         self.id = data.get("id", -1)

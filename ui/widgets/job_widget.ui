@@ -424,8 +424,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>293</width>
-              <height>931</height>
+              <width>249</width>
+              <height>1016</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1147,8 +1147,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1155</width>
-            <height>783</height>
+            <width>1195</width>
+            <height>756</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

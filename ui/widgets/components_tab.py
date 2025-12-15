@@ -9,11 +9,11 @@ from typing import TYPE_CHECKING
 
 import sympy
 from natsort import natsorted
-from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal, QThreadPool
+from PyQt6.QtCore import QDate, Qt, QThreadPool, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import (
-    QApplication,
     QAbstractItemView,
+    QApplication,
     QCompleter,
     QDateEdit,
     QHBoxLayout,
@@ -48,7 +48,6 @@ from ui.dialogs.view_item_history_dialog import ViewItemHistoryDialog
 from ui.icons import Icons
 from ui.theme import theme_var
 from ui.widgets.components_tab_UI import Ui_Form
-from utils.workers.upload_files import UploadFilesWorker
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
@@ -56,6 +55,7 @@ from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.order import Order, OrderDict
 from utils.settings import Settings
+from utils.workers.upload_files import UploadFilesWorker
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 
@@ -189,7 +189,7 @@ class OrderWidget(QWidget):
             self.load_ui()
 
     def view_order_history(self):
-        view_item_history_dialog = ViewItemHistoryDialog(self, component)
+        view_item_history_dialog = ViewItemHistoryDialog(self, self.component)
         view_item_history_dialog.tabWidget.setCurrentIndex(2)
         view_item_history_dialog.show()
 
@@ -1306,7 +1306,7 @@ class ComponentsTab(QWidget, Ui_Form):
             clipboard = QApplication.clipboard()
             image = clipboard.image()
             if not image.isNull():
-                temp_path = f"images/{component.part_number.encode("utf-8")}.png"
+                temp_path = f"images/{component.part_number.encode('utf-8')}.png"
                 image.save(temp_path)
                 self.upload_component_image(component, temp_path, False)
 

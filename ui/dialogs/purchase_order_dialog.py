@@ -126,6 +126,7 @@ class ComponentOrdersWidget(QWidget):
         super().__init__(parent)
         self._parent_widget: "PurchaseOrderDialog" = parent
         self.component = component
+        self.arrival_dates: list[QDateEdit] = []
 
         self.h_layout = QHBoxLayout()
         self.h_layout.setContentsMargins(0, 0, 0, 0)
@@ -176,36 +177,17 @@ class ComponentOrdersWidget(QWidget):
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
             arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
+            self.arrival_dates.append(arrival_date)
 
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
             self.orders_layout.addLayout(v_layout)
 
-    # def create_order(self):
-    #     select_date_dialog = SetComponentOrderPendingDialog(
-    #         f'Set an expected arrival time for "{self.component.part_name}," the number of parts ordered, and notes.',
-    #         self,
-    #     )
-    #     if select_date_dialog.exec():
-    #         data: OrderDict = {
-    #             "purchase_order_id": -1,
-    #             "expected_arrival_time": select_date_dialog.get_selected_date(),
-    #             "order_pending_quantity": select_date_dialog.get_order_quantity(),
-    #             "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
-    #             "notes": select_date_dialog.get_notes(),
-    #         }
-    #         new_order = Order(data)
-    #         self.component.add_order(new_order)
-    #         self._parent_widget.components_inventory.save_component(self.component)
-    #         # self.parent.components_inventory.save_local_copy()
-    #         # self.parent.sync_changes()
-    #         self.load_ui()
-
-    # def view_order_history(self):
-    #     view_item_history_dialog = ViewItemHistoryDialog(
-    #         self, "component", self.component.id
-    #     )
-    #     view_item_history_dialog.show()
+    def set_arrival_date(self, arrival_date: QDateEdit):
+        for order in self.component.orders:
+            order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
+        for date_edit in self.arrival_dates:
+            date_edit.setDate(arrival_date.date())
 
     def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
         self.orderOpened.emit()
@@ -324,6 +306,7 @@ class SheetOrdersWidget(QWidget):
         super().__init__(parent)
         self._parent_widget: "PurchaseOrderDialog" = parent
         self.sheet = sheet
+        self.arrival_dates: list[QDateEdit] = []
 
         self.h_layout = QHBoxLayout()
         self.h_layout.setContentsMargins(0, 0, 0, 0)
@@ -376,42 +359,17 @@ class SheetOrdersWidget(QWidget):
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")
             arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
+            self.arrival_dates.append(arrival_date)
 
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
             self.orders_layout.addLayout(v_layout)
-        # self._parent_widget.category_tables[
-        #     self._parent_widget.category
-        # ].setColumnWidth(7, 400)  # Widgets don't like being resized with columns
-        # self._parent_widget.update_sheet_row_color(
-        #     self._parent_widget.category_tables[self._parent_widget.category],
-        #     self.sheet,
-        # )
 
-    # def create_order(self):
-    #     select_date_dialog = SetComponentOrderPendingDialog(
-    #         f'Set an expected arrival time for "{self.sheet.get_name()}," the number of parts ordered, and notes.',
-    #         self,
-    #     )
-    #     if select_date_dialog.exec():
-    #         data: OrderDict = {
-    #             "purchase_order_id": -1,
-    #             "expected_arrival_time": select_date_dialog.get_selected_date(),
-    #             "order_pending_quantity": select_date_dialog.get_order_quantity(),
-    #             "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
-    #             "notes": select_date_dialog.get_notes(),
-    #         }
-    #         new_order = Order(data)
-    #         self.sheet.add_order(new_order)
-    #         self._parent_widget.sheets_inventory.save_sheet(self.sheet)
-    #         # self._parent_widget.sheets_inventory.save_local_copy()
-    #         # self._parent_widget.sync_changes()
-    #         self.load_ui()
-
-    # def view_order_history(self):
-    #     item_history_dialog = ViewItemHistoryDialog(self, "sheet", self.sheet.id)
-    #     item_history_dialog.tabWidget.setCurrentIndex(2)
-    #     item_history_dialog.show()
+    def set_arrival_date(self, arrival_date: QDateEdit):
+        for order in self.sheet.orders:
+            order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
+        for date_edit in self.arrival_dates:
+            date_edit.setDate(arrival_date.date())
 
     def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
         self.orderOpened.emit()
@@ -544,6 +502,8 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.pushButton_edit_shipping_address.setIcon(Icons.edit_icon)
         self.pushButton_edit_shipping_address.clicked.connect(self.edit_shipping_address)
 
+        self.pushButton_create_ro.clicked.connect(self.create_ro)
+
         self.pushButton_save.clicked.connect(partial(self.save, self.saved_purchase_order))
         self.pushButton_save.setIcon(Icons.purchase_order_save_icon)
 
@@ -610,7 +570,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             order_date_qdate = QDate.currentDate()
 
         self.dateEdit_expected_arrival.setDate(order_date_qdate)
-        self.dateEdit_expected_arrival.dateChanged.connect(self.meta_data_changed)
+        self.dateEdit_expected_arrival.dateChanged.connect(self.apply_data_change_to_orders)
 
         self.textEdit_notes.setText(self.purchase_order.meta_data.notes)
         self.textEdit_notes.textChanged.connect(self.meta_data_changed)
@@ -645,7 +605,6 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self.purchase_order.meta_data.shipping_address = selected_shipping_address
             self.comboBox_shipping_address.setToolTip(selected_shipping_address.__str__())
         self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
-        self.purchase_order.meta_data.order_date = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
         self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
         self.unsaved_changes = True
 
@@ -1012,6 +971,31 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.sheets_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
     # * \/ PURCHASE ORDERS \/
+    def apply_data_change_to_orders(self):
+        expected_arrival_time = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
+        if expected_arrival_time == self.purchase_order.meta_data.order_date:
+            return
+
+        if not (self.purchase_order.sheets or self.purchase_order.components):
+            return
+
+        msg = QMessageBox(
+            QMessageBox.Icon.Question,
+            "Apply Changes",
+            "Do you want to apply the expected arrival date change to all orders in this purchase order?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+            self,
+        )
+
+        if msg.exec() == QMessageBox.StandardButton.Yes:
+            for order_widget in self.sheets_orders_widgets:
+                order_widget.set_arrival_date(self.dateEdit_expected_arrival)
+            for order_widget in self.component_orders_widgets:
+                order_widget.set_arrival_date(self.dateEdit_expected_arrival)
+
+        self.purchase_order.meta_data.order_date = expected_arrival_time
+        self.unsaved_changes = True
+
     def load_data_vendor_po_data(self, on_finished: Callable | None = None):
         self.chain = RunnableChain()
 
@@ -1369,6 +1353,12 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self,
         )
         done.exec()
+
+    def create_ro(self):
+        # ask for numbner iuser input dialog
+        ro_number, ok = QInputDialog.getInt(self, "Create RO", "How many ROs do you want to create:", min=1)
+        if not ok:
+            return
 
     def save_and_apply_orders(self):
         self.apply_orders()
