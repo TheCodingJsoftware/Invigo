@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from enum import Enum, auto
 from typing import TypedDict
 
@@ -23,6 +24,8 @@ class MetaDataDict(TypedDict):
     business_info: BusinessInfoDict
     vendor: VendorDict
     is_draft: bool
+    email_sent_at: str
+    has_opened: bool
 
 
 class POItemDict(TypedDict):
@@ -89,6 +92,8 @@ class MetaData:
             self.order_date = ""
             self.notes = ""
             self.is_draft = False
+            self.email_sent_at = ""
+            self.has_opened = False
         self.contact_info = ContactInfo()
         self.business_info = BusinessInfo()
 
@@ -101,6 +106,8 @@ class MetaData:
         self.order_date = data.get("order_date", "")
         self.notes = data.get("notes", "")
         self.is_draft = data.get("is_draft", False)
+        self.email_sent_at = data.get("email_sent_at", "")
+        self.has_opened = data.get("has_opened", False)
 
     def to_dict(self) -> MetaDataDict:
         return {
@@ -114,6 +121,8 @@ class MetaData:
             "business_info": self.business_info.to_dict(),
             "vendor": self.vendor.to_dict(),
             "is_draft": self.is_draft,
+            "email_sent_at": self.email_sent_at,
+            "has_opened": self.has_opened,
         }
 
 
@@ -136,9 +145,53 @@ class PurchaseOrder:
         self.components: list[Component] = []
         self.components_inventory = components_inventory
 
+    def format_sent_status(self, sent_at_iso: str) -> str:
+        sent_at = datetime.fromisoformat(sent_at_iso)
+        if sent_at.tzinfo is None:
+            sent_at = sent_at.replace(tzinfo=timezone.utc)
+
+        today = datetime.now(timezone.utc).date()
+        sent_date = sent_at.date()
+
+        days = (today - sent_date).days
+
+        if days == 0:
+            return "(SENT TODAY)"
+        elif days == 1:
+            return "(SENT YESTERDAY)"
+        elif days < 7:
+            return f"(SENT {days} DAYS AGO)"
+        elif days < 30:
+            weeks = days // 7
+            return f"(SENT {weeks} WEEK{'S' if weeks > 1 else ''} AGO)"
+        else:
+            return f"(SENT {sent_at.strftime('%b %d, %Y')})"
+
     def get_name(self):
-        po_status = "PO" if self.meta_data.status == Status.PURCHASE_ORDER else "QUOTE" if self.meta_data.status == Status.QUOTE else "RO"
-        return f"{po_status} #{self.meta_data.purchase_order_number}{' (DRAFT)' if self.meta_data.is_draft else ''}"
+        status = self.meta_data.status
+
+        if status == Status.PURCHASE_ORDER:
+            po_type = "PO"
+        elif status == Status.QUOTE:
+            po_type = "QUOTE"
+        else:
+            po_type = "RO"
+
+        md = self.meta_data
+
+        if md.is_draft:
+            if md.has_opened:
+                po_status = "(DRAFT/OPENED)"
+            else:
+                po_status = "(DRAFT/UNOPENED)"
+        elif md.email_sent_at:
+            po_status = self.format_sent_status(md.email_sent_at)
+        elif md.has_opened:
+            po_status = "(OPENED)"
+        else:
+            po_status = "(UNOPENED)"
+
+        return f"{po_type} #{md.purchase_order_number} {po_status}"
 
     def load_data(self, data: PurchaseOrderDict):
         self.id = data.get("id", -1)
@@ -173,11 +226,11 @@ class PurchaseOrder:
                 return
         self.sheets_order_data.append({"id": sheet.id, "order_quantity": quantity_to_order})
 
-    def get_component_quantity_to_order(self, component: Component) -> int:
-        return next((item["order_quantity"] for item in self.components_order_data if item["id"] == component.id), 0)
+    def get_component_quantity_to_order(self, component: Component) -> float:
+        return next((item["order_quantity"] for item in self.components_order_data if item["id"] == component.id), 0.0)
 
-    def get_sheet_quantity_to_order(self, sheet: Sheet) -> int:
-        return next((item["order_quantity"] for item in self.sheets_order_data if item["id"] == sheet.id), 0)
+    def get_sheet_quantity_to_order(self, sheet: Sheet) -> float:
+        return next((item["order_quantity"] for item in self.sheets_order_data if item["id"] == sheet.id), 0.0)
 
     def remove_component(self, component: Component):
         for item in self.components_order_data:

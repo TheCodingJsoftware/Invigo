@@ -81,6 +81,7 @@ class Icons:
     purchase_order_print_icon = None
     purchase_order_delete_icon = None
     purchase_order_draft_icon = None
+    purchase_order_email_sent_icon = None
 
     job_planning_icon = None
     job_quoting_icon = None
@@ -517,4 +518,18 @@ class Icons:
             color_off=theme_var("error"),
             color_off_active=theme_var("error"),
         )
-        cls.paste_icon = make_icon("fa6s.paste", "surface")
+        cls.purchase_order_email_sent_icon = qta.icon(
+            "mdi.email-check",
+            color_on=theme_var("primary-green"),
+            color_on_active=theme_var("primary-green"),
+            color_off=theme_var("primary-green"),
+            color_off_active=theme_var("primary-green"),
+        )
+
+        cls.paste_icon = qta.icon(
+            "fa6s.paste",
+            color_on=theme_var("on-surface"),
+            color_on_active=theme_var("primary"),
+            color_off=theme_var("on-surface"),
+            color_off_active=theme_var("primary"),
+        )

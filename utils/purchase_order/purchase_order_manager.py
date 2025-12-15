@@ -8,7 +8,7 @@ from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
 from utils.purchase_order.purchase_order import PurchaseOrder as PO
-from utils.purchase_order.purchase_order import PurchaseOrderDict
+from utils.purchase_order.purchase_order import PurchaseOrderDict, Status
 from utils.purchase_order.shipping_address import ShippingAddress
 from utils.purchase_order.vendor import Vendor, VendorDict
 from utils.workers.components_inventory.update_components import UpdateComponentsWorker
@@ -206,6 +206,33 @@ class PurchaseOrderManager:
 
     def save_sheets_thread_response(self, response: tuple[dict, list[dict]], next_step: Callable):
         next_step()
+
+    def create_ro(
+        self,
+        source_purchase_order: PO,
+        count: int,
+        on_finished: Callable | None = None,
+    ):
+        if count <= 0:
+            return
+
+        remaining = count
+
+        def one_finished(*_):
+            nonlocal remaining
+            remaining -= 1
+            if remaining == 0 and on_finished:
+                on_finished()
+
+        for _ in range(count):
+            ro = PO(self.components_inventory, self.sheets_inventory)
+            ro.load_data(source_purchase_order.to_dict())
+            ro.id = -1
+            ro.meta_data.has_opened = False
+            ro.meta_data.email_sent_at = ""
+            ro.meta_data.status = Status.RELEASE_ORDER
+
+            self.add_purchase_order(ro, on_finished=one_finished)
 
     def delete_purchase_order(self, purchase_order: PO, on_finished: Callable | None = None):
         worker = DeletePurchaseOrder(purchase_order.id)

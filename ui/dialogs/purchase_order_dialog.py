@@ -1257,6 +1257,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.purchase_order.meta_data.status = Status(self.comboBox_status.currentIndex())
         self.purchase_order.meta_data.shipping_method = ShippingMethod(self.comboBox_shipping_method.currentIndex())
         self.purchase_order.meta_data.is_draft = True
+        self.purchase_order.meta_data.has_opened = True
 
         if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
             self.purchase_order.meta_data.vendor = selected_vendor
@@ -1274,6 +1275,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.purchase_order.meta_data.status = Status(self.comboBox_status.currentIndex())
         self.purchase_order.meta_data.shipping_method = ShippingMethod(self.comboBox_shipping_method.currentIndex())
         self.purchase_order.meta_data.is_draft = False
+        self.purchase_order.meta_data.has_opened = True
 
         if selected_vendor := self.purchase_order_manager.get_vendor_by_name(self.comboBox_vendor.currentText()):
             self.purchase_order.meta_data.vendor = selected_vendor
@@ -1355,10 +1357,22 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         done.exec()
 
     def create_ro(self):
-        # ask for numbner iuser input dialog
-        ro_number, ok = QInputDialog.getInt(self, "Create RO", "How many ROs do you want to create:", min=1)
-        if not ok:
+        count, ok = QInputDialog.getInt(self, "Create RO", "How many ROs do you want to create:", min=1)
+        if not ok or count <= 0:
             return
+
+        def on_finished():
+            self.refresh_purchase_orders()
+            msg = QMessageBox(
+                QMessageBox.Icon.Information,
+                "ROs Created",
+                f"Successfully created {count} ROs for this purchase order.",
+                QMessageBox.StandardButton.Ok,
+                self,
+            )
+            msg.exec()
+
+        self.purchase_order_manager.create_ro(self.purchase_order, count, on_finished=on_finished)
 
     def save_and_apply_orders(self):
         self.apply_orders()

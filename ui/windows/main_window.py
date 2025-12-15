@@ -1219,6 +1219,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if purchase_order.meta_data.is_draft:
                         has_po_as_draft = True
                         action.setIcon(QIcon(Icons.purchase_order_draft_icon))
+                    elif purchase_order.meta_data.email_sent_at:
+                        action.setIcon(QIcon(Icons.purchase_order_email_sent_icon))
                     else:
                         action.setIcon(QIcon(Icons.edit_icon))
                     action.triggered.connect(partial(self.open_purchase_order, purchase_order))
