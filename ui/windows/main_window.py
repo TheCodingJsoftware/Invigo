@@ -157,7 +157,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.38"
+__version__: str = "v4.0.39"
 
 
 def check_folders(folders: list[str]):
@@ -2348,32 +2348,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             ["jaredgrozz@gmail.com", "lynden@pineymfg.com"],
         )
 
-    def download_required_images_thread(self, required_images: list[str]):
-        download_thread = Download(required_images)
-        download_thread.signal.connect(self.download_required_images_response)
-        self.threads.append(download_thread)
-        download_thread.start()
-
-    def download_required_images_response(self, response: str):
-        if not response:
-            self.status_button.setText("Warning: No images found", "yellow")
-        elif response == "Successfully downloaded":
-            with contextlib.suppress(AttributeError):
-                self.status_button.setText(
-                    f"Successfully loaded {len(self.get_all_selected_parts(self.tabs[self.category.name]))} images",
-                    "lime",
-                )
-        else:
-            self.status_button.setText(f"Error: {response}", "red")
-
     def upload_nest_images(self, nests: list[Nest]):
-        images_to_upload: list[str] = []
-        for nest in nests:
-            images_to_upload.extend(laser_cut_part.meta_data.image_index for laser_cut_part in nest.laser_cut_parts)
-            images_to_upload.extend(nest.image_path for nest in nests)
+        try:
+            if isinstance(nests, Nest):
+                nests = [nests]
+            elif isinstance(nests, str):
+                self.status_button.setText(f"Encountered error processing nests: {nests}", "red")
+                return
+            images_to_upload: list[str] = []
+            for nest in nests:
+                images_to_upload.extend(laser_cut_part.meta_data.image_index for laser_cut_part in nest.laser_cut_parts)
+                images_to_upload.extend(nest.image_path for nest in nests)
 
-        images = set(images_to_upload)
-        self.upload_files(list(images))
+            images = set(images_to_upload)
+            self.upload_files(list(images))
+        except Exception as e:
+            logging.error(f"Error uploading images: {e}")
+            self.status_button.setText(f"Error uploading images: {e}", "red")
 
     def changes_response(self, responses: str | list[str]):
         logging.info(f"changes_response: {responses}")
