@@ -58,35 +58,36 @@ class Workspace:
         job_ending_date: str,
     ):
         for assembly in assemblies:
-            for _ in range(int(assembly.meta_data.quantity)):
-                new_assembly = Assembly(assembly.to_dict(), parent if isinstance(parent, Job) else parent.job)
-                #
-                # if isinstance(parent, Job):
-                #     parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
-                # elif isinstance(parent, Assembly):
-                #     parent_starting_date = datetime.strptime(parent.workspace_data.starting_date, "%Y-%m-%d %I:%M %p")
-                # else:
-                #     parent_starting_date = datetime.now()
+            new_assembly = Assembly(assembly.to_dict(), parent if isinstance(parent, Job) else parent.job)
+            new_assembly.laser_cut_parts.clear()
+            new_assembly.components.clear()
+            new_assembly.structural_steel_items.clear()
+            new_assembly.sub_assemblies.clear()
+            #
+            # if isinstance(parent, Job):
+            #     parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
+            # elif isinstance(parent, Assembly):
+            #     parent_starting_date = datetime.strptime(parent.workspace_data.starting_date, "%Y-%m-%d %I:%M %p")
+            # else:
+            #     parent_starting_date = datetime.now()
 
-                # calculated_starting_date = parent_starting_date - timedelta(days=7.0)
-                # calculated_ending_date = calculated_starting_date + timedelta(days=assembly.workspace_data.expected_time_to_complete)
-                #
-                # new_assembly.workspace_data.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
-                # new_assembly.workspace_data.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
+            # calculated_starting_date = parent_starting_date - timedelta(days=7.0)
+            # calculated_ending_date = calculated_starting_date + timedelta(days=assembly.workspace_data.expected_time_to_complete)
+            #
+            # new_assembly.workspace_data.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
+            # new_assembly.workspace_data.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
 
-                new_assembly.meta_data.quantity = 1
+            if isinstance(parent, Job):
+                parent.add_assembly(new_assembly)
+            else:
+                parent.add_sub_assembly(new_assembly)
 
-                if isinstance(parent, Job):
-                    parent.add_assembly(new_assembly)
-                else:
-                    parent.add_sub_assembly(new_assembly)
-
-                if assembly.laser_cut_parts:
-                    self.copy_laser_cut_parts(assembly.laser_cut_parts, new_assembly)
-                if assembly.components:
-                    self.copy_components(assembly.components, new_assembly)
-                if assembly.sub_assemblies:
-                    self.copy_assemblies(assembly.sub_assemblies, new_assembly, job_ending_date)
+            if assembly.laser_cut_parts:
+                self.copy_laser_cut_parts(assembly.laser_cut_parts, new_assembly)
+            if assembly.components:
+                self.copy_components(assembly.components, new_assembly)
+            if assembly.sub_assemblies:
+                self.copy_assemblies(assembly.sub_assemblies, new_assembly, job_ending_date)
 
     def copy_nests(self, nests: list[Nest], job: Job):
         for nest in nests:
@@ -100,10 +101,8 @@ class Workspace:
 
     def copy_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart], assembly: Assembly):
         for part in laser_cut_parts:
-            for _ in range(int(part.inventory_data.quantity)):
-                new_part = LaserCutPart(part.to_dict(), self.laser_cut_inventory)
-                new_part.inventory_data.quantity = 1
-                assembly.add_laser_cut_part(new_part)
+            new_part = LaserCutPart(part.to_dict(), self.laser_cut_inventory)
+            assembly.add_laser_cut_part(new_part)
 
     def add_job(self, job: Job) -> Job:
         new_job = self.deep_split_job_copy(job)

@@ -157,7 +157,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.39"
+__version__: str = "v4.0.40"
 
 
 def check_folders(folders: list[str]):
@@ -302,7 +302,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.is_components_inventory_ui_loaded = False
         self.is_laser_cut_parts_inventory_ui_loaded = False
 
-        self.category: Category = None
+        self.category: Category | None = None
         self.categories: list[Category] = []
         self.active_layout: QVBoxLayout = None
         self.downloading_changes = False
