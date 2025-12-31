@@ -24,7 +24,6 @@ class CheckForUpdatesThread(QThread):
                     timeout=10,
                 )
 
-
                 if resp.status_code != 200:
                     time.sleep(60)
                     continue
