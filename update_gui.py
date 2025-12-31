@@ -17,6 +17,7 @@ from PyQt6.QtCore import (
 )
 from PyQt6.QtGui import QColor, QPainter
 from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+from config.environments import Environment
 
 
 class DownloadThread(QThread):
@@ -193,7 +194,7 @@ class Window(QWidget):
 
         self.threads = []
 
-        download_thread = DownloadThread(url="http://10.0.0.10:5051/download")
+        download_thread = DownloadThread(url=f"{Environment.SOFTWARE_API_BASE}/download")
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.start_thread(download_thread)
 

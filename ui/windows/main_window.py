@@ -3301,7 +3301,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def start_check_for_updates_thread(self):
         check_for_updates_thread = CheckForUpdatesThread(self, __version__)
-        check_for_updates_thread.signal.connect(self.update_available_thread_response)
+        check_for_updates_thread.update_available.connect(self.update_available_thread_response)
         self.threads.append(check_for_updates_thread)
         check_for_updates_thread.start()
 

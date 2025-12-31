@@ -1,28 +1,46 @@
 import time
-
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
+from config.environments import Environment
+
 
 class CheckForUpdatesThread(QThread):
-    signal = pyqtSignal(object, object)
+    update_available = pyqtSignal(dict)
 
     def __init__(self, parent, current_version: str):
-        self.parent = parent
+        super().__init__(parent)
         self.current_version = current_version
-        QThread.__init__(self)
+        self._running = True
+
+    def stop(self):
+        self._running = False
 
     def run(self):
-        while True:
+        while self._running:
             try:
-                response_version = requests.get("http://10.0.0.10:5051/version", timeout=10)
-                response_message = requests.get("http://10.0.0.10:5051/update_message", timeout=10)
-                if response_version.status_code != 200 or response_message.status_code != 200:
+                resp = requests.get(
+                    f"{Environment.SOFTWARE_API_BASE}/version",
+                    timeout=10,
+                )
+
+
+                if resp.status_code != 200:
+                    time.sleep(60)
                     continue
-                version = response_version.text
-                message = response_message.text
-                if version != self.current_version:
-                    self.signal.emit(version, message)
+
+                data = resp.json()
+                latest_version = data.get("version")
+                changelog = data.get("changelog")
+
+                if not latest_version:
+                    time.sleep(60)
+                    continue
+
+                if latest_version != self.current_version:
+                    self.update_available.emit(latest_version, changelog)
+
             except Exception:
-                continue
+                pass
+
             time.sleep(60)
