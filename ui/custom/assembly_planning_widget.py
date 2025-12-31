@@ -1259,6 +1259,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 self.laser_cut_parts_table.item(current_row, LaserCutTableColumns.PART_NAME.value).setText(laser_cut_part.meta_data.file_name)
             elif "pdf" in file_ext.lower() and file_category == "bending_files":
                 laser_cut_part.meta_data.bend_hits = get_bend_hits(file_path)
+                laser_cut_part.prices.bend_cost = laser_cut_part.meta_data.bend_hits
 
             target_dir = os.path.join("data", "workspace", file_ext)
             target_path = os.path.join(target_dir, file_name)
