@@ -55,6 +55,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from config.environments import Environment
 from ui.custom.job_tab import JobTab
 from ui.custom_widgets import (
     ButtonManagerWidget,
@@ -2027,20 +2028,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # * \/ CHECKERS \/
     def check_for_updates(self, on_start_up: bool = False):
         try:
-            try:
-                response = requests.get("http://10.0.0.10:5051/version", timeout=5)
-            except ConnectionError:
-                return
-            if response.status_code == 200:
-                version = response.text
-                if version != __version__:
-                    subprocess.Popen("start update.exe", shell=True)
-                elif not on_start_up:
-                    msg = QMessageBox(self)
-                    msg.setIcon(QMessageBox.Icon.Information)
-                    msg.setWindowTitle("No updates")
-                    msg.setText("There are currently no updates available")
-                    msg.exec()
+            resp = requests.get(
+                f"{Environment.SOFTWARE_API_BASE}/version",
+                timeout=10,
+            )
+
+            data = resp.json()
+            latest_version = data.get("version")
+
+            if latest_version != __version__:
+                subprocess.Popen("start update.exe", shell=True)
+            elif not on_start_up:
+                msg = QMessageBox(self)
+                msg.setIcon(QMessageBox.Icon.Information)
+                msg.setWindowTitle("No updates")
+                msg.setText("There are currently no updates available")
+                msg.exec()
         except Exception as e:
             if not on_start_up:
                 msg = QMessageBox(self)
