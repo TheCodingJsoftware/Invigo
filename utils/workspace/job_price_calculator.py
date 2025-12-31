@@ -105,6 +105,9 @@ class JobPriceCalculator:
             total += self.get_laser_cut_part_cost(laser_cut_part) * laser_cut_part.inventory_data.quantity
         return total
 
+    def get_laser_cut_part_cost_of_bending(self, laser_cut_part: LaserCutPart) -> float:
+        return laser_cut_part.meta_data.bend_hits * laser_cut_part.prices.bend_cost
+
     def get_laser_cut_part_cost_of_goods(self, laser_cut_part: LaserCutPart) -> float:
         if self.match_item_cogs_to_sheet:
             return laser_cut_part.prices.matched_to_sheet_cost_price
@@ -136,7 +139,7 @@ class JobPriceCalculator:
                 self.get_laser_cut_part_cost_of_goods(laser_cut_part),
             )
             + self.calculate_laser_cut_part_overhead(
-                laser_cut_part.prices.bend_cost,
+                self.get_laser_cut_part_cost_of_bending(laser_cut_part),
             )
             + self.calculate_laser_cut_part_overhead(
                 laser_cut_part.prices.labor_cost,

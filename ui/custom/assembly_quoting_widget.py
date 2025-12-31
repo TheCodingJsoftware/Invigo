@@ -698,6 +698,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         table_widget_item_bend_cost = QTableWidgetItem(f"${laser_cut_part.prices.bend_cost:,.2f}")
         table_widget_item_bend_cost.setFont(self.tables_font)
         table_widget_item_bend_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+        table_widget_item_bend_cost.setToolTip(f"Cost for bending: ${laser_cut_part.prices.bend_cost:,.2f}\nBend hits: {laser_cut_part.meta_data.bend_hits}")
         self.laser_cut_parts_table.setItem(
             current_row,
             LaserCutTableColumns.BEND_COST.value,
@@ -780,6 +781,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["cost_of_goods"].setText(f"${cost_of_goods:,.2f}")
             table_data["labor_cost"].setText(f"${laser_cut_part.prices.labor_cost:,.2f}")
             table_data["bend_cost"].setText(f"${laser_cut_part.prices.bend_cost:,.2f}")
+            table_data["bend_cost"].setToolTip(f"Cost for bending: ${laser_cut_part.prices.bend_cost:,.2f}\nBend hits: {laser_cut_part.meta_data.bend_hits}")
             table_data["unit_price"].setText(f"${unit_price:,.2f}")
             table_data["price"].setText(f"${(unit_price * laser_cut_part.inventory_data.quantity * self.assembly.meta_data.quantity):,.2f}")
         self.laser_cut_parts_table.blockSignals(False)
