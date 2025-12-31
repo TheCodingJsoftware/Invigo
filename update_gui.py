@@ -94,7 +94,11 @@ class DownloadThread(QThread):
                     if chunk:
                         total_downloaded += len(chunk)
                         f.write(chunk)
-                        self.signal.emit(f"Downloading update... {((total_downloaded / content_length) * 100):.2f}%")
+                        if content_length:
+                            percent = (total_downloaded / content_length) * 100
+                            self.signal.emit(f"Downloading update... {percent:.2f}%")
+                        else:
+                            self.signal.emit(f"Downloading update... {total_downloaded / 1024 / 1024:.2f} MB")
         except Exception as e:
             self.signal.emit(f"ABORTING: {str(e)}")
 
