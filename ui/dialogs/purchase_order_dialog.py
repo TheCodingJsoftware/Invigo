@@ -38,6 +38,7 @@ from ui.dialogs.view_item_history_dialog import ViewItemHistoryDialog
 from ui.icons import Icons
 from ui.theme import theme_var
 from utils.colors import lighten_color
+from utils.inventory.category import Category
 from utils.inventory.component import Component
 from utils.inventory.order import Order, OrderDict
 from utils.inventory.sheet import Sheet
@@ -575,6 +576,9 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.textEdit_notes.setText(self.purchase_order.meta_data.notes)
         self.textEdit_notes.textChanged.connect(self.meta_data_changed)
 
+        self.doubleSpinBox_freight_price.setValue(self.purchase_order.meta_data.freight_price)
+        self.doubleSpinBox_freight_price.valueChanged.connect(self.meta_data_changed)
+
         self.layout_components.addWidget(self.components_table)
         self.pushButto_add_component.clicked.connect(self.add_component)
         self.load_components_table()
@@ -606,6 +610,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
             self.comboBox_shipping_address.setToolTip(selected_shipping_address.__str__())
         self.purchase_order.meta_data.purchase_order_number = int(self.doubleSpinBox_po_number.value())
         self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
+        self.purchase_order.meta_data.freight_price = self.doubleSpinBox_freight_price.value()
         self.unsaved_changes = True
 
         if self.comboBox_status.currentIndex() == Status.PURCHASE_ORDER.value:
@@ -676,10 +681,17 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         history_button.setIcon(Icons.button_history_icon)
         history_button.setToolTip("Open the component history.")
 
+        tooltip_html = f"""
+        <b>{component.part_name}</b><br>
+        {component.part_number}<br>
+        <img src="{component.image_path}" width="150"><br>
+        <p>Component is present in:<br>{component.print_categories()}</p>
+        """
+
         part_name_widget = QTableWidgetItem(part_name)
-        part_name_widget.setToolTip(f'<img src="{component.image_path}" width="150">')
+        part_name_widget.setToolTip(tooltip_html)
         part_number_widget = QTableWidgetItem(part_number)
-        part_number_widget.setToolTip(f'<img src="{component.image_path}" width="150">')
+        part_number_widget.setToolTip(tooltip_html)
         price_widget = QTableWidgetItem(f"${unit_price:,.2f}")
         price_widget.setToolTip(f"${converted_price:,.2f} {'CAD' if use_exchange_rate else 'USD'}")
         quantity_in_stock_widget = QTableWidgetItem(str(quantity_in_stock))
@@ -813,6 +825,20 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         apply_order = QAction("Apply Orders", self)
         apply_order.triggered.connect(apply_orders)
         menu.addAction(apply_order)
+
+        def add_component_to_inventory(category: Category):
+            if selected_components := self.get_selected_components():
+                for component in selected_components:
+                    component.add_to_category(category)
+                    self.purchase_order_manager.components_inventory.add_component(component, on_finished=self.load_components_table)
+
+        add_component_to_inventory_menu = QMenu("Add Component to Inventory", self)
+        for category in self.purchase_order_manager.components_inventory.get_categories():
+            action = QAction(category.name, self)
+            action.triggered.connect(partial(add_component_to_inventory, category))
+            add_component_to_inventory_menu.addAction(action)
+
+        menu.addMenu(add_component_to_inventory_menu)
 
         self.components_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
@@ -1134,6 +1160,10 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.textEdit_notes.setText(new_po.meta_data.notes)
         self.textEdit_notes.blockSignals(False)
 
+        self.doubleSpinBox_freight_price.blockSignals(True)
+        self.doubleSpinBox_freight_price.setValue(new_po.meta_data.freight_price)
+        self.doubleSpinBox_freight_price.blockSignals(False)
+
         self.load_components_table()
         self.load_sheets_table()
         self.meta_data_changed()
@@ -1282,6 +1312,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
 
         self.purchase_order.meta_data.order_date = self.dateEdit_expected_arrival.date().toString("yyyy-MM-dd")
         self.purchase_order.meta_data.notes = self.textEdit_notes.toPlainText()
+        self.purchase_order.meta_data.freight_price = self.doubleSpinBox_freight_price.value()
 
         self.purchase_order_manager.save_purchase_order(self.purchase_order, on_finished=on_finished)
 

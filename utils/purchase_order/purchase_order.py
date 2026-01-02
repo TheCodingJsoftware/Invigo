@@ -26,6 +26,7 @@ class MetaDataDict(TypedDict):
     is_draft: bool
     email_sent_at: str
     has_opened: bool
+    freight_price: float
 
 
 class POItemDict(TypedDict):
@@ -79,6 +80,9 @@ class MetaData:
     order_date: str = ""
     notes: str = ""
     is_draft: bool = False
+    email_sent_at: str = ""
+    freight_price: float = 0.0
+    has_opened: bool = False
 
     def __init__(self, data: MetaDataDict | None = None):
         if data:
@@ -107,6 +111,7 @@ class MetaData:
         self.notes = data.get("notes", "")
         self.is_draft = data.get("is_draft", False)
         self.email_sent_at = data.get("email_sent_at", "")
+        self.freight_price = data.get("freight_price", 0.0)
         self.has_opened = data.get("has_opened", False)
 
     def to_dict(self) -> MetaDataDict:
@@ -123,6 +128,7 @@ class MetaData:
             "is_draft": self.is_draft,
             "email_sent_at": self.email_sent_at,
             "has_opened": self.has_opened,
+            "freight_price": self.freight_price,
         }
 
 

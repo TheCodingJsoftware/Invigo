@@ -46,81 +46,89 @@
         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
          <item>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="2">
-            <widget class="QComboBox" name="comboBox_status"/>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>PO number:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-             </property>
-             <property name="buddy">
-              <cstring>doubleSpinBox_po_number</cstring>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_2">
              <property name="text">
               <string>Vendor:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
              </property>
              <property name="buddy">
               <cstring>comboBox_vendor</cstring>
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Shipping address:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-             </property>
-            </widget>
+           <item row="3" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QComboBox" name="comboBox_shipping_address"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_edit_shipping_address">
+               <property name="maximumSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
-           <item row="4" column="2">
-            <widget class="QDoubleSpinBox" name="doubleSpinBox_po_number">
-             <property name="decimals">
-              <number>0</number>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>PO number:</string>
              </property>
-             <property name="maximum">
-              <double>99999999999999.000000000000000</double>
+             <property name="buddy">
+              <cstring>doubleSpinBox_po_number</cstring>
              </property>
             </widget>
            </item>
            <item row="2" column="2">
             <widget class="QComboBox" name="comboBox_shipping_method"/>
            </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_6">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>Expected Arrival:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              <string>Shipping address:</string>
              </property>
              <property name="buddy">
-              <cstring>dateEdit_expected_arrival</cstring>
+              <cstring>comboBox_shipping_address</cstring>
              </property>
             </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QComboBox" name="comboBox_status"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_5">
              <property name="text">
               <string>Status:</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-             </property>
              <property name="buddy">
               <cstring>comboBox_status</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Expected Arrival:</string>
+             </property>
+             <property name="buddy">
+              <cstring>dateEdit_expected_arrival</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="2">
+            <widget class="QDateEdit" name="dateEdit_expected_arrival">
+             <property name="calendarPopup">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -160,50 +168,60 @@
              </item>
             </layout>
            </item>
-           <item row="5" column="2">
-            <widget class="QDateEdit" name="dateEdit_expected_arrival">
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
               <string>Shipping method:</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+             <property name="buddy">
+              <cstring>comboBox_shipping_method</cstring>
              </property>
             </widget>
            </item>
-           <item row="3" column="2">
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <item>
-              <widget class="QComboBox" name="comboBox_shipping_address"/>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_edit_shipping_address">
-               <property name="maximumSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="flat">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
+           <item row="4" column="2">
+            <widget class="QDoubleSpinBox" name="doubleSpinBox_po_number">
+             <property name="decimals">
+              <number>0</number>
+             </property>
+             <property name="maximum">
+              <double>99999999999999.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Freight price:</string>
+             </property>
+             <property name="buddy">
+              <cstring>doubleSpinBox_freight_price</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="2">
+            <widget class="QDoubleSpinBox" name="doubleSpinBox_freight_price">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default is $0.00.&lt;br/&gt;&lt;br/&gt;If set to $0.00, then it will not show on the printouts.&lt;/p&gt;&lt;p&gt;Set to anything above $0.00, then it will show on the printouts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="prefix">
+              <string>$</string>
+             </property>
+             <property name="maximum">
+              <double>99999999999.000000000000000</double>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
          <item>
           <layout class="QGridLayout" name="gridLayout_4">
+           <item row="1" column="0">
+            <widget class="QTextEdit" name="textEdit_notes">
+             <property name="placeholderText">
+              <string>Notes...</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_7">
              <property name="text">
@@ -211,13 +229,6 @@
              </property>
              <property name="buddy">
               <cstring>textEdit_notes</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QTextEdit" name="textEdit_notes">
-             <property name="placeholderText">
-              <string>Notes...</string>
              </property>
             </widget>
            </item>
@@ -235,8 +246,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>912</width>
-            <height>288</height>
+            <width>908</width>
+            <height>284</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,1">
