@@ -158,7 +158,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v4.0.44"
+__version__: str = "v4.0.45"
 
 
 def check_folders(folders: list[str]):
@@ -507,10 +507,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __load_ui(self):
         self.splitter.setStretchFactor(0, 1)  # Job Planner
-        self.splitter.setStretchFactor(1, 0)  # Job Planner
+        self.splitter.setStretchFactor(1, 1)  # Job Planner
 
         self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
-        self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
+        self.splitter_2.setStretchFactor(1, 1)  # Job Quoter
 
         # self.splitter_4.setSizes([1, 0])
         self.splitter_4.setStretchFactor(0, 1)
@@ -1210,6 +1210,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for vendor_name, purchase_orders in organized_purchase_orders.items():
                 has_po_as_draft = False
                 vendor_menu = QMenu(vendor_name, self.menuPurchase_Orders_2)
+                vendor_menu.setToolTipsVisible(True)
                 vendor = self.purchase_order_manager.get_vendor_by_name(vendor_name)
                 create_purchase_order_action = QAction("Create Purchase Order", self.menuPurchase_Orders_2)
                 create_purchase_order_action.setIcon(QIcon(Icons.add_file_icon))
@@ -1225,6 +1226,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     else:
                         action.setIcon(QIcon(Icons.edit_icon))
                     action.triggered.connect(partial(self.open_purchase_order, purchase_order))
+                    action.setToolTip(f"{purchase_order.__str__()}")
                     vendor_menu.addAction(action)
                 if has_po_as_draft:
                     vendor_menu.setIcon(QIcon(Icons.purchase_order_draft_icon))

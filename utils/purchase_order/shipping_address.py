@@ -5,9 +5,9 @@ from typing import TypedDict, cast
 class ShippingAddressDict(TypedDict):
     id: int
     name: str
-    email: str
-    phone: str
     address: str
+    phone: str
+    email: str
     website: str
     notes: str
 

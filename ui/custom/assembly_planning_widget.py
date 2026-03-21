@@ -274,11 +274,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
     def assembly_file_clicked(self, file_path: str):
         self.download_file_thread = WorkspaceDownloadWorker([file_path], True)
-        self.download_file_thread.signal.connect(self.file_downloaded)
-        self.download_file_thread.start()
-        self.download_file_thread.wait()
-        if file_path.lower().endswith(".pdf"):
-            self.open_pdf(self.assembly_get_all_file_types(".pdf"), file_path)
+        self.download_file_thread.signals.success.connect(self.file_downloaded)
 
     def assembly_delete_file(self, file_path: str, file_button: FileButton):
         self.assembly.workspace_data.assembly_files.remove(file_path)
@@ -1138,6 +1134,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
             if file_ext in {"PNG", "JPG", "JPEG"}:
                 local_path = os.path.join("data", "workspace", file_ext, file_name)
                 self.open_image(local_path, file_name)
+
+        if file_ext.lower().endswith(".pdf"):
+            local_path = os.path.join("data", "workspace", file_ext, file_name)
+            self.open_pdf(self.assembly_get_all_file_types(".pdf"), local_path)
 
     def laser_cut_part_delete_file(
         self,

@@ -134,7 +134,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.sub_assemblies_toolbox = AssemblyMultiToolBox(self)
         self.sub_assembly_layout.addWidget(self.sub_assemblies_toolbox)
 
-        self.label_total_cost_for_assembly.setText(f"Total Cost for Assembly: ${self.price_calculator.get_assembly_cost(self.assembly):,.2f}")
+        self.label_total_cost_for_assembly.setText(f"Total Cost for Assembly: ${round(self.price_calculator.get_assembly_cost(self.assembly), 2):,.2f}")
 
     def workspace_settings_changed(self):
         for sub_assembly_widget in self.sub_assembly_widgets:

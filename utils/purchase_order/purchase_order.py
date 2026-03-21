@@ -199,6 +199,90 @@ class PurchaseOrder:
 
         return f"{po_type} #{md.purchase_order_number} {po_status}"
 
+    def __str__(self) -> str:
+        md = self.meta_data
+        total_cost = 0.0
+        parts = []
+
+        # --- META INFO ---
+        meta_bits = []
+
+        if md.freight_price:
+            meta_bits.append(f"Freight: ${md.freight_price:,.2f}")
+            total_cost += md.freight_price
+
+        if md.order_date:
+            meta_bits.append(f"Order Date: {md.order_date}")
+
+        if meta_bits:
+            parts.append(" | ".join(meta_bits))
+
+        # --- ITEMS TABLE ---
+        rows = []
+
+        def add_row(name, part_number, qty, unit_cost):
+            nonlocal total_cost
+            line_total = qty * unit_cost
+            total_cost += line_total
+
+            part_display = part_number if part_number else ""
+            rows.append(
+                f"""
+                <tr>
+                    <td>{name}</td>
+                    <td>{part_display}</td>
+                    <td align="right">{qty}</td>
+                    <td align="right">${unit_cost:,.2f}</td>
+                    <td align="right"><b>${line_total:,.2f}</b></td>
+                </tr>
+                """
+            )
+
+        # Components
+        for c in self.components:
+            add_row(
+                name=c.part_name,
+                part_number=getattr(c, "part_number", ""),
+                qty=c.quantity_to_order,
+                unit_cost=c.price,
+            )
+
+        # Sheets
+        for s in self.sheets:
+            add_row(
+                name=s.name,
+                part_number="",
+                qty=s.quantity_to_order,
+                unit_cost=s.price,
+            )
+
+        if rows:
+            table = f"""
+            <br><u>Items</u>
+            <table cellspacing="4" border="1" cellspacing="0" cellpadding="3">
+                <tr>
+                    <th align="left">Item</th>
+                    <th align="left">Part #</th>
+                    <th align="right">Qty</th>
+                    <th align="right">Unit</th>
+                    <th align="right">Total</th>
+                </tr>
+                {"".join(rows)}
+            </table>
+            """
+            parts.append(table)
+        else:
+            parts.append("<br><i>No items in this order</i>")
+
+        # --- TOTAL ---
+        parts.append(f"<br><b>Total: ${total_cost:,.2f}</b>")
+
+        # --- NOTES ---
+        if md.notes and md.notes.strip():
+            parts.append(f"<br><u>Notes</u><br><i>{md.notes}</i>")
+
+        return "<br>".join(parts)
+
     def load_data(self, data: PurchaseOrderDict):
         self.id = data.get("id", -1)
         self.meta_data.load_data(data["meta_data"])

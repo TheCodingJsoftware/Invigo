@@ -4,7 +4,7 @@ from typing import Optional
 import msgspec
 
 from config.environments import Environment
-from utils.workspace.flowtag import Flowtag, Group
+from utils.workspace.flowtag import Flowtag, FlowtagDict, Group
 from utils.workspace.flowtags import Flowtags
 from utils.workspace.tag import Tag
 from utils.workspace.tag_status import TagStatus
@@ -57,7 +57,8 @@ class WorkspaceSettings:
         return tag
 
     def create_flow_tag(self, flow_tags: Flowtags, name: str):
-        flow_tag = Flowtag({"name": name}, self)
+        emplty_flowtag = FlowtagDict({"name": name, "group": 0, "add_quantity_tag": None, "remove_quantity_tag": None, "tags": []})
+        flow_tag = Flowtag(emplty_flowtag, self)
         self.add_flow_tag(flow_tags, flow_tag)
 
     def get_all_flow_tags(self) -> list[Flowtag]:

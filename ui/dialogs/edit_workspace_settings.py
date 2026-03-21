@@ -27,7 +27,7 @@ from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
 from ui.dialogs.edit_workspace_settings_UI import Ui_Form
 from ui.icons import Icons
 from ui.theme import theme_var
-from utils.workspace.flowtag import Flowtag, Group
+from utils.workspace.flowtag import Flowtag, FlowtagDict, Group
 from utils.workspace.flowtags import Flowtags
 from utils.workspace.tag import Tag
 from utils.workspace.tag_status import TagStatus
@@ -273,7 +273,8 @@ class FlowTagsTableWidget(QTableWidget):
             self.removeCellWidget(row_count - 1, 0)
 
         self.insertRow(self.rowCount())
-        flow_tag = Flowtag(f"Flowtag{self.flow_tag_counter}", {}, self.workspace_settings)
+        emplty_flowtag = FlowtagDict({"name": f"Flow Tag {self.flow_tag_counter}", "group": 0, "add_quantity_tag": None, "remove_quantity_tag": None, "tags": []})
+        flow_tag = Flowtag(emplty_flowtag, self.workspace_settings)
 
         self.flow_tag_group.add_flow_tag(flow_tag)
 
