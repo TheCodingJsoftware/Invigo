@@ -250,7 +250,7 @@ class PurchaseOrder:
         # Sheets
         for s in self.sheets:
             add_row(
-                name=s.name,
+                name=s.get_name(),
                 part_number="",
                 qty=s.quantity_to_order,
                 unit_cost=s.price,

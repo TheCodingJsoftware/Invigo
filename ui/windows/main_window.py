@@ -3145,7 +3145,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QThreadPool.globalInstance().start(get_order_number_worker)
 
     def get_order_number_thread_response(self, order_number: dict[str, int]):
-        print(order_number)
         try:
             self.order_number = order_number.get("order_number", 0)
         except Exception as e:
@@ -3179,6 +3178,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             job.id = response["id"]
         self.status_button.setText("Job was sent successfully", "lime")
         self.load_jobs_worker()
+        self.get_order_number_thread()
 
     def print_job_worker(self, job: Job):
         upload_job_worker = SaveJobWorker(job)
