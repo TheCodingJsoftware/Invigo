@@ -559,6 +559,7 @@ class PurchaseOrderDialog(QDialog, Ui_Dialog):
         self.comboBox_shipping_method.currentIndexChanged.connect(self.meta_data_changed)
 
         self.comboBox_shipping_address.addItems([address.name for address in self.purchase_order_manager.shipping_addresses])
+        self.purchase_order.meta_data.shipping_address = self.purchase_order_manager.shipping_addresses[0]
         self.comboBox_shipping_address.setCurrentText(self.purchase_order.meta_data.shipping_address.name)
         self.comboBox_shipping_address.setToolTip(self.purchase_order.meta_data.shipping_address.__str__())
         self.comboBox_shipping_address.currentIndexChanged.connect(self.meta_data_changed)
