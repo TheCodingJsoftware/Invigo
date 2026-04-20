@@ -425,7 +425,7 @@ QPushButton#pushButton_reload_job:flat:hover {
               <x>0</x>
               <y>0</y>
               <width>249</width>
-              <height>1016</height>
+              <height>931</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -685,7 +685,7 @@ QPushButton#pushButton_reload_job:flat:hover {
                           <item row="0" column="1">
                            <widget class="QDoubleSpinBox" name="doubleSpinBox_items_overhead">
                             <property name="toolTip">
-                             <string>Default: 18%</string>
+                             <string>Default: 12%</string>
                             </property>
                             <property name="suffix">
                              <string>%</string>
@@ -693,15 +693,18 @@ QPushButton#pushButton_reload_job:flat:hover {
                             <property name="decimals">
                              <number>2</number>
                             </property>
+                            <property name="maximum">
+                             <double>100.000000000000000</double>
+                            </property>
                             <property name="value">
-                             <double>18.000000000000000</double>
+                             <double>12.000000000000000</double>
                             </property>
                            </widget>
                           </item>
                           <item row="1" column="1">
                            <widget class="QDoubleSpinBox" name="doubleSpinBox_items_profit_margin">
                             <property name="toolTip">
-                             <string>Default: 30%</string>
+                             <string>Default: 36%</string>
                             </property>
                             <property name="suffix">
                              <string>%</string>
@@ -709,8 +712,11 @@ QPushButton#pushButton_reload_job:flat:hover {
                             <property name="decimals">
                              <number>2</number>
                             </property>
+                            <property name="maximum">
+                             <double>100.000000000000000</double>
+                            </property>
                             <property name="value">
-                             <double>30.000000000000000</double>
+                             <double>36.000000000000000</double>
                             </property>
                            </widget>
                           </item>
@@ -753,12 +759,18 @@ QPushButton#pushButton_reload_job:flat:hover {
                              <property name="text">
                               <string>Use overhead</string>
                              </property>
+                             <property name="checked">
+                              <bool>true</bool>
+                             </property>
                             </widget>
                            </item>
                            <item>
                             <widget class="QCheckBox" name="checkBox_components_use_profit_margin">
                              <property name="text">
                               <string>Use profit margin</string>
+                             </property>
+                             <property name="checked">
+                              <bool>true</bool>
                              </property>
                             </widget>
                            </item>
@@ -1147,8 +1159,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1195</width>
-            <height>756</height>
+            <width>1199</width>
+            <height>783</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

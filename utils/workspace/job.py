@@ -98,7 +98,7 @@ class Job:
         self.laser_cut_inventory = self.job_manager.laser_cut_inventory
         self.paint_inventory = self.job_manager.paint_inventory
         self.structural_steel_inventory = self.job_manager.structural_steel_inventory
-        self.price_calculator = JobPriceCalculator(self, self.sheet_settings, self.paint_inventory, {})
+        self.price_calculator = JobPriceCalculator(self, self.sheet_settings, self.paint_inventory, data.get("price_settings", {}))
 
         self.unsaved_changes = False
         self.downloaded_from_server = False
@@ -242,6 +242,7 @@ class Job:
         self.color = JobColor.get_color(self.status)
         self.moved_job_to_workspace = job_data.get("moved_job_to_workspace", False)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
+        print(f"Loaded job settings for job {self.name}: {job_data.get('price_settings', {})}")
 
     def update_inventory_items_data(self):
         laser_cut_parts_to_update = []

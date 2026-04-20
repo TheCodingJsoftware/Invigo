@@ -24,14 +24,14 @@ class JobPriceCalculator:
         self.job: Job = job
 
         # These are percentages
-        self.item_profit_margin = 0.3
-        self.item_overhead = 0.18
+        self.item_profit_margin = 0.36
+        self.item_overhead = 0.12
 
-        self.components_use_overhead = False
-        self.components_use_profit_margin = False
+        self.components_use_overhead = True
+        self.components_use_profit_margin = True
 
-        self.sheet_profit_margin = 0.3
-        self.sheet_overhead = 0.18
+        self.sheet_profit_margin = 0.36
+        self.sheet_overhead = 0.12
 
         self.cost_for_laser = 150.0
         self.mil_thickness = 2.0
@@ -220,15 +220,15 @@ class JobPriceCalculator:
             laser_cut_part.prices.price = round(self.get_laser_cut_part_cost(laser_cut_part), 2)
 
     def load_settings(self, settings: dict[str, float]):
-        self.item_profit_margin = settings.get("item_profit_margin", 0.3)
-        self.item_overhead = settings.get("item_overhead", 0.18)
-        self.sheet_profit_margin = settings.get("sheet_profit_margin", 0.3)
-        self.sheet_overhead = settings.get("sheet_overhead", 0.18)
+        self.item_profit_margin = settings.get("item_profit_margin", 0.36)
+        self.item_overhead = settings.get("item_overhead", 0.12)
+        self.sheet_profit_margin = settings.get("sheet_profit_margin", 0.36)
+        self.sheet_overhead = settings.get("sheet_overhead", 0.12)
         self.cost_for_laser = settings.get("cost_for_laser", 150)
         self.mil_thickness = settings.get("mil_thickness", 2.0)
-        self.match_item_cogs_to_sheet = settings.get("match_item_cogs_to_sheet", False)
-        self.components_use_overhead = settings.get("components_use_overhead", False)
-        self.components_use_profit_margin = settings.get("components_use_profit_margin", False)
+        self.match_item_cogs_to_sheet = settings.get("match_item_cogs_to_sheet", True)
+        self.components_use_overhead = settings.get("components_use_overhead", True)
+        self.components_use_profit_margin = settings.get("components_use_profit_margin", True)
 
     def to_dict(self):
         return {

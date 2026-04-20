@@ -229,11 +229,11 @@ class JobWidget(QWidget, Ui_Form):
         self.doubleSpinBox_items_overhead.setValue(self.price_calculator.item_overhead * 100)
         self.doubleSpinBox_items_overhead.valueChanged.connect(self.price_settings_changed)
 
-        self.checkBox_components_use_overhead.toggled.connect(self.price_settings_changed)
         self.checkBox_components_use_overhead.setChecked(self.price_calculator.components_use_overhead)
+        self.checkBox_components_use_overhead.toggled.connect(self.price_settings_changed)
 
-        self.checkBox_components_use_profit_margin.toggled.connect(self.price_settings_changed)
         self.checkBox_components_use_profit_margin.setChecked(self.price_calculator.components_use_profit_margin)
+        self.checkBox_components_use_profit_margin.toggled.connect(self.price_settings_changed)
 
         self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: self._parent_widget.wheelEvent(event)
         self.doubleSpinBox_items_profit_margin.setValue(self.price_calculator.item_profit_margin * 100)
