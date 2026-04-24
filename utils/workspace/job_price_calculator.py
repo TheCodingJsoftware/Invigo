@@ -226,7 +226,7 @@ class JobPriceCalculator:
         self.sheet_overhead = settings.get("sheet_overhead", 0.12)
         self.cost_for_laser = settings.get("cost_for_laser", 150)
         self.mil_thickness = settings.get("mil_thickness", 2.0)
-        self.match_item_cogs_to_sheet = settings.get("match_item_cogs_to_sheet", True)
+        self.match_item_cogs_to_sheet = settings.get("match_item_cogs_to_sheet", False)
         self.components_use_overhead = settings.get("components_use_overhead", True)
         self.components_use_profit_margin = settings.get("components_use_profit_margin", True)
 

@@ -242,7 +242,6 @@ class Job:
         self.color = JobColor.get_color(self.status)
         self.moved_job_to_workspace = job_data.get("moved_job_to_workspace", False)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
-        print(f"Loaded job settings for job {self.name}: {job_data.get('price_settings', {})}")
 
     def update_inventory_items_data(self):
         laser_cut_parts_to_update = []
