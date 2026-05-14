@@ -387,12 +387,16 @@ class LaserCutPart(InventoryItem):
         return float(0.00001 * L**2 + 0.00389 * L + 0.25198)
 
     def calculate_machine_time_from_length_and_piercing_points(self, L: float, P: float) -> float:
-        return float(
-            0.00000 * L**3 + 0.00000 * L**2 * P + -0.00000 * L * P**2 + 0.00000 * P**3 + -0.00001 * L**2 + -0.00010 * L * P + 0.00011 * P**2 + 0.00816 * L + 0.01222 * P + 0.04308
-        )
+        # return float(
+        #     0.00000 * L**3 + 0.00000 * L**2 * P + -0.00000 * L * P**2 + 0.00000 * P**3 + -0.00001 * L**2 + -0.00010 * L * P + 0.00011 * P**2 + 0.00816 * L + 0.01222 * P + 0.04308
+        # )
+        time = -0.00001 * L**2 - 0.00010 * L * P + 0.00011 * P**2 + 0.00816 * L + 0.01222 * P + 0.04308
+        return max(0.0, float(time))
 
     def calculate_piercing_time(self, L: float, P: float) -> float:
-        return float(0.00000 * L**2 * P + -0.00000 * L * P**2 + 0.00000 * P**3 + -0.00010 * L * P + 0.00011 * P**2 + 0.01222 * P)
+        # return float(0.00000 * L**2 * P + -0.00000 * L * P**2 + 0.00000 * P**3 + -0.00010 * L * P + 0.00011 * P**2 + 0.01222 * P)
+        time = -0.00010 * L * P + 0.00011 * P**2 + 0.01222 * P
+        return max(0.0, float(time))
 
     def calculate_weight(self) -> float:
         if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(self.meta_data.material, self.meta_data.gauge):

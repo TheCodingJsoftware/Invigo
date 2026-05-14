@@ -60,15 +60,7 @@ class LaserCutPartFileDropWidget(QWidget):
         if event.mimeData().hasUrls():
             urls = event.mimeData().urls()
             file_paths = [url.toLocalFile() for url in urls]
-            allowed_extensions = [
-                ".pdf",
-                ".dxf",
-                ".jpeg",
-                ".geo",
-                ".png",
-                ".jpg",
-                "sldprt",
-            ]  # Allowed file extensions
+            allowed_extensions = [".pdf", ".dxf", ".jpeg", ".geo", ".png", ".jpg", "sldprt", ".xml"]  # Allowed file, extensions
             valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
             if valid_files:
                 self.fileDropped.emit(
@@ -91,7 +83,7 @@ class LaserCutPartFileDropWidget(QWidget):
         if event.button() == Qt.MouseButton.LeftButton:
             file_dialog = QFileDialog(self)
             file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
-            file_dialog.setNameFilter("Allowed Files (*.pdf *.dxf *.jpeg *.geo *.png *.jpg *.sldprt)")
+            file_dialog.setNameFilter("Allowed Files (*.pdf *.dxf *.jpeg *.geo *.png *.jpg *.sldprt *.xml)")
             file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
             if file_dialog.exec():
                 if file_paths := file_dialog.selectedFiles():
